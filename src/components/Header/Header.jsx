@@ -25,6 +25,9 @@ const {notifications}  = useNotification()
       goToPreviousPage(event);
   },[])
 
+  useEffect(()=>{
+    
+  }, [notifications])
 
   return (
     <Navbar expand="md" 
@@ -77,9 +80,8 @@ const {notifications}  = useNotification()
                       <Dropdown.Item 
                         key={noti.id}
                         className='text-wrap fs-6 px-4 mx-0 d-inline-block text-truncate text-overflow-elli[sis' >
-                        <Link to='/detail/1' className='fs-6 text-color-black'>
-                          <strong>{noti.noti_message}</strong>
-                          {noti.content}
+                        <Link to='/detail/1' className='fs-6 text-color-black text-truncate'>
+                          <strong>{noti.message}</strong>
                         </Link>
                       </Dropdown.Item>
                     )

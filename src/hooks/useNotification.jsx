@@ -28,7 +28,7 @@ const useNotification = () => {
       transports: ["websocket", 'polling']
     });
 
-    socket.on('connection', () => {
+    socket.on('connect', () => {
       console.log('Connected to socket.io server');
       setIsConnected(true);
     });

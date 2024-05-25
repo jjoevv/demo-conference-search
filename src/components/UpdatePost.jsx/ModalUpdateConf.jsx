@@ -16,7 +16,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
   const { filterOptions, getOptionsFilter } = useSearch()
   const [updateForm, setUpdateForm] = useState()
-  const [isUpdate, setIsUpdate] = useState(false)
+  const [isDuplicate, setIsDuplicate] = useState(false)
   const [tab, setTab] = useState('1')
   const [activeAccordionKey, setActiveAccordionKey] = useState([]);
   const [formData, setFormData] = useState({
@@ -135,37 +135,40 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   };
 
   const handleUpdatePost = async () => {
-    const isDuplicate = {};
-    const updatedOrganizations = formData.organizations.map((org, index) => {
-      if (isDuplicate[org.name]) {
-        // Nếu tên tổ chức trùng, đánh dấu nó
-        return { ...org, isDuplicate: true };
-      } else {
-        isDuplicate[org.name] = true;
-        return { ...org, isDuplicate: false };
-      }
-    });
+    const names = []; // Mảng lưu trữ các tên tổ chức đã xuất hiện
+  const updatedOrganizations = formData.organizations.map((org, index) => {
+    if (names.includes(org.name)) {
+      // Nếu tên tổ chức đã xuất hiện trước đó, đánh dấu nó là trùng lặp
+      return { ...org, isDuplicate: true };
+    } else {
+      names.push(org.name); // Thêm tên vào mảng names
+      return { ...org, isDuplicate: false };
+    }
+  });
 
-    if(isDuplicate) {
+  const hasDuplicate = updatedOrganizations.some(org => org.isDuplicate);
+    setIsDuplicate(hasDuplicate)
+    if (hasDuplicate) {
+      console.log({ hasDuplicate, updatedOrganizations, isDuplicate })
       setTab(2)
     }
     else {
-// Cập nhật organizations trong formData với các tổ chức đã đánh dấu
-setFormData(prevFormData => ({
-  ...prevFormData,
-  organizations: updatedOrganizations
-}));
+      // Cập nhật organizations trong formData với các tổ chức đã đánh dấu
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        organizations: updatedOrganizations
+      }));
 
-const result = await updatePost(formData, conference.id)
-setMesage(result.message)
-setStatus(result.status)
-onUpdatePost()
-if(result.status){
-  setShowSuccessModal(true)
-}
-  
+      const result = await updatePost(formData, conference.id)
+      setMesage(result.message)
+      setStatus(result.status)
+      onUpdatePost()
+      if (result.status) {
+        setShowSuccessModal(true)
+      }
+
     }
-    
+
   }
 
   const handleSelectTab = (selectIndex) => {
@@ -175,7 +178,7 @@ if(result.status){
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered scrollable >
-      {status && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={onClose}/>}
+      {status && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={onClose} />}
       <Modal.Header closeButton>
         <Modal.Title className='text-center w-100 text-skyblue-dark'>Update conference</Modal.Title>
       </Modal.Header>
@@ -243,6 +246,7 @@ if(result.status){
                 <Button variant="secondary" className="mt-3 text-end" onClick={addOrganization}>Add Organization</Button>
               </div>
               <Accordion defaultActiveKey={activeAccordionKey} className='mt-3'>
+                {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
                 {formData.organizations.map((org, index) => (
 
                   <Accordion.Item eventKey={`${index}`} key={index} className='border-0'>
@@ -262,13 +266,9 @@ if(result.status){
                         <Col>
                           <div className='d-flex align-items-center'>
                             <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} className={org.isDuplicate && 'border-danger'} />
-                            <OverlayTrigger
-                              placement="right"
-                              overlay={<Tooltip id={`tooltip-${index}`}>Organization name must be unique!</Tooltip>}
-                              show={org.isDuplicate}
-                            >
-                              <FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />
-                            </OverlayTrigger>
+
+                            <FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />
+
                           </div>
                         </Col>
                       </Form.Group>
@@ -286,7 +286,7 @@ if(result.status){
                       <Form.Group as={Row} className='my-3'>
                         <Form.Label column sm="3">Location: </Form.Label>
                         <Col>
-                          <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)'/>
+                          <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
                         </Col>
                       </Form.Group>
                       <Form.Group as={Row} className='my-3'>
@@ -350,15 +350,15 @@ if(result.status){
           <Button onClick={handleUpdatePost} className='bg-blue-normal border-light px-4 mx-3 rounded d-flex'>
             {
               loading
-              ?
-              <Loading/>
-              :
-              <div>
-               <FontAwesomeIcon icon={faEdit} className='me-2' /> 
-                Update
-              </div>
+                ?
+                <Loading />
+                :
+                <div>
+                  <FontAwesomeIcon icon={faEdit} className='me-2' />
+                  Update
+                </div>
             }
-           
+
           </Button>
         </ButtonGroup>
       </Modal.Footer>
