@@ -54,6 +54,9 @@ const Followed = () => {
   const handleApplyFilter = (key, keyword) => {
     setFetchParams({ key, keyword });
   };
+
+
+  
   const displayConf = check ? displayConferences : listFollowed;
   const totalPagesDisplay = check ? Math.ceil(displayConf.length / 7) : Math.ceil(listFollowed.length / 7);
   const totalConfDisplay = check ? displayConf.length : listFollowed.length

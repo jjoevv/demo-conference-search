@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 const InformationPage = () => {
   const { conference } = useConference()
   const [isOrganizations, setOrganizations] = useState(false)
+  const [displayOrganizations, setDisplayOrganizations] = useState([])
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (Array.isArray(fieldOfResearch)) {
       // Trường là một danh sách
@@ -18,16 +19,44 @@ const InformationPage = () => {
     }
   };
 
-  useEffect(()=>{
-    if(conference){
-      const newOrgs = conference.organizations.filter(org => org.status === 'new');
-    
-    if(newOrgs.length > 1)
-      {
+  useEffect(() => {
+    if (conference) {
+      // Tạo một mảng để lưu các phần tử duy nhất
+      const uniqueOrganizations = [];
+      // Tạo một đối tượng để lưu trữ các phần tử theo tên
+      const orgMap = new Map();
+
+      conference.organizations.forEach(org => {
+        if (orgMap.has(org.name)) {
+          const existingOrg = orgMap.get(org.name);
+          if (existingOrg.status !== 'new' && org.status === 'new') {
+            // Nếu tồn tại phần tử có status khác 'new' và phần tử hiện tại có status 'new'
+            org.start_date_old = existingOrg.start_date;
+            org.start_date_new = org.start_date;
+            // Thay thế phần tử cũ bằng phần tử mới
+            orgMap.set(org.name, org);
+          }
+        } else {
+          orgMap.set(org.name, org);
+        }
+      });
+
+      // Lọc các phần tử không có status 'old'
+      orgMap.forEach((org, name) => {
+        if (org.status !== 'old') {
+          uniqueOrganizations.push(org);
+        }
+      });
+
+      if (uniqueOrganizations.length > 1) {
         setOrganizations(true)
       }
+      setDisplayOrganizations(uniqueOrganizations)
+
     }
-  },[])
+  }, [conference])
+
+
   return (
     <div className='px-5 m-5 ' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
@@ -38,62 +67,62 @@ const InformationPage = () => {
         <>
 
           <div className='fs-5 fw-bold mt-2 py-3'>{conference.information.name}</div>
-          <div className='mt-2'>
+          <div className='my-2'>
 
             {
-              conference.organizations.map((org, index) => (
-              <>
-                {
-                  org.status === "new" &&
-                  <div key={index}>
-                  {isOrganizations && <span className='fw-bold text-color-black fs-5'>Organization {index + 1}</span>}
-                  <Row className='py-3 ps-5 bg-teal-light' >
-                    <Col xs={4}>Organization name:</Col>
-                    <Col className='fw-bold'>
-                      {org.name}
-                    </Col>
-                  </Row>
-                  <Row className='py-3 ps-5'>
-                    <Col xs={4}>Type:</Col>
-                    <Col className='fw-bold'>
-                      {
-                        org.type !== null
-                          ?
-                          capitalizeFirstLetter(conference.organizations[0].type)
-                          :
-                          <span className='text-secondary'>Updating...</span>
-                      }
-                    </Col>
-                  </Row>
-                  <Row className='py-3 ps-5 bg-teal-light'>
-                    <Col xs={4}>Location:</Col>
-                    <Col className='fw-bold'>
-                      {
-                        org.location !== null || org.location !== ''
-                          ?
-                          capitalizeFirstLetter(conference.organizations[0].type)
-                          :
-                          <span className='text-secondary'>Updating...</span>
-                      }
-                    </Col>
-                  </Row>
-                  <Row className='py-3 ps-5'>
+              displayOrganizations.map((org, index) => (
+                <>
+                  {
+                    org.status === "new" &&
+                    <div key={index}>
+                      {isOrganizations && <span className='fw-bold text-color-black fs-5'>Organization {index + 1}</span>}
+                      <Row className='py-3 ps-5 bg-teal-light' >
+                        <Col xs={4}>Organization name:</Col>
+                        <Col className='fw-bold'>
+                          {capitalizeFirstLetter(org.name)}
+                        </Col>
+                      </Row>
+                      <Row className='py-3 ps-5'>
+                        <Col xs={4}>Type:</Col>
+                        <Col className='fw-bold'>
+                          {
+                            org.type !== null
+                              ?
+                              capitalizeFirstLetter(org.type)
+                              :
+                              <span className='text-secondary'>Updating...</span>
+                          }
+                        </Col>
+                      </Row>
+                      <Row className='py-3 ps-5 bg-teal-light'>
+                        <Col xs={4}>Location:</Col>
+                        <Col className='fw-bold'>
+                          {
+                            org.location !== null || org.location !== ''
+                              ?
+                              capitalizeFirstLetter(org.type)
+                              :
+                              <span className='text-secondary'>Updating...</span>
+                          }
+                        </Col>
+                      </Row>
+                      <Row className='py-3 ps-5'>
 
-                    <Col xs={4}>Conference date:</Col>
-                    <Col className='fw-bold'>
+                        <Col xs={4}>Conference date:</Col>
+                        <Col className='fw-bold'>
 
-                      From {org.start_date !== '' || org.start_date !== null ? org.start_date : <span className='text-secondary'>Updating...</span>}
-                       {org.end_date > 0 && `to ${org.end_date}` }
+                          From {org.start_date !== '' || org.start_date !== null ? org.start_date : <span className='text-secondary'>Updating...</span>}
+                          {org.end_date > 0 && `to ${org.end_date}`}
 
-                    </Col>
-                  </Row>
-                </div>
-                }
-              </>
+                        </Col>
+                      </Row>
+                    </div>
+                  }
+                </>
               ))
             }
 
-           
+
             <Row className='bg-teal-light py-3 ps-5'>
               <Col xs={4}>Category:</Col>
               <Col className='fw-bold'>Conference</Col>

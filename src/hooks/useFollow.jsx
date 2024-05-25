@@ -59,7 +59,6 @@ const fetchPage = async (page) => {
           const firstPageData = await fetchPage(1);                
           const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
           
-        
           const extractData = firstPageData.data.map(item => {
             const callForPaperData = item.callForPaper;
             const followId = item.followId; // Giả sử trường followed nằm trong danh sách gốc

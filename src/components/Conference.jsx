@@ -33,7 +33,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     
     const itemsPerPage = 7;
     const pagesVisited = page * itemsPerPage;
-
+    
     useEffect(()=>{
         setPage(0)
     }, [optionsSelected])
@@ -42,6 +42,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         const sortedConf = sortByFollow(conferencesProp, listFollowed)
         setDisplayedConferences(sortedConf)
         setcopiedConferences(sortedConf)
+
+
     },[conferencesProp, listFollowed])
 
    

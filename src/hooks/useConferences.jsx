@@ -13,6 +13,7 @@ const useConference = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [totalConferences, setTotalConferences] = useState(0)
   const [loading, setLoading] = useState(false)
+
   const fetchData = useCallback(async (page) => {
     try {
       const response = await fetch(`${baseURL}/conference?page=${page}&size=7`,{
@@ -43,6 +44,8 @@ const useConference = () => {
         const total = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
         setTotalConferences(totalConf)
         setTotalPages(total)
+        localStorage.setItem('totalConferences', JSON.stringify(totalConf))
+        localStorage.setItem('totalPagesConferences', JSON.stringify(total))
         dispatch(getAllConf(firstPageData.data));
         
       

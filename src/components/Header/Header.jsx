@@ -29,6 +29,13 @@ const {notifications}  = useNotification()
     
   }, [notifications])
 
+
+  const handleNavigate = (link) => {
+    if(user){
+      navigate(link)
+    }
+    else navigate('/login')
+  }
   return (
     <Navbar expand="md" 
     id='header'
@@ -53,8 +60,8 @@ const {notifications}  = useNotification()
               </Dropdown.Toggle>
         
               <Dropdown.Menu>
-                <Dropdown.Item className='fs-6' onClick={()=>navigate('/followed')}>Followed Conferences</Dropdown.Item>
-                <Dropdown.Item className='fs-6' onClick={()=>navigate('/yourconferences')}>Your Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/followed')}>Followed Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/yourconferences')}>Your Conferences</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             
