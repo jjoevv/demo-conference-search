@@ -33,7 +33,11 @@ const {notifications}  = useNotification()
     
     >
       <Container fluid className='d-flex justify-content-between shadow-sm px-5'>
-        <Navbar.Brand href="/" className='my-header-brand'>ConfHub</Navbar.Brand>
+        <Navbar.Brand className='my-header-brand'>
+          <Link to='/' className='mx-4 text-teal-dark fs-4 fw-bold' title='Homepage'>
+              ConfHub
+            </Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto d-flex align-items-center">
