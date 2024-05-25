@@ -60,14 +60,31 @@ const fetchPage = async (page) => {
           const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
           
         
-          const extractData = firstPageData.data.map(item => item.callForPaper); 
+          const extractData = firstPageData.data.map(item => {
+            const callForPaperData = item.callForPaper;
+            const followId = item.followId; // Giả sử trường followed nằm trong danh sách gốc
+            
+            return {
+              ...callForPaperData,
+              followId: followId
+            };
+          });
+          
           const newConferences = updateNewList(extractData)
           dispatch(getFollowedConferenceAction(newConferences))
   
           // Fetch remaining pages asynchronously
           for (let i = 2; i <= totalPages; i++) {
               const pageData = await fetchPage(i);
-              const extractData = pageData.data.map(item => item.callForPaper); 
+              const extractData = pageData.data.map(item => {
+                const callForPaperData = item.callForPaper;
+                const followId = item.followId; // Giả sử trường followed nằm trong danh sách gốc
+                
+                return {
+                  ...callForPaperData,
+                  followId: followId
+                };
+              }); 
               const newConferences = updateNewList(extractData)
               dispatch(getFollowedConferenceAction(newConferences))
               

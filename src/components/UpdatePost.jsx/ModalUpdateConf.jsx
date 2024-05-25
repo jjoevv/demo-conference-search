@@ -31,10 +31,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
       start_date: org.start_date,
       end_date: org.end_date
     })) || [{ name: "", type: "", location: "", start_date: "", end_date: "" }],
-    importantDates: conference.importantDates.map(date => ({
-      date_type: date.date_type,
-      date_value: date.date_value
-    })) || [{ date_type: "", date_value: "" }]
+
+    importantDates: conference.importantDates.filter(date => date.status === 'new') // Lọc ra các phần tử có status là 'new'
+    .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
   });
 
   const [selectedOptions, setSelectedOptions] = useState(conference.information.fieldOfResearch.map(field => ({
@@ -149,7 +148,6 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const hasDuplicate = updatedOrganizations.some(org => org.isDuplicate);
     setIsDuplicate(hasDuplicate)
     if (hasDuplicate) {
-      console.log({ hasDuplicate, updatedOrganizations, isDuplicate })
       setTab(2)
     }
     else {
@@ -243,7 +241,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
             <Tab eventKey={`2`} title="Organization" className='mx-4'>
               <div className='w-100 d-flex justify-content-end'>
-                <Button variant="secondary" className="mt-3 text-end" onClick={addOrganization}>Add Organization</Button>
+                <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addOrganization}>Add Organization</Button>
               </div>
               <Accordion defaultActiveKey={activeAccordionKey} className='mt-3'>
                 {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
@@ -309,7 +307,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
             </Tab>
             <Tab eventKey={`3`} title="Important dates" className='mx-4'>
               <div className='w-100 d-flex justify-content-end'>
-                <Button variant="secondary" className="mt-3 text-end" onClick={addDate}>Add important dates</Button>
+                <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>Add important dates</Button>
               </div>
               {formData.importantDates.map((date, index) => (
                 <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>

@@ -108,35 +108,18 @@ const useAccordionDates = () => {
   };
   
   const separateDatesByRound = (importantDates) => {
-    const separatedDates = {};
-    
-    importantDates.forEach(date => {
-        let round, eventName;
-        if (date.date_type.includes(' - ')) {
-            [round, eventName] = date.date_type.split(' - ');
-        } else {
-            round = 'Round 1';
-            eventName = date.date_type;
-        }
-        if (!separatedDates[round]) {
-            separatedDates[round] = []; // Tạo danh sách mới nếu chưa tồn tại
-        }
-        separatedDates[round].push({ ...date, date_type: eventName }); 
-        
-        const updatedDates = separatedDates[round].map(date => {
+   
+        const updatedDates = importantDates.map(date => {
             
             if (date.status === 'new') {
-              const oldDate = separatedDates[round].find(d => d.status === 'old' && d.date_type === date.date_type);
+              const oldDate = separatedDates.find(d => d.status === 'old' && d.date_type === date.date_type);
               if (oldDate) {
                 date.date_value_old = oldDate.date_value;
               }
             }
             return date;
           }).filter(date => date.status !== 'old'); // bỏ ngày old
-          separatedDates[round] = updatedDates
-    });
-
-    return separatedDates;
+    return updatedDates;
 };
   return { 
     items, 

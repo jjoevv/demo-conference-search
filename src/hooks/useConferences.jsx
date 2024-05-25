@@ -13,7 +13,6 @@ const useConference = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [totalConferences, setTotalConferences] = useState(0)
   const [loading, setLoading] = useState(false)
-
   const fetchData = useCallback(async (page) => {
     try {
       const response = await fetch(`${baseURL}/conference?page=${page}&size=7`,{
@@ -45,6 +44,8 @@ const useConference = () => {
         setTotalConferences(totalConf)
         setTotalPages(total)
         dispatch(getAllConf(firstPageData.data));
+        
+      
 
         // Fetch remaining pages asynchronously
         for (let i = 2; i <= totalPages; i++) {

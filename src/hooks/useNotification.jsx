@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 import useAuth from './useAuth';
 import { useAppContext } from '../context/authContext';
 import { getNotifications } from '../actions/notiAction';
+import useFollow from './useFollow';
 
 
 const useNotification = () => {
@@ -13,9 +14,11 @@ const useNotification = () => {
   const [isConnected, setIsConnected] = useState(false);
   const { state, dispatch } = useAppContext()
   const { getCurrentUser } = useAuth()
+  const {listFollowed} = useFollow()
 
   const [hasNewNotification, setHasNewNotification] = useState(false);
   let socketRef = useRef(null);
+
   useEffect(() => {
     getCurrentUser()
     const user_id = JSON.parse(sessionStorage.getItem('user-id'))
@@ -35,9 +38,11 @@ const useNotification = () => {
 
     socket.on('notification', (message) => {
       localStorage.setItem('noti_dot', JSON.stringify('true'))
-      dispatch(getNotifications(message))
+      const newMess = getNewConf(message)
+      const newNotifications = [newMess, ...state.notifications].slice(0, 10);
+      localStorage.setItem('notis', JSON.stringify(newNotifications))
+      dispatch(getNotifications(newNotifications))
       setHasNewNotification(true);
-      console.log({message})
     });
 
 
@@ -67,9 +72,16 @@ const useNotification = () => {
     return () => {
       socket.disconnect();
     };
-  }, [dispatch, socketRef]);
+  }, [dispatch]);
 
  
+  const getNewConf = (message) => {
+    if(listFollowed){
+      const followItem = listFollowed.find(item => item.followId === message.FollowTid);
+      message.conf_id = followItem ? followItem.id : null;
+    }
+    return message
+  }
 
   return { 
     socket: socketRef,

@@ -171,7 +171,7 @@ const appReducer = (state, action) => {
         case actionTypes.GET_NOTIFICATIONS:
             return {
                 ...state,
-                notes: action.payload,
+                notifications: action.payload,
             };
         default:
             return state;
