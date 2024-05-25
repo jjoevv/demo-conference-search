@@ -1,0 +1,29 @@
+
+/* Media queries */
+@media screen and (max-width: 600px) {
+  .my-conf-card {
+    overflow: auto;
+    max-width: 100%;
+  }
+}
+@media screen and (min-width: 600px) {
+  .my-conf-card {
+    max-width: 600px; /* For screens wider than 1024px */
+    width: 600px !important;
+
+  }
+}
+@media screen and (min-width: 768px) {
+    .my-conf-card {
+      width: 768px !important;
+      max-width: 768px; /* For screens wider than 768px */
+    }
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .my-conf-card {
+      max-width: 1024px; /* For screens wider than 1024px */
+      width: 1024px !important;
+
+    }
+  }
