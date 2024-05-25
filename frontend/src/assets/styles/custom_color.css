@@ -1,0 +1,212 @@
+.bg-beige-light {
+    background-color: #f8fdfb;
+}
+
+.bg-beige-light:hover {
+    background-color: #f5fcf9;
+}
+
+.bg-beige-light:active {
+    background-color: #eaf9f3;
+}
+
+.bg-beige-normal {
+    background-color: #bcedd8;
+}
+
+.bg-beige-normal:hover {
+    background-color: #a9d5c2;
+}
+
+.bg-beige-normal:active {
+    background-color: #96bead;
+}
+
+
+.bg-teal-light {
+    background-color: #e6eeee;
+}
+
+button.bg-teal-light:hover {
+    background-color: #dae6e6;
+}
+
+button.bg-teal-light:active {
+    background-color: #b2cbcb;
+}
+
+.bg-teal-normal {
+    background-color: #065758;
+}
+
+.bg-teal-normal:hover {
+    background-color: #054e4f;
+}
+
+.bg-teal-normal:active {
+    background-color: #054646;
+}
+
+.bg-teal-dark {
+    background-color: #054142;
+}
+
+.bg-teal-dark:hover {
+    background-color: #043435;
+}
+
+.bg-teal-dark:active {
+    background-color: #032728;
+}
+
+.bg-teal-darker {
+    background-color: #021e1f;
+}
+
+.border-teal-normal {
+    border-color: #b2cbcb !important;
+}
+
+.bg-skyblue-light {
+    background-color: #f2fbfc;
+}
+
+.bg-skyblue-light:hover {
+    background-color: #ecf8fb;
+}
+
+.bg-skyblue-light:active {
+    background-color: #d8f1f7;
+}
+.bg-skyblue-normal {
+    background-color: #81d2e4;
+}
+
+.bg-skyblue-normal:hover {
+    background-color: #74bdcd;
+}
+
+.bg-skyblue-normal:active {
+    background-color: #67a8b6;
+}
+
+.bg-skyblue-dark {
+    background-color: #619eab;
+}
+
+.bg-skyblue-dark:hover {
+    background-color: #4d7e89;
+}
+
+.bg-skyblue-dark:active {
+    background-color: #3a5e67;
+}
+
+.bg-darkcyan-light {
+    background-color: #e6f5f5;
+}
+
+.bg-darkcyan-light:hover {
+    background-color: #d9f0f1;
+}
+
+.bg-darkcyan-light:active {
+    background-color: #b0dfe1;
+}
+
+.bg-darkcyan-normal {
+    background-color: #00999f;
+}
+
+.bg-darkcyan-normal:hover {
+    background-color: #008a8f;
+}
+
+.bg-darkcyan-normal:active {
+    background-color: #007a7f;
+}
+
+.bg-yellow-light {
+    background-color: #fffdeb;
+}
+
+.bg-yellow-light:hover {
+    background-color: #fffce1;
+}
+
+.bg-yellow-light:active {
+    background-color: #fffac1;
+}
+
+.bg-yellow-normal {
+    background-color: #ffee38;
+}
+
+button.bg-yellow-normal:hover {
+    background-color: #e6d632;
+}
+
+button.bg-yellow-normal:active {
+    background-color: #ccbe2d;
+}
+
+.bg-yellow-dark {
+    background-color: #bfb32a;
+}
+
+.bg-yellow-dark:hover {
+    background-color: #998f22;
+}
+
+.bg-yellow-dark:active {
+    background-color: #736b19;
+}
+
+.bg-yellow-darker {
+    background-color: #595314;
+}
+
+
+.text-yellow {
+    color: #ffee38;
+}
+
+.text-teal-normal {
+    color: #065758;
+}
+.text-teal-dark{ 
+    color: #054142;
+}
+
+.text-skyblue-dark{ 
+    color: #619eab;
+}
+
+.bg-blur {
+    position: relative;
+    background-image: linear-gradient(to bottom, #bcedd8 , #f8fdfb);
+  }
+
+.nav-link{
+    color: #054142;
+    border-bottom: 2px solid #054142;
+}
+
+.nav-link:hover{
+    color: #043435;
+}
+.nav-link.active{
+    color: #024546 !important;
+    font-weight: 600;
+
+}
+
+.nav-item.custom-tab {
+    color:  #619eab !important;
+  }
+  
+  /* Màu tiêu đề tab khi được bấm */
+  .custom-tab:hover,
+ .custom-tab:focus {
+    color: #4d7e89;
+  }
