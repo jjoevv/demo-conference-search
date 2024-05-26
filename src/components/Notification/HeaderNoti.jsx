@@ -5,12 +5,13 @@ import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 
 const HeaderNoti = () => {
   //const { socket,  notifications, hasNewNotification, message, error, isConnected, sendMessage } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  
+  const {user} = useLocalStorage()
   const { notifications} = useNotification()
   const [displayNotis, setDisplayNotis] = useState([])
   const [hasNewNotification, setHasNewNotification] = useState(false);
@@ -35,7 +36,6 @@ const HeaderNoti = () => {
     }
     setDropdownOpen(!dropdownOpen);
   };
-
 
   return (
     <Dropdown 
@@ -67,7 +67,7 @@ const HeaderNoti = () => {
       </div>
       
   <Dropdown.Divider />
-      <Link to='/notifications' className='fs-6 fw-normal m-2 pt-3 text-color-darker'>View all notifications {"   >"}</Link>
+      <Link to={user ? '/notifications' : '/login'} className='fs-6 fw-normal m-2 pt-3 text-color-darker'>View all notifications {"   >"}</Link>
     </Dropdown.Menu>
   </Dropdown>
   );

@@ -65,7 +65,7 @@ const {notifications}  = useNotification()
             </Dropdown>
             
 
-            <Link to='/schedule' className='mx-4 text-body-emphasis text-color-black fs-6' title='Timestamp'>
+            <Link to={user ? '/schedule' : '/login'} className='mx-4 text-body-emphasis text-color-black fs-6' title='Timestamp'>
               Schedule
             </Link>
             <HeaderNoti/>
