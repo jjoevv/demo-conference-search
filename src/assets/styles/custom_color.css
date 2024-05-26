@@ -71,11 +71,11 @@ button.bg-teal-light:active {
     background-color: #f2fbfc;
 }
 
-.bg-skyblue-light:hover {
+button.bg-skyblue-light:hover {
     background-color: #ecf8fb;
 }
 
-.bg-skyblue-light:active {
+button.bg-skyblue-light:active {
     background-color: #d8f1f7;
 }
 .bg-skyblue-normal {

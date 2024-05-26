@@ -15,7 +15,7 @@ import Loading from '../Loading';
 const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) => {
     const { loading, postConference, getPostedConferences } = usePost()
     const { filterOptions, getOptionsFilter } = useSearch()
-    const { items, dateListByRound, mergeDatesByRound, addDateToRound, addItem, deleteItem } = useAccordionDates()
+
     const [page, setPage] = useState(0)
     const [isPosted, setIsPosted] = useState(false)
     const [error, setError] = useState(false)
@@ -26,6 +26,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [activeAccordionKey, setActiveAccordionKey] = useState([]);
 
+    const [isDuplicate, setIsDuplicate] = useState(false)
 
     useEffect(() => {
         if (!filterOptions['rank']) {
@@ -212,10 +213,15 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             }
             return acc;
         }, []);
-
+        const hasDuplicateNames = formData.organizations.some((org, index) => {
+            return formData.organizations.findIndex((item, i) => item.name === org.name && i !== index) !== -1;
+        });
+        setIsDuplicate(hasDuplicateNames)
+        if (hasDuplicateNames) {
+            setActiveAccordionKey(2)
+        }
         if (newInvalidDates.length > 0) {
             setInvalidDates(newInvalidDates);
-            alert("Please fill out both date value and date type or leave them both empty.");
         } else {
             const cleanedDates = formData.importantDates.filter(date => date.date_value !== '' && date.date_type !== '');
             setFormData(prevFormData => ({
@@ -244,6 +250,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             if (result.status) {
                 setShowSuccessModal(true)
                 setIsPosted(false)
+                handleCloseForm()
             }
 
         }
@@ -265,15 +272,14 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 scrollable
 
             >
-                {status && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={handleClose} />}
-                {!status && isPosted &&  <p className="text-danger">{message}</p>}
+                {status && isPosted && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={handleClose} />}
+                {!status && isPosted && <p className="text-danger">{message}</p>}
                 <Modal.Header closeButton className='fixed'>
                     <Modal.Title className='text-center w-100 text-skyblue-dark'>Conference Information</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="modal-scrollable-content m-0"
                     style={{ minHeight: "520px", maxHeight: "600px" }}>
 
-                    {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                     <Form className='px-5'>
                         <div className="modal-scrollable-body">
                             <Carousel activeIndex={page} onSelect={handleSelect} controls={false} interval={null} indicators={false}>
@@ -283,7 +289,6 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             <span className='text-danger'>* </span>Conference name:
                                         </Form.Label>
                                         <Form.Control
-
                                             type="text"
                                             placeholder="Enter the conference/journal name..."
                                             name="conf_name"
@@ -338,26 +343,23 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                         </Form.Label>
                                         <Form.Select
                                             name="rank"
-                                            value={formData.rank}
-                                            placeholder='Select rank...'
+                                            value={formData.rank || ''}
                                             onChange={handleInputChange}
                                             className='border-blue-normal'
                                         >
-                                            {!filterOptions.rank ? (
-                                                data.rank.map((option, index) => (
-                                                    <option value={option.value} key={index}>{option.label}</option>
-                                                ))
-                                            ) : (
-                                                filterOptions.rank.map((option, index) => (
-                                                    <option value={option} key={index}>{option}</option>
-                                                ))
-                                            )}
-
+                                            {/* Option placeholder */}
+                                            <option value="" disabled hidden>Select rank...</option>
+                                            {/* Options từ data.rank */}
+                                            {(filterOptions.rank || data.rank).map((option, index) => (
+                                                <option value={option.value || option} key={index}>{option.label || option}</option>
+                                            ))}
                                         </Form.Select>
+
                                     </Form.Group>
 
                                 </Carousel.Item>
                                 <Carousel.Item>
+                                    {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
                                     <Accordion defaultActiveKey={activeAccordionKey} className='mt-3'>
                                         {formData.organizations.map((org, index) => (
 
@@ -381,16 +383,11 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                                     type="text"
                                                                     value={org.name}
                                                                     onChange={(e) => handleOrgChange(index, 'name', e.target.value)}
-                                                                    className={org.isDuplicate && 'border-danger'}
+
                                                                     placeholder='Organization name...'
                                                                 />
-                                                                <OverlayTrigger
-                                                                    placement="right"
-                                                                    overlay={<Tooltip id={`tooltip-${index}`}>Organization name must be unique!</Tooltip>}
-                                                                    show={org.isDuplicate}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faCircleXmark} className='ms-2 text-warning' title='Organization name must be unique!' />
-                                                                </OverlayTrigger>
+                                                                <FontAwesomeIcon icon={faCircleXmark} className='ms-2 text-warning' title='Organization name must be unique!' />
+
                                                             </div>
                                                         </Col>
                                                     </Form.Group>
@@ -488,6 +485,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                         </div>
                     </Form>
                 </Modal.Body>
+
+                {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                 <Modal.Footer className="d-flex align-items-center justify-content-center text-white">
                     <Button
                         onClick={() => setPage((prevIndex) => prevIndex - 1)}

@@ -13,7 +13,11 @@ h5 {
 .fs-7 {
     font-size: 12px !important;
 }
-
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}
 
 /*can deu*/
 .text-justify {
@@ -562,4 +566,12 @@ a {
 
   .accordion-button {
     padding: 8px 10px;
+    border-color: 2px solid #1A7482;
+  }
+
+  .text-dropdown-toggle,
+  .text-dropdown-toggle:hover,
+  .text-dropdown-toggle:active,
+  .text-dropdown-toggle:focus{
+    color: #3f3f3f;
   }

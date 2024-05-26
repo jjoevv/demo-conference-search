@@ -15,7 +15,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const { filterOptions, getOptionsFilter } = useSearch()
-  const [updateForm, setUpdateForm] = useState()
+  const [isupdateForm, setIsUpdateForm] = useState()
   const [isDuplicate, setIsDuplicate] = useState(false)
   const [tab, setTab] = useState('1')
   const [activeAccordionKey, setActiveAccordionKey] = useState([]);
@@ -24,15 +24,16 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     link: conference.information.link || "",
     rank: conference.information.rank || "N/I",
     fieldsOfResearch: conference.information.fieldOfResearch || [],
-    organizations: conference.organizations.map(org => ({
+    organizations: conference.organizations.filter(org => org.status === 'new') // Lọc ra các organizations có status là 'new'
+    .map(org => ({
       name: org.name,
       type: org.type,
       location: org.location,
       start_date: org.start_date,
       end_date: org.end_date
-    })) || [{ name: "", type: "", location: "", start_date: "", end_date: "" }],
+    })),
 
-    importantDates: conference.importantDates.filter(date => date.status === 'new') // Lọc ra các phần tử có status là 'new'
+    importantDates: conference.importantDates.filter(date => date.status === 'new') // Lọc ra các importantDates có status là 'new'
     .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
   });
 
@@ -85,7 +86,6 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
       location: "",
       start_date: "",
       end_date: "",
-      isDuplicate: false // Thêm thuộc tính isDuplicate cho tổ chức mới
     };
     setFormData(prevFormData => ({
       ...prevFormData,
@@ -134,30 +134,37 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   };
 
   const handleUpdatePost = async () => {
-    const names = []; // Mảng lưu trữ các tên tổ chức đã xuất hiện
-  const updatedOrganizations = formData.organizations.map((org, index) => {
-    if (names.includes(org.name)) {
-      // Nếu tên tổ chức đã xuất hiện trước đó, đánh dấu nó là trùng lặp
-      return { ...org, isDuplicate: true };
-    } else {
-      names.push(org.name); // Thêm tên vào mảng names
-      return { ...org, isDuplicate: false };
-    }
-  });
+    setIsUpdateForm(true)
+    
+    //kiểm tra location trùng name
+    const hasDuplicateNames = formData.organizations.some((org, index) => {
+      return formData.organizations.findIndex((item, i) => item.name === org.name && i !== index) !== -1;
+    });
 
-  const hasDuplicate = updatedOrganizations.some(org => org.isDuplicate);
-    setIsDuplicate(hasDuplicate)
-    if (hasDuplicate) {
+   
+    //kiểm tra importantdate trùng date_type
+    const seenDateTypes = {}; 
+    const hasDuplicateDateType = formData.importantDates.some(date => {
+      if (seenDateTypes[date.date_type]) {
+          // Nếu date_type đã xuất hiện trước đó, trả về true
+          return true;
+      } else {
+          // Nếu chưa xuất hiện, đánh dấu là đã xuất hiện
+          seenDateTypes[date.date_type] = true;
+          return false;
+      }
+    });
+    setIsDuplicate(hasDuplicateNames)
+    if (hasDuplicateNames) {
       setTab(2)
     }
+    else if (hasDuplicateDateType) {
+      setTab(3)
+    }    
     else {
-      // Cập nhật organizations trong formData với các tổ chức đã đánh dấu
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        organizations: updatedOrganizations
-      }));
-
+   
       const result = await updatePost(formData, conference.id)
+      console.log(result)
       setMesage(result.message)
       setStatus(result.status)
       onUpdatePost()
@@ -263,7 +270,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                         <Form.Label column sm="3">Organization name: </Form.Label>
                         <Col>
                           <div className='d-flex align-items-center'>
-                            <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} className={org.isDuplicate && 'border-danger'} />
+                            <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)}/>
 
                             <FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />
 
@@ -340,7 +347,11 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
           </Tabs>
         </Form>
       </Modal.Body>
+      {
+          isupdateForm && !status && message !== '' && <p className="text-danger text-center">{message}</p>
+        }
       <Modal.Footer className='d-flex justify-content-center'>
+     
         <ButtonGroup>
           <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 text-black rounded'>
             Cancel

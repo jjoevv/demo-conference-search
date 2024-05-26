@@ -90,8 +90,8 @@ const Account = () => {
             <div className='me-5 pe-5 border-0 bg-transparent'>Password</div>
             <input
               placeholder='*********'
-              className='border-1 rounded-2 ms-4 p-1 text-center'
-              style={{ width: '200px', border: "1px solid mediumseagreen" }}
+              className='border-1 rounded-2 ms-4 p-1 text-center border-primary-normal'
+              style={{ width: '200px'}}
             />
           </InputGroup>
 
@@ -123,7 +123,7 @@ const Account = () => {
                         name={item.val}
                         value={item.infor}
                         onChange={handleChange}
-
+                        className='border-1 border-primary-normal'
                       />
                     </Form.Group>
                   }

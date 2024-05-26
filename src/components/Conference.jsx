@@ -225,7 +225,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     </>
                     :
                     <>
-                       <p>No conferences available</p>
+                       <p className='mt-3'>No conferences available</p>
                     </>
             }
             <ReactPaginate

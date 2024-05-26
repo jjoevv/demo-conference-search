@@ -88,7 +88,7 @@ const updateNewList = (newConferences)  => {
           },
           body: JSON.stringify( conference ),
         });
-        const data = response.json()        
+        const data = await response.json()        
         const message = data.message
         setLoading(false)
         if (response.ok) {
@@ -118,8 +118,8 @@ const updateNewList = (newConferences)  => {
           },
           body: JSON.stringify( conference ),
         });
-        const data = response.json()        
-        const message = data.message
+        const data = await response.json()        
+        const message = data.data
         setLoading(false)
         if (response.ok) {
           return {status: true, message}

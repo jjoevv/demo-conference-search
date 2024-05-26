@@ -16,11 +16,12 @@ const useAuth = () => {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
   const [userId, setUserId] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleLogin = async (email, password) => {
     dispatch(loginRequest());
-
+    setLoading(true)
     //test account page
     try {
       const response = await fetch(`${baseURL}/user/login`, {
@@ -30,17 +31,20 @@ const useAuth = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+      
+      setLoading(false)
+      const responseData = await response.json()
+      setMessage(responseData.message)
       if (response.ok) {
-        const responseData = await response.json()
-        const userData = responseData.data
+        const userData = responseData.data       
         dispatch(loginSuccess(userData));
         saveUserToLocalStorage(userData)
         savetokenToLocalStorage(userData.accessToken)
         navigate('/')
+        
+        return {status: true, message: responseData.message}
       } else {
-        const errorData = await response.json();
-        dispatch(loginFailure(errorData.message));
+        return {status: false, message: responseData.message}
       }
     } catch (error) {
       dispatch(loginFailure('An error occurred during login.'));
@@ -51,15 +55,15 @@ const useAuth = () => {
   const handleRegister = async (email, password) => {
     const user = {
       email: email,
-      name: '',
-      phone: '',
-      address: '',
-      nationality: '',
+      name: ' ',
+      phone: ' ',
+      address: ' ',
+      nationality: ' ',
       password: password
     }
     try {
       // Dispatch registration request action
-      dispatch(registrationRequest());
+      setLoading(true)
 
       // Make API request to register
       const response = await fetch(`${baseURL}/user/register`, {
@@ -70,13 +74,13 @@ const useAuth = () => {
         body: JSON.stringify(user),
       });
 
-      if (response.ok && response.status !== 400) {
+      if (response.ok) {
         // Successful registration
         const responseData = await response.json();
         const userData = responseData.data
         dispatch(registrationSuccess(userData));
+        handleLogin(email, password)
         saveUserToLocalStorage(userData)
-        navigate('/')
 
         // Optionally, you can perform additional actions like redirecting to a login page
       } else {
@@ -171,7 +175,6 @@ const useAuth = () => {
 
   return {
     user: state.user,
-    loading: state.loading,
     error: error,
     message: message,
     status: status,

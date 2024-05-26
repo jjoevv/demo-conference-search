@@ -32,6 +32,8 @@ const Homepage = () => {
 
     useEffect(()=>{
       handleGetList()
+      getListFollowedConferences()
+      getPostedConferences()
     }, [conferences])
 
     useEffect(()=>{

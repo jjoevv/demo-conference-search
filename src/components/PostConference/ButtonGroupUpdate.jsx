@@ -27,6 +27,7 @@ const ButtonGroupUpdate = ({conference}) => {
         setStatus(result.status);
         setMessage(result.message);
         if (result.status) {
+          getPostedConferences()
           const countdownInterval = setInterval(() => {
             setCountdown((prevCountdown) => {
               if (prevCountdown === 1) {
@@ -35,7 +36,7 @@ const ButtonGroupUpdate = ({conference}) => {
               }
               return prevCountdown - 1;
             });
-          }, 1000);
+          }, 3000);
         }
     }
 

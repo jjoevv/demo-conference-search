@@ -1,8 +1,7 @@
-import { Alert, ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import Loading from '../Loading';
-import { useEffect, useState } from 'react';
 
 const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, loading, isConfirm, countdown }) => {
   
@@ -21,12 +20,10 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
             ?
             <>
             {status && (
-              <Alert variant={status ? 'success' : 'danger'}
-                    className='w-100'
-              >
+              <div className = {status ? 'success' : 'danger'}>
                 {message}
                 {status && <div>Closing in {countdown} seconds...</div>}
-              </Alert>
+              </div>
         )}
             </>
             :

@@ -10,7 +10,7 @@ export const DropdownSort = ({ options, onSelect }) => {
   };
   return (
     <Dropdown>
-      <Dropdown.Toggle className='bg-transparent border-primary-light'>
+      <Dropdown.Toggle className='bg-transparent border-primary-normal text-dropdown-toggle'>
         <span className='fw-semibold'>Sort by:</span> {selectedOption || 'Random'}
       </Dropdown.Toggle>
 
