@@ -51,7 +51,7 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
         setIsSubmit(true)
         setWarning('')
         const { status, message } = await addNote(inputvalue, dateClicked)
-        console.log({ status, message })
+       
         if (status) {
           setStatusUpdate(status)
           setMessage(message)

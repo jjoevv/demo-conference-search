@@ -164,7 +164,6 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     else {
    
       const result = await updatePost(formData, conference.id)
-      console.log(result)
       setMesage(result.message)
       setStatus(result.status)
       onUpdatePost()

@@ -70,7 +70,6 @@ const ResultFilter = ({ conferencesProp, width }) => {
     }
 
     const handleFollow = (id) => {
-        console.log({user})
         if(user){
 
             followConference(id)
@@ -81,7 +80,6 @@ const ResultFilter = ({ conferencesProp, width }) => {
     }
 
     const handleUnfollow = (id) => {
-        console.log({user})
         if(user){
 
             unfollowConference(id)

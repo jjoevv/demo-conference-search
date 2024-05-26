@@ -63,7 +63,7 @@ const DropdownOptions = ({ label, placeholder }) => {
         sendFilter(label, selectedValues)
     };
     useEffect(() => {
-        console.log('dropdown', {label, placeholder, filterOptions})
+        
         let transformedState = []
         if (filterOptions !== null) {
             if (label === 'category') {

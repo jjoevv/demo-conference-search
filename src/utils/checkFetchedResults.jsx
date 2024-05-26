@@ -36,7 +36,6 @@ const findKeyByKeyword = (optionsSelected, keyword) => {
 };
 
 const filterCommonConferences = (filteredList, authList) => {
-  console.log({filteredList, authList})
   if(!filteredList) return authList
   return filteredList.filter(conf1 => 
     authList.some(conf2 => conf1.id === conf2.id)

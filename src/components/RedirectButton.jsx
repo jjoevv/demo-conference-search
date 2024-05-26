@@ -20,7 +20,7 @@ const RedirectButton = (conference) => {
       }
 
     const handleRedirect = async () => {
-        console.log('confer', conference.conference.information)
+       
         const externalUrl = conference.conference.information['link']
         // Thay thế URL bằng địa chỉ của trang web mà bạn muốn chuyển hướng đến
         await aFunc().then(async () => {
