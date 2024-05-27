@@ -30,8 +30,8 @@ const Login = () => {
                 return `${key} cannot be empty.`;
             }
         }
-        if (account.password !== account.confirm) {
-            return "Passwords do not match.";
+        if (account.password === '') {
+            return "Passwords cannot be empty.";
         }
         return null;
     };
