@@ -7,7 +7,7 @@ import moment from 'moment'
 const InformationPage = ({conference}) => {
   const [isOrganizations, setOrganizations] = useState(false)
   const [displayOrganizations, setDisplayOrganizations] = useState([])
-  
+  const {getConferenceDate} = useConference()
 
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (Array.isArray(fieldOfResearch)) {
@@ -113,8 +113,7 @@ const InformationPage = ({conference}) => {
                         <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
                         <Col className='fw-bold fs-5'>
 
-                          From {org.start_date !== '' || org.start_date !== null ? moment(org.start_date).format('ddd, YYYY/MM/DD') : <span className='text-secondary'>Updating...</span>}
-                          {org.end_date && ` to ${moment(org.end_date).format('ddd, YYYY/MM/DD')}`}
+                        {getConferenceDate(conference.organizations)}
 
                         </Col>
                       </Row>

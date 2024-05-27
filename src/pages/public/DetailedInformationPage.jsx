@@ -14,7 +14,7 @@ import { faCalendar, faLocationPin } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom'
 import useFollow from '../../hooks/useFollow'
 const DetailedInformationPage = () => {
-    const { conference, handleGetOne, getConferenceDate, getLocation } = useConference()
+    const { conference, handleGetOne, getConferenceDate } = useConference()
     const {listFollowed, getListFollowedConferences, followConference, unfollowConference} = useFollow()
     const [loading, setLoading] = useState(false)
     const [isOrganizations, setOrganizations] = useState(false)
