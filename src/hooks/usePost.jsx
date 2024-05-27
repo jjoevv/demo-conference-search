@@ -7,7 +7,7 @@ import { getAllPosted } from '../actions/postAction'
 const usePost = () => {
   const {state, dispatch} = useAppContext()
   const {user} = useLocalStorage()
-  const {token, refreshToken} = useSessionToken()
+  const {token} = useSessionToken()
   const [loading, setLoading] = useState(false)
 
   const fetchPage = async (page) => {

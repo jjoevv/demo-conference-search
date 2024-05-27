@@ -1,7 +1,7 @@
 // useAuth.js
 // handleLogin, handleRegister, Logout, updateProfile
 import { useAppContext } from '../context/authContext';
-import { loginRequest, loginSuccess, loginFailure, logoutUser, registrationRequest, registrationSuccess, registrationFailure, setError, requestApi } from '../actions/actions';
+import { loginRequest, loginSuccess, loginFailure, logoutUser, registrationFailure } from '../actions/actions';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from './api/baseApi';
 import useLocalStorage from './useLocalStorage';
@@ -13,8 +13,6 @@ const useAuth = () => {
   const { token, savetokenToLocalStorage } = useToken()
   const { saveUserToLocalStorage, deleteUserFromLocalStorage, updateUserInStorage} = useLocalStorage()
   const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  const [status, setStatus] = useState(false)
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -34,7 +32,6 @@ const useAuth = () => {
       
       setLoading(false)
       const responseData = await response.json()
-      setMessage(responseData.message)
       if (response.ok) {
         const userData = responseData.data       
         dispatch(loginSuccess(userData));
@@ -52,11 +49,11 @@ const useAuth = () => {
 
   };
 
-  const handleRegister = async (email, password) => {
+  const handleRegister = async (email, password, phone) => {
     const user = {
       email: email,
       name: ' ',
-      phone: ' ',
+      phone: phone,
       address: ' ',
       nationality: ' ',
       password: password
@@ -74,19 +71,14 @@ const useAuth = () => {
         body: JSON.stringify(user),
       });
 
+      const responseData = await response.json();
+      const responseMessages = responseData.message
+      setLoading(false)
+      console.log({responseData})
       if (response.ok) {
-        // Successful registration
-        const responseData = await response.json();
-        const userData = responseData.data
-        dispatch(registrationSuccess(userData));
-        handleLogin(email, password)
-        saveUserToLocalStorage(userData)
-
-        // Optionally, you can perform additional actions like redirecting to a login page
+        return {status: true, message: responseMessages}
       } else {
-        // Handle registration failure
-        const errorData = await response.json();
-        dispatch(registrationFailure(errorData.message));
+        return {status: false, message: responseMessages}
       }
     } catch (error) {
       // Handle unexpected errors
@@ -176,9 +168,8 @@ const useAuth = () => {
   return {
     user: state.user,
     error: error,
-    message: message,
-    status: status,
     userId,
+    loading,
     handleLogin,
     handleRegister,
     handleLogout,
