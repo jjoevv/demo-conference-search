@@ -148,7 +148,7 @@ const InformationPage = ({conference}) => {
               </Col>
             </Row>
             <Row className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center' className='d-flex align-items-center'>Field of research:</Col>
+              <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
               <Col className='fw-bold fs-5'>
                 {renderFieldOfResearch(conference.information.fieldOfResearch)}
               </Col>
