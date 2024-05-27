@@ -43,8 +43,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
         fieldsOfResearch: [],
         organizations: [{
             name: '',
-            start_date: '',
-            end_date: '',
+            start_date: null,
+            end_date: null,
             type: '',
             location: '',
         }],
@@ -151,7 +151,6 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             ...prevFormData,
             organizations: prevFormData.organizations.filter((_, i) => i !== index)
         }));
-        //setInvalidOrganizations(prevInvalidOrganizations => prevInvalidOrganizations.filter(i => i !== index));
     };
 
     const handlefieldsOfResearchChange = (selectedOption) => {
@@ -206,13 +205,25 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
     }
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        await removeInvalidOrganizations()
+        
+        // Kiểm tra và loại bỏ các phần tử rỗng trong mảng organizations
+        const updatedOrganizations = formData.organizations.filter(org => {
+            return !Object.values(org).every(value => value === "" || value === null);
+        });
+
+        // Cập nhật formData với mảng organizations sau khi loại bỏ các phần tử rỗng
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            organizations: updatedOrganizations
+        }));
+
         const newInvalidDates = formData.importantDates.reduce((acc, date, index) => {
             if ((date.date_value === '' && date.date_type !== '') || (date.date_value !== '' && date.date_type === '')) {
                 acc.push(index);
             }
             return acc;
         }, []);
+        
         const hasDuplicateNames = formData.organizations.some((org, index) => {
             return formData.organizations.findIndex((item, i) => item.name === org.name && i !== index) !== -1;
         });
@@ -272,8 +283,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 scrollable
 
             >
-                {status && isPosted && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={handleClose} />}
-                {!status && isPosted && <p className="text-danger">{message}</p>}
+               
                 <Modal.Header closeButton className='fixed'>
                     <Modal.Title className='text-center w-100 text-skyblue-dark'>Conference Information</Modal.Title>
                 </Modal.Header>
@@ -485,7 +495,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                         </div>
                     </Form>
                 </Modal.Body>
-
+                {status && isPosted && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={handleClose} />}
+                {!status && isPosted && <p className="text-danger text-center">{message}</p>}
                 {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                 <Modal.Footer className="d-flex align-items-center justify-content-center text-white">
                     <Button
