@@ -3,7 +3,7 @@ import { baseURL } from './api/baseApi'
 import useSearch from './useSearch';
 const useFilterStorage = (key, keyword) => {
     const [data, setData] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [totalFilterConferences, setTotalFilterConferences] = useState(0)
 
@@ -16,6 +16,8 @@ const useFilterStorage = (key, keyword) => {
         if (!key || !keyword) return;
         
         const fetchPage = async (page) => {
+            
+            setLoading(true);
             const listkey = ['location', 'rank', 'for', 'source', 'acronym', 'type'];
             let apiUrl = baseURL;
             if (keyword.includes('Sub')) {
@@ -61,7 +63,6 @@ const useFilterStorage = (key, keyword) => {
 
 
         const fetchAllPages = async () => {
-            setLoading(true);
             try {
                 const firstPageData = await fetchPage(1);
                 setLoading(false)

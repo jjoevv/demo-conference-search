@@ -1,16 +1,26 @@
+import React from "react";
 
 const CallforpaperPage = ({conference}) => {
- 
+  const processText = (text) => {
+    return text.split('\n').map((item, index) => (
+      <React.Fragment key={index}>
+        {item}
+        <br />
+      </React.Fragment>
+    ));
+  };
   return (
-    <div className='p-5 mx-5 pt-4'>
+    <div className='p-5 mx-5 pt-4 px-5'>
       <h3 className='fs-4 fw-bold'>Call for paper</h3>
       {
         conference
           ?
           <>
-           <p className="text-justify">
-           {conference.callForPaper}
-           </p>
+           <div className="px-4 fs-5">
+             <p className="text-justify">
+             {processText(conference.callForPaper)}
+             </p>
+           </div>
           </>
           :
           <span>Please refresh page.</span>

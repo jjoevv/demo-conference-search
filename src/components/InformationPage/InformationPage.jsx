@@ -60,15 +60,15 @@ const InformationPage = ({conference}) => {
 
 
   return (
-    <div className='px-5 m-5 ' >
-      <div className='fs-4 fw-bold d-flex justify-content-between '>
+    <div className='px-5 m-5' >
+      <div className='fs-4 fw-bold fs-5 d-flex justify-content-between '>
         <span className='text-teal-dark'>Conference information</span>
         <RedirectButton conference={conference} />
       </div>
       {conference ?
         <>
 
-          <div className='fs-5 fw-bold mt-2 py-3'>{conference.information.name}</div>
+          <div className='fw-bold fs-5 fs-5 fw-bold fs-5 mt-2 py-3'>{conference.information.name}</div>
           <div className='my-2'>
 
             {
@@ -77,16 +77,16 @@ const InformationPage = ({conference}) => {
                   {
                     org.status === "new" &&
                     <div key={index}>
-                      {isOrganizations && <span className='fw-bold text-color-black fs-5'>Organization {index + 1}</span>}
-                      <Row className='py-3 ps-5 bg-teal-light' >
-                        <Col xs={4}>Organization name:</Col>
-                        <Col className='fw-bold'>
+                      {isOrganizations && <span className='fw-bold fs-5 text-color-black fw-bold fs-5 fs-5'>Organization {index + 1}</span>}
+                      <Row className='py-3 ps-4 bg-teal-light' >
+                        <Col xs={4} className='d-flex align-items-center'>Organization name:</Col>
+                        <Col className='fw-bold fs-5'>
                           {capitalizeFirstLetter(org.name)}
                         </Col>
                       </Row>
-                      <Row className='py-3 ps-5'>
-                        <Col xs={4}>Type:</Col>
-                        <Col className='fw-bold'>
+                      <Row className='py-3 ps-4'>
+                        <Col xs={4} className='d-flex align-items-center'>Type:</Col>
+                        <Col className='fw-bold fs-5'>
                           {
                             org.type !== null
                               ?
@@ -96,9 +96,9 @@ const InformationPage = ({conference}) => {
                           }
                         </Col>
                       </Row>
-                      <Row className='py-3 ps-5 bg-teal-light'>
-                        <Col xs={4}>Location:</Col>
-                        <Col className='fw-bold'>
+                      <Row className='py-3 ps-4 bg-teal-light'>
+                        <Col xs={4} className='d-flex align-items-center'>Location:</Col>
+                        <Col className='fw-bold fs-5'>
                           {
                             org.location !== null || org.location !== ''
                               ?
@@ -108,10 +108,10 @@ const InformationPage = ({conference}) => {
                           }
                         </Col>
                       </Row>
-                      <Row className='py-3 ps-5'>
+                      <Row className='py-3 ps-4'>
 
-                        <Col xs={4}>Conference date:</Col>
-                        <Col className='fw-bold'>
+                        <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
+                        <Col className='fw-bold fs-5'>
 
                           From {org.start_date !== '' || org.start_date !== null ? moment(org.start_date).format('ddd, YYYY/MM/DD') : <span className='text-secondary'>Updating...</span>}
                           {org.end_date && ` to ${moment(org.end_date).format('ddd, YYYY/MM/DD')}`}
@@ -125,31 +125,31 @@ const InformationPage = ({conference}) => {
             }
 
 
-            <Row className='bg-teal-light py-3 ps-5'>
-              <Col xs={4}>Category:</Col>
-              <Col className='fw-bold'>Conference</Col>
+            <Row className='bg-teal-light py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center'>Category:</Col>
+              <Col className='fw-bold fs-5'>Conference</Col>
             </Row>
-            <Row className='py-3 ps-5'>
-              <Col xs={4}>Acronym:</Col>
-              <Col className='fw-bold'>{conference.information.acronym}</Col>
+            <Row className='py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center'>Acronym:</Col>
+              <Col className='fw-bold fs-5'>{conference.information.acronym}</Col>
             </Row>
-            <Row className='bg-teal-light py-3 ps-5'>
-              <Col xs={4}>Source:</Col>
-              <Col className='fw-bold'>{conference.information.source}</Col>
+            <Row className='bg-teal-light py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center'>Source:</Col>
+              <Col className='fw-bold fs-5'>{conference.information.source}</Col>
             </Row>
-            <Row className='py-3 ps-5'>
-              <Col xs={4}>Rank:</Col>
-              <Col className='fw-bold'>{conference.information.rank}
+            <Row className='py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center'>Rank:</Col>
+              <Col className='fw-bold fs-5'>{conference.information.rank}
               </Col>
             </Row>
-            <Row className='py-3 ps-5 bg-teal-light'>
-              <Col xs={4}>Rating:</Col>
-              <Col className='fw-bold'>{conference.information.rating ? conference.information.rating : <span className='text-secondary'>Updating...</span>}
+            <Row className='py-3 ps-4 bg-teal-light'>
+              <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
+              <Col className='fw-bold fs-5'>{conference.information.rating ? conference.information.rating : <span className='text-secondary'>Updating...</span>}
               </Col>
             </Row>
-            <Row className='py-3 ps-5'>
-              <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
-              <Col className='fw-bold'>
+            <Row className='py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center' className='d-flex align-items-center'>Field of research:</Col>
+              <Col className='fw-bold fs-5'>
                 {renderFieldOfResearch(conference.information.fieldOfResearch)}
               </Col>
             </Row>

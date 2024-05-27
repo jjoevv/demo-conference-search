@@ -12,7 +12,6 @@ import useFollow from '../../hooks/useFollow'
 import useFilterStorage from '../../hooks/useFilterStorage'
 import Search from '../../components/Filter/Search'
 import useFilter from '../../hooks/useFilter'
-import HeaderNoti from '../../components/Notification/HeaderNoti'
 import usePost from '../../hooks/usePost'
 
 const Homepage = () => {

@@ -10,13 +10,13 @@ import downIcon from '../../assets/imgs/down.png'
 import FilterSelected from "./FilterSelected";
 import useSearch from "../../hooks/useSearch";
 import Options from "./Options";
-import { checkExistValue } from "../../utils/checkFetchedResults";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 const Search = ({onApply, onDelete, onClearAll, loading}) => {
-  const {sendFilter, addKeywords, clearKeywords, optionsSelected, filterOptions} = useSearch()
+  const {sendFilter, addKeywords, clearKeywords, optionsSelected} = useSearch()
+  
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
   const [searchInput, setSearchInput] = useState("")  
   const location = useLocation();
@@ -113,9 +113,11 @@ const Search = ({onApply, onDelete, onClearAll, loading}) => {
       </Button>
       
       {showAdvancedFilter && <AdvancedFilter onApply={onApply}/>}
+      
      {
-      loading &&  <div className="text-center mt-4">
-      <Spinner/>
+      loading && 
+      <div className="text-center mt-4">
+      <Spinner/>  
       </div>
      }
       

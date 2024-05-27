@@ -17,6 +17,8 @@ const DetailedInformationPage = () => {
     const { conference, handleGetOne, getConferenceDate, getLocation } = useConference()
     const {listFollowed, getListFollowedConferences, followConference, unfollowConference} = useFollow()
     const [loading, setLoading] = useState(false)
+    const [isOrganizations, setOrganizations] = useState(false)
+    const [displayOrganizations, setDisplayOrganizations] = useState([])
     const conf_id = useParams()
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -26,9 +28,19 @@ const DetailedInformationPage = () => {
             setLoading(false)
         }
         if (!conference && conf_id.id) {
+
             setLoading(true)
             fetchData()
         }
+        if (conference) {
+            const filterConferences = conference.organizations.filter(conference => conference.location !== null && conference.status === "new");
+            
+            if(filterConferences.length > 0){
+                setOrganizations(true)
+                setDisplayOrganizations(filterConferences)
+            }
+                
+          }
     }, [conference, conf_id.id, listFollowed]);
 
 
@@ -46,7 +58,7 @@ const DetailedInformationPage = () => {
 
     return (
         <Container className='w-100 h-25 p-0' fluid>
-            <Stack className='bg-blur p-5 mt-5 w-100 mw-100 text-center text-color-black bgtext'>
+            <Stack className='bg-blur p-5 mt-5 w-100 mw-100 text-center text-color-black'>
                 {
                     loading ?
                         <Loading onReload={() => handleGetOne(conf_id.id)} />
@@ -66,12 +78,31 @@ const DetailedInformationPage = () => {
                                                         <h3 className='mb-4'>{`(${conference.information.acronym}${extractYear(conference.information.source)})`}</h3>
 
                                                         <h4 className='text-yellow d-inline p-1'>
-                                                            {getConferenceDate(conference.organizations) !== '' && <FontAwesomeIcon icon={faCalendar} className='mx-3 fs-5'/>}                                                            
+                                                            {getConferenceDate(conference.organizations) !== '' && <FontAwesomeIcon icon={faCalendar} className='mx-3 fs-4'/>}                                                            
                                                             {getConferenceDate(conference.organizations)}
                                                         </h4>
-                                                        <p className='fs-5 my-2'>
-                                                            {getLocation(conference.organizations)!==''&&<FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5'/>}                                                            
-                                                            {getLocation(conference.organizations)}
+                                                        <div className='d-flex justify-content-center fs-4 my-2 text-teal-normal'>
+                                                                <div>
+                                                                {isOrganizations  && <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5'/>}                                                            
+                                                                </div>
+                                                                <div>
+                                                                    {
+                                                                        displayOrganizations.map((org, index) => (
+                                                                            <>
+                                                                                <span key={index} className='text-teal-black'>{org.location}</span>
+                                                                            </>
+                                                                        )
+                                                                    )
+                                                                    }   
+                                                                </div>
+                                                        </div>
+                                                        <p className='fs-4  my-2'>
+                                                                <Col xs={1} className=''>
+                                                                    
+                                                                </Col>
+                                                                <Col xs={3} className='text-start'>
+                                                                                                                  
+                                                                </Col>
                                                         </p>
 
                                                         <ButtonGroup className='mt-4'>
@@ -99,13 +130,15 @@ const DetailedInformationPage = () => {
             <Row>
                     <Col sm={7} xs={7}>
                         <InformationPage conference={conference}/>
-                        <CallforpaperPage conference={conference}/>
+                       
                     </Col>
-                    <Col sm={5}>
+                    <Col sm={5} xs={7}>
                         <ImportantDatePage />
                     </Col>
                 </Row>
-                
+                <Row className='me-5'>
+                <CallforpaperPage conference={conference}/>
+                </Row>
                 <Row className='px-5 mx-5'>
                     <Feedbacks />
                 </Row>
