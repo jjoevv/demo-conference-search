@@ -52,7 +52,7 @@ const ImportantDatePage = () => {
     });
     const sorted = [...uniqueDates].sort((a, b) => new Date(a.date_value) - new Date(b.date_value));
     
-    setDisplayDates(uniqueDates)
+    setDisplayDates(sorted)
 
     }
 
