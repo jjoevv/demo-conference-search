@@ -9,7 +9,6 @@ const Notifications = () => {
   const navigate = useNavigate()
   useEffect(() => {
     
-    console.log({notifications})
     if(notifications > 0){
       setDisplayNotis(notifications)
     }
