@@ -12,9 +12,8 @@ const usePost = () => {
 
   const fetchPage = async (page) => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
-
-  const tokenHeader = token ? token : storedToken
-  const response = await fetch(`${baseURL}/post?page=${page}&size=7`, {
+    const tokenHeader = token ? token : storedToken
+    const response = await fetch(`${baseURL}/post?page=${page}&size=7`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${tokenHeader}`
@@ -49,7 +48,7 @@ const updateNewList = (newConferences)  => {
   const getPostedConferences = async () => {
     setLoading(true)
     
-    if(user || localStorage.getItem('user')){
+    if(user){
       try {
         if(state.conferences.length === 0){
           const firstPageData = await fetchPage(1);                

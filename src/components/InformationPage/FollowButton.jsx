@@ -1,40 +1,55 @@
 
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import useFollow from '../../hooks/useFollow';
-import { isObjectInList } from '../../utils/checkExistInList';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import useLocalStorage from '../../hooks/useLocalStorage';
 import Loading from '../Loading';
+import { useEffect, useState } from 'react';
 
 
 const FollowButton = () => {
-    const { listFollowed, followConference, unfollowConference} = useFollow()
-    const [loading, setLoading] = useState(false)
+    const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences} = useFollow()
+    const [isClick, setIsClick] = useState(false)
+    const [isFollowing, setIsFollowing] = useState(false)
+    const [status, setStatus] = useState(false)
     const id = useParams()
 
+    useEffect(() => {
+        const res = isCheck(id.id);
+        setIsFollowing(res);
+      }, [id, listFollowed]);
+      
+    useEffect(() => {
+        const fetchData = async () => {
+          await getListFollowedConferences();
+          const res = isCheck(id.id);
+          setIsFollowing(res);
+        };
+    
+        fetchData();
+      }, [id, isClick])
+
+
 const handleFollow = async () => {
-    setLoading(true)
-    const status = await followConference(id.id)
-    if(status){
-        setLoading(false)
-        
-    }
+    setIsClick(true)
+    const result = await followConference(id.id)
+    setStatus(result)
 }
 
 
-const handleUnfollow = async () => {
-    setLoading(true)
-    const status = await unfollowConference(id.id)
-    if(status){
-        setLoading(false)
-    }
+const handleUnfollow = async () => {    
+    setIsClick(true)
+    const result = await unfollowConference(id.id)
+    setStatus(result)
 }
 
+const isCheck = (idToCheck) => {
+    const check = listFollowed.some(item => item.id === idToCheck);
+    return check
+  };
     return (
         <>
         {
-                isObjectInList(id.id, listFollowed)
+                isFollowing
                 ?
                 
                 <Button 

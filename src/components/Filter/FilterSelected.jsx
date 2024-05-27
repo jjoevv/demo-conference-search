@@ -1,11 +1,10 @@
 
 
-import { Button, Image } from 'react-bootstrap'
+import { Button, Image, Spinner } from 'react-bootstrap'
 
 import deleteIcon from "../../assets/imgs/del.png";
 import RedDeleteIcon from "../../assets/imgs/redDel.png";
 import useSearch from "../../hooks/useSearch";
-import useConference from "../../hooks/useConferences";
 import { findKeyByKeyword, getUniqueConferences,  } from "../../utils/checkFetchedResults";
 
 import { useEffect, useState } from 'react';
@@ -37,6 +36,7 @@ const FilterSelected = ({onDelete, onClearAll}) => {
         keywordsSelected !== null && total > 0
           ?
           <div className="d-flex flex-wrap border-1 border border-light-subtle p-3 my-3 me-4 rounded-3">
+            
             {keywordsSelected.map((keyword, index) => (
               <Button
                 onClick={() => handleDeletekeyword(keyword)}
@@ -53,7 +53,6 @@ const FilterSelected = ({onDelete, onClearAll}) => {
                   <Image width={20} src={deleteIcon} alt="" className="ms-1" />
               </Button>
               ))}
-
             <Button
               onClick={()=>handleClearKeyword()}
               className="fs-6 py-1 px-2 fw-bold border border-danger bg-white text-red-normal rounded-pill d me-3 mb-3  d-flex align-items-center">

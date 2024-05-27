@@ -19,7 +19,6 @@ const AllFeedbackOfConf = () => {
     const {user} = useLocalStorage()
     const [idEdit, setIdEdit] = useState(null)
     const [idCFP, setidCFP] = useState(null)
-    const [loading, setLoading] = useState(false)
     
     const [selectedOption, setSelectedOption] = useState(null);
     const [displayFeedback, setDisplayfeedback] = useState([])

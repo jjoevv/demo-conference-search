@@ -3,10 +3,9 @@ import { addFilter, clearFilters, getResult, getoptionsSelected, removeFilter } 
 
 import { baseURL } from './api/baseApi'
 import { formatDateFilter } from '../utils/formatDate'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useToken from './useToken'
 import { useLocation } from 'react-router-dom'
-import useConference from './useConferences'
 import useFollow from './useFollow'
 import usePost from './usePost'
 
@@ -16,8 +15,9 @@ const useSearch = () => {
   const { listFollowed} = useFollow()
   const {postedConferences} = usePost()
   const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(false)
   const location = useLocation()  
-
+  
   const getOptionsFilter = async (label, staticData) => {
     const params = ["source", "for", "acronym", "rank"];
     const existedOptions = state.filterOptions
@@ -73,8 +73,8 @@ const useSearch = () => {
     }
   }
 
-  const sendFilterDate = async (startDate, endDate, label, keywordFormat) => {
-    
+  const sendFilterDate = async (startDate, endDate, label) => {
+    setLoading(true)
     const start = formatDateFilter(startDate)
     const end = formatDateFilter(endDate)
     let data = []
@@ -87,7 +87,7 @@ const useSearch = () => {
       const response = await fetch(`${baseURL}/conference?confStart=${start}&confEnd=${end}`);
       data = await response.json();
     }
-
+    setLoading(false)
     //dispatch(getResult(label, data.data));
     const maxRecords = data.data.maxRecods + total
 
@@ -124,7 +124,7 @@ const useSearch = () => {
   const sendFilter = async (label, keyword) => {
     const listLabel = ['location', 'rank', 'for', 'source', 'acronym', 'type'];
     let apiUrl = baseURL;
-
+    
     if (listLabel.includes(label)) {
         apiUrl += `/conference?page=1&size=1&${label}[]=${keyword}`;
     } else {

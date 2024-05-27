@@ -3,10 +3,12 @@ import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import RedirectButton from '../RedirectButton'
 import { useEffect, useState } from 'react'
-const InformationPage = () => {
-  const { conference } = useConference()
+import moment from 'moment'
+const InformationPage = ({conference}) => {
   const [isOrganizations, setOrganizations] = useState(false)
   const [displayOrganizations, setDisplayOrganizations] = useState([])
+  
+
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (Array.isArray(fieldOfResearch)) {
       // Trường là một danh sách
@@ -111,8 +113,8 @@ const InformationPage = () => {
                         <Col xs={4}>Conference date:</Col>
                         <Col className='fw-bold'>
 
-                          From {org.start_date !== '' || org.start_date !== null ? org.start_date : <span className='text-secondary'>Updating...</span>}
-                          {org.end_date > 0 && `to ${org.end_date}`}
+                          From {org.start_date !== '' || org.start_date !== null ? moment(org.start_date).format('ddd, YYYY/MM/DD') : <span className='text-secondary'>Updating...</span>}
+                          {org.end_date && ` to ${moment(org.end_date).format('ddd, YYYY/MM/DD')}`}
 
                         </Col>
                       </Row>

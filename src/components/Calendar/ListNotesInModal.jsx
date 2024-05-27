@@ -31,7 +31,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
   return (
     <Modal show={show} onHide={onClose} centered size='lg'>
       <Modal.Header closeButton>
-        <Modal.Title className='text-center w-100'>{`All events in ${moment(dateClicked).format('dddd, MM/DD/YYYY')}`}</Modal.Title>
+        <Modal.Title className='text-center w-100'>{`All events in ${moment(dateClicked).format('dddd, YYYY/MM/DD')}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Carousel activeIndex={index} onSelect={handleSelect} indicators={false} controls={false} interval={null}>

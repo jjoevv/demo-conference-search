@@ -65,11 +65,11 @@ const UpcomingNote = () => {
                                                             <>
                                                                 <div className="">
                                                                     <span className="text-color-black fw-bold">
-                                                                        {moment(note.start_date).format('ddd, MM/DD/YYYY')}
+                                                                        {moment(note.start_date).format('ddd, YYYY/MM/DD')}
                                                                     </span>
                                                                     <span>{` to `}</span>
                                                                     <span className="text-color-black fw-bold">
-                                                                        {moment(note.end_date).format('ddd, MM/DD/YYYY')}
+                                                                        {moment(note.end_date).format('ddd, YYYY/MM/DD')}
                                                                     </span>
                                                                 </div>
                                                             </>
@@ -80,7 +80,7 @@ const UpcomingNote = () => {
                                                                     &&
                                                                     <div className="d-flex flex-column">
                                                                         <span className="text-color-black fw-bold">
-                                                                            {moment(note.start_date).format('dddd, MM/DD/YYYY')}
+                                                                            {moment(note.start_date).format('dddd, YYYY/MM/DD')}
                                                                         </span>
                                                                     </div>
                                                                 }

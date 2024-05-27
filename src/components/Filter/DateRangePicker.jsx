@@ -30,7 +30,7 @@ const DateRangePicker = ({ label, onApply }) => {
     
     handleToggleClick()
     const keywordFormat = `${formatLabel(label)}: from ${formatDate(startDate)} to ${formatDate(endDate)}`        
-    const quantity = await sendFilterDate(startDate, endDate, label, [keywordFormat])
+    const quantity = await sendFilterDate(startDate, endDate, label)
     const keyword = `${keywordFormat} (${quantity})`
     addKeywords(label, [keyword])
     onApply(label, keyword)

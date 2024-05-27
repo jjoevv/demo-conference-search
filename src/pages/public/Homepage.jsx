@@ -18,13 +18,13 @@ import usePost from '../../hooks/usePost'
 const Homepage = () => {
     const [showSlideShow, setShowSlideShow] = useState(true)
     const { optionsSelected, getOptionsFilter} = useSearch()
-    const {loading: loadingAll, conferences, totalConferences, handleGetList} = useConference()
+    const {loading: loadingAll, conferences, handleGetList} = useConference()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
     const [check, setCheck] = useState(false)
     const [fetchParams, setFetchParams] = useState({ key: '', keyword: '' });
     const {selectOptionFilter, resultInputFilter}= useFilter()
-    const { dataFilters, clearKeyValues, clearAllKeywords } = useFilterStorage(fetchParams.key, fetchParams.keyword);
+    const {loading: loadingSearch,  dataFilters, clearKeyValues, clearAllKeywords } = useFilterStorage(fetchParams.key, fetchParams.keyword);
 
     const [displayConferences, setDisplayedConferences] = useState([])
     const [backupDisplayConf, setBackupDisplayConf] = useState([])
@@ -86,7 +86,7 @@ const Homepage = () => {
             <SlideShow showSlideShow={showSlideShow} setShowSlideShow={setShowSlideShow}/>
           </Stack>
   </Container>*/}
-         <Search onApply={handleApplyFilter} onDelete={clearKeyValues} onClearAll={clearAllKeywords}/>
+         <Search onApply={handleApplyFilter} onDelete={clearKeyValues} onClearAll={clearAllKeywords} loading={loadingSearch}/>
          <Conference conferencesProp={displayConf} onReloadPage={handleGetList} totalPages={totalPagesDisplay} totalConferences={totalConfDisplay} loading={isLoading}/>
     </div>
     

@@ -152,11 +152,11 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         <>
                             
                                 <span className="text-color-black fw-semibold">
-                                    {moment(note.start_date).format('ddd, MM/DD/YYYY')}
+                                    {moment(note.start_date).format('ddd, YYYY/MM/DD')}
                                 </span>
                                 <span>{` to `}</span>
                                 <span className="text-color-black fw-semibold">
-                                    {moment(note.end_date).format('ddd, MM/DD/YYYY')}
+                                    {moment(note.end_date).format('ddd, YYYY/MM/DD')}
                                 </span>
                         </>
                         :
@@ -165,7 +165,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                                 note.start_date !== null
                                 &&
                                     <span className="text-color-black fw-semibold">
-                                        {moment(note.start_date).format('dddd, MM/DD/YYYY')}
+                                        {moment(note.start_date).format('dddd, YYYY/MM/DD')}
                                     </span>
                             }
                         </>

@@ -91,8 +91,8 @@ const useConference = () => {
         endDate = org.end_date;
       }
     });
-    const formattedDateStartDate = moment(startDate).format('dddd, MM/DD/YYYY');
-    const formattedDateEndDate = moment(endDate).format('dddd, MM/DD/YYYY');
+    const formattedDateStartDate = moment(startDate).format('dddd, YYYY/MM/DD');
+    const formattedDateEndDate = moment(endDate).format('dddd, YYYY/MM/DD');
     
     // Xác định dateRange dựa trên giá trị của startDate và endDate
     let dateRange = 'N/A';

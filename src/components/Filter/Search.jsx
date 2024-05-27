@@ -1,4 +1,4 @@
-import { Stack, Form, InputGroup, Button, Image, Container, Row, Col } from "react-bootstrap";
+import { Stack, Form, InputGroup, Button, Image, Container, Row, Col, Spinner } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 
 import DateRangePicker from "./DateRangePicker";
@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
-const Search = ({onApply, onDelete, onClearAll}) => {
+const Search = ({onApply, onDelete, onClearAll, loading}) => {
   const {sendFilter, addKeywords, clearKeywords, optionsSelected, filterOptions} = useSearch()
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
   const [searchInput, setSearchInput] = useState("")  
@@ -111,7 +111,14 @@ const Search = ({onApply, onDelete, onClearAll}) => {
         <Image src={downIcon} width={15}
         className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'}/>
       </Button>
+      
       {showAdvancedFilter && <AdvancedFilter onApply={onApply}/>}
+     {
+      loading &&  <div className="text-center mt-4">
+      <Spinner/>
+      </div>
+     }
+      
       {optionsSelected && <FilterSelected onDelete={onDelete} onClearAll={onClearAll}/>}  
     </Container>
   );

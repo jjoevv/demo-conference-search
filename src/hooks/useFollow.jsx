@@ -36,9 +36,8 @@ const useFollow = () => {
   }
 const fetchPage = async (page) => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
-
-  const tokenHeader = token ? token : storedToken
-  const response = await fetch(`${baseURL}/follow?page=${page}&size=7`, {
+   const tokenHeader = token ? token : storedToken
+   const response = await fetch(`${baseURL}/follow?page=${page}&size=7`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${tokenHeader}`
@@ -52,10 +51,9 @@ const fetchPage = async (page) => {
 
   const getListFollowedConferences = async () => {
     setLoading(true)
-    
     if(user || localStorage.getItem('user')){
       try {
-        if(state.conferences.length === 0){
+        
           const firstPageData = await fetchPage(1);                
           const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
           
@@ -88,7 +86,6 @@ const fetchPage = async (page) => {
               dispatch(getFollowedConferenceAction(newConferences))
               
           }
-        }
   
         setLoading(false);
     } catch (error) {
@@ -98,17 +95,23 @@ const fetchPage = async (page) => {
     }
   }
   const followConference = async (id) => {
-    if(token){
+    setLoading(true)
+    if(user){
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+
+      const tokenHeader = token ? token : storedToken
       try {
         const response = await fetch(`${baseURL}/follow`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
           body: JSON.stringify({ cfp_id: id})
         });
-  
+        const responsedata = await response.json()
+
+        setLoading(false)
         if (!response.ok) {
           throw new Error(response.message);
         }
@@ -127,6 +130,7 @@ const fetchPage = async (page) => {
     }
   }
   const unfollowConference = async (id) => {
+    setLoading(true)
     try {
       const response = await fetch(`${baseURL}/follow`, {
         method: 'DELETE',
@@ -136,7 +140,7 @@ const fetchPage = async (page) => {
         },
         body: JSON.stringify({ cfp_id: id})
       });
-
+      setLoading(false)
       if (!response.ok) {
        
         return false

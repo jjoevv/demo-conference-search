@@ -20,7 +20,7 @@ const Notifications = () => {
   }, [notifications]);
 
   const makeDateBold = (dateStr) => {
-    return `<strong>${moment(dateStr).format('MM/DD/YYYY')}</strong>`;
+    return `<strong>${moment(dateStr).format('YYYY/MM/DD')}</strong>`;
   };
 
   const splitNotificationMessage = (message) => {

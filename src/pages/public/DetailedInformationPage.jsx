@@ -19,7 +19,7 @@ const DetailedInformationPage = () => {
     const [loading, setLoading] = useState(false)
     const conf_id = useParams()
     useEffect(() => {
-
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         const fetchData = async () => {
             await handleGetOne(conf_id.id);
             await getListFollowedConferences()
@@ -29,7 +29,7 @@ const DetailedInformationPage = () => {
             setLoading(true)
             fetchData()
         }
-    }, [conference, conf_id.id, handleGetOne, listFollowed]);
+    }, [conference, conf_id.id, listFollowed]);
 
 
     const extractYear = (source) => {
@@ -75,7 +75,7 @@ const DetailedInformationPage = () => {
                                                         </p>
 
                                                         <ButtonGroup className='mt-4'>
-                                                            <FollowButton/>
+                                                            <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences}/>
                                                             <UpdateNowButton/>
                                                         </ButtonGroup>
                                                     </>
@@ -98,8 +98,8 @@ const DetailedInformationPage = () => {
             </Stack>
             <Row>
                     <Col sm={7} xs={7}>
-                        <InformationPage />
-                        <CallforpaperPage />
+                        <InformationPage conference={conference}/>
+                        <CallforpaperPage conference={conference}/>
                     </Col>
                     <Col sm={5}>
                         <ImportantDatePage />

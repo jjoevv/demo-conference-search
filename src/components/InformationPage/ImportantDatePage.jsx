@@ -70,34 +70,34 @@ const ImportantDatePage = () => {
                   displayDates.map((date, index) => (
                     <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center my-2`}>
                       <Col xs={3} className='text-center text-teal-normal p-1 border-teal-normal border-4 border-start'>
-                        <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('ddd')}</p>
+                        <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('MMM')}</p>
                         <p className='fs-5 fw-medium text-color-medium m-0'>{moment(date.date_value).format('DD')}</p>
                       </Col>
                       <Col className=''>
-                        <p className=' fw-bold fs-5 text-color-black my-2 d-flex align-items-center'>
+                        <span className=' fw-bold fs-5 text-color-black my-2 d-flex align-items-center'>
                           {capitalizeFirstLetter(date.date_type)}
-                        </p>
-                        <p className='fs-6 fw-medium text-color-medium m-0'>
+                        </span>
+                        <span className='fs-6 fw-medium text-color-medium m-0'>
                           {
                             date.date_value_old && date.date_value !== date.date_value_old ?
                               <>
                                 <span className='text-danger text-decoration-line-through'>
-                                {moment(date.date_value_old).format('ddd, MM/DD/YYY')}
+                                {moment(date.date_value_old).format('ddd, YYYY/MM/DD')}
                                 </span>
                                 <Image src={ArrowIcon} width={20} className='mx-2' />
-                                {moment(date.date_value).format('ddd, MM/DD/YYY')}
+                                {moment(date.date_value).format('ddd, YYYY/MM/DD')}
                               </>
                               :
                               <>
-                                {moment(date.date_value).format('dddd, MM/DD/YYYY')}
+                                {moment(date.date_value).format('dddd, YYYY/MM/DD')}
 
                                 {isUpcoming(date.date_value) &&
-                                  <p className="bg-yellow-normal d-inline p-1 px-2 rounded-3 mx-3 text-primary-emphasis fw-semibold">Upcoming</p>
+                                  <span className="bg-yellow-normal d-inline p-1 px-2 rounded-3 mx-3 text-primary-emphasis fw-semibold">Upcoming</span>
                                 }
                               </>
 
                           }
-                        </p>
+                        </span>
                       </Col>
                     </Row>
                   ))
