@@ -20,9 +20,10 @@ import Filter from './Filter/Filter'
 import { checkExistValue } from '../utils/checkFetchedResults'
 import ButtonGroupUpdate from './PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
+import useConference from '../hooks/useConferences'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-
+    const {handleGetOne} = useConference()
     const { listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
@@ -74,6 +75,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     };
 
     const chooseConf = (id) => {
+        handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
 
