@@ -210,3 +210,8 @@ button.bg-yellow-normal:active {
  .custom-tab:focus {
     color: #4d7e89;
   }
+
+.btn-noti-more:hover,
+.btn-noti-more:active{
+    color: #00999f;
+}

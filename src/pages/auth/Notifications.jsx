@@ -8,6 +8,8 @@ const Notifications = () => {
   const [displayNotis, setDisplayNotis] = useState([])
   const navigate = useNavigate()
   useEffect(() => {
+    
+    console.log({notifications})
     if(notifications > 0){
       setDisplayNotis(notifications)
     }
@@ -43,15 +45,22 @@ const Notifications = () => {
           const { firstPart, secondPart } = splitNotificationMessage(noti.message);
           return (
             <Row key={index} className='p-4 bg-skyblue-light rounded my-4 me-3'>
-              <span className='fw-semibold text-color-black'>{firstPart}</span>
-              <div className='fs-5 text-teal-dark' dangerouslySetInnerHTML={{__html: secondPart}}></div>
+              <span className='fw-semibold text-color-black fs-5'>{firstPart}</span>
+              <div className='fs-5 text-teal-normal' dangerouslySetInnerHTML={{__html: secondPart}}></div>
+
               <Button 
-                disabled={noti.conf_id?true:false}
+                disabled={noti.conf_id !== 'null' ? true : false}
                 onClick={()=>navigate(`/detailed-information/${noti.conf_id}`)}
-                className="d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0"
+                className="d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0 btn-noti-more"
                 title='Go to detailed information page'
                 >
-                More information {`>`}
+                {
+                  noti.conf_id !== 'null'
+                  ?
+                  `You've unfollowed this conference.`       
+                  :
+                  `More information >`   
+                }
               </Button>
             </Row>
           )

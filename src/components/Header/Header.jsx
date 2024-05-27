@@ -14,7 +14,7 @@ const Header = () => {
 const {notifications}  = useNotification()
   useEffect(()=>{ 
     if (user === null){
-      navigate('/home')
+      navigate('/')
     }
       const event = new KeyboardEvent('keydown', {
         key: 'r',

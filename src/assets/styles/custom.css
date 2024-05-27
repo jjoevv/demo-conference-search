@@ -310,7 +310,7 @@ a {
 
 .btn:disabled {
     background-color: #666666;
-    color: lightgray;
+    color: darkgray;
 }
 
 
