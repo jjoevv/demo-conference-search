@@ -39,17 +39,19 @@ const handleFollow = async () => {
 const handleUnfollow = async () => {    
     setIsClick(true)
     const result = await unfollowConference(id.id)
+    
     setStatus(result)
 }
 
 const isCheck = (idToCheck) => {
     const check = listFollowed.some(item => item.id === idToCheck);
+    console.log(listFollowed, idToCheck, check)
     return check
   };
     return (
         <>
         {
-                isFollowing
+                isFollowing 
                 ?
                 
                 <Button 
