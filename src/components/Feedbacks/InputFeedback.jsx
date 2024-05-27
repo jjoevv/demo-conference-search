@@ -13,7 +13,7 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid}) => {
     const [error, setError] = useState(false)
     const [message, setMessage] = useState('')
     const handleSubmit = async () => {
-        if (user) {
+        if (user || localStorage.getItem('user')) {
             if (feedback !== '') {
                 // Gửi feedback qua API ở đây
                 const res = await onClick(id, feedback, rating)

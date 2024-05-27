@@ -47,7 +47,7 @@ const useFeedback = () => {
       rating: rating
     }
 
-    if (user) {
+    if (user || localStorage.getItem('user')) {
       try {
         const response = await fetch(`${baseURL}/conference/${id}/feedback`, {
           method: 'POST',
@@ -72,7 +72,7 @@ const useFeedback = () => {
       rating: rating
     }
 
-    if (user) {
+    if (user || localStorage.getItem('user') ) {
       try {
         const response = await fetch(`${baseURL}/feedback/${id}`, {
           method: 'PUT',
@@ -93,7 +93,7 @@ const useFeedback = () => {
   }
   const deleteFeedback = async (id) => {
 
-    if (user) {
+    if (user || localStorage.getItem('user')) {
       try {
         const response = await fetch(`${baseURL}/feedback/${id}`, {
           method: 'DELETE',
@@ -135,7 +135,7 @@ const useFeedback = () => {
   }
 
   const checkEditFeedback = (theuser) => {
-    if(user){
+    if(user || localStorage.getItem('user') ){
 
       return theuser.email===user.email
         

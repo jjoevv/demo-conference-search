@@ -97,7 +97,7 @@ const useFollow = () => {
   }
   const followConference = async (id) => {
     setLoading(true)
-    if (user) {
+    if (user || localStorage.getItem('user')) {
       let storedToken = JSON.parse(localStorage.getItem('token'));
 
       const tokenHeader = token ? token : storedToken

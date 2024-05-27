@@ -13,7 +13,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const [message, setMesage] = useState('')
   const [status, setStatus] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-
+  const [errorMessage, setErrorMessage] = useState('')
   const { filterOptions, getOptionsFilter } = useSearch()
   const [isupdateForm, setIsUpdateForm] = useState()
   const [isDuplicate, setIsDuplicate] = useState(false)
@@ -156,9 +156,11 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     });
     setIsDuplicate(hasDuplicateNames)
     if (hasDuplicateNames) {
+      setErrorMessage('Organization name must be unique!')
       setTab(2)
     }
     else if (hasDuplicateDateType) {
+      setErrorMessage('Date type must be unique!')
       setTab(3)
     }    
     else {
@@ -309,7 +311,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                   </Accordion.Item>
                 ))}
               </Accordion>
-
+                {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
             <Tab eventKey={`3`} title="Important dates" className='mx-4'>
               <div className='w-100 d-flex justify-content-end'>
@@ -334,6 +336,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                   </Col>
                 </Form.Group>
               ))}
+              {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
             <Tab eventKey={`4`} title="Call For Paper" className='mx-4'>
               <Form.Group as={Row} className='my-3'>

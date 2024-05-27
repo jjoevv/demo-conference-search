@@ -172,7 +172,7 @@ button.bg-yellow-normal:active {
 }
 
 .text-teal-normal {
-    color: #065758;
+    color: #065758  !important;
 }
 .text-teal-dark{ 
     color: #054142;
@@ -214,4 +214,13 @@ button.bg-yellow-normal:active {
 .btn-noti-more:hover,
 .btn-noti-more:active{
     color: #00999f;
+}
+
+.noti-wrapper{
+    cursor: pointer;
+}
+.noti-wrapper:hover,
+.noti-wrapper:active
+{
+    background-color: #ddf1f6;
 }

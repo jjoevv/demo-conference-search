@@ -48,7 +48,7 @@ const updateNewList = (newConferences)  => {
   const getPostedConferences = async () => {
     setLoading(true)
     
-    if(user){
+    if(user || localStorage.getItem('user') ){
       try {
         if(state.conferences.length === 0){
           const firstPageData = await fetchPage(1);                
@@ -74,7 +74,7 @@ const updateNewList = (newConferences)  => {
   }
   const postConference = async (conference) => {
     setLoading(true)
-    if(user){
+    if(user || localStorage.getItem('user')){
       let storedToken = JSON.parse(localStorage.getItem('token'));
       const tokenHeader = token ? token : storedToken
       if(storedToken){
@@ -88,7 +88,7 @@ const updateNewList = (newConferences)  => {
           body: JSON.stringify( conference ),
         });
         const data = await response.json()        
-        const message = data.message
+        const message = data.message || data.data
         setLoading(false)
         if (response.ok) {
           return {status: true, message}
@@ -105,7 +105,7 @@ const updateNewList = (newConferences)  => {
 
   const updatePost = async (conference, id) => {
     setLoading(true)
-    if(user){
+    if(user || localStorage.getItem('user')){
       let storedToken = JSON.parse(localStorage.getItem('token'));
       const tokenHeader = token ? token : storedToken
       try {
@@ -132,7 +132,7 @@ const updateNewList = (newConferences)  => {
 
   const deletePost = async (id) => {
     setLoading(true)
-    if(user){
+    if(user || localStorage.getItem('user')){
       try {
         const response = await fetch(`${baseURL}/post/${id}`, {
           method: 'DELETE',
@@ -142,7 +142,7 @@ const updateNewList = (newConferences)  => {
           },
         });
         const data = await response.json()        
-        const message = data.message
+        const message = data.message || data.data
         if (response.ok) {
           setLoading(false)
           return {status: true, message}

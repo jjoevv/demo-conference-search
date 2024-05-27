@@ -53,7 +53,7 @@ const useSetting = () => {
   const getAllSetting = async () => {
     setLoading(true);
     try {
-      if(user){
+      if(user || localStorage.getItem('user')){
         const response = await fetch(`${baseURL}/user/setting`, {
           method: 'GET',
           headers: {

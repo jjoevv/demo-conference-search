@@ -1,10 +1,10 @@
 // HeaderNoti.js
 import { useEffect, useState } from 'react';
 import useNotification from '../../hooks/useNotification';
-import { Dropdown } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 
@@ -12,31 +12,47 @@ const HeaderNoti = () => {
   //const { socket,  notifications, hasNewNotification, message, error, isConnected, sendMessage } = useNotification();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {user} = useLocalStorage()
-  const { notifications} = useNotification()
-  const [displayNotis, setDisplayNotis] = useState([])
+  const { notifications, getNoticationById, getAllNotifications} = useNotification()
   const [hasNewNotification, setHasNewNotification] = useState(false);
+  const navigate = useNavigate()
+
   useEffect(() => {
-    const notiDot = JSON.parse(localStorage.getItem('noti_dot'));
-    setHasNewNotification(notiDot);
-    if(notifications > 0){
-      setDisplayNotis(notifications)
+    getAllNotifications()
+  }, [])
+
+  useEffect(() => {
+    if (!notifications) {
+      getAllNotifications()
     }
-    else {
-      const storedNoti = JSON.parse(localStorage.getItem('notis'));
-      if(storedNoti){
-        setDisplayNotis(storedNoti)
-      }
-    }
+  }, [user])
+
+  useEffect(() => {
+    const hasUnreadNotifications = notifications.some(notification => !notification.read_status);
+    setHasNewNotification(hasUnreadNotifications)
+    
   }, [notifications]);
 
   const toggleDropdown = () => {
-    if (dropdownOpen) {
-      localStorage.setItem('noti_dot', JSON.stringify(false));
-      setHasNewNotification(false);
-    }
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleClickMessage = async (noti) => {
+    await getNoticationById([noti.tid])
+    navigate(`/detailed-information/${noti.Follow.CallForPaperCfpId}`)
+  }
+  const handleViewAll = async () => {
+    setDropdownOpen(!dropdownOpen);
+    const unreadNotifications = notifications.filter(notification => !notification.read_status);
+    await getNoticationById(unreadNotifications)
+    navigate(user ? '/notifications' : 'login')
+  }
+  const splitNotificationMessage = (message) => {
+    const parts = message.split('. ');
+    const firstPart = parts[0];
+    const secondPart = parts.slice(1).join('. '); // Nối lại các phần còn lại, phòng trường hợp thông báo có nhiều hơn một dấu chấm
+   
+    return { firstPart, secondPart };
+  };
   return (
     <Dropdown 
     isOpen={dropdownOpen}
@@ -48,26 +64,48 @@ const HeaderNoti = () => {
     >
       
       <FontAwesomeIcon icon={faBell} className='text-primary-normal fs-4'/>
-      {hasNewNotification && <FontAwesomeIcon icon={faCircle} className='text-danger' style={{height: "10px", textAlign:"end"}}/>}
+      {hasNewNotification && <FontAwesomeIcon icon={faCircle} className='text-danger mt-3' style={{height: "10px", textAlign:"end"}}/>}
     </Dropdown.Toggle>
 
     <Dropdown.Menu className='shadow' style={{ right: 0, left: 'auto' }}>
-      <div style={{ width: "300px", maxHeight: "200px" }} className='overflow-auto'>
+      <div style={{ width: "300px", maxHeight: "400px" }} className='overflow-auto'>
         {
-          displayNotis.map((noti, index) =>
-            <Dropdown.Item 
+          notifications ? 
+          <>
+          {
+          notifications.map((noti, index) =>
+            {
+              const { firstPart, secondPart } = splitNotificationMessage(noti.message);
+              return (
+                <Dropdown.Item 
               key={index}
-              className='text-wrap fs-6 px-4 mx-0 d-inline-block text-truncate text-overflow-elli[sis' >
-              <Link to={noti.conf_id ? `/detailed-information/${noti.conf_id}` : '/'} className='fs-6 text-color-black text-truncate'>
-                <strong>{noti.message}</strong>
-              </Link>
+              className='text-wrap fs-6'
+              onClick={()=>handleClickMessage(noti)}
+              >
+              <div className='d-flex'>
+                <div className='me-2 '>
+                  <FontAwesomeIcon icon={faCircle}  style={{height: "8px"}} className={`${noti.read_status ? `text-teal-normal` : `text-danger`}`}/>
+                </div>
+                <div>
+                  <div className={`${noti.read_status ? `text-secondary `: `text-color-black`}`}>
+                    <div className='fw-bold fs-6 notification-message'>{firstPart}</div>
+                    <span className='fs-6 notification-message'>{secondPart}</span>
+                  </div>
+                </div>
+              </div>
             </Dropdown.Item>
+              )
+            }
           )
+        }
+          </>
+          :
+          <><p>No notifications </p></>
         }
       </div>
       
   <Dropdown.Divider />
-      <Link to={user ? '/notifications' : '/login'} className='fs-6 fw-normal m-2 pt-3 text-color-darker'>View all notifications {"   >"}</Link>
+      <Button onClick={handleViewAll} className='fs-6 fw-normal text-center w-100 text-color-darker bg-transparent border-0'>View all notifications {"  >"}</Button>
     </Dropdown.Menu>
   </Dropdown>
   );

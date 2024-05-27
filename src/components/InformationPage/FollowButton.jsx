@@ -45,7 +45,7 @@ const handleUnfollow = async () => {
 
 const isCheck = (idToCheck) => {
     const check = listFollowed.some(item => item.id === idToCheck);
-    console.log(listFollowed, idToCheck, check)
+    
     return check
   };
     return (

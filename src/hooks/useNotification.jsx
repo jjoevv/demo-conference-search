@@ -4,16 +4,18 @@ import { io } from 'socket.io-client';
 import useAuth from './useAuth';
 import { useAppContext } from '../context/authContext';
 import { getNotifications } from '../actions/notiAction';
-import useFollow from './useFollow';
-
+import useLocalStorage from './useLocalStorage';
+import useToken from './useToken';
+import { baseURL } from './api/baseApi';
 
 const useNotification = () => {
   const [isConnected, setIsConnected] = useState(false);
+  const {user} = useLocalStorage()
+  const {token} = useToken()
+  const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
   const { getCurrentUser } = useAuth()
-  const {listFollowed} = useFollow()
 
-  const [hasNewNotification, setHasNewNotification] = useState(false);
   let socketRef = useRef(null);
   const user_id = JSON.parse(sessionStorage.getItem('user-id'))
   useEffect(() => {
@@ -34,14 +36,11 @@ const useNotification = () => {
     });
 
     socket.on('notification', (message) => {
-      localStorage.setItem('noti_dot', JSON.stringify('true'))
-      const newMess = getNewConf(message)
-      const newNotifications = [newMess, ...state.notifications].slice(0, 10);
-      localStorage.setItem('notis', JSON.stringify(newNotifications))
-      dispatch(getNotifications(newNotifications))
-      setHasNewNotification(true);
+      console.log({message})
+      getAllNotifications()
+      
     });
-
+    getAllNotifications();
 
 
 
@@ -72,19 +71,61 @@ const useNotification = () => {
   }, [dispatch, user_id]);
 
  
-  const getNewConf = (message) => {
-    if(listFollowed){
-      const followItem = listFollowed.find(item => item.followId === message.FollowTid);
-      message.conf_id = followItem ? followItem.id : null;
+
+
+  const getAllNotifications = async () => {
+    setLoading(true)
+    if(user || localStorage.getItem('user')){
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
+      try {
+        const response = await fetch(`${baseURL}/notification`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenHeader}`
+          },
+        });
+        const data = await response.json()        
+        setLoading(false)
+        if (response.ok) {
+          dispatch(getNotifications(data.data))
+        }
+      } catch (error) {
+        throw new Error('Network response was not ok');
+      }
     }
-    return message
   }
 
+  const getNoticationById = async (unreadNotifications) => {
+    if(user || localStorage.getItem('user')){
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
+      try {
+        for (const noti of unreadNotifications) {
+          const response = await fetch(`${baseURL}/notification/${noti.tid}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${tokenHeader}`
+            },
+          });
+          if(response.ok){
+            getAllNotifications()
+          }
+        }
+      } catch (error) {
+        throw new Error('Network response was not ok');
+      }
+    }
+  }
   return { 
     socket: socketRef,
     notifications: state.notifications,
-    hasNewNotification: hasNewNotification,
     isConnected: isConnected,
+    loading,
+    getNoticationById,
+    getAllNotifications
    };
 };
 

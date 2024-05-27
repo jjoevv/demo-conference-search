@@ -21,7 +21,6 @@ const DetailedInformationPage = () => {
     const [displayOrganizations, setDisplayOrganizations] = useState([])
     const conf_id = useParams()
     useEffect(() => {
-        console.log
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const fetchData = async () => {
             await handleGetOne(conf_id.id);
