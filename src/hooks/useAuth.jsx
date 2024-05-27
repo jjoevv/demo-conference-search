@@ -11,7 +11,7 @@ import { useState } from 'react';
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
   const { token, savetokenToLocalStorage } = useToken()
-  const { saveUserToLocalStorage, deleteUserFromLocalStorage, updateUserInStorage} = useLocalStorage()
+  const { user, saveUserToLocalStorage, deleteUserFromLocalStorage, updateUserInStorage } = useLocalStorage()
   const [error, setError] = useState('')
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
@@ -20,28 +20,33 @@ const useAuth = () => {
   const handleLogin = async (email, password) => {
     dispatch(loginRequest());
     setLoading(true)
-    //test account page
     try {
-      const response = await fetch(`${baseURL}/user/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      
-      setLoading(false)
-      const responseData = await response.json()
-      if (response.ok) {
-        const userData = responseData.data       
-        dispatch(loginSuccess(userData));
-        saveUserToLocalStorage(userData)
-        savetokenToLocalStorage(userData.accessToken)
+      if (!user) {
+        const response = await fetch(`${baseURL}/user/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        setLoading(false)
+        const responseData = await response.json()
+        if (response.ok) {
+          const userData = responseData.data
+          dispatch(loginSuccess(userData));
+          saveUserToLocalStorage(userData)
+          savetokenToLocalStorage(userData.accessToken)
+          navigate('/')
+
+          return { status: true, message: responseData.message }
+        } else {
+          return { status: false, message: responseData.message }
+        }
+      }
+      else {
+        alert('You are still logged in.')
         navigate('/')
-        
-        return {status: true, message: responseData.message}
-      } else {
-        return {status: false, message: responseData.message}
       }
     } catch (error) {
       dispatch(loginFailure('An error occurred during login.'));
@@ -50,7 +55,7 @@ const useAuth = () => {
   };
 
   const handleRegister = async (email, password, phone) => {
-    const user = {
+    const account = {
       email: email,
       name: ' ',
       phone: phone,
@@ -59,26 +64,31 @@ const useAuth = () => {
       password: password
     }
     try {
-      // Dispatch registration request action
-      setLoading(true)
+      if (!user) {
+        // Dispatch registration request action
+        setLoading(true)
 
-      // Make API request to register
-      const response = await fetch(`${baseURL}/user/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
+        // Make API request to register
+        const response = await fetch(`${baseURL}/user/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(account),
+        });
 
-      const responseData = await response.json();
-      const responseMessages = responseData.message
-      setLoading(false)
-      console.log({responseData})
-      if (response.ok) {
-        return {status: true, message: responseMessages}
-      } else {
-        return {status: false, message: responseMessages}
+        const responseData = await response.json();
+        const responseMessages = responseData.message
+        setLoading(false)
+        if (response.ok) {
+          return { status: true, message: responseMessages }
+        } else {
+          return { status: false, message: responseMessages }
+        }
+      }
+      else {
+        alert('You are still logged in.')
+        navigate('/')
       }
     } catch (error) {
       // Handle unexpected errors
@@ -87,9 +97,9 @@ const useAuth = () => {
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logoutUser());
-    deleteUserFromLocalStorage()
+    await deleteUserFromLocalStorage()
     navigate('/')
     window.location.reload()
   };
@@ -116,7 +126,7 @@ const useAuth = () => {
   }
 
   const changePassword = async (currentPassword, newPassword) => {
-    
+
     try {
       const response = await fetch(`${baseURL}/user/changePassword`, {
         method: 'PUT',
@@ -141,28 +151,28 @@ const useAuth = () => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
 
     const tokenHeader = token ? token : storedToken
-      try {
-        const response = await fetch(`${baseURL}/user/infomation`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${tokenHeader}`
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error(response.message);
-        }
-        else {
-          const data = await response.json()
-          const user_id = data.data.id
-          sessionStorage.setItem('user-id', JSON.stringify(user_id))
-        setUserId(user_id)
-        }
-      } catch (error) {
-          console.error('Error:', error);
-        
+    try {
+      const response = await fetch(`${baseURL}/user/infomation`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenHeader}`
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(response.message);
       }
+      else {
+        const data = await response.json()
+        const user_id = data.data.id
+        sessionStorage.setItem('user-id', JSON.stringify(user_id))
+        setUserId(user_id)
+      }
+    } catch (error) {
+      console.error('Error:', error);
+
+    }
   }
 
   return {

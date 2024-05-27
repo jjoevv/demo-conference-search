@@ -8,9 +8,6 @@ import useFollow from './useFollow';
 
 
 const useNotification = () => {
-  const [socket, setSocket] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [error, setError] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const { state, dispatch } = useAppContext()
   const { getCurrentUser } = useAuth()
@@ -18,15 +15,15 @@ const useNotification = () => {
 
   const [hasNewNotification, setHasNewNotification] = useState(false);
   let socketRef = useRef(null);
-
+  const user_id = JSON.parse(sessionStorage.getItem('user-id'))
   useEffect(() => {
     getCurrentUser()
-    const user_id = JSON.parse(sessionStorage.getItem('user-id'))
+    
 
     const socket = io(`https://conference-searching.onrender.com`, {
       query: {
         'user-id': user_id
-      },
+      },  
       path: '/socket.io',
       transports: ["websocket", 'polling']
     });
@@ -72,7 +69,7 @@ const useNotification = () => {
     return () => {
       socket.disconnect();
     };
-  }, [dispatch]);
+  }, [dispatch, user_id]);
 
  
   const getNewConf = (message) => {

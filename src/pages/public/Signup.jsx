@@ -20,6 +20,7 @@ const Signup = () => {
     const [showpConfirmassword, setShowConfirmPassword] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(false)
+    const [error, setError] = useState(null);
     const [isSignup, setIsSignup] = useState(false)
     const navigate = useNavigate()
 
@@ -27,18 +28,39 @@ const Signup = () => {
         const value = { ...account, [event.target.name]: event.target.value }
         setAccount(value)
     }
-    const handleSignup = async () => {
+    const validateForm = () => {
+        for (let key in account) {
+          if (!account[key]) {
+            return `${key} cannot be empty.`;
+          }
+        }
+        if (account.password !== account.confirm) {
+          return "Passwords do not match.";
+        }
+        return null;
+      };
+    const handleSignup = async (e) => {
+        e.preventDefault();
         setIsSignup(true)
+
+        const errorMsg = validateForm();
+        if (errorMsg) {
+        setError(errorMsg);
+        return;
+        } else {
+        setError(null);
+        
         const result = await handleRegister(account.email, account.password, account.phone)
         
-        //console.log({result})
         setStatus(result.status)
         setMessage(result.message)
+
         if(result.status){
             setIsSignup(false)
-            handleLogin(account.email, account.password)
-            
+            handleLogin(account.email, account.password)            
         }
+        }
+
     }
     const chooseLogin = () => {
         navigate('/login')
@@ -62,7 +84,7 @@ const Signup = () => {
                 </Col>
                 <Col className='p-5 d-flex flex-column align-items-center justify-content-center bg-skyblue-light rounded-end-4' >
 
-                    <Form onSubmit={handleSignup} className='w-75 '>
+                    <Form className='w-75 '> 
                         <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>Create Account</h1>
                         <Button className='border-0 w-100 p-2' style={{ backgroundColor: "#E8F1F3", color: "#434343" }}>
                             <Image src={googleIcon} width={20} className="me-2" />
@@ -141,8 +163,11 @@ const Signup = () => {
                         {
                             !status && isSignup && message !== '' && <p className="text-danger">{message}</p>
                         }
+                        {
+                            isSignup && error && <p className="text-warning">{error}</p>
+                        }
                         <Button
-                            type='submit'
+                            onClick={handleSignup}
                             className='border-0 fw-bold rounded-3 p-2'
                             style={{ width: "140px", fontSize: "20px", backgroundColor: "#419489" }}>
                             {

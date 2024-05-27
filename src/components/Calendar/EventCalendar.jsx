@@ -39,7 +39,7 @@ function EventCalendar() {
 
     const handleDateClick = (event) => {
         const dateEvents = notes.filter((note) => moment(note.start_date).isSame(event.start, 'day'));
-        console.log({event, dateEvents})
+        
         setExistEvents(dateEvents)
         
     };

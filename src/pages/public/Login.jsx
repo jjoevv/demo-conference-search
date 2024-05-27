@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Container, Form, Button, ButtonGroup, Stack, Row, Col, Image, InputGroup } from 'react-bootstrap'
+import { useState } from 'react'
+import { Container, Form, Button, ButtonGroup, Row, Col, Image, InputGroup } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 
 import googleIcon from './../../assets/imgs/google.png'
@@ -8,8 +8,11 @@ import Loading from '../../components/Loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 const Login = () => {
-    const {loading, error, handleLogin, handleLogout } = useAuth();
-    
+    const {loading, handleLogin } = useAuth();
+    const [message, setMessage] = useState('')
+    const [status, setStatus] = useState(false)
+    const [error, setError] = useState(null);
+    const [isSubmit, setIsSubmit] = useState(false)
     const [account, setAccount] = useState({
         email: "",
         password: "",
@@ -21,10 +24,38 @@ const Login = () => {
         const value = { ...account, [event.target.name]: event.target.value }
         setAccount(value)
     }
-    const handleSubmit = (e) => {
+    const validateForm = () => {
+        for (let key in account) {
+          if (!account[key]) {
+            return `${key} cannot be empty.`;
+          }
+        }
+        if (account.password !== account.confirm) {
+          return "Passwords do not match.";
+        }
+        return null;
+      };
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        handleLogin(account.email, account.password)
-    
+        
+        setIsSubmit(true)
+        const errorMsg = validateForm();
+        if (errorMsg) {
+        setError(errorMsg);
+        return;
+        } else {
+        setError(null);
+        const result = await handleLogin(account.email, account.password)
+        
+        setStatus(result.status)
+        setMessage(result.message)
+
+        if(result.status){
+            setIsSubmit(false)
+            handleLogin(account.email, account.password)            
+        }
+        }
+        
     }
     const chooseSignup = () => {
         navigate('/signup')
@@ -38,7 +69,7 @@ const Login = () => {
                 
                 <Col className='p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light rounded-start-4' >
 
-                    <Form onSubmit={handleSubmit} className='w-75 p-5 bg'>
+                    <Form className='w-75 p-5 bg'>
                         <h1 className='mb-4 fw-bold' style={{fontSize: "30px", color: "#419489"}}>Log In</h1>
                         <Button className='border-0 w-100 p-2 rounded-3' style={{backgroundColor: "#E8F1F3", color: "#434343"}}>
                             <Image src={googleIcon} width={20} className="me-2"/>
@@ -82,19 +113,30 @@ const Login = () => {
                         <ButtonGroup className="d-flex justify-content-around mb-3">
                             <Button className='bg-transparent border-0 p-0' style={{color: "#434343"}}>Forgot your password?</Button>
                         </ButtonGroup>
+                        {
+                            isSubmit && error && <p className="text-warning">{error}</p>
+                        }
+                        {
+                            !status && isSubmit && message !== '' && <p className="text-danger">{message}</p>
+                        }
                         <div className='d-flex flex-column justify-content-center align-items-center'>
                             {error && <span className='text-danger'>{error}</span>}
-                            {loading && <Loading/>}
+                            
                                 <Button
-                                    type='submit'
+                                    onClick={handleSubmit}
                                     className='border-0 fw-bold rounded-4 p-2'
                                     style={{width: "140px", fontSize: "20px", backgroundColor: "#419489"}}>
                             
-                                    LOG IN
+                                    {
+                                        isSubmit && loading ?
+                                        <Loading/>
+                                        :
+                                        "LOG IN"
+                                    }
                                 </Button>
                         </div>
                         <div className="my-3 mx-3 d-flex align-items-center justify-content-center">
-                            <span htmlFor="#signup">Don't have an account?</span>
+                            <span htmlFor="#signup">{`Don't have an account?`}</span>
                             <Button
                                 className='bg-transparent border-0 fw-bold p-0 m-0 w-25'
                                 style={{fontSize: "20px", color: "#419489"}}
