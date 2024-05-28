@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Form, Image, Modal, Carousel, CarouselItem, Row, OverlayTrigger, Tooltip, Accordion } from 'react-bootstrap'
+import { Button, Col, Form, Image, Modal, Carousel, CarouselItem, Row, OverlayTrigger, Tooltip, Accordion, ButtonGroup } from 'react-bootstrap'
 import AddButtonIcon from './../../assets/imgs/edit.png'
 import ChooseFORs from '../PostConference/ChooseFORs';
 import usePost from '../../hooks/usePost';
@@ -257,10 +257,12 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             const result = await postConference(formData)
             setMesage(result.message)
             setStatus(result.status)
-            onReloadList()
             if (result.status) {
                 setShowSuccessModal(true)
                 setIsPosted(false)
+                
+                onReloadList()
+                window.location.reload()
                 handleCloseForm()
             }
 
@@ -293,7 +295,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                     <Form className='px-5'>
                         <div className="modal-scrollable-body">
                             <Carousel activeIndex={page} onSelect={handleSelect} controls={false} interval={null} indicators={false}>
-                                <Carousel.Item>
+                                <Carousel.Item className='mt-5'>
                                     <Form.Group as={Col} className="mb-3 d-flex align-items-center">
                                         <Form.Label column sm="3">
                                             <span className='text-danger'>* </span>Conference name:
@@ -499,36 +501,36 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 {!status && isPosted && <p className="text-danger text-center">{message}</p>}
                 {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                 <Modal.Footer className="d-flex align-items-center justify-content-center text-white">
-                    <Button
-                        onClick={() => setPage((prevIndex) => prevIndex - 1)}
-                        disabled={page === 0}
-                        className='border-blue-normal text-blue-normal bg-transparent text-black  px-5 mx-3'>
-                        Back
-                    </Button>
-                    {
-                        page < 3
-                            ?
-                            <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='bg-blue-normal px-5 mx-3 text-black'>
-                                Next
-                            </Button>
-                            :
-                            <>
-                                <Button onClick={handleFormSubmit} className='bg-blue-normal px-4 mx-3'>
-                                    {
-                                        loading
-                                            ?
-                                            <Loading />
-                                            :
-                                            <div>
-                                                <Image width={20} height={20} className='me-2' src={AddButtonIcon} />
-                                                Submit
-                                            </div>
-                                    }
-
+                    <ButtonGroup>
+                        <Button
+                            onClick={() => setPage((prevIndex) => prevIndex - 1)}
+                            disabled={page === 0}
+                            className='border-blue-normal text-blue-normal bg-transparent text-black  px-5 mx-3 rounded'>
+                            Back
+                        </Button>
+                        {
+                            page < 3
+                                ?
+                                <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 mx-3 text-black'>
+                                    Next
                                 </Button>
-
-                            </>
-                    }
+                                :
+                                <>
+                                    <Button onClick={handleFormSubmit} className='bg-blue-normal px-4 mx-3 rounded'>
+                                        {
+                                            loading
+                                                ?
+                                                <Loading />
+                                                :
+                                                <div>
+                                                    <Image width={20} height={20} className='me-2' src={AddButtonIcon} />
+                                                    Submit
+                                                </div>
+                                        }
+                                    </Button>
+                                </>
+                        }
+                    </ButtonGroup>
                 </Modal.Footer>
             </Modal>
         </>

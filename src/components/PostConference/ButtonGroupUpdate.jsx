@@ -30,7 +30,7 @@ const ButtonGroupUpdate = ({conference}) => {
           getPostedConferences()
           const countdownInterval = setInterval(() => {
             setCountdown((prevCountdown) => {
-              if (prevCountdown === 1) {
+              if (prevCountdown === 2) {
                 clearInterval(countdownInterval);
                 handleClose();
               }

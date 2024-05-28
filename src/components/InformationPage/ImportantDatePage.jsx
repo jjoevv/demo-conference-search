@@ -12,47 +12,37 @@ const ImportantDatePage = () => {
   const [displayDates, setDisplayDates] = useState([])
   useEffect(() => {
     if (conference) {
-      const updatedDates = conference.importantDates
-      .map(date => {
-        if (date.status === 'new') {
-          // Tìm phần tử có cùng date_type và date_value nhưng khác status
-          const duplicate = conference.importantDates.find(d => d.status !== 'new' && d.date_type === date.date_type && d.date_value === date.date_value);
-          if (duplicate) {
-            // Nếu tìm thấy phần tử trùng lặp, không thêm date_value_old và xóa phần tử đó
-            const duplicateIndex = conference.importantDates.indexOf(duplicate);
-            if (duplicateIndex !== -1) {
-              conference.importantDates.splice(duplicateIndex, 1);
-            }
+      const processedDates = conference.importantDates.reduce((acc, date) => {
+        if (date.status !== "new") {
+          // Bỏ qua các ngày có status khác new
+          return acc;
+        }
+    
+        const existingDate = acc.find(
+          d => d.date_type === date.date_type && d.status === "new"
+        );
+    
+        if (!existingDate) {
+          const oldDate = conference.importantDates.find(
+            d =>
+              d.date_type === date.date_type &&
+              d.status !== "new" &&
+              d.date_value !== date.date_value
+          );
+    
+          if (oldDate) {
+            acc.push({ ...date, date_value_old: oldDate.date_value });
           } else {
-            // Tìm ngày cũ tương ứng với cùng loại ngày và status là 'old'
-            const oldDate = conference.importantDates.find(d => d.status === 'old' && d.date_type === date.date_type);
-            if (oldDate) {
-              // Nếu tìm thấy ngày cũ, thêm date_value_old vào mục mới
-              date.date_value_old = oldDate.date_value;
-            }
+            acc.push(date);
           }
         }
-        return date;
-      })
-      .filter(date => date.status !== 'old'); // Loại bỏ các mục có status là 'old'
     
-    // Mảng để lưu kết quả cuối cùng
-    const uniqueDates = [];
-    // Set để kiểm tra các phần tử trùng lặp
-    const seen = new Set();
-    
-    updatedDates.forEach(date => {
-      const identifier = `${date.date_type}-${date.value}-${date.status}`;
-      if (date.status === 'new' && seen.has(identifier)) {
-        // Bỏ qua phần tử trùng lặp
-        return;
-      }
-      uniqueDates.push(date);
-      seen.add(identifier);
-    });
-    const sorted = [...uniqueDates].sort((a, b) => new Date(a.date_value) - new Date(b.date_value));
-    
-    setDisplayDates(sorted)
+        return acc;
+      }, [])
+        .sort((a, b) => new Date(a.date_value) - new Date(b.date_value));
+
+
+  setDisplayDates(processedDates)
 
     }
 
@@ -60,7 +50,7 @@ const ImportantDatePage = () => {
   }, [conference])
   return (
     <div className='px-5 m-5'>
-      <span className='fs-4 fw-bold text-teal-dark'>Imoprtant dates</span>
+      <span className='fs-4 fw-bold text-teal-dark'>Important dates</span>
       <div className='mt-2'>
         {conference ?
           <>
