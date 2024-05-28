@@ -81,7 +81,7 @@ const DetailedInformationPage = () => {
                                                             {getConferenceDate(conference.organizations) !== '' && <FontAwesomeIcon icon={faCalendar} className='mx-3 fs-4'/>}                                                            
                                                             {getConferenceDate(conference.organizations)}
                                                         </h4>
-                                                        <div className='d-flex justify-content-center fs-4 my-2 text-teal-normal'>
+                                                        <div className='d-flex justify-content-center fs-4 my-2 mt-4 text-teal-normal'>
                                                                 <div>
                                                                 {isOrganizations  && <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5'/>}                                                            
                                                                 </div>

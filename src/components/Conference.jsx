@@ -21,9 +21,11 @@ import { checkExistValue } from '../utils/checkFetchedResults'
 import ButtonGroupUpdate from './PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
 import useConference from '../hooks/useConferences'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-    const {handleGetOne} = useConference()
+    const {handleGetOne, getStartEndDate} = useConference()
     const { listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
@@ -148,7 +150,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                     <div className='w-100'>
                                                         <Card.Body className='' onClick={() => chooseConf(conf.id)}>
                                                             <Card.Title className='text-color-black'>
-                                                                <div className='fw-bold d-flex align-items-start'>
+                                                                <div className='fw-bold d-flex align-items-center justify-content-start mt-1'>
                                                                     {
                                                                         conf.organizations.length > 0 &&
                                                                         <>
@@ -171,31 +173,21 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                     <span className='conf-data'>{getDateValue("submission", conf.importantDates)}</span>
                                                                 </Card.Text>
 
-                                                                <Card.Text className='d-flex align-items-center mb-1'>
+                                                                <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
                                                                     <Image src={TimeIcon} className='me-2' width={18} />
                                                                     <label className='conf-data-label'>Conference Date: </label>
                                                                     <span className='conf-data'>
-                                                                        {conf.organizations.length > 0 ? conf.organizations[0].start_date : 'N/A'}
+                                                                        
                                                                         <>
-                                                                            {
-                                                                                conf.organizations.length > 0 ?
-                                                                                    <>
-                                                                                        {
-                                                                                            conf.organizations[0].end_date && <Image src={ArrowIcon} width={20} className='mx-2' />
-                                                                                        }
-                                                                                    </>
-                                                                                    :
-                                                                                    <>
-                                                                                        {`N/A`}
-                                                                                    </>
-                                                                            }
+                                                                            {getStartEndDate(conf.organizations)} 
+                                                                            
                                                                         </>
-                                                                        {conf.organizations.length > 0 ? conf.organizations[0].end_date : 'N/A'}
+                                                                        
                                                                     </span>
                                                                 </Card.Text>
                                                             </Stack>
-                                                            <Card.Text className='d-flex align-items-center'>
-                                                                <Image src={LocationIcon} className='me-2' width={18} height={20} />
+                                                            <Card.Text className='d-flex align-items-center fs-6 mt-2'>
+                                                                <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5'/>
                                                                 {conf.organizations.length > 0 ? (
                                                                     // Nếu location không null, hiển thị giá trị của nó
                                                                     <>{conf.organizations[0].location || 'Updating...'}</>

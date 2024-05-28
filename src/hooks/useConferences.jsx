@@ -5,6 +5,8 @@ import { useAppContext } from "../context/authContext"
 import { baseURL } from "./api/baseApi"
 import { getAllConf, getOneConf } from "../actions/confAction"
 import moment from "moment"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
@@ -108,6 +110,46 @@ const useConference = () => {
     else return ''
   }
 
+  const getStartEndDate = (organizations) => {
+    if(organizations.length > 0) {
+
+    // Khởi tạo biến để lưu trữ ngày bắt đầu và kết thúc
+    let startDate = null;
+    let endDate = null;
+    
+    // Lặp qua danh sách organizations để tìm ngày bắt đầu và kết thúc với status là "new"
+    organizations.forEach(org => {
+      if (org.status === "new") {
+        startDate = org.start_date;
+        endDate = org.end_date;
+      }
+    });
+    const formattedDateStartDate = moment(startDate).format('YYYY/MM/DD');
+    const formattedDateEndDate = moment(endDate).format('YYYY/MM/DD');
+    
+    // Xác định dateRange dựa trên giá trị của startDate và endDate
+    
+    if (startDate) {
+      if (endDate) {
+        return (
+          <span>
+            {formattedDateStartDate} <FontAwesomeIcon icon={faArrowRight} /> {formattedDateEndDate}
+          </span>
+        )
+        
+      } else {
+        return (
+          <span>
+            {formattedDateStartDate}
+          </span>
+        )
+      }
+    }
+   
+    }
+    else return null
+  }
+
   const getLocation = (organizations) => {
    // Sử dụng find để tìm đối tượng đầu tiên có status là "new" và location khác null
   const newOrg = organizations.find(org => org.status === "new" && org.location !== null);
@@ -127,6 +169,7 @@ const useConference = () => {
     handleGetList,
     handleGetOne,
     getConferenceDate,
+    getStartEndDate,
     getLocation
   }
 }
