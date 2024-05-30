@@ -79,6 +79,7 @@ const appReducer = (state, action) => {
                         ...action.payload.keywords, // Thêm giá trị mới vào mảng
                     ],
                 },
+                actionWithKeyword: 'add'
             };
         case actionTypes.ADD_FILTER_DATE:
             return {
@@ -88,13 +89,15 @@ const appReducer = (state, action) => {
                     ...state.optionsSelected,
                     [action.payload.label]: [...action.payload.keyword],
                 },
+                actionWithKeyword: 'add',
             }
         case actionTypes.REMOVE_FILTER:
             return {
                 ...state,
                 appliedFilterResult: action.payload.updatedResultsFilter,
                 optionsSelected: action.payload.updateOptionsSelected,
-                loading: false
+                loading: false,
+                actionWithKeyword: 'delete'
             }
         case actionTypes.CLEAR_FILTERS:
             // Cập nhật state với appliedFilterResult đã xóa hết giá trị
@@ -105,7 +108,16 @@ const appReducer = (state, action) => {
                 loading: false
             };
 
-
+        case actionTypes.SET_SEARCH_RESULT:
+            return {
+                ...state,
+                resultFilter: action.payload,
+            };
+        case actionTypes.SEARCH_KEYWORD:
+            return {
+                ...state,
+                resultFilter: [...state.resultFilter, ...action.payload],
+            };
         case actionTypes.GET_RESULT_AFTER_FILTER:
             return {
                 ...state,
@@ -116,7 +128,6 @@ const appReducer = (state, action) => {
                         ...action.payload.results.map(item => item)
                     ]
                 },
-                resultFilter: action.payload.results
             };
 
         case actionTypes.SELECT_OPTION_FILTER:
@@ -127,8 +138,13 @@ const appReducer = (state, action) => {
         case actionTypes.INPUT_OPTION_FILTER:
             return {
                 ...state,
-                resultKeywordFilter: action.payload
-            }
+                resultKeywordFilter: action.payload,
+            };
+        case actionTypes.SET_INPUT_OPTION_FILTER:
+            return {
+                ...state,
+                inputFilter: action.payload,
+            };
         case actionTypes.REQUEST_CONFERENCE:
             return {
                 ...state,

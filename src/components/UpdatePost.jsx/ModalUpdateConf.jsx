@@ -9,7 +9,7 @@ import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
-  const { loading, updatePost, getPostedConferences } = usePost()
+  const { loading, updatePost } = usePost()
   const [message, setMesage] = useState('')
   const [status, setStatus] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -79,27 +79,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     setFormData(updatedFormData);
   };
 
-  const addOrganization = () => {
-    const newOrganization = {
-      name: "",
-      type: "",
-      location: "",
-      start_date: "",
-      end_date: "",
-    };
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      organizations: [...prevFormData.organizations, newOrganization]
-    }));
-    //setActiveAccordionKey(organizations.length -1); // Mở accordion item mới thêm
-  };
 
-  const removeOrganization = (index) => {
-    const newOrganizations = formData.organizations.filter((org, i) => i !== index);
-    setFormData({ ...formData, organizations: newOrganizations });
-    const newActiveAccordionKey = activeAccordionKey.filter((key) => key !== index);
-    setActiveAccordionKey(newActiveAccordionKey);
-  };
 
   //important dates
   const handleDateChange = (index, field, value) => {
@@ -248,26 +228,13 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
             </Tab>
 
             <Tab eventKey={`2`} title="Organization" className='mx-4'>
-              <div className='w-100 d-flex justify-content-end'>
-                <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addOrganization}>Add Organization</Button>
-              </div>
-              <Accordion defaultActiveKey={activeAccordionKey} className='mt-3'>
+             
                 {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
                 {formData.organizations.map((org, index) => (
 
-                  <Accordion.Item eventKey={`${index}`} key={index} className='border-0'>
-                    <Accordion.Header className='p-0'>
-                      <div className='d-flex justify-content-between align-items-center w-100'>
-                        <div>Organization {index + 1}</div>
-                        <div className='d-flex mx-2'>
-                          <Button onClick={() => removeOrganization(index)} className='bg-transparent border-0' title='Delete organization'>
-                            <FontAwesomeIcon icon={faCircleXmark} className='text-danger fs-5' />
-                          </Button>
-                        </div>
-                      </div>
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <Form.Group as={Row} className='my-3'>
+                      <div  key={index} className='mt-5'>
+                        
+                        <Form.Group as={Row} className='my-3'>
                         <Form.Label column sm="3">Organization name: </Form.Label>
                         <Col>
                           <div className='d-flex align-items-center'>
@@ -307,10 +274,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                           <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={org.isInvalidEndDate ? 'border-danger' : ''} />
                         </Col>
                       </Form.Group>
-                    </Accordion.Body>
-                  </Accordion.Item>
+                      </div>
+                      
                 ))}
-              </Accordion>
                 {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
             <Tab eventKey={`3`} title="Important dates" className='mx-4'>

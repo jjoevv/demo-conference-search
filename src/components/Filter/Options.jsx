@@ -9,7 +9,7 @@ import data from './options.json'
 
 
 const customStyles = {
-    menu: (provided) => ({
+    menuPortal: (provided) => ({
         ...provided,
         zIndex: 9999, // Đặt giá trị z-index cao để luôn nằm trên các thành phần khác
       }),
@@ -48,7 +48,6 @@ const Options = ({ label, onApply }) => {
     const { filterOptions, getOptionsFilter, sendFilter, addKeywords } = useSearch()
     const [options, setOptions] = useState([])
     const handleOptionChange = async (item) => {
-        
         onApply(label, item[0].label)
         const maxRecords = await sendFilter(label, item[0].label)
         const keyword = `${item[0].label} (${maxRecords})`
@@ -87,7 +86,8 @@ const Options = ({ label, onApply }) => {
                 closeMenuOnSelect={true}
                 styles={customStyles}
                 placeholder="All"
-                
+                menuPortalTarget={document.body}
+                menuPosition="fixed"
             />
         </div>
 

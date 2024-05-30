@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { useAppContext } from "../context/authContext"
 
@@ -6,19 +6,33 @@ import { baseURL } from "./api/baseApi"
 import { getAllConf, getOneConf } from "../actions/confAction"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import useSessionStorage from "./useSessionStorage"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
+  const {getDataListInStorage} = useSessionStorage()
   const [quantity] = useState(0)
   const [error, setError] = useState('')
-  const [totalPages, setTotalPages] = useState(0)
   const [totalConferences, setTotalConferences] = useState(0)
   const [loading, setLoading] = useState(false)
 
-  const fetchData = useCallback(async (page) => {
+  const [selectOptionSort, setSelectOptionSort] = useState('Random') //Random: sort by follow
+  const [displaySortList, setDisplaySortConf] = useState([])
+
+
+
+  useEffect(()=>{
+    setDisplaySortConf(state.conferences)
+  }, [selectOptionSort])
+
+  const handleSelectOptionSort = (option) => {    
+    setSelectOptionSort(option)
+  }
+
+  const fetchData = useCallback(async (page, size) => {
     try {
-      const response = await fetch(`${baseURL}/conference?page=${page}&size=7`,{
+      const response = await fetch(`${baseURL}/conference?page=${page}&size=${size}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,29 +47,40 @@ const useConference = () => {
     } catch (error) {
       setError(error);
     }
-  }, [dispatch]);
+  }, []);
   
   const handleGetList = async () => {
     setLoading(true)
     try {
       if(state.conferences.length === 0){
-        const firstPageData = await fetchData(1);                
-        const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
+        const firstPageData = await fetchData(1, 20);                
+        
         const totalConf = firstPageData.maxRecords
-        
-        const total = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
+        const totalPages = Math.ceil(totalConf / 7); // Lấy số lượng trang từ dữ liệu đầu tiên
+        const maxPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
         setTotalConferences(totalConf)
-        setTotalPages(total)
-        localStorage.setItem('totalConferences', JSON.stringify(totalConf))
-        localStorage.setItem('totalPagesConferences', JSON.stringify(total))
-        dispatch(getAllConf(firstPageData.data));
         
-      
+        localStorage.setItem('totalConferences', JSON.stringify(totalConf))
+        localStorage.setItem('totalPagesConferences', JSON.stringify(totalPages))
 
-        // Fetch remaining pages asynchronously
-        for (let i = 2; i <= totalPages; i++) {
-            const pageData = await fetchData(i);
-            dispatch(getAllConf(pageData.data));
+
+        const listFollowed = getDataListInStorage("listFollow")
+        const filteredData = firstPageData.data.filter(
+          item => !listFollowed.some(conf => conf.id === item.id)
+        );
+        const updatedConferences = [...new Set([...listFollowed, ...filteredData])];
+        dispatch(getAllConf(updatedConferences));
+        
+
+        // Fetch remaining pages asynchronously 
+        for (let i = 2; i <= maxPages; i++) {
+            const pageData = await fetchData(i, 20);
+            const filteredNextData = pageData.data.filter(
+              item => !listFollowed.some(conf => conf.id === item.id)
+            );
+            
+            
+            dispatch(getAllConf(filteredNextData));
         }
       }
 
@@ -85,7 +110,6 @@ const useConference = () => {
     // Khởi tạo biến để lưu trữ ngày bắt đầu và kết thúc
     let startDate = null;
     let endDate = null;
-    
     // Lặp qua danh sách organizations để tìm ngày bắt đầu và kết thúc với status là "new"
     organizations.forEach(org => {
       if (org.status === "new") {
@@ -95,9 +119,9 @@ const useConference = () => {
     });
     const formattedDateStartDate = moment(startDate).format('dddd, YYYY/MM/DD');
     const formattedDateEndDate = moment(endDate).format('dddd, YYYY/MM/DD');
-    
+
     // Xác định dateRange dựa trên giá trị của startDate và endDate
-    let dateRange = 'N/A';
+    let dateRange = '';
     if (startDate) {
       if (endDate) {
         dateRange = `From ${formattedDateStartDate} to ${formattedDateEndDate}`;
@@ -116,7 +140,6 @@ const useConference = () => {
     // Khởi tạo biến để lưu trữ ngày bắt đầu và kết thúc
     let startDate = null;
     let endDate = null;
-    
     // Lặp qua danh sách organizations để tìm ngày bắt đầu và kết thúc với status là "new"
     organizations.forEach(org => {
       if (org.status === "new") {
@@ -128,7 +151,6 @@ const useConference = () => {
     const formattedDateEndDate = moment(endDate).format('YYYY/MM/DD');
     
     // Xác định dateRange dựa trên giá trị của startDate và endDate
-    
     if (startDate) {
       if (endDate) {
         return (
@@ -159,18 +181,21 @@ const useConference = () => {
   }
   
   return {
-    conferences: state.conferences,
+    conferences: state.conferences, 
     conference: state.conference,
     quantity: quantity,
     loading,
     error: error,
-    totalPages,
     totalConferences,
+    selectOptionSort,
+    displaySortList,
+    fetchData,
     handleGetList,
     handleGetOne,
     getConferenceDate,
     getStartEndDate,
-    getLocation
+    getLocation,
+    handleSelectOptionSort
   }
 }
 

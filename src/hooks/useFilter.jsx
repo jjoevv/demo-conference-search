@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getUniqueConferences } from '../utils/checkFetchedResults'
 import useSearch from './useSearch'
 import { useAppContext } from '../context/authContext'
@@ -10,8 +10,7 @@ const useFilter = () => {
   const { optionsSelected, getKeyword } = useSearch()
   const [optionsFilter, setOptionsFilter] = useState([])
   const [selectOptionFilter, setSelectOptionFilter] = useState([])
-  const [inputFilter, setInputFilter] = useState('')
-
+  const [inputValue, setInputValue] = useState('')
   const {pathname} = useLocation()
 
   useEffect(() => {
@@ -34,10 +33,11 @@ const useFilter = () => {
   };
 
   const handleInputFilterChange = (e) => {
-    setInputFilter(e.target.value)
+    setInputValue(e.target.value)
   }
 
   const searchInput = (keyword) => {
+    dispatch({ type: 'SET_INPUT_OPTION_FILTER', payload: keyword});
     const dataFilter = sessionStorage.getItem('dataFilters');
     const data = JSON.parse(dataFilter)
     if (dataFilter) {
@@ -72,14 +72,26 @@ const useFilter = () => {
 
     return false;
   }
+
+  const getTotalConfFilter = () => {
+      const savedTotalPages = localStorage.getItem('totalConf');
+      return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
+  }
+  const getTotalPages = () => {
+    const savedTotalPages = localStorage.getItem('totalConf');
+    return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
+}
   return {
     optionsFilter,
     selectOptionFilter: state.optionFilter,
-    inputFilter,
+    inputValue,
+    inputFilter: state.inputFilter,
     resultInputFilter: state.resultKeywordFilter,
     handleChangeOptions,
     handleInputFilterChange,
     searchInput,
+    getTotalConfFilter,
+    getTotalPages
   }
 }
 

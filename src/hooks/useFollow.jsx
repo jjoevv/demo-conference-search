@@ -6,9 +6,11 @@ import useToken from './useToken'
 import useLocalStorage from './useLocalStorage'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import useSessionStorage from './useSessionStorage'
 const useFollow = () => {
   const { state, dispatch } = useAppContext()
   const { token } = useToken()
+  const {updateDataListInStorage} = useSessionStorage()
   const { user } = useLocalStorage()
   const [loading, setLoading] = useState(false);
 
@@ -57,31 +59,16 @@ const useFollow = () => {
         const firstPageData = await fetchPage(1);
         const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
 
-        const extractData = firstPageData.data.map(item => {
-          const callForPaperData = item.callForPaper;
-          const followId = item.followId; // Giả sử trường followed nằm trong danh sách gốc
-
-          return {
-            ...callForPaperData,
-            followId: followId
-          };
-        });
-
+        const extractData = firstPageData.data.map(item => item.callForPaper);
         const newConferences = updateNewList(extractData)
+       
+        updateDataListInStorage("listFollow", newConferences)
         dispatch(getFollowedConferenceAction(newConferences))
 
         // Fetch remaining pages asynchronously
         for (let i = 2; i <= totalPages; i++) {
           const pageData = await fetchPage(i);
-          const extractData = pageData.data.map(item => {
-            const callForPaperData = item.callForPaper;
-            const followId = item.followId; // Giả sử trường followed nằm trong danh sách gốc
-
-            return {
-              ...callForPaperData,
-              followId: followId
-            };
-          });
+          const extractData = pageData.data.map(item => item.callForPaper);
           const newConferences = updateNewList(extractData)
           dispatch(getFollowedConferenceAction(newConferences))
 

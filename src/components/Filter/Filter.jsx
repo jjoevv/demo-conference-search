@@ -20,7 +20,7 @@ const Filter = () => {
     const [isFilter, setIsFilter] = useState(false)
     const {optionsFilter,
           selectOptionFilter,
-          inputFilter,
+          inputValue,
           handleChangeOptions, 
           handleInputFilterChange,
           searchInput,
@@ -60,7 +60,7 @@ const CustomMenuList = (props) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      searchInput(inputFilter);
+      searchInput(inputValue);
     }
   };
   const [menuIsOpen, setMenuIsOpen] = useState(true);
@@ -80,6 +80,7 @@ const CustomMenuList = (props) => {
                     value={selectOptionFilter}
                     menuIsOpen={menuIsOpen}
                     onMenuOpen={() => setMenuIsOpen(true)} 
+                    onMenuClose={() => setMenuIsOpen(false)}
                     onChange={handleChangeOptions}
                     placeholder='Filter by...'
                     closeMenuOnSelect={false}
@@ -100,14 +101,14 @@ const CustomMenuList = (props) => {
                 />
                 }
                 <Form.Control 
-                    value={inputFilter}
+                    value={inputValue}
                     placeholder='Search in result...'
                     onChange={(e)=>handleInputFilterChange(e)}
                     className='border-1 border-teal-normal'
                     onKeyDown={handleKeyPress}
                 />
               <Button 
-              onClick={()=>searchInput(inputFilter)}
+              onClick={()=>searchInput(inputValue)}
               className='bg-transparent border-1 border-teal-normal'
               >
                 <FontAwesomeIcon icon={faSearch} className='text-color-black'/>

@@ -9,10 +9,11 @@ import { findKeyByKeyword, getUniqueConferences,  } from "../../utils/checkFetch
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import useSearchKeyword from '../../hooks/useSearchKeyword';
 
 const FilterSelected = ({onDelete, onClearAll}) => {
   const { deleteKeyword, clearKeywords, optionsSelected, getKeyword } = useSearch()
-  
+  const {removeKeyword, }= useSearchKeyword()
   const [keywordsSelected, setKeywordsSelected] = useState(null)
   const [total, setTotal] = useState(0)
   const {pathname} = useLocation()
@@ -24,6 +25,7 @@ const FilterSelected = ({onDelete, onClearAll}) => {
   
   const handleDeletekeyword = (keyword) => {
     deleteKeyword(findKeyByKeyword(optionsSelected, keyword),keyword)
+    //removeKeyword(findKeyByKeyword(optionsSelected, keyword),keyword)
     onDelete(keyword)
   }
   const handleClearKeyword = () => {

@@ -5,7 +5,6 @@ import ReactPaginate from 'react-paginate'
 import UnfollowIcon from './../assets/imgs/unfollow.png'
 import FollowIcon from './../assets/imgs/follow.png'
 import TimeIcon from './../assets/imgs/time.png'
-import LocationIcon from './../assets/imgs/location.png'
 import useFollow from '../hooks/useFollow'
 import { isObjectInList } from '../utils/checkExistInList'
 
@@ -13,7 +12,6 @@ import useSearch from '../hooks/useSearch'
 import { DropdownSort } from './DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../utils/sortConferences'
 
-import ArrowIcon from './../assets/imgs/arrow.png'
 import Loading from './Loading'
 import { getDateValue } from '../utils/formatDate'
 import Filter from './Filter/Filter'
@@ -25,34 +23,80 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-    const {handleGetOne, getStartEndDate} = useConference()
-    const { listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
+    const { selectOptionSort, displaySortList, fetchData, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
+    const { listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
     const [page, setPage] = useState(0)
     const [isClickFollow, setIsClickFollow] = useState(false)
-    const [selectOptionSort, setSelectOptionSort] = useState('')
-    const [copiedConferences, setcopiedConferences] = useState([])
+    const [isFetchNew, setisFetchNew] = useState(false)
     const [displayConferences, setDisplayedConferences] = useState([])
+    const [currentPage, setCurrentPage] = useState([])
+    const [loadingPage, setLoadingPage] = useState(false)
 
     const itemsPerPage = 7;
     const pagesVisited = page * itemsPerPage;
 
     useEffect(() => {
         setPage(0)
-    }, [optionsSelected])
+    }, [optionsSelected, selectOptionSort])
 
     useEffect(() => {
-        const sortedConf = sortByFollow(conferencesProp, listFollowed)
-        setDisplayedConferences(sortedConf)
-        setcopiedConferences(sortedConf)
-
-
+        if (selectOptionSort === "Random") {
+            const sortedConf = sortByFollow(conferencesProp, listFollowed)
+            const current = sortedConf.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
+            setCurrentPage(current)
+        }
     }, [conferencesProp, listFollowed])
 
     useEffect(() => {
-        getListFollowedConferences()
-    }, [isClickFollow])
+        if (selectOptionSort === "Random") {
+            const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
+            setCurrentPage(current)
+        }
+        else {            
+            if(checkExistValue(optionsSelected).some(value => value === true)){
+                const sortedConferences = sortConferences(selectOptionSort, [...conferencesProp])
+                const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)                
+                setCurrentPage(current)
+            }
+           else {
+            const sortedConferences = sortConferences(selectOptionSort, [...displayConferences])
+            const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
+            setCurrentPage(current)
+           }
+        }
+    }, [selectOptionSort])
+
+    useEffect(() => {
+        if (selectOptionSort !== "Random") {           
+            const sortedConferences = sortConferences(selectOptionSort, displayConferences)
+            const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
+            setCurrentPage(current)
+        }
+    }, [selectOptionSort])
+    
+    useEffect(() => {
+        //xử lý chọn page
+        const updatedCheck = conferencesProp.length >= page * itemsPerPage;       
+        if(loadingPage && !updatedCheck){
+            setisFetchNew(true)
+            const fetchPageData = async () => {
+                const data = await fetchData(page, itemsPerPage)
+                setCurrentPage(data.data)
+            }
+            fetchPageData()        
+            setLoadingPage(false)
+        }
+        if(updatedCheck){
+            const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
+            setCurrentPage(current)
+            
+        setLoadingPage(false)
+        }
+        
+      }, [loadingPage, conferencesProp, page]);
+    
 
     const handleFollow = async (id) => {
         setIsClickFollow(true)
@@ -64,7 +108,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         setIsClickFollow(true)
         const status = await unfollowConference(id)
     }
-    const handlePageClick = (event) => {
+    const handlePageClick = async (event) => {
         setPage(event.selected)
         // Cuộn lên đầu danh sách khi chuyển trang
         const element = document.getElementById('conferences-render');
@@ -74,6 +118,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 behavior: 'smooth'
             });
         }
+        setLoadingPage(true)       
     };
 
     const chooseConf = (id) => {
@@ -83,15 +128,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
 
     const handleDropdownSelect = (value) => {
-        setSelectOptionSort(value);
-        if (value === "Random") {
-            setDisplayedConferences([...copiedConferences])
-        }
-        else {
-            const sortedConferences = sortConferences(value, [...copiedConferences])
-            setDisplayedConferences(sortedConferences)
-        }
         setPage(0)
+        setDisplayedConferences(displaySortList)
+        handleSelectOptionSort(value)       
     };
 
     const getLengthString = (string) => string.length
@@ -105,12 +144,11 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         )
     }
     return (
-        <Container className='d-flex flex-column align-items-center p-0'>
+        <Container   id='conferences-render' className='d-flex flex-column align-items-center p-0'>
 
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
-                <div className="h5 fw-bold" id='conferences-render'>
-                    Conferences
-                    <span className='fw-normal'> ({totalConferences}) </span>
+                <div className="h5 fw-bold ms-4 mt-2">
+                    {`${totalConferences} conferences`}
                 </div>
                 <div className='d-flex'>
                     {
@@ -133,10 +171,17 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                         conferencesProp && conferencesProp.length > 0
                             ?
                             <>
+                            <>
                                 {
-                                    displayConferences
-                                        .slice(pagesVisited, pagesVisited + itemsPerPage)
-                                        .map((conf) => (
+                                    loadingPage ?
+                                    <div className="my-4">
+                                        <Loading/>
+                                    </div>
+                                    :
+                                    <>
+                                    {
+                                    
+                                        currentPage.map((conf) => (
                                             <Card
                                                 className='my-conf-card'
                                                 style={{}}
@@ -177,17 +222,17 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                     <Image src={TimeIcon} className='me-2' width={18} />
                                                                     <label className='conf-data-label'>Conference Date: </label>
                                                                     <span className='conf-data'>
-                                                                        
+
                                                                         <>
-                                                                            {getStartEndDate(conf.organizations)} 
-                                                                            
+                                                                            {getStartEndDate(conf.organizations)}
+
                                                                         </>
-                                                                        
+
                                                                     </span>
                                                                 </Card.Text>
                                                             </Stack>
                                                             <Card.Text className='d-flex align-items-center fs-6 mt-2'>
-                                                                <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5'/>
+                                                                <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
                                                                 {conf.organizations.length > 0 ? (
                                                                     // Nếu location không null, hiển thị giá trị của nó
                                                                     <>{conf.organizations[0].location || 'Updating...'}</>
@@ -230,6 +275,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                             </Card>
                                         ))
                                 }
+                                    </>
+                                }
+                            </>
                             </>
                             :
                             <>
@@ -239,11 +287,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     <ReactPaginate
                         breakLabel="..."
                         nextLabel=">"
+                        previousLabel="<"
                         onPageChange={handlePageClick}
+                        forcePage={page}
                         pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
                         pageCount={totalPages}
-                        previousLabel="<"
                         renderOnZeroPageCount={null}
                         containerClassName="justify-content-center pagination"
                         previousClassName="page-item"

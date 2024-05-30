@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { baseURL } from './api/baseApi'
 import useSearch from './useSearch';
+import useConference from './useConferences';
 const useFilterStorage = (key, keyword) => {
     const [data, setData] = useState({});
+    const {conferences} = useConference()
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [totalFilterConferences, setTotalFilterConferences] = useState(0)
@@ -14,7 +16,13 @@ const useFilterStorage = (key, keyword) => {
     });
     useEffect(() => {
         if (!key || !keyword) return;
-        
+        if(key === 'category') {
+            const storedDataFilters = sessionStorage.getItem('dataFilters');
+            const parsedDataFilters = storedDataFilters ? JSON.parse(storedDataFilters) : {};
+            parsedDataFilters[keyword] = [...(parsedDataFilters[keyword] || []), ...conferences];
+            sessionStorage.setItem('dataFilters', JSON.stringify(parsedDataFilters));
+            return
+        }
         const fetchPage = async (page) => {
             
             setLoading(true);
@@ -30,7 +38,7 @@ const useFilterStorage = (key, keyword) => {
                 if (match) {
                     const startDate = match[1];
                     const endDate = match[2];
-                    apiUrl += `/conference?page=${page}&size=7&subStart=${startDate}&subEnd=${endDate}`;
+                    apiUrl += `/conference?page=${page}&size=20&subStart=${startDate}&subEnd=${endDate}`;
                 }
 
             }
@@ -44,14 +52,23 @@ const useFilterStorage = (key, keyword) => {
                 if (match) {
                     const startDate = match[1];
                     const endDate = match[2];
-                    apiUrl += `/conference?page=${page}&size=7&confStart=${startDate}&confEnd=${endDate}`;
+                    apiUrl += `/conference?page=${page}&size=20&confStart=${startDate}&confEnd=${endDate}`;
                 }
             }
             else if (listkey.includes(key)) {
-                apiUrl += `/conference?page=${page}&size=7&${key}[]=${keyword}`;
+                apiUrl += `/conference?page=${page}&size=20&${key}[]=${keyword}`;
             } 
+            else if (key === 'rating') {
+                    const match = keyword.match(/\d+/);
+                    let rating = 0
+                    // Nếu tìm thấy số, trả về giá trị đầu tiên tìm thấy
+                    if (match && match.length > 0) {
+                        rating = parseInt(match[0]);
+                    }
+                    apiUrl += `/conference?page=${page}&size=20&${key}[]=${rating}`;
+            }
             else {  
-                apiUrl += `/conference?page=${page}&size=7&${key}=${keyword}`;
+                apiUrl += `/conference?page=${page}&size=20&${key}=${keyword}`;
             }
 
             const response = await fetch(`${apiUrl}`);
@@ -71,11 +88,11 @@ const useFilterStorage = (key, keyword) => {
                 const updatedDataFilters = { ...dataFilters };
                 updatedDataFilters[keyword] = firstPageData.data;
                 setDataFilters(updatedDataFilters);
-
+                const maxPages = firstPageData.maxPages;
                 sessionStorage.setItem('dataFilters', JSON.stringify(updatedDataFilters));
-
+                
                 // Fetch remaining pages asynchronously
-                for (let i = 2; i <= firstPageData.maxPages; i++) {
+                for (let i = 2; i <= maxPages; i++) {
                     fetchPage(i).then(pageData => {
                         const storedDataFilters = sessionStorage.getItem('dataFilters');
                         const parsedDataFilters = storedDataFilters ? JSON.parse(storedDataFilters) : {};
@@ -103,12 +120,20 @@ const useFilterStorage = (key, keyword) => {
         delete updatedDataFilters[keyToClear];
         setDataFilters(updatedDataFilters);
         sessionStorage.setItem('dataFilters', JSON.stringify(updatedDataFilters));
+                    
 
+            // Lấy đối tượng hiện tại từ sessionStorage, nếu không có thì gán mặc định là một đối tượng rỗng
+        let keywordValuePairs = JSON.parse(sessionStorage.getItem('keywordFilter')) || {};
+        // Xóa cặp giá trị từ đối tượng
+        delete keywordValuePairs[keyToClear];
+
+        // Lưu đối tượng cập nhật vào sessionStorage
+        sessionStorage.setItem('keywordFilter', JSON.stringify(keywordValuePairs));                
     };
     function clearAllKeywords(){
         setDataFilters({});
-        setData([])
         sessionStorage.removeItem('dataFilters');
+        sessionStorage.removeItem('keywordFilter');
     }
 
 

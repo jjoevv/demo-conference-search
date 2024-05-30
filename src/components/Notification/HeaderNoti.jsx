@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCircle } from '@fortawesome/free-solid-svg-icons';
 import {  useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import useConference from '../../hooks/useConferences';
 
 
 const HeaderNoti = () => {
-  //const { socket,  notifications, hasNewNotification, message, error, isConnected, sendMessage } = useNotification();
+  const {handleGetOne} = useConference()
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {user} = useLocalStorage()
   const { notifications, getNoticationById, getAllNotifications} = useNotification()
@@ -37,12 +38,14 @@ const HeaderNoti = () => {
   };
 
   const handleClickMessage = async (noti) => {
-    await getNoticationById([noti.tid])
+    await handleGetOne(noti.Follow.CallForPaperCfpId)
+    await getNoticationById([noti])
     navigate(`/detailed-information/${noti.Follow.CallForPaperCfpId}`)
   }
   const handleViewAll = async () => {
     setDropdownOpen(!dropdownOpen);
     const unreadNotifications = notifications.filter(notification => !notification.read_status);
+    
     await getNoticationById(unreadNotifications)
     navigate(user ? '/notifications' : 'login')
   }

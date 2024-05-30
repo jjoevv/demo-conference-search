@@ -2,12 +2,8 @@ import { Col, Row } from 'react-bootstrap'
 import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import RedirectButton from '../RedirectButton'
-import { useEffect, useState } from 'react'
-import moment from 'moment'
-const InformationPage = ({conference}) => {
-  const [isOrganizations, setOrganizations] = useState(false)
-  const [displayOrganizations, setDisplayOrganizations] = useState([])
-  const {getConferenceDate} = useConference()
+const InformationPage = ({ conference }) => {
+  const { getConferenceDate } = useConference()
 
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (Array.isArray(fieldOfResearch)) {
@@ -20,44 +16,15 @@ const InformationPage = ({conference}) => {
       return <div>{fieldOfResearch}</div>;
     }
   };
+  const renderLocation = (organizations) => {
+    const newOrg = organizations.find(org => org.status === "new");
+    return newOrg ? newOrg.location : ''
+  };
 
-  useEffect(() => {
-    if (conference) {
-      // Tạo một mảng để lưu các phần tử duy nhất
-      const uniqueOrganizations = [];
-      // Tạo một đối tượng để lưu trữ các phần tử theo tên
-      const orgMap = new Map();
-
-      conference.organizations.forEach(org => {
-        if (orgMap.has(org.name)) {
-          const existingOrg = orgMap.get(org.name);
-          if (existingOrg.status !== 'new' && org.status === 'new') {
-            // Nếu tồn tại phần tử có status khác 'new' và phần tử hiện tại có status 'new'
-            org.start_date_old = existingOrg.start_date;
-            org.start_date_new = org.start_date;
-            // Thay thế phần tử cũ bằng phần tử mới
-            orgMap.set(org.name, org);
-          }
-        } else {
-          orgMap.set(org.name, org);
-        }
-      });
-
-      // Lọc các phần tử không có status 'old'
-      orgMap.forEach((org, name) => {
-        if (org.status !== 'old') {
-          uniqueOrganizations.push(org);
-        }
-      });
-
-      if (uniqueOrganizations.length > 1) {
-        setOrganizations(true)
-      }
-      setDisplayOrganizations(uniqueOrganizations)
-
-    }
-  }, [conference])
-
+  const renderType = (organizations) => {
+    const newOrg = organizations.find(org => org.status === "new");
+    return newOrg ? newOrg.type : ''
+  };
 
   return (
     <div className='px-5 m-5' >
@@ -71,58 +38,40 @@ const InformationPage = ({conference}) => {
           <div className='fw-bold fs-5 fs-5 fw-bold fs-5 mt-2 py-3'>{conference.information.name}</div>
           <div className='my-2'>
 
-            {
-              displayOrganizations.map((org, index) => (
-                <>
-                  {
-                    org.status === "new" &&
-                    <div key={index}>
-                      {isOrganizations && <span className='fw-bold fs-5 text-color-black fw-bold fs-5 fs-5'>Organization {index + 1}</span>}
-                      <Row className='py-3 ps-4 bg-teal-light' >
-                        <Col xs={4} className='d-flex align-items-center'>Organization name:</Col>
-                        <Col className='fw-bold fs-5'>
-                          {capitalizeFirstLetter(org.name)}
-                        </Col>
-                      </Row>
-                      <Row className='py-3 ps-4'>
-                        <Col xs={4} className='d-flex align-items-center'>Type:</Col>
-                        <Col className='fw-bold fs-5'>
-                          {
-                            org.type !== null
-                              ?
-                              capitalizeFirstLetter(org.type)
-                              :
-                              <span className='text-secondary'>Updating...</span>
-                          }
-                        </Col>
-                      </Row>
-                      <Row className='py-3 ps-4 bg-teal-light'>
-                        <Col xs={4} className='d-flex align-items-center'>Location:</Col>
-                        <Col className='fw-bold fs-5'>
-                          {
-                            org.location !== null || org.location !== ''
-                              ?
-                              capitalizeFirstLetter(org.type)
-                              :
-                              <span className='text-secondary'>Updating...</span>
-                          }
-                        </Col>
-                      </Row>
-                      <Row className='py-3 ps-4'>
+            <Row className='py-3 ps-4'>
+              <Col xs={4} className='d-flex align-items-center'>Type:</Col>
+              <Col className='fw-bold fs-5'>
+              {renderType(conference.organizations) !== '' ? (
+              capitalizeFirstLetter(renderType(conference.organizations))
+          ) : (
+            <span className='text-secondary'>Updating...</span>
+          )}
+              </Col>
+            </Row>
+            <Row className='py-3 ps-4 bg-teal-light'>
+              <Col xs={4} className='d-flex align-items-center'>Location:</Col>
+              <Col className='fw-bold fs-5'>
+                {renderLocation(conference.organizations) !== '' ? (
+                  capitalizeFirstLetter(renderLocation(conference.organizations))
+                ) : (
+                  <span className='text-secondary'>Updating...</span>
+                )}
+              </Col>
+            </Row>
+            <Row className='py-3 ps-4'>
 
-                        <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
-                        <Col className='fw-bold fs-5'>
+              <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
+              <Col className='fw-bold fs-5'>
 
-                        {getConferenceDate(conference.organizations)}
+                {
+                  getConferenceDate(conference.organizations) !== '' ?
+                    getConferenceDate(conference.organizations) :
+                    <span className='text-secondary'>Updating...</span>
 
-                        </Col>
-                      </Row>
-                    </div>
-                  }
-                </>
-              ))
-            }
+                }
 
+              </Col>
+            </Row>
 
             <Row className='bg-teal-light py-3 ps-4'>
               <Col xs={4} className='d-flex align-items-center'>Category:</Col>

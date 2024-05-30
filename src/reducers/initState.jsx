@@ -50,8 +50,11 @@ export const initialState = {
   optionFilter: [],
   resultKeywordFilter: [],
   resultFilter: [],
+  inputFilter: '',
+  actionWithKeyword:'',
 
-  
+
+
   listFollowed: [],
   //filter in auth page
   filterAuth: [],

@@ -10,7 +10,8 @@ export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
 export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
 export const REGISTRATION_FAILURE = 'REGISTRATION_FAILURE';
 
-export const SEARCH_KEYWORD_SUCCESS = 'SEARCH_KEYWORD_SUCCESS'; //get all keywords by input and filter
+export const SEARCH_KEYWORD = 'SEARCH_KEYWORD'; //get all keywords by input and filter
+export const SET_SEARCH_RESULT = 'SET_SEARCH_RESULT'; //get all keywords by input and filter
 export const SEARCH_KEYWORD_FAILURE = 'SEARCH_KEYWORD_FAILURE'; //get FAILED
 
 export const GET_ALL_CONFERENCES = 'GET_ALL_CONFERENCES';   //get all conferences from server
@@ -31,6 +32,7 @@ export const CLEAR_FILTERS = 'CLEAR_FILTERS';
 export const GET_RESULT_AFTER_FILTER = 'GET_RESULT_AFTER_FILTER';
 export const SELECT_OPTION_FILTER = 'SELECT_OPTION_FILTER'
 export const INPUT_OPTION_FILTER = 'INPUT_OPTION_FILTER'
+export const SET_INPUT_OPTION_FILTER = 'SET_INPUT_OPTION_FILTER'
 
 export const GET_NOTES = 'GET_NOTES'
 

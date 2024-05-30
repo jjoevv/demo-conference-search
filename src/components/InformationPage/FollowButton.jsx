@@ -1,5 +1,5 @@
 
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import useFollow from '../../hooks/useFollow';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading';
@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 
 const FollowButton = () => {
-    const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences} = useFollow()
+    const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
     const [isClick, setIsClick] = useState(false)
     const [isFollowing, setIsFollowing] = useState(false)
     const [status, setStatus] = useState(false)
@@ -16,71 +16,90 @@ const FollowButton = () => {
     useEffect(() => {
         const res = isCheck(id.id);
         setIsFollowing(res);
-      }, [id, listFollowed]);
-      
+    }, [id, listFollowed]);
+
     useEffect(() => {
         const fetchData = async () => {
-          await getListFollowedConferences();
-          const res = isCheck(id.id);
-          setIsFollowing(res);
+            await getListFollowedConferences();
+            const res = isCheck(id.id);
+            setIsFollowing(res);
         };
-    
+
         fetchData();
-      }, [id, isClick])
+    }, [id, isClick])
 
 
-const handleFollow = async () => {
-    setIsClick(true)
-    const result = await followConference(id.id)
-    setStatus(result)
-}
+    const handleFollow = async () => {
+        setIsClick(true)
+        const result = await followConference(id.id)
+        setStatus(result)
+    }
 
 
-const handleUnfollow = async () => {    
-    setIsClick(true)
-    const result = await unfollowConference(id.id)
-    
-    setStatus(result)
-}
+    const handleUnfollow = async () => {
+        setIsClick(true)
+        const result = await unfollowConference(id.id)
 
-const isCheck = (idToCheck) => {
-    const check = listFollowed.some(item => item.id === idToCheck);
-    
-    return check
-  };
+        setStatus(result)
+    }
+
+    const isCheck = (idToCheck) => {
+        const check = listFollowed.some(item => item.id === idToCheck);
+
+        return check
+    };
     return (
         <>
-        {
-                isFollowing 
-                ?
-                
-                <Button 
-                className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
-                onClick={handleUnfollow}
-                title='Click to unfollow'
-                >
-                {
-                    loading
+            {
+                isFollowing
                     ?
-                    <Loading/>
+                    <OverlayTrigger
+                        placement="bottom"
+                        overlay={
+                            <Tooltip id={'tooltip-bottom'}>
+                                Click to unfollow conference
+                            </Tooltip>
+                        }
+                    >
+
+                        <Button
+                            className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
+                            onClick={handleUnfollow}
+                            title='Click to unfollow conference'
+                        >
+                            {
+                                loading
+                                    ?
+                                    <Loading />
+                                    :
+                                    `Followed`
+                            }
+                        </Button>
+                    </OverlayTrigger>
                     :
-                    `Followed`
-                }
-                </Button>
-                :
-                <Button 
-                className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
-                onClick={handleFollow}
-                title='Click to follow conference'
-                >
-                 {
-                    loading
-                    ?
-                    <Loading/>
-                    :
-                    `Follow`
-                }
-                </Button>
+                    <OverlayTrigger
+                        placement="bottom"
+                        overlay={
+                            <Tooltip id={'tooltip-bottom'}>
+                                Click to follow conference
+                            </Tooltip>
+                        }
+                    >
+
+
+                        <Button
+                            className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
+                            onClick={handleFollow}
+                        >
+                            {
+                                loading
+                                    ?
+                                    <Loading />
+                                    :
+                                    `Follow`
+                            }
+                        </Button>
+                    </OverlayTrigger>
             }
         </>
 

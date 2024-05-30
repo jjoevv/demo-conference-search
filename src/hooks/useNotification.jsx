@@ -18,14 +18,13 @@ const useNotification = () => {
 
   let socketRef = useRef(null);
   const user_id = JSON.parse(sessionStorage.getItem('user-id'))
+
   useEffect(() => {
     getCurrentUser()
-    
-
     const socket = io(`https://conference-searching.onrender.com`, {
       query: {
-        'user-id': user_id
-      },  
+        "user-id": user_id
+      },
       path: '/socket.io',
       transports: ["websocket", 'polling']
     });
@@ -61,7 +60,7 @@ const useNotification = () => {
     });
 
     socket.on('disconnect', () => {
-      console.log('Disconnected from socket server');
+      //console.log('Disconnected from socket server');
     });
 
     // Cleanup on unmount

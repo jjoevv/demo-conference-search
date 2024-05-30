@@ -56,7 +56,7 @@ const ImportantDatePage = () => {
           <>
 
             {
-              conference.importantDates &&
+              conference.importantDates && conference.importantDates.length > 0 ?
               <>
                 {
                   displayDates.map((date, index) => (
@@ -94,6 +94,10 @@ const ImportantDatePage = () => {
                     </Row>
                   ))
                 }
+              </>
+              :
+              <>
+              <p className="my-2">No organization dates available</p>
               </>
             }
           </>
