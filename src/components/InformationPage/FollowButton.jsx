@@ -4,10 +4,12 @@ import useFollow from '../../hooks/useFollow';
 import { useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import { useEffect, useState } from 'react';
+import useSessionStorage from '../../hooks/useSessionStorage';
 
 
 const FollowButton = () => {
     const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
+    const {getDataListInStorage} = useSessionStorage()
     const [isClick, setIsClick] = useState(false)
     const [isFollowing, setIsFollowing] = useState(false)
     const [status, setStatus] = useState(false)
@@ -20,11 +22,15 @@ const FollowButton = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await getListFollowedConferences();
+            const followedList = getDataListInStorage('listFollow')
+            console.log({followedList})
+            if(followedList.length === 0 || !followedList){
+                await getListFollowedConferences();
+            }
             const res = isCheck(id.id);
             setIsFollowing(res);
         };
-
+        console.log({listFollowed})
         fetchData();
     }, [id, isClick])
 
