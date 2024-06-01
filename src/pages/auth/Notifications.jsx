@@ -70,7 +70,7 @@ const Notifications = () => {
                 return (
                   <Row key={index} className='p-4 bg-skyblue-light rounded my-4 me-3 noti-wrapper'>
                     <span className='fw-semibold text-color-black fs-5'>{firstPart}</span>
-                    <div className='fs-5 text-teal-normal' dangerouslySetInnerHTML={{ __html: secondPart }}></div>
+                    <div className='fs-5 text-yellow' dangerouslySetInnerHTML={{ __html: secondPart }}></div>
 
                     <div className="d-flex justify-content-between align-items-center">
                       <div className='text-color-medium'>

@@ -50,7 +50,7 @@ const DetailedInformationPage = () => {
     };
 
     return (
-        <Container className='w-100 h-25 p-0' fluid>
+        <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             <Stack className='bg-blur p-5 mt-5 w-100 mw-100 text-center text-color-black'>
                 {
                     loading ?
@@ -79,7 +79,7 @@ const DetailedInformationPage = () => {
                                                         }
                                                         {renderLocation(conference.organizations) !== '' && (
                                                             <>
-                                                                <div className='d-flex justify-content-center align-items-center fs-4 my-2 mt-4 text-teal-dark'>
+                                                                <div className='d-flex justify-content-center align-items-center fs-4 my-2 mt-4 text-teal-dark fw-bold'>
                                                                     <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5' />
                                                                     <span className='text-teal-black'> {renderLocation(conference.organizations)}</span>
 

@@ -1,7 +1,6 @@
 {
     "location": [
         {"label": "Afghanistan", "value": "AF"},
-        {"label": "Åland Islands", "value": "AX"},
         {"label": "Albania", "value": "AL"},
         {"label": "Algeria", "value": "DZ"},
         {"label": "American Samoa", "value": "AS"},
@@ -225,12 +224,11 @@
         {"label": "Turkmenistan", "value": "TM"},
         {"label": "Turks and Caicos Islands", "value": "TC"},
         {"label": "Tuvalu", "value": "TV"},
-        {"label": "Uganda", "value": "UG"},
+        {"label": "Uganda",   "value": "UG"},
         {"label": "Ukraine", "value": "UA"},
         {"label": "United Arab Emirates", "value": "AE"},
         {"label": "United Kingdom", "value": "GB"},
-        {"label": "United States", "value": "US"},
-        {"label": "United States Minor Outlying Islands", "value": "UM"},
+        {"label": "USA", "value": "US"},
         {"label": "Uruguay", "value": "UY"},
         {"label": "Uzbekistan", "value": "UZ"},
         {"label": "Vanuatu", "value": "VU"},

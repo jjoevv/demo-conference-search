@@ -23,14 +23,12 @@ const FollowButton = () => {
     useEffect(() => {
         const fetchData = async () => {
             const followedList = getDataListInStorage('listFollow')
-            console.log({followedList})
             if(followedList.length === 0 || !followedList){
                 await getListFollowedConferences();
             }
             const res = isCheck(id.id);
             setIsFollowing(res);
         };
-        console.log({listFollowed})
         fetchData();
     }, [id, isClick])
 

@@ -37,17 +37,20 @@ const Homepage = () => {
     const {resultFilter,loading: loadingSearchKeyword, generateURL, fetchAllPages} = useSearchKeyword()
 
     useEffect(()=>{
-      handleGetList()
+      if(conferences.length === 0 || !conferences){
+        handleGetList()
+      }
+
       if(!check){
         setDisplayedConferences(conferences)
       }
     }, [conferences])
 
+
     useEffect(()=>{
       getListFollowedConferences()
       getPostedConferences()
     },[])
-
   
 
     useEffect(()=>{

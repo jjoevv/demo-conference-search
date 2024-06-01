@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Modal, Carousel, CarouselItem, Row, ButtonGroup } from 'react-bootstrap'
 import AddButtonIcon from './../../assets/imgs/edit.png'
 import ChooseFORs from '../PostConference/ChooseFORs';

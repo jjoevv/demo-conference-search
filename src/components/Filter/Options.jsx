@@ -15,11 +15,12 @@ const customStyles = {
       }),
     control: (provided, state) => ({
         ...provided,
+        cursor: 'pointer',
         border: '1px solid #4EB1A4', // Điều chỉnh màu và độ dày của border khi focus
         borderRadius: '4px', // Điều chỉnh độ cong của góc
         boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(76, 139, 245, 0.25)' : null, // Hiệu ứng boxShadow khi focus
         '&:hover': {
-            border: '1px solid #4c8bf5', // Điều chỉnh màu và độ dày của border khi hover
+            border: '1px solid #469E92', // Điều chỉnh màu và độ dày của border khi hover
         },
     }),
     option: (provided, state) => ({

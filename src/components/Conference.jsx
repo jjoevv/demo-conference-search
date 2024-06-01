@@ -121,8 +121,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         setLoadingPage(true)       
     };
 
-    const chooseConf = (id) => {
-        handleGetOne(id)
+    const chooseConf = async (id) => {
+        await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
 
@@ -215,7 +215,13 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 <Card.Text className='d-flex align-items-center mb-1'>
                                                                     <Image src={TimeIcon} className='me-2' width={18} />
                                                                     <label className='conf-data-label'>Submission Date: </label>
-                                                                    <span className='conf-data'>{getDateValue("submission", conf.importantDates)}</span>
+                                                                    <span className='conf-data'>
+                                                                    {
+                                                                        getDateValue("submission", conf.importantDates)?
+                                                                        getDateValue("submission", conf.importantDates):
+                                                                        <span className='text-secondary'>Updating...</span>
+                                                                    }
+                                                                    </span>
                                                                 </Card.Text>
 
                                                                 <Card.Text className='d-flex align-items-center mb-1 text-color-black'>

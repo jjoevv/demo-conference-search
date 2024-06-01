@@ -9,20 +9,29 @@ import unstarIcon from '../../assets/imgs/unstar.png'
 import Select from 'react-select'
 const rating = [1, 2, 3, 4, 5]
 const customStyles = {
+  menuPortal: (provided) => ({
+    ...provided,
+    zIndex: 9999, // Đặt giá trị z-index cao để luôn nằm trên các thành phần khác
+  }),
   control: (provided, state) => ({
     ...provided,
+    cursor: 'pointer',
     border: '1px solid #4EB1A4', // Điều chỉnh màu và độ dày của border khi focus
     borderRadius: '4px', // Điều chỉnh độ cong của góc
     boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(76, 139, 245, 0.25)' : null, // Hiệu ứng boxShadow khi focus
     '&:hover': {
-      border: '2px solid #4c8bf5', // Điều chỉnh màu và độ dày của border khi hover
+      border: '1px solid #469E92', // Điều chỉnh màu và độ dày của border khi hover
     },
   }),
   option: (provided, state) => ({
     ...provided,
-    background: state.isFocused ? 'lightgray !important' : 'white !important',
-    color: state.isFocused ? 'black !important' : 'gray !important',
-    cursor: 'pointer', // Thay đổi kiểu con trỏ khi hover
+        background: state.isFocused ? 'lightgray' : 'white',
+        color: state.isFocused ? 'black' : 'gray',
+        cursor: 'pointer',
+        '&:hover': {
+            background: 'lightgray', // Điều chỉnh màu nền khi hover
+            color: 'black', // Điều chỉnh màu chữ khi hover
+        },
   }),
 };
 const CustomOption = ({ innerProps, label, isSelected }) => {
@@ -88,6 +97,8 @@ const StarDropdown = ({ label, onApply }) => {
         onChange={handleOptionChange}
         closeMenuOnSelect={true}
         placeholder="All"
+        menuPortalTarget={document.body}
+        menuPosition='fixed'
       />
     </div>
   )

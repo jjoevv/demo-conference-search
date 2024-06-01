@@ -178,6 +178,11 @@ button.bg-yellow-normal:active {
     color: #054142;
 }
 
+
+.text-skyblue-normal{ 
+    color: #81d2e4;
+}
+
 .text-skyblue-dark{ 
     color: #619eab;
 }

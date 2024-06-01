@@ -36,8 +36,8 @@ export function getDateValue(date_type, list) {
       date_value: new Date(date.date_value),
     }))
     .sort((a, b) => a.date_value - b.date_value);
-const result = filteredDates.length > 0 ? filteredDates[0].date_value : 'N/A';
-
+const result = filteredDates.length > 0 ? filteredDates[0].date_value : null;
+    
   // Lấy giá trị ngày gần nhất (nếu có)
   return formatDate(result)
 }

@@ -59,7 +59,7 @@ const useConference = () => {
         const totalPages = Math.ceil(totalConf / 7); // Lấy số lượng trang từ dữ liệu đầu tiên
         const maxPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
         setTotalConferences(totalConf)
-        
+        setLoading(false)
         localStorage.setItem('totalConferences', JSON.stringify(totalConf))
         localStorage.setItem('totalPagesConferences', JSON.stringify(totalPages))
 
@@ -124,10 +124,14 @@ const useConference = () => {
     let dateRange = '';
     if (startDate) {
       if (endDate) {
-        dateRange = `From ${formattedDateStartDate} to ${formattedDateEndDate}`;
-      } else {
+        if (moment(startDate).isAfter(endDate)) {
+            dateRange = `${formattedDateStartDate}`;
+        } else {
+            dateRange = `From ${formattedDateStartDate} to ${formattedDateEndDate}`;
+        }
+    } else {
         dateRange = `${formattedDateStartDate}`;
-      }
+    }
     }
     return dateRange
     }
@@ -152,7 +156,14 @@ const useConference = () => {
     
     // Xác định dateRange dựa trên giá trị của startDate và endDate
     if (startDate) {
-      if (endDate) {
+      if (endDate && moment(startDate).isAfter(endDate)) {
+        return (
+            <span>
+                {formattedDateStartDate}
+            </span>
+        )
+      }
+      else if (endDate) {
         return (
           <span>
             {formattedDateStartDate} <FontAwesomeIcon icon={faArrowRight} /> {formattedDateEndDate}

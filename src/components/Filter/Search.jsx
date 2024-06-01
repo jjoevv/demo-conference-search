@@ -27,7 +27,16 @@ const Search = ({onApply, onDelete, onClearAll, loading}) => {
     onClearAll()
   }, [pathname])
 
-
+  useEffect(() => {
+    if (loading) {
+      document.body.style.cursor='wait'
+    } else {
+      {document.body.style.cursor='default';}
+    }
+    return () => {
+      {document.body.style.cursor='default';}
+    };
+}, [loading]);
   const tooltipRef = useRef(null);
  
 
@@ -113,13 +122,7 @@ const Search = ({onApply, onDelete, onClearAll, loading}) => {
       </Button>
       
       {showAdvancedFilter && <AdvancedFilter onApply={onApply}/>}
-      
-     {
-      loading && 
-      <div className="text-center mt-4">
-      <Spinner/>  
-      </div>
-     }
+     
       
       {optionsSelected && <FilterSelected onDelete={onDelete} onClearAll={onClearAll}/>}  
     </Container>

@@ -48,6 +48,12 @@ const ImportantDatePage = () => {
 
 
   }, [conference])
+  const today = new Date();
+  const checkDate = (dateValue) => {
+    const date = new Date(dateValue);
+    return date < today;
+};
+
   return (
     <div className='px-5 m-5'>
       <span className='fs-4 fw-bold text-teal-dark'>Important dates</span>
@@ -69,7 +75,7 @@ const ImportantDatePage = () => {
                         <span className=' fw-bold fs-5 text-color-black my-2 d-flex align-items-center'>
                           {capitalizeFirstLetter(date.date_type)}
                         </span>
-                        <span className='fs-6 fw-medium text-color-medium m-0'>
+                        <span className='fs-6 fw-medium text-color-black m-0'>
                           {
                             date.date_value_old && date.date_value !== date.date_value_old ?
                               <>
@@ -78,11 +84,13 @@ const ImportantDatePage = () => {
                                 </span>
                                 <Image src={ArrowIcon} width={20} className='mx-2' />
                                 {moment(date.date_value).format('ddd, YYYY/MM/DD')}
+                               
+
                               </>
                               :
                               <>
                                 {moment(date.date_value).format('dddd, YYYY/MM/DD')}
-
+                                {checkDate(date.date_value) && <span className='text-secondary'> (Past date)</span>}
                                 {isUpcoming(date.date_value) &&
                                   <span className="bg-yellow-normal d-inline p-1 px-2 rounded-3 mx-3 text-primary-emphasis fw-semibold">Upcoming</span>
                                 }
