@@ -54,7 +54,9 @@ const DetailedInformationPage = () => {
             <Stack className='bg-blur p-5 mt-5 w-100 mw-100 text-center text-color-black'>
                 {
                     loading ?
-                        <Loading onReload={() => handleGetOne(conf_id.id)} />
+                        <div style={{height: "400px"}}>
+                            <Loading onReload={() => handleGetOne(conf_id.id)} />
+                        </div>
                         :
                         <>
                             {

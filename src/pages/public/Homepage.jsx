@@ -57,6 +57,7 @@ const Homepage = () => {
         setDisplayedConferences(filterResult)
         setTotalConferences(filterResult.length)
         setTotalPages(Math.ceil(filterResult.length / 7))
+        console.log({filterResult})
         
       }
       else {

@@ -87,130 +87,136 @@ const useFilter = () => {
 }
 
 const filterConferences = (listConferences, keywordSelected) => {
-  setLoading(true)
-    const result =  listConferences.filter(conference => {
-      // Kiểm tra từng trường trong optionsSelected
-      for (const [key, keywords] of Object.entries(keywordSelected)) {
-        if (keywords.length > 0) {
-          // Chuyển tất cả các từ khóa về chữ thường
-          const lowerKeywords = keywords.map(keyword => keyword.toLowerCase());
-  
-          // Tùy thuộc vào key, kiểm tra giá trị tương ứng trong conference
+  setLoading(true);
+  let results = [];
+
+  listConferences.forEach(conference => {
+    let matchKeywords = {}; // Object to store matching keywords for each key
+
+    let isOverallMatch = true;
+
+    // Iterate through each category in keywordSelected
+    for (const [key, keywords] of Object.entries(keywordSelected)) {
+      if (keywords.length > 0) {
+        const lowerKeywords = keywords.map(keyword => keyword.toLowerCase());
+        let isCategoryMatch = false;
+
+        lowerKeywords.forEach(keyword => {
           let isMatch = false;
+
           switch (key) {
-            case 'location':
-              isMatch = lowerKeywords.every(keyword => 
-                conference.organizations?.some(org => org.location?.toLowerCase().includes(keyword))
-              );
+            case 'location': {
+              isMatch = conference.organizations?.some(org => org.location?.toLowerCase().includes(keyword));
               break;
-            case 'rank':
-              isMatch = lowerKeywords.every(keyword => 
-                conference.information?.rank?.toLowerCase().includes(keyword)
-              );
+            }
+
+            case 'rank': {
+              isMatch = conference.information?.rank?.toLowerCase().includes(keyword);
               break;
-            case 'for': // Assuming 'for' corresponds to fieldOfResearch
-              isMatch = lowerKeywords.every(keyword => 
-                conference.information?.fieldOfResearch?.some(field => field?.toLowerCase().includes(keyword))
-              );
+            }
+
+            case 'for': {
+              isMatch = conference.information?.fieldOfResearch?.some(field => field?.toLowerCase().includes(keyword));
               break;
-            case 'source':
-              isMatch = lowerKeywords.every(keyword => 
-                conference.information?.source?.toLowerCase().includes(keyword)
-              );
+            }
+
+            case 'source': {
+              isMatch = conference.information?.source?.toLowerCase().includes(keyword);
               break;
-            case 'acronym':
-              isMatch = lowerKeywords.every(keyword => 
-                conference.information?.acronym?.toLowerCase().includes(keyword)
-              );
+            }
+
+            case 'acronym': {
+              isMatch = conference.information?.acronym?.toLowerCase().includes(keyword);
               break;
-            case 'type':
-              isMatch = lowerKeywords.every(keyword => 
-                conference.organizations?.some(org => org.type?.toLowerCase().includes(keyword))
-              );
+            }
+
+            case 'type': {
+              isMatch = conference.organizations?.some(org => org.type?.toLowerCase().includes(keyword));
               break;
-            case 'conferenceDate':
-              isMatch = lowerKeywords.every(keyword => {
-                // Tìm ngày bắt đầu và kết thúc từ keyword
-                const matchDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
-                if (matchDates && matchDates.length === 3) {
-                  const startDate = new Date(matchDates[1]);
-                  const endDate = new Date(matchDates[2]);
-                  // Kiểm tra mỗi ngày trong importantDates của conference
-                  return conference.organizations?.some(org => {
-                    const dateValue = new Date(org.start_date);
-                    return (
-                      dateValue &&
-                      dateValue >= startDate && // Ngày bắt đầu
-                      dateValue <= endDate && // Ngày kết thúc
-                      org.status === "new" // Kiểm tra status
-                    );
-                  });
-                }
-                return false; // Trả về false nếu không tìm thấy ngày
-              });
+            }
+
+            case 'conferenceDate': {
+              const matchDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
+              if (matchDates) {
+                const startDate = new Date(matchDates[1]);
+                const endDate = new Date(matchDates[2]);
+                isMatch = conference.organizations?.some(org => {
+                  const dateValue = new Date(org.start_date);
+                  return dateValue >= startDate && dateValue <= endDate && org.status === "new";
+                });
+              }
               break;
-            case 'submissionDate':
-              isMatch = lowerKeywords.every(keyword => {
-                // Tìm ngày bắt đầu và kết thúc từ keyword
-                const matchDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
-                if (matchDates && matchDates.length === 3) {
-                  const startDate = new Date(matchDates[1]);
-                  const endDate = new Date(matchDates[2]);
-            
-                  // Kiểm tra mỗi ngày trong importantDates của conference
-                  return conference.importantDates?.some(date => {
-                    const dateValue = new Date(date.date_value);
-                    return (
-                      date.date_type?.toLowerCase().includes('sub') &&
-                      dateValue >= startDate && // Ngày bắt đầu
-                      dateValue <= endDate && // Ngày kết thúc
-                      date.status === "new" // Kiểm tra status
-                    );
-                  });
-                }
-                return false; // Trả về false nếu không tìm thấy ngày
-              });
+            }
+
+            case 'submissionDate': {
+              const matchSubDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
+              if (matchSubDates) {
+                const startDate = new Date(matchSubDates[1]);
+                const endDate = new Date(matchSubDates[2]);
+                isMatch = conference.importantDates?.some(date => {
+                  const dateValue = new Date(date.date_value);
+                  return date.date_type?.toLowerCase().includes('sub') &&
+                         dateValue >= startDate && dateValue <= endDate &&
+                         date.status === "new";
+                });
+              }
               break;
-            
-            case 'search':
-              isMatch = lowerKeywords.every(keyword => 
-                searchInObject(conference, keyword)
-              );
+            }
+
+            case 'search': {
+              isMatch = searchInObject(conference, keyword);
               break;
-            case 'impactfactor': // Assuming impact factor is in the information
-              isMatch = lowerKeywords.every(keyword => 
-                conference.information?.impactfactor?.toLowerCase().includes(keyword)
-              );
+            }
+
+            case 'impactfactor': {
+              isMatch = conference.information?.impactfactor?.toLowerCase().includes(keyword);
               break;
-            case 'rating':
-              isMatch = lowerKeywords.every(keyword => {
-                
+            }
+
+            case 'rating': {
               const matchRating = keyword.match(/\d+/);
-              let rating = 0
-              // Nếu tìm thấy số, trả về giá trị đầu tiên tìm thấy
-              if (matchRating && matchRating.length > 0) {
-                  rating = parseInt(matchRating[0]);
-                  const threshold = parseFloat(rating);
-                  return conference.information?.rating >= threshold;
+              if (matchRating) {
+                const threshold = parseFloat(matchRating[0]);
+                isMatch = conference.information?.rating >= threshold;
               }
-              }
-              );
               break;
-            case 'category': // Assuming category corresponds to fieldOfResearch
-              isMatch = true
+            }
+
+            case 'category': {
+              isMatch = conference.information?.fieldOfResearch?.some(field => field?.toLowerCase().includes(keyword));
               break;
+            }
+
             default:
               break;
           }
-          if (!isMatch) return false; // Nếu không khớp bất kỳ từ khóa nào, bỏ qua hội nghị này
+
+          if (isMatch) {
+            if (!matchKeywords[key]) matchKeywords[key] = [];
+            matchKeywords[key].push(keyword);
+            isCategoryMatch = true;
+          }
+        });
+
+        if (!isCategoryMatch) {
+          isOverallMatch = false;
+          break;
         }
       }
-      
-      return true; // Nếu tất cả các từ khóa đều khớp
-    });
-    setLoading(false)
-    return result
+    }
+
+    if (isOverallMatch) {
+      conference.matchingKeywords = matchKeywords;
+      results.push(conference);
+    }
+  });
+
+  setLoading(false);
+  return results;
 };
+
+
+
 
 
   return {

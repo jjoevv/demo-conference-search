@@ -379,7 +379,16 @@ a {
 /*****/
 .my-conf-card {
     border-radius: 15px;
-    border: none;
+    border: 1px solid #f2fbfc;
+    background-color: #d0f5f0;
+    cursor: pointer;
+    padding: 20px 40px;
+    margin: 20px 0px;
+}
+
+.my-conf-card:hover {
+    border-radius: 15px;
+    border: 1px solid #81d2e4;
     background-color: #C2F1EB;
     cursor: pointer;
     padding: 20px 40px;

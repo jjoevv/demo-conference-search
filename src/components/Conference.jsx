@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import useConference from '../hooks/useConferences'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import { capitalizeFirstLetter } from '../utils/formatWord'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, displaySortList, fetchData, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
@@ -53,26 +54,26 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
             const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
             setCurrentPage(current)
         }
-        else {            
+        else {
             const sortedConferences = sortConferences(selectOptionSort, [...conferencesProp])
             const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
             setCurrentPage(current)
         }
     }, [selectOptionSort])
 
-    
+
     useEffect(() => {
         //xử lý chọn page
-        const updatedCheck = conferencesProp.length >= page * itemsPerPage;       
-        if(updatedCheck){
+        const updatedCheck = conferencesProp.length >= page * itemsPerPage;
+        if (updatedCheck) {
             const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
             setCurrentPage(current)
-            
+
             setLoadingPage(false)
         }
-        
-      }, [loadingPage, conferencesProp, page]);
-    
+
+    }, [loadingPage, conferencesProp, page]);
+
 
     const handleFollow = async (id) => {
         setIsClickFollow(true)
@@ -94,7 +95,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 behavior: 'instant'
             });
         }
-        setLoadingPage(true)       
+        setLoadingPage(true)
     };
 
     const chooseConf = async (id) => {
@@ -106,7 +107,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     const handleDropdownSelect = (value) => {
         setPage(0)
         setDisplayedConferences(displaySortList)
-        handleSelectOptionSort(value)       
+        handleSelectOptionSort(value)
     };
 
     const getLengthString = (string) => string.length
@@ -120,16 +121,16 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         )
     }
     return (
-        <Container   id='conferences-render' className='d-flex flex-column align-items-center p-0'>
+        <Container id='conferences-render' className='d-flex flex-column align-items-center p-0'>
 
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
                 <div className="h5 fw-bold ms-4 mt-2">
                     {`${totalConferences} conferences`}
                 </div>
                 <DropdownSort
-                        options={["Random", "Upcoming", "Name A > Z", "Latest"]}
-                        onSelect={handleDropdownSelect}
-                    />
+                    options={["Random", "Upcoming", "Name A > Z", "Latest"]}
+                    onSelect={handleDropdownSelect}
+                />
             </div>
 
             <Row>
@@ -139,119 +140,132 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                         conferencesProp && conferencesProp.length > 0
                             ?
                             <>
-                            <>
-                                {
-                                    loadingPage ?
-                                    <div className="my-4">
-                                        <Loading/>
-                                    </div>
-                                    :
-                                    <>
+                                <>
                                     {
-                                    
-                                        currentPage.map((conf) => (
-                                            <Card
-                                                className='my-conf-card'
-                                                style={{}}
-                                                id={conf.id}
-                                                key={conf.id}>
-                                                <Stack className='p-0 w-100' direction='horizontal'>
-                                                    <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container '>
-                                                        <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
-                                                    </div>
+                                        loadingPage ?
+                                            <div className="my-4">
+                                                <Loading />
+                                            </div>
+                                            :
+                                            <>
+                                                {
 
-                                                    <div className='w-100'>
-                                                        <Card.Body className='' onClick={() => chooseConf(conf.id)}>
-                                                            <Card.Title className='text-color-black'>
-                                                                <div className='fw-bold d-flex align-items-center justify-content-start mt-1'>
-                                                                    {
-                                                                        conf.organizations.length > 0 &&
-                                                                        <>
-                                                                            {isUpcoming(conf.organizations[0].start_date)
-                                                                                &&
-                                                                                <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
-                                                                                    Upcoming
-                                                                                </div>
-                                                                            }
-                                                                        </>
-                                                                    }
-                                                                    <span className='fw-bold fs-5 text-justify'>{conf.information.name}</span>
+                                                    currentPage.map((conf) => (
+                                                        <Card
+                                                            className='my-conf-card'
+                                                            id={conf.id}
+                                                            key={conf.id}>
+                                                            <Stack className='p-0 w-100' direction='horizontal'>
+                                                                <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container '>
+                                                                    <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
                                                                 </div>
 
-                                                            </Card.Title>
-                                                            <Stack direction="horizontal" gap={5}>
-                                                                <Card.Text className='d-flex align-items-center mb-1'>
-                                                                    <Image src={TimeIcon} className='me-2' width={18} />
-                                                                    <label className='conf-data-label'>Submission Date: </label>
-                                                                    <span className='conf-data'>
+                                                                <div className='w-100'>
+                                                                    <Card.Body className='' onClick={() => chooseConf(conf.id)}>
+                                                                        <Card.Title className='text-color-black'>
+                                                                            <div className='fw-bold d-flex align-items-center justify-content-start mt-1'>
+                                                                                {
+                                                                                    conf.organizations.length > 0 &&
+                                                                                    <>
+                                                                                        {isUpcoming(conf.organizations[0].start_date)
+                                                                                            &&
+                                                                                            <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                                                Upcoming
+                                                                                            </div>
+                                                                                        }
+                                                                                    </>
+                                                                                }
+                                                                                <span className='fw-bold fs-5 text-justify'>{conf.information.name}</span>
+                                                                            </div>
+
+                                                                        </Card.Title>
+                                                                        <Stack direction="horizontal" gap={5}>
+                                                                            <Card.Text className='d-flex align-items-center mb-1'>
+                                                                                <Image src={TimeIcon} className='me-2' width={18} />
+                                                                                <label className='conf-data-label'>Submission Date: </label>
+                                                                                <span className='conf-data'>
+                                                                                    {
+                                                                                        getDateValue("submission", conf.importantDates) ?
+                                                                                            getDateValue("submission", conf.importantDates) :
+                                                                                            <span className='text-secondary'>Updating...</span>
+                                                                                    }
+                                                                                </span>
+                                                                            </Card.Text>
+
+                                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                <Image src={TimeIcon} className='me-2' width={18} />
+                                                                                <label className='conf-data-label'>Conference Date: </label>
+                                                                                <span className='conf-data'>
+
+                                                                                    <>
+                                                                                        {getStartEndDate(conf.organizations)}
+
+                                                                                    </>
+
+                                                                                </span>
+                                                                            </Card.Text>
+
+                                                                        </Stack>
+                                                                        <Card.Text className='d-flex align-items-center fs-6 mt-2'>
+                                                                            <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
+                                                                            {conf.organizations.length > 0 ? (
+                                                                                // Nếu location không null, hiển thị giá trị của nó
+                                                                                <>{conf.organizations[0].location || 'Updating...'}</>
+                                                                            ) : (
+                                                                                // Nếu location null, hiển thị 'updating'
+                                                                                <>Updating</>
+                                                                            )}
+                                                                        </Card.Text>
+                                                                        <Stack direction="horizontal" gap={3}>
+                                                                        {
+                                                                                conf.matchingKeywords &&
+
+                                                                                   <>
+                                                                                    {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
+                                                                                        <div key={index} className='bg-skyblue-light p-1 rounded'>
+                                                                                            {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
+                                                                                        </div>
+                                                                                    ))}
+                                                                                   </>
+                                                                            }
+                                                                        </Stack>
+                                                                    </Card.Body>
+
                                                                     {
-                                                                        getDateValue("submission", conf.importantDates)?
-                                                                        getDateValue("submission", conf.importantDates):
-                                                                        <span className='text-secondary'>Updating...</span>
-                                                                    }
-                                                                    </span>
-                                                                </Card.Text>
-
-                                                                <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                    <Image src={TimeIcon} className='me-2' width={18} />
-                                                                    <label className='conf-data-label'>Conference Date: </label>
-                                                                    <span className='conf-data'>
-
-                                                                        <>
-                                                                            {getStartEndDate(conf.organizations)}
-
-                                                                        </>
-
-                                                                    </span>
-                                                                </Card.Text>
-                                                            </Stack>
-                                                            <Card.Text className='d-flex align-items-center fs-6 mt-2'>
-                                                                <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
-                                                                {conf.organizations.length > 0 ? (
-                                                                    // Nếu location không null, hiển thị giá trị của nó
-                                                                    <>{conf.organizations[0].location || 'Updating...'}</>
-                                                                ) : (
-                                                                    // Nếu location null, hiển thị 'updating'
-                                                                    <>Updating</>
-                                                                )}
-                                                            </Card.Text>
-                                                        </Card.Body>
-
-                                                        {
-                                                            isPost
-                                                                ?
-                                                                <>
-                                                                    <div className='d-flex justify-content-end'>
-                                                                        <ButtonGroupUpdate conference={conf} />
-                                                                    </div>
-                                                                </>
-                                                                :
-                                                                <>
-                                                                    {
-                                                                        isObjectInList(conf.id, listFollowed)
+                                                                        isPost
                                                                             ?
-                                                                            <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
-                                                                                <Image src={FollowIcon} className='me-2' width={18} />
-                                                                                <span>Unfollow</span>
-                                                                            </Button>
+                                                                            <>
+                                                                                <div className='d-flex justify-content-end'>
+                                                                                    <ButtonGroupUpdate conference={conf} />
+                                                                                </div>
+                                                                            </>
                                                                             :
-                                                                            <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
-                                                                                <Image src={UnfollowIcon} className='me-2 ' width={18} />
-                                                                                <span>Follow</span>
-                                                                            </Button>
+                                                                            <>
+                                                                                {
+                                                                                    isObjectInList(conf.id, listFollowed)
+                                                                                        ?
+                                                                                        <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
+                                                                                            <Image src={FollowIcon} className='me-2' width={18} />
+                                                                                            <span>Unfollow</span>
+                                                                                        </Button>
+                                                                                        :
+                                                                                        <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
+                                                                                            <Image src={UnfollowIcon} className='me-2 ' width={18} />
+                                                                                            <span>Follow</span>
+                                                                                        </Button>
+                                                                                }
+                                                                            </>
                                                                     }
-                                                                </>
-                                                        }
 
-                                                    </div>
+                                                                </div>
 
-                                                </Stack>
-                                            </Card>
-                                        ))
-                                }
-                                    </>
-                                }
-                            </>
+                                                            </Stack>
+                                                        </Card>
+                                                    ))
+                                                }
+                                            </>
+                                    }
+                                </>
                             </>
                             :
                             <>
