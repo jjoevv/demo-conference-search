@@ -26,10 +26,10 @@ const AdvancedFilter = ({onApply}) => {
                 <span className="fw-bold text-color-black">Rating</span>
                 <StarDropdown label={'rating'} onApply={onApply} />
             </Col>
-            {/*<Col>
+            {<Col>
                 <span className="fw-bold text-color-black">Type</span>
                 <Options label={"type"} onApply={onApply} />
-    </Col>*/}
+            </Col>}
 
         </Row>
     )

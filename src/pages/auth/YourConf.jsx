@@ -10,58 +10,68 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import SuccessfulModal from '../../components/Modals/SuccessModal'
 import { checkExistValue, mergeConferencesByKeyword } from '../../utils/checkFetchedResults'
 
-import Search from '../../components/Filter/Search'
 import useSearch from '../../hooks/useSearch'
-import useFilterStorage from '../../hooks/useFilterStorage'
 import useFilter from '../../hooks/useFilter'
 import Loading from '../../components/Loading'
+import Filter from '../../components/Filter/Filter'
+import useSessionStorage from '../../hooks/useSessionStorage'
 
 const YourConf = () => {
   const [showAddForm, setShowAddForm] = useState(false)
   const { optionsSelected, getOptionsFilter } = useSearch()
   const { loading: loadingPost, postedConferences, getPostedConferences } = usePost()
-  const { selectOptionFilter, resultInputFilter } = useFilter()
+  const { filterConferences } = useFilter()
   const [showSuccess, setShowSuccess] = useState(false)
   const [message, setMessage] = useState('')
   const { user } = useLocalStorage()
-  const [check, setCheck] = useState(false)
-
-  const [fetchParams, setFetchParams] = useState({ key: '', keyword: '' });
-  const { loading: loadingFilter, dataFilters, clearKeyValues, clearAllKeywords } = useFilterStorage(fetchParams.key, fetchParams.keyword);
-  const [backupDisplayConf, setBackupDisplayConf] = useState([])
+  const {getDataListInStorage} = useSessionStorage()
+    
+  
   const [displayConferences, setDisplayConferences] = useState(postedConferences)
-
+  const [totalConferences, setTotalConferences] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
+    
+    getOptionsFilter("", [])
     getPostedConferences()
   }, [])
 
   useEffect(() => {
     if (!postedConferences) {
-      getPostedConferences()
+      getPostedConferences()      
     }
   }, [user])
 
-  useEffect(() => {
-    getOptionsFilter("", [])
-    const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-    setCheck(isAppliedFilter)
-    const displayList = mergeConferencesByKeyword(dataFilters, selectOptionFilter)
-    const postedConf = displayList.filter(item1 => postedConferences.some(item2 => item2.id === item1.id));
+  useEffect(()=>{
+    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    
+    if(isApliedFilter){
 
-    setDisplayConferences(postedConf)
-    setBackupDisplayConf(postedConf)
-
-  }, [selectOptionFilter, dataFilters, resultInputFilter, postedConferences])
-
-
-  useEffect(() => {
-    const commonConfs = backupDisplayConf.filter(item1 => resultInputFilter.some(item2 => item2.id === item1.id)); setDisplayConferences(commonConfs)
-  }, [resultInputFilter])
-
-  const displayConf = check ? displayConferences : postedConferences;
-  const totalPagesDisplay = check ? Math.ceil(displayConf.length / 7) : Math.ceil(postedConferences.length / 7);
-  const totalConfDisplay = check ? displayConf.length : postedConferences.length
-  const isLoading = check ? loadingFilter : loadingPost
+      const filterResult = filterConferences(postedConferences, optionsSelected)
+      setDisplayConferences(filterResult)
+      setTotalConferences(filterResult.length)
+      setTotalPages(Math.ceil(filterResult.length / 7))
+      
+    }
+    else {
+      const totalConfLS = getDataListInStorage('totalConfPost')
+      const totalPagesLS = getDataListInStorage('totalPagesPost')
+      setTotalConferences(totalConfLS)
+      setTotalPages(Math.ceil(totalPagesLS))
+      setDisplayConferences(postedConferences)
+    }
+    // Tạo query string 
+    const queryString  = Object.entries(optionsSelected)
+    .filter(([, values]) => values.length > 0)
+    .map(([key, values]) => `${key}=${values.join(',')}`)
+    .join('&');
+     // Lấy phần hash của URL nếu có
+     const { hash, pathname } = window.location;
+     const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
+     
+     // Cập nhật URL
+     window.history.pushState({}, '', newUrl);
+  }, [optionsSelected, postedConferences])
 
   const handleCheckStatus = (status, messageSuccess) => {
     setMessage(messageSuccess)
@@ -71,9 +81,6 @@ const YourConf = () => {
 
     }
   }
-  const handleApplyFilter = (key, keyword) => {
-    setFetchParams({ key, keyword });
-  };
 
   const handleClose = () => setShowAddForm(false);
   const handleShow = () => setShowAddForm(true);
@@ -110,8 +117,15 @@ const YourConf = () => {
                       </div>
                       :
                       <>
-                        <Search onApply={handleApplyFilter} onDelete={clearKeyValues} onClearAll={clearAllKeywords} />
-                        <Conference conferencesProp={displayConf} onReloadPage={getPostedConferences} totalPages={totalPagesDisplay} totalConferences={totalConfDisplay} loading={isLoading} isPost={true} />
+                        <Filter/>
+                        <Conference 
+                          conferencesProp={displayConferences} 
+                          onReloadPage={getPostedConferences} 
+                          totalPages={totalPages} 
+                          totalConferences={totalConferences} 
+                          loading={loadingPost} 
+                          isPost={true} 
+                        />
                       </>
                   }
                 </>

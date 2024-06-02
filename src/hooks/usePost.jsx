@@ -53,7 +53,10 @@ const updateNewList = (newConferences)  => {
         if(state.conferences.length === 0){
           const firstPageData = await fetchPage(1);                
           const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
-          
+          const totalConf = firstPageData.maxRecords
+
+          sessionStorage.setItem('totalConfPost', JSON.stringify(totalConf))
+          sessionStorage.setItem('totalPagesPost', JSON.stringify(totalPages))
           const newConferences = updateNewList(firstPageData.data)
           dispatch(getAllPosted(newConferences))
   

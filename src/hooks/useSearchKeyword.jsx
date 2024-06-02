@@ -6,6 +6,7 @@ import useSessionStorage from './useSessionStorage';
 const useSearchKeyword = () => {
     const { state, dispatch } = useAppContext()
     const { getDataListInStorage } = useSessionStorage()
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -85,7 +86,7 @@ const useSearchKeyword = () => {
 
         return url;
     };
-    const fetchPage = useCallback(async (page, apiUrl) => {
+    const searchKeywordByPage = useCallback(async (page, apiUrl) => {
 
         try {
             const response = await fetch(`${apiUrl}&page=${page}&size=1`, {
@@ -109,7 +110,7 @@ const useSearchKeyword = () => {
         setLoading(true)
         dispatch({ type: "SEARCH_KEYWORD", payload: [] })
         try {
-            const firstPageData = await fetchPage(1, url);
+            const firstPageData = await searchKeywordByPage(1, url);
             const totalConf = firstPageData.maxRecords
             const totalPages = Math.ceil(totalConf / 7);
             setLoading(false)
@@ -136,7 +137,7 @@ const useSearchKeyword = () => {
 
             // Fetch remaining pages asynchronously
            // for (let i = 2; i <= maxPages; i++) {
-           //     const pageData = await fetchPage(i, url);
+           //     const pageData = await searchKeywordByPage(i, url);
 
            //     dispatch({ type: "SEARCH_KEYWORD", payload: pageData.data })
         //    }
@@ -149,6 +150,8 @@ const useSearchKeyword = () => {
             setLoading(false);
         }
     };
+
+    
     const removeKeyword = (key, keyword) => {
         const valueKeyword = removeIndexFromKeyword(keyword)
         const list = state.resultFilter
@@ -166,7 +169,6 @@ const useSearchKeyword = () => {
 
         }
     };
-
     const searchInObject = (obj, keyword) => {
         keyword = keyword.toLowerCase();
         if (typeof obj === 'string') {
@@ -187,6 +189,7 @@ const useSearchKeyword = () => {
         loading,
         error,
         resultFilter: state.resultFilter,
+        searchKeywordByPage,
         fetchAllPages,
         generateURL,
         removeKeyword,

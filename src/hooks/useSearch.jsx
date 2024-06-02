@@ -131,12 +131,6 @@ const useSearch = () => {
       const clearedConferencesFilter = Object.fromEntries(Object.keys(state.appliedFilterResult).map((key) => [key, []]));
       dispatch(clearFilters(clearedOptionsSelected, clearedConferencesFilter))
     }
-    sessionStorage.removeItem('dataFilters');
-    sessionStorage.removeItem('keywordFilter');
-    sessionStorage.removeItem('totalConferencesSearch');
-    sessionStorage.removeItem('totalPagesConferencesSearch');
-
-    dispatch({ type: "SET_SEARCH_RESULT", payload: [] })
     //reset all
   }
 

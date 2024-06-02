@@ -80,11 +80,7 @@ const StarDropdown = ({ label, onApply }) => {
 
     const rating = item[0].value
     const formatKeyword = `Rating from ${rating}*`
-    const quantity = await sendFilter(label, rating)
-    const keyword = `${formatKeyword} (${quantity})`
-    addKeywords(label,[keyword] )
-    let strRating = `${rating}`
-    onApply(label, strRating)
+    addKeywords(label,[formatKeyword] )
   };
   return (
     <div>

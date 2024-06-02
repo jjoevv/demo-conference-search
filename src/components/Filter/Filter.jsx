@@ -1,120 +1,134 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Form, InputGroup, Row } from 'react-bootstrap'
-import Select from 'react-select'
-import useSearch from '../../hooks/useSearch'
-import { getUniqueConferences } from '../../utils/checkFetchedResults'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons'
-import useFilter from '../../hooks/useFilter'
+import { Stack, Form, InputGroup, Button, Image, Container, Row, Col, Spinner } from "react-bootstrap";
+import { useContext, useEffect, useRef, useState } from "react";
 
-// Custom Control component to hide selected values
-const CustomControl = ({ children, ...props }) => {
-    return (
-      <div {...props}>
-        {children[0]} {/* Only render the input element, not the selected values */}
-      </div>
-    );
-  };
+import DateRangePicker from "./DateRangePicker";
+import AdvancedFilter from "./AdvancedFilter";
+
+import searchIcon from '../../assets/imgs/search.png'
+import downIcon from '../../assets/imgs/down.png'
+import FilterSelected from "./FilterSelected";
+import useSearch from "../../hooks/useSearch";
+import Options from "./Options";
+import { useLocation, UNSAFE_NavigationContext  } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
+import useFilter from "../../hooks/useFilter";
 
 const Filter = () => {
-    const [isFilter, setIsFilter] = useState(false)
-    const {optionsFilter,
-          selectOptionFilter,
-          inputValue,
-          handleChangeOptions, 
-          handleInputFilterChange,
-          searchInput,
-      } = useFilter()
+  const {addKeywords, clearKeywords, optionsSelected} = useSearch()
+  const {loading} = useFilter()
+  const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
+  const [searchInput, setSearchInput] = useState("")  
+  const location = useLocation();
+  const pathname = location.pathname;
+  
+  useEffect(()=>{
+    // Lấy danh sách các location trước đó từ localStorage
+    clearKeywords()
+  }, [pathname])
 
 
-        useEffect(()=>{
+  
 
-        }, [selectOptionFilter])
+  useEffect(() => {
+    if (loading) {
+      document.body.style.cursor='wait'
+    } else {
+      {document.body.style.cursor='default';}
+    }
+    return () => {
+      {document.body.style.cursor='default';}
+    };
+}, [loading]);
 
-        const CustomOption = ({ innerProps, label, isSelected }) => (
-            <div {...innerProps} className='d-flex align-items-center text-center '>
-                <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={()=>null}
-                    className='m-2'
-                />
-                <label 
-                className={`fs-6 p-2 ${isSelected ? 'text-skyblue-dark' : 'text-color-black'}`}
-                >
-                    {label}
-                </label>
-            </div>
-        );
-      // Custom MenuList component to add a button at the bottom
-const CustomMenuList = (props) => {
-    return (
-      <div>
-          {props.children}
-          <div className='text-center mt-3'>
-            <Button className='bg-transparent text-skyblue-dark border-0' onClick={() => setIsFilter(!isFilter)}>Done</Button>
-          </div>
-      </div>
-    );
+
+  const tooltipRef = useRef(null);
+ 
+
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+  const handleApplySearch = async () => {
+    if(searchInput!==''){
+        addKeywords("search", [searchInput])
+    }
+  }
+  const handleEnterSearch = (e) => {
+    if (e.key === 'Enter') {
+      handleApplySearch();
+    }
   }
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      searchInput(inputValue);
-    }
-  };
-  const [menuIsOpen, setMenuIsOpen] = useState(true);
-
   return (
-    <InputGroup className='mx-3 d-flex'>
-                {
-                    !isFilter ?
-                    <Button className='bg-transparent border text-color-black' onClick={()=>setIsFilter(!isFilter)}>
-                        <FontAwesomeIcon icon={faFilter} className='me-2'/>
-                        More filter
-                    </Button>
-                    :
-                <Select
-                    isMulti
-                    options={optionsFilter}
-                    value={selectOptionFilter}
-                    menuIsOpen={menuIsOpen}
-                    onMenuOpen={() => setMenuIsOpen(true)} 
-                    onMenuClose={() => setMenuIsOpen(false)}
-                    onChange={handleChangeOptions}
-                    placeholder='Filter by...'
-                    closeMenuOnSelect={false}
-                    hideSelectedOptions={false}
-                    controlShouldRenderValue={false}
-                    components={{
-                        Option: CustomOption,
-                        MenuList: CustomMenuList,
-                    }}
-                    styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderColor: '#b2cbcb',
-                          width: 'auto', // Thiết lập chiều rộng tự động
-                          minWidth: '200px',
-                        }),
-                      }}
-                />
-                }
-                <Form.Control 
-                    value={inputValue}
-                    placeholder='Search in result...'
-                    onChange={(e)=>handleInputFilterChange(e)}
-                    className='border-1 border-teal-normal'
-                    onKeyDown={handleKeyPress}
-                />
-              <Button 
-              onClick={()=>searchInput(inputValue)}
-              className='bg-transparent border-1 border-teal-normal'
-              >
-                <FontAwesomeIcon icon={faSearch} className='text-color-black'/>
+    <Container className="bg-white shadow rounded-4 px-5 pb-4 mb-5">
+      <div className="d-flex align-items-center mb-1 pt-3">
+        <FontAwesomeIcon icon={faSearch} className="text-color-black fs-5 me-2"/>
+        <h4 className="mt-2">Searching</h4>
+      </div>
+      <Stack>
+        <span className="fw-bold text-color-black">What are you looking for?</span>
+        <InputGroup className="mt-2 mb-3 border-0 w-50">
+          <InputGroup.Text className="border-0 bg-blue-light pe-0">
+            <Image src={searchIcon} width={20} />
+          </InputGroup.Text>
+          <Form.Control
+            placeholder="Search for location, conference name, acronym, etc"
+            className="border-0 bg-blue-light"
+            type="text"
+            value={searchInput}
+            name="searchInput"
+            onChange={handleSearchChange}
+            onKeyDown={handleEnterSearch}
+          />
+          {/*Button Search */}
+          
+          <Button 
+              ref={tooltipRef}
+              onClick={handleApplySearch}
+              className="bg-primary-light text-primary-normal fw-bold border-0"
+              disabled ={ searchInput!=='' ? false : true}
+              title="Click here to apply filter"
+              >Search 
               </Button>
-    </InputGroup>
-  )
-}
 
-export default Filter
+        </InputGroup>
+      </Stack>
+
+      {/*Filer dropdown */}
+
+      <Row direction="horizontal" gap={3} className="w-100  d-flex justify-content-center">
+        <Col>
+          <span className="fw-bold text-color-black">Category</span>
+          <Options label={"category"}/>
+        </Col>
+        <Col >
+          <span className="fw-bold text-color-black">Location</span>
+          <Options label={"location"}/>
+        </Col>
+        <Col>
+          <span className="fw-bold text-color-black">Submission date</span>
+          <DateRangePicker label={"submissionDate"}/>
+        </Col>
+        <Col>
+          <span className="fw-bold text-color-blackcolor-black">Conference date</span>
+          <DateRangePicker label={"conferenceDate"}/>
+        </Col>
+        
+      </Row>
+      <Button 
+      onClick={()=>setShowAdvancedFilter(!showAdvancedFilter)}
+      className="bg-white border-0 text-primary-normal p-0 fw-bold my-3">
+        Show more advanced search
+        <Image src={downIcon} width={15}
+        className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'}/>
+      </Button>
+      
+      {showAdvancedFilter && <AdvancedFilter/>}
+     
+      
+      {optionsSelected && <FilterSelected/>}  
+    </Container>
+  );
+};
+
+export default Filter;

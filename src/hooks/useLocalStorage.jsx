@@ -39,6 +39,7 @@ const useLocalStorage = () => {
     const storageData = localStorage.getItem(storedName); // Lấy dữ liệu từ sessionStorage dựa trên storageName
     return storageData ? JSON.parse(storageData) : null; 
   }
+  
   const updateUserInStorage = (updateData) => {
     // Tạo một object mới chứa các thông tin cập nhật
     const updatedUser = {

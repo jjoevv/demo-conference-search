@@ -8,13 +8,14 @@ import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import useSessionStorage from "./useSessionStorage"
+import useLocalStorage from "./useLocalStorage"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
   const {getDataListInStorage} = useSessionStorage()
+  const {getItemInLocalStorage} = useLocalStorage()
   const [quantity] = useState(0)
   const [error, setError] = useState('')
-  const [totalConferences, setTotalConferences] = useState(0)
   const [loading, setLoading] = useState(false)
 
   const [selectOptionSort, setSelectOptionSort] = useState('Random') //Random: sort by follow
@@ -50,39 +51,102 @@ const useConference = () => {
   }, []);
   
   const handleGetList = async () => {
-    setLoading(true)
+    
+    setLoading(true)   
+    
     try {
+      const currentFetchPage = getItemInLocalStorage('currentFetchPageLS')
+      const firstPageData = await fetchData(1, 1);                        
+      const totalConf = firstPageData.maxRecords // get total conferences from first page data
+      const maxPagesFetch = Math.ceil(totalConf / 20); // get total pages from first page data
+
       if(state.conferences.length === 0){
-        const firstPageData = await fetchData(1, 20);                
-        
-        const totalConf = firstPageData.maxRecords
-        const totalPages = Math.ceil(totalConf / 7); // Lấy số lượng trang từ dữ liệu đầu tiên
-        const maxPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
-        setTotalConferences(totalConf)
-        setLoading(false)
-        localStorage.setItem('totalConferences', JSON.stringify(totalConf))
-        localStorage.setItem('totalPagesConferences', JSON.stringify(totalPages))
-
-
-        const listFollowed = getDataListInStorage("listFollow")
-        const filteredData = firstPageData.data.filter(
-          item => !listFollowed.some(conf => conf.id === item.id)
-        );
-        const updatedConferences = [...new Set([...listFollowed, ...filteredData])];
-        dispatch(getAllConf(updatedConferences));
         
 
-        // Fetch remaining pages asynchronously 
-        for (let i = 2; i <= maxPages; i++) {
+        if(!currentFetchPage || currentFetchPage === 1){
+          //data didnt save in local storage
+          localStorage.setItem('currentFetchPageLS', JSON.stringify(1))
+          localStorage.setItem('totalConferences', JSON.stringify(totalConf))
+          const maxPages = Math.ceil(totalConf / 7)
+          localStorage.setItem('totalPagesConferences', JSON.stringify(maxPages))
+
+          const firstPageData = await fetchData(1, 20);                        
+          
+          setLoading(false)
+
+          const listFollowed = getDataListInStorage("listFollow")
+          const filteredData = firstPageData.data.filter(
+            item => !listFollowed.some(conf => conf.id === item.id)
+          );
+
+          const updatedConferences = [...new Set([...listFollowed, ...filteredData])];
+          
+          localStorage.setItem('conferences', JSON.stringify(updatedConferences))
+          dispatch(getAllConf(updatedConferences));
+
+              // Fetch remaining pages asynchronously and save to localstorage
+          for (let i = 2; i <= maxPagesFetch; i++) {
+            console.log({i})
             const pageData = await fetchData(i, 20);
             const filteredNextData = pageData.data.filter(
               item => !listFollowed.some(conf => conf.id === item.id)
-            );
-            
-            
+            );            
+            localStorage.setItem('currentFetchPageLS', JSON.stringify(i)) //save current fetch page
             dispatch(getAllConf(filteredNextData));
+            const conferencesStored = getItemInLocalStorage('conferences')
+            
+            const updatedConferencesNext = [...new Set([...conferencesStored, ...filteredNextData])];
+            
+            localStorage.setItem('conferences', JSON.stringify(updatedConferencesNext))
+          }
+          return
+        }
+
+        if(currentFetchPage && maxPagesFetch === currentFetchPage) {
+          //full data saved in local storage
+          const conferencesStored = getItemInLocalStorage('conferences')
+          const data = conferencesStored ? conferencesStored : []
+          dispatch(getAllConf(data));
+          setLoading(false)
+          return
+        }
+        else {  
+          //a part of data saved in local storage
+          if(currentFetchPage > 1 ) {            
+
+          setLoading(false)
+
+          const conferencesStored = getItemInLocalStorage('conferences')
+          const listFollowed = getDataListInStorage("listFollow")
+          // Loại bỏ các phần tử trùng lặp
+          const uniqueData = conferencesStored.filter(item => !listFollowed.some(followedItem => followedItem.id === item.id));
+
+          // Gộp `listFollowed` lên đầu `uniqueData`
+          const sortedData = [...listFollowed, ...uniqueData];
+          dispatch(getAllConf(sortedData));
+          localStorage.setItem('conferences', JSON.stringify(sortedData))
+          
+
+              // Fetch remaining pages asynchronously and save to localstorage
+          for (let i = currentFetchPage + 1; i <= maxPagesFetch; i++) {
+            const pageData = await fetchData(i, 20);
+            const filteredNextData = pageData.data.filter(
+              item => !listFollowed.some(conf => conf.id === item.id)
+            );            
+            localStorage.setItem('currentFetchPageLS', JSON.stringify(i)) //save current fetch page
+            dispatch(getAllConf(filteredNextData));
+            const conferencesStored = getItemInLocalStorage('conferences')
+            
+            const updatedConferencesNext = [...new Set([...conferencesStored, ...filteredNextData])];
+            
+            localStorage.setItem('conferences', JSON.stringify(updatedConferencesNext))
+          }
+          return
+            
+          }
         }
       }
+
 
       setLoading(false);
   } catch (error) {
@@ -197,7 +261,6 @@ const useConference = () => {
     quantity: quantity,
     loading,
     error: error,
-    totalConferences,
     selectOptionSort,
     displaySortList,
     fetchData,

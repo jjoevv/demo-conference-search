@@ -7,43 +7,38 @@ import Conference from '../../components/Conference'
 
 import useSearch from '../../hooks/useSearch'
 import useConference from '../../hooks/useConferences'
-import { checkExistValue, getUniqueConferences, mergeConferencesByKeyword } from '../../utils/checkFetchedResults'
+import { checkExistValue } from '../../utils/checkFetchedResults'
 import useFollow from '../../hooks/useFollow'
-import useFilterStorage from '../../hooks/useFilterStorage'
-import Search from '../../components/Filter/Search'
 import useFilter from '../../hooks/useFilter'
 import usePost from '../../hooks/usePost'
-import useSearchKeyword from '../../hooks/useSearchKeyword'
+import Filter from '../../components/Filter/Filter'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
 const Homepage = () => {
     const [showSlideShow, setShowSlideShow] = useState(true)
-    const { optionsSelected,actionWithKeyword, getOptionsFilter, getTotalConf} = useSearch()
+    const { optionsSelected, getOptionsFilter} = useSearch()
     const {loading: loadingAll, conferences, handleGetList} = useConference()
+    const {getItemInLocalStorage} = useLocalStorage()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
-    const [check, setCheck] = useState(false)
-    const [fetchParams, setFetchParams] = useState({ key: '', keyword: '' });
-    const {selectOptionFilter, resultInputFilter, inputFilter}= useFilter()
-    const {loading: loadingSearch,  dataFilters, clearKeyValues, clearAllKeywords } = useFilterStorage(fetchParams.key, fetchParams.keyword);
+    const {loading: loadingFilter, filterConferences}= useFilter()
+    
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
-    const [backupDisplayConf, setBackupDisplayConf] = useState([])
-    const [loadingFilter, setLoadingFilter] = useState(false)
     const [totalConferences, setTotalConferences] = useState(0);
-     const [totalPages, setTotalPages] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
-
-
-    const {resultFilter,loading: loadingSearchKeyword, generateURL, fetchAllPages} = useSearchKeyword()
 
     useEffect(()=>{
+      getOptionsFilter("", [])
       if(conferences.length === 0 || !conferences){
         handleGetList()
       }
-
-      if(!check){
-        setDisplayedConferences(conferences)
-      }
+      const totalConfLS = getItemInLocalStorage('totalConferences')
+      const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
+      setTotalConferences(totalConfLS)
+      setTotalPages(Math.ceil(totalPagesLS))
+      setDisplayedConferences(conferences)
     }, [conferences])
 
 
@@ -54,73 +49,47 @@ const Homepage = () => {
   
 
     useEffect(()=>{
-      const url = generateURL(optionsSelected)
-      const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-      setCheck(isAppliedFilter)
-      if(isAppliedFilter){
-        fetchAllPages(url)
-      }
-    }, [optionsSelected])
- 
-   
-
-   useEffect(()=>{
-    const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-    
-    getOptionsFilter("", [])
-    setCheck(isAppliedFilter)
-    
-    if(isAppliedFilter){
+      const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
       
-      const displayList = mergeConferencesByKeyword(dataFilters, selectOptionFilter)
+      if(isApliedFilter){
 
-      setDisplayedConferences(displayList)
-      setBackupDisplayConf(resultFilter)
-      
-      const isLoading = JSON.parse(sessionStorage.getItem('loadingFilterResult')) 
-      setLoadingFilter(isLoading)
-      let totalConf = 0
-      let pagesCount = 0
-  
-      if(inputFilter !== ''){
-        const commonConfs = displayList.filter(item1 => resultInputFilter.some(item2 => item2.id === item1.id)); 
-        setDisplayedConferences(commonConfs)
+        const filterResult = filterConferences(conferences, optionsSelected)
+        setDisplayedConferences(filterResult)
+        setTotalConferences(filterResult.length)
+        setTotalPages(Math.ceil(filterResult.length / 7))
         
-      
-        totalConf = commonConfs.length  
-        pagesCount = Math.ceil(totalConf / 7)        
       }
-      else{
-        if(optionsSelected['category'].length>0){
-          const savedTotalPages = localStorage.getItem('totalPagesConferences');
-          const savedTotalConferences = localStorage.getItem('totalConferencesSearch');
-          totalConf = savedTotalConferences ? parseInt(savedTotalConferences, 10) : 0
-          pagesCount = savedTotalPages ? parseInt(savedTotalPages, 10) : 0
-        }
-        else{
-          totalConf = getTotalConf(selectOptionFilter)
-          pagesCount = Math.ceil(totalConf / 7)
-        }
+      else {
+        const totalConfLS = getItemInLocalStorage('totalConferences')
+        const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
+        setTotalConferences(totalConfLS)
+        setTotalPages(Math.ceil(totalPagesLS))
+        setDisplayedConferences(conferences)
+      }
+      // Tạo query string 
+      const queryString  = Object.entries(optionsSelected)
+      .filter(([, values]) => values.length > 0)
+      .map(([key, values]) => `${key}=${values.join(',')}`)
+      .join('&');
+      if (queryString) {
+        window.history.pushState({}, '', `?${queryString}`);
+      } else {
+        window.history.pushState({}, '', window.location.pathname);
+      }
+    }, [optionsSelected, conferences])
+    
   
+    useEffect(() => {
+      if (loadingFilter) {
+        document.body.style.cursor='wait'
+      } else {
+        {document.body.style.cursor='default';}
       }
-      setTotalConferences(totalConf)
-      setTotalPages(pagesCount)
-    }
-    else {
-      const savedTotalPages = localStorage.getItem('totalPagesConferences');
-      const savedTotalConferences = localStorage.getItem('totalConferences');
-      setDisplayedConferences(conferences)
-      setTotalConferences(savedTotalConferences ? parseInt(savedTotalConferences, 10) : 0)
-      setTotalPages(savedTotalPages ? parseInt(savedTotalPages, 10) : 0)
-    }
-
-   },[selectOptionFilter, dataFilters, resultInputFilter, inputFilter])
-
-    const handleApplyFilter = (key, keyword) => {
-        setFetchParams({ key, keyword });
-    };
-
-      const isLoading = check ? loadingFilter : loadingAll
+      return () => {
+        {document.body.style.cursor='default';}
+      };
+  }, [loadingFilter]);
+   
   return (
     <div style={{marginTop: "100px"}}>        
         {/*showSlideShow &&
@@ -130,13 +99,13 @@ const Homepage = () => {
             <SlideShow showSlideShow={showSlideShow} setShowSlideShow={setShowSlideShow}/>
           </Stack>
   </Container>*/}
-         <Search onApply={handleApplyFilter} onDelete={clearKeyValues} onClearAll={clearAllKeywords} loading={loadingSearch}/>
+         <Filter />
          <Conference 
          conferencesProp={displayConferences} 
          onReloadPage={handleGetList} 
          totalPages={totalPages} 
          totalConferences={totalConferences} 
-         loading={isLoading}/>
+         loading={loadingAll}/>
     </div>
     
   )

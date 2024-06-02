@@ -13,7 +13,6 @@ const useSessionStorage = () => {
 
 
   const getDataListInStorage = (storageName) => {
-
     const storageData = sessionStorage.getItem(storageName); // Lấy dữ liệu từ sessionStorage dựa trên storageName
     return storageData ? JSON.parse(storageData) : []; 
   }

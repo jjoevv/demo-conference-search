@@ -14,7 +14,6 @@ import { isUpcoming, sortByFollow, sortConferences } from '../utils/sortConferen
 
 import Loading from './Loading'
 import { getDateValue } from '../utils/formatDate'
-import Filter from './Filter/Filter'
 import { checkExistValue } from '../utils/checkFetchedResults'
 import ButtonGroupUpdate from './PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
@@ -55,44 +54,21 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
             setCurrentPage(current)
         }
         else {            
-            if(checkExistValue(optionsSelected).some(value => value === true)){
-                const sortedConferences = sortConferences(selectOptionSort, [...conferencesProp])
-                const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)                
-                setCurrentPage(current)
-            }
-           else {
-            const sortedConferences = sortConferences(selectOptionSort, [...displayConferences])
+            const sortedConferences = sortConferences(selectOptionSort, [...conferencesProp])
             const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
             setCurrentPage(current)
-           }
         }
     }, [selectOptionSort])
 
-    useEffect(() => {
-        if (selectOptionSort !== "Random") {           
-            const sortedConferences = sortConferences(selectOptionSort, displayConferences)
-            const current = sortedConferences.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
-            setCurrentPage(current)
-        }
-    }, [selectOptionSort])
     
     useEffect(() => {
         //xử lý chọn page
         const updatedCheck = conferencesProp.length >= page * itemsPerPage;       
-        if(loadingPage && !updatedCheck){
-            setisFetchNew(true)
-            const fetchPageData = async () => {
-                const data = await fetchData(page, itemsPerPage)
-                setCurrentPage(data.data)
-            }
-            fetchPageData()        
-            setLoadingPage(false)
-        }
         if(updatedCheck){
             const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
             setCurrentPage(current)
             
-        setLoadingPage(false)
+            setLoadingPage(false)
         }
         
       }, [loadingPage, conferencesProp, page]);
@@ -115,7 +91,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         if (element) {
             window.scrollTo({
                 top: element.offsetTop,
-                behavior: 'smooth'
+                behavior: 'instant'
             });
         }
         setLoadingPage(true)       
@@ -150,18 +126,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 <div className="h5 fw-bold ms-4 mt-2">
                     {`${totalConferences} conferences`}
                 </div>
-                <div className='d-flex'>
-                    {
-                        checkExistValue(optionsSelected).some(value => value === true)
-                        &&
-                        <Filter />
-                    }
-
-                    <DropdownSort
+                <DropdownSort
                         options={["Random", "Upcoming", "Name A > Z", "Latest"]}
                         onSelect={handleDropdownSelect}
                     />
-                </div>
             </div>
 
             <Row>

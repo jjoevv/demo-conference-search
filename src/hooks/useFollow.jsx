@@ -58,6 +58,10 @@ const useFollow = () => {
 
         const firstPageData = await fetchPage(1);
         const totalPages = firstPageData.maxPages; // Lấy số lượng trang từ dữ liệu đầu tiên
+        const totalConf = firstPageData.maxRecords
+
+        sessionStorage.setItem('totalConfFollow', JSON.stringify(totalConf))
+        sessionStorage.setItem('totalPagesFollow', JSON.stringify(totalPages))
 
         const extractData = firstPageData.data.map(item => item.callForPaper);
         const newConferences = updateNewList(extractData)

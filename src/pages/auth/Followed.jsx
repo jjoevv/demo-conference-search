@@ -6,25 +6,29 @@ import useSearch from '../../hooks/useSearch'
 
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Loading from '../../components/Loading'
-import { checkExistValue, mergeConferencesByKeyword } from '../../utils/checkFetchedResults'
 
-import Search from '../../components/Filter/Search'
+
 import useFilter from '../../hooks/useFilter'
-import useFilterStorage from '../../hooks/useFilterStorage'
+import Filter from '../../components/Filter/Filter'
+import { checkExistValue } from '../../utils/checkFetchedResults'
+import useSessionStorage from '../../hooks/useSessionStorage'
 
 const Followed = () => {
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
   const { getOptionsFilter, optionsSelected } = useSearch()
-  const [check, setCheck] = useState(false)
+  const {getDataListInStorage} = useSessionStorage()
   const { user } = useLocalStorage()
 
-  const { selectOptionFilter, resultInputFilter } = useFilter()
-  const [fetchParams, setFetchParams] = useState({ key: '', keyword: '' });
-  const { loading: loadingFilter, dataFilters, clearKeyValues, clearAllKeywords } = useFilterStorage(fetchParams.key, fetchParams.keyword);
-  const [backupDisplayConf, setBackupDisplayConf] = useState([])
+  const { filterConferences } = useFilter()
+  
+  
   const [displayConferences, setDisplayConferences] = useState(listFollowed)
+  const [totalConferences, setTotalConferences] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
+    
+    getOptionsFilter("", [])
     getListFollowedConferences()
   }, [])
 
@@ -33,35 +37,36 @@ const Followed = () => {
       getListFollowedConferences()
     }
   }, [user])
-
-  useEffect(() => {
-    getOptionsFilter("", [])
-    const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+  useEffect(()=>{
+    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
     
-    setCheck(isAppliedFilter)
-    const displayList = mergeConferencesByKeyword(dataFilters, selectOptionFilter)
-    const followedConf = displayList.filter(item1 => listFollowed.some(item2 => item2.id === item1.id));
+    if(isApliedFilter){
 
-    setDisplayConferences(followedConf)
-    setBackupDisplayConf(followedConf)
-
-  }, [selectOptionFilter, dataFilters, resultInputFilter, listFollowed])
-
-  useEffect(() => {
-    const commonConfs = backupDisplayConf.filter(item1 => resultInputFilter.some(item2 => item2.id === item1.id)); setDisplayConferences(commonConfs)
-  }, [resultInputFilter])
-
-  const handleApplyFilter = (key, keyword) => {
-    setFetchParams({ key, keyword });
-  };
-
-
-  
-  const displayConf = check ? displayConferences : listFollowed;
-  const totalPagesDisplay = check ? Math.ceil(displayConf.length / 7) : Math.ceil(listFollowed.length / 7);
-  const totalConfDisplay = check ? displayConf.length : listFollowed.length
-  const isLoading = check ? loadingFilter : loadingFollow
-  
+      const filterResult = filterConferences(listFollowed, optionsSelected)
+      setDisplayConferences(filterResult)
+      setTotalConferences(filterResult.length)
+      setTotalPages(Math.ceil(filterResult.length / 7))
+      
+    }
+    else {
+      const totalConfLS = getDataListInStorage('totalConfFollow')
+      const totalPagesLS = getDataListInStorage('totalPagesFollow')
+      setTotalConferences(totalConfLS)
+      setTotalPages(Math.ceil(totalPagesLS))
+      setDisplayConferences(listFollowed)
+    }
+    // Tạo query string 
+    const queryString  = Object.entries(optionsSelected)
+    .filter(([, values]) => values.length > 0)
+    .map(([key, values]) => `${key}=${values.join(',')}`)
+    .join('&');
+     // Lấy phần hash của URL nếu có
+     const { hash, pathname } = window.location;
+     const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
+     
+     // Cập nhật URL
+     window.history.pushState({}, '', newUrl);
+  }, [optionsSelected, listFollowed])
   return (
     <Container
       fluid
@@ -76,9 +81,14 @@ const Followed = () => {
               listFollowed && listFollowed.length > 0
                 ?
                 <>
-                  <Search onApply={handleApplyFilter} onDelete={clearKeyValues} onClearAll={clearAllKeywords} />
+                 <Filter/>
 
-                  <Conference conferencesProp={displayConf} onReloadPage={getListFollowedConferences} totalPages={totalPagesDisplay} totalConferences={totalConfDisplay} loading={isLoading} />
+                  <Conference 
+                    conferencesProp={displayConferences} 
+                    onReloadPage={getListFollowedConferences} 
+                    totalPages={totalPages} 
+                    totalConferences={totalConferences} 
+                    loading={loadingFollow} />
                 </>
                 :
                 <p>{`You haven't followed any conferences yet. `}</p>

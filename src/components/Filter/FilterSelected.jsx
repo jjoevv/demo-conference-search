@@ -1,6 +1,6 @@
 
 
-import { Button, Image, Spinner } from 'react-bootstrap'
+import { Button, Image } from 'react-bootstrap'
 
 import deleteIcon from "../../assets/imgs/del.png";
 import RedDeleteIcon from "../../assets/imgs/redDel.png";
@@ -9,11 +9,10 @@ import { findKeyByKeyword, getUniqueConferences,  } from "../../utils/checkFetch
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import useSearchKeyword from '../../hooks/useSearchKeyword';
 
-const FilterSelected = ({onDelete, onClearAll}) => {
+const FilterSelected = () => {
   const { deleteKeyword, clearKeywords, optionsSelected, getKeyword } = useSearch()
-  const {removeKeyword, }= useSearchKeyword()
+  
   const [keywordsSelected, setKeywordsSelected] = useState(null)
   const [total, setTotal] = useState(0)
   const {pathname} = useLocation()
@@ -25,12 +24,9 @@ const FilterSelected = ({onDelete, onClearAll}) => {
   
   const handleDeletekeyword = (keyword) => {
     deleteKeyword(findKeyByKeyword(optionsSelected, keyword),keyword)
-    //removeKeyword(findKeyByKeyword(optionsSelected, keyword),keyword)
-    onDelete(keyword)
   }
   const handleClearKeyword = () => {
     clearKeywords()
-    onClearAll()
   }
   return (
     <>
@@ -44,13 +40,7 @@ const FilterSelected = ({onDelete, onClearAll}) => {
                 onClick={() => handleDeletekeyword(keyword)}
                 key={index}
                 className="fs-6 text-color-black py-1 px-2 fw-bold border bg-transparent border-secondary rounded-pill d me-3 mb-3  d-flex align-items-center ">
-                {
-                  pathname==='/followed' || pathname === '/yourconferences'
-                  ?
-                  getKeyword(keyword)
-                  :
-                  keyword
-                }
+                { keyword}
                  
                   <Image width={20} src={deleteIcon} alt="" className="ms-1" />
               </Button>

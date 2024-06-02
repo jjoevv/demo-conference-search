@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Dropdown, Image, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
@@ -10,7 +10,7 @@ import useSearch from '../../hooks/useSearch';
 import dateIcon from '../../assets/imgs/conf_date_light.png'
 import { formatDate } from '../../utils/formatDate';
 import { formatLabel } from '../../utils/formatWord';
-const DateRangePicker = ({ label, onApply }) => {
+const DateRangePicker = ({ label }) => {
   const { sendFilterDate, addKeywords } = useSearch()
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -29,11 +29,8 @@ const DateRangePicker = ({ label, onApply }) => {
   const handleApplyFilter = async () => {
     
     handleToggleClick()
-    const keywordFormat = `${formatLabel(label)}: from ${formatDate(startDate)} to ${formatDate(endDate)}`        
-    const quantity = await sendFilterDate(startDate, endDate, label)
-    const keyword = `${keywordFormat} (${quantity})`
-    addKeywords(label, [keyword])
-    onApply(label, keyword)
+    const keywordFormat = `${formatLabel(label)}: from ${formatDate(startDate)} to ${formatDate(endDate)}`         
+    addKeywords(label, [keywordFormat])
   };
   return (
     <Dropdown className="w-100" show={showDropdown} onHide={() => setShowDropdown(false)}>

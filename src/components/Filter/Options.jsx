@@ -6,6 +6,7 @@ import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
 
 import data from './options.json'
+import useFilter from '../../hooks/useFilter'
 
 
 const customStyles = {
@@ -45,15 +46,15 @@ const CustomOption = ({ innerProps, label, isSelected }) => (
         <label style={{ fontWeight: isSelected ? 'bold' : 'normal' }} className='fs-6'>{label}</label>
     </div>
 );
-const Options = ({ label, onApply }) => {
+const Options = ({ label}) => {
     const { filterOptions, getOptionsFilter, sendFilter, addKeywords } = useSearch()
+    
     const [options, setOptions] = useState([])
+    
     const handleOptionChange = async (item) => {
-        onApply(label, item[0].label)
-        const maxRecords = await sendFilter(label, item[0].label)
-        const keyword = `${item[0].label} (${maxRecords})`
-        addKeywords(label,[keyword])
+        addKeywords(label,[item[0].label])
     }
+
     useEffect(() => {
         const staticValue = ["location", "type", "category"]
         

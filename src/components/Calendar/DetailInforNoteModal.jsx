@@ -1,18 +1,16 @@
-import React from 'react'
+
 import { useState } from 'react'
-import { Form, Row } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { Modal } from 'react-bootstrap'
-import useNote from '../../hooks/useNote'
-import { FormGroup } from 'react-bootstrap'
 import DeleteModal from '../Modals/DeleteModal'
 import Loading from '../Loading'
 import { useEffect } from 'react'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendar, faLocation, faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faLocationPin } from '@fortawesome/free-solid-svg-icons'
 
-const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloadList, onBack }) => {
+const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloadList }) => {
 
     const [isUpdate, setIsUpdate] = useState(false)
     const [warning, setWarning] = useState('')

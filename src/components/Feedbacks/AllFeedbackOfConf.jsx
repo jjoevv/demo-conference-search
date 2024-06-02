@@ -22,9 +22,7 @@ const AllFeedbackOfConf = () => {
     
     const [selectedOption, setSelectedOption] = useState(null);
     const [displayFeedback, setDisplayfeedback] = useState([])
-    useEffect(()=>{
-        getAllFeedbacks()
-    },[])
+   
     useEffect(()=>{        
         const handleGetFeedbacks = async () => {
             
