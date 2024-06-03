@@ -9,6 +9,7 @@ import { findKeyByKeyword, getUniqueConferences,  } from "../../utils/checkFetch
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../../utils/formatWord';
 
 const FilterSelected = () => {
   const { deleteKeyword, clearKeywords, optionsSelected, getKeyword } = useSearch()
@@ -40,7 +41,7 @@ const FilterSelected = () => {
                 onClick={() => handleDeletekeyword(keyword)}
                 key={index}
                 className="fs-6 text-color-black py-1 px-2 fw-bold border bg-transparent border-secondary rounded-pill d me-3 mb-3  d-flex align-items-center ">
-                { keyword}
+                { capitalizeFirstLetter(keyword)}
                  
                   <Image width={20} src={deleteIcon} alt="" className="ms-1" />
               </Button>

@@ -74,7 +74,7 @@ const DateRangePicker = ({ label }) => {
           </Row>
         </div>
         <Dropdown.Divider />
-        <ButtonGroup className='top-100 w-100 bg-white px-2 pb-2'>
+        <ButtonGroup className='top-100 w-100 bg-white px-2 pb-2 m-2'>
           <Button
             onClick={() => setShowDropdown(false)}
             className='w-50 me-2 rounded-2 border-0 bg-secondary'>
