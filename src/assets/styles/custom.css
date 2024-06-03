@@ -77,7 +77,6 @@ button.text-color-darker:hover {
 
 button.text-primary-normal:hover {
     color: #459e92;
-    font-weight: 600;
 }
 
 .border-primary-normal {
@@ -209,7 +208,7 @@ a.dropdown-item:active {
 }
 
 /*phan loai thong bao*/
-.color-extend {
+.text-color-extend {
     color: #1E4540;
 }
 

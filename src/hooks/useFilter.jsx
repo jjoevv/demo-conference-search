@@ -2,63 +2,84 @@ import { useEffect, useState } from 'react'
 import { getUniqueConferences } from '../utils/checkFetchedResults'
 import useSearch from './useSearch'
 import { useAppContext } from '../context/authContext'
-import { inputOptionFilterKeyword, selectOptionFilterKeyword } from '../actions/filterActions'
 import { useLocation } from 'react-router-dom'
-import useConference from './useConferences'
 import useLocalStorage from './useLocalStorage'
 
 const useFilter = () => {
   const { state, dispatch } = useAppContext()
-  const {conferences} = useConference()
   const { optionsSelected, getKeyword } = useSearch()
-  const {getItemInLocalStorage} = useLocalStorage()
   const [optionsFilter, setOptionsFilter] = useState([])
   const [selectOptionFilter, setSelectOptionFilter] = useState([])
   const [inputValue, setInputValue] = useState('')
   const {pathname} = useLocation()
   const [loading, setLoading] = useState(false)
+
+  const [priorityKeywords, setPriorityKeywords] = useState({});
+  const [selectedKeywords, setSelectedKeywords] = useState({});
+
+  useEffect(() => {  
+    let updatedPriorityKeywords = { ...state.priorityKeywords };
+
+    Object.entries(optionsSelected).forEach(([key, keywords]) => {
+        if (!(key in updatedPriorityKeywords)) {
+            updatedPriorityKeywords[key] = keywords[keywords.length - 1];
+        }
+    });
+
+    // Kiểm tra nếu priority keyword hiện tại đã bị xóa khỏi optionsSelected
+    Object.entries(priorityKeywords).forEach(([key, priorityKeyword]) => {
+      if (optionsSelected[key] && !optionsSelected[key].includes(priorityKeyword)) {
+        updatedPriorityKeywords[key] = optionsSelected[key][optionsSelected[key].length - 1];
+      }
+    });
+
+    // Remove keys with only one keyword
+    Object.keys(updatedPriorityKeywords).forEach(key => {
+      if (optionsSelected[key].length <= 1) {
+        delete updatedPriorityKeywords[key];
+      }
+    });
+    
+    setPriorityKeywords(updatedPriorityKeywords);
+
+  // Cập nhật priorityKeywords mới
+  setPriorityKeywords(updatedPriorityKeywords);
+  dispatch({type: 'SET_PRIORITY_KEYWORD', payload: updatedPriorityKeywords})
+  }, [optionsSelected]);
+   
+
+  
+
   useEffect(() => {
-    let transformedOptions = []
-    const uniqueValues = getUniqueConferences(optionsSelected)
-    transformedOptions = uniqueValues.map((item, index) => ({
-      value: index + 1,
-      label: pathname==='/followed' || pathname === '/yourconferences' ? getKeyword(item) : item ,
-      isSelected: selectOptionFilter.some(option => option.label === item)
-    }));
-    setOptionsFilter(transformedOptions)
-    setSelectOptionFilter(transformedOptions)
-    dispatch(selectOptionFilterKeyword(transformedOptions))
+    let keywordsWithMultipleOptions = {};
+    
+    Object.entries(optionsSelected).forEach(([key, keywords]) => {
+      if(keywords.length > 0){
+        keywordsWithMultipleOptions[key] = keywords;
+      }
+    });
+    setSelectedKeywords(keywordsWithMultipleOptions);
+    
   }, [optionsSelected])
 
 
-  const handleChangeOptions = (selectedOptions) => {
-    setSelectOptionFilter(selectedOptions);
-    dispatch(selectOptionFilterKeyword(selectedOptions))
+
+  const handleKeywordSelection = (key, selectedValue) => {
+    //choose priority keyword
+    setPriorityKeywords({
+      ...priorityKeywords,
+      [key]: selectedValue
+    });
+    dispatch({type: 'SET_PRIORITY_KEYWORD', payload: {
+      ...priorityKeywords,
+      [key]: selectedValue
+    }})
   };
 
-  const handleInputFilterChange = (e) => {
-    setInputValue(e.target.value)
-  }
 
-  const searchInput = (keyword) => {
-    dispatch({ type: 'SET_INPUT_OPTION_FILTER', payload: keyword});
-    const dataFilter = sessionStorage.getItem('dataFilters');
-    const data = JSON.parse(dataFilter)
-    if (dataFilter) {
-      const result = [];
-
-    // Duyệt qua từng danh sách object trong data
-    for (const category in data) {
-      const filteredObjects = data[category].filter(obj => searchInObject(obj, keyword));
-      if (filteredObjects.length > 0) {
-        result.push(...filteredObjects);
-      }
-    }
-      dispatch(inputOptionFilterKeyword(result))
-
-    }
-    return []
-  }
+  const getCountForSelectedKeyword = (countlist, keyword) => {
+    return countlist[keyword.toLowerCase()] || 0;
+};
 
   const searchInObject = (obj, keyword) => {
     keyword = keyword.toLowerCase();
@@ -212,11 +233,79 @@ const filterConferences = (listConferences, keywordSelected) => {
   });
 
   setLoading(false);
+  dispatch({type:'SET_SEARCH_RESULT', payload: results})
   return results;
 };
 
 
+const sortConferencesByPriorityKeyword = (conferences, prioritySelectedKeywords) => {
+  // Sắp xếp hội nghị dựa trên priorityKeywords
+  return conferences.sort((a, b) => {
+    const priorityKeys = Object.keys(prioritySelectedKeywords);
 
+    // Kiểm tra xem hội nghị có thỏa mãn tất cả các từ khóa ưu tiên không
+    const aMatchAllKeywords = priorityKeys.every(key =>
+      a.matchingKeywords[key] && a.matchingKeywords[key].includes(prioritySelectedKeywords[key].toLowerCase())
+    );
+    const bMatchAllKeywords = priorityKeys.every(key =>
+      b.matchingKeywords[key] && b.matchingKeywords[key].includes(prioritySelectedKeywords[key].toLowerCase())
+    );
+
+    if (aMatchAllKeywords && !bMatchAllKeywords) {
+      return -1;
+    } else if (!aMatchAllKeywords && bMatchAllKeywords) {
+      return 1;
+    } else if (aMatchAllKeywords && bMatchAllKeywords) {
+      return 0;
+    } else {
+      // Nếu không thể thỏa mãn tất cả, ưu tiên sắp xếp theo key và keyword được thêm vào trước trong priorityKeywords
+      for (const key of priorityKeys) {
+        const aMatchKeyword = a.matchingKeywords[key] && a.matchingKeywords[key].includes(prioritySelectedKeywords[key].toLowerCase());
+        const bMatchKeyword = b.matchingKeywords[key] && b.matchingKeywords[key].includes(prioritySelectedKeywords[key].toLowerCase());
+
+        if (aMatchKeyword && !bMatchKeyword) {
+          return -1;
+        } else if (!aMatchKeyword && bMatchKeyword) {
+          return 1;
+        }
+      }
+
+      return 0; 
+    }
+  });
+};
+
+
+const countMatchingConferences = (listConferences, keywordSelected) => {
+  let keywordCounts = {}; // Object to store counts of matching conferences for each keyword
+
+  // Initialize keywordCounts with 0 for each keyword in keywordSelected
+  Object.values(keywordSelected).forEach(keywords => {
+    keywords.forEach(keyword => {
+      keywordCounts[keyword.toLowerCase()] = 0;
+    });
+  });
+
+  listConferences.forEach(conference => {
+    // Iterate through each keyword in keywordSelected
+    for (const [key, keywords] of Object.entries(keywordSelected)) {
+      if (keywords.length > 0 && key in conference.matchingKeywords) {
+        const lowerKeywords = keywords.map(keyword => keyword.toLowerCase());
+        const matchingKeywords = conference.matchingKeywords[key];
+
+        lowerKeywords.forEach(keyword => {
+          // Check if keyword is included in matchingKeywords
+          if (matchingKeywords.includes(keyword)) {
+            // Increment keyword count
+            keywordCounts[keyword]++;
+          }
+        });
+      }
+    }
+  });
+
+  return keywordCounts;
+};
 
 
   return {
@@ -226,12 +315,18 @@ const filterConferences = (listConferences, keywordSelected) => {
     inputValue,
     inputFilter: state.inputFilter,
     resultInputFilter: state.resultKeywordFilter,
-    handleChangeOptions,
-    handleInputFilterChange,
-    searchInput,
+    selectedKeywords,
+    priorityKeywords: state.priorityKeywords,
+    resultFilter: state.resultFilter,
     getTotalConfFilter,
     getTotalPages,
-    filterConferences
+    filterConferences,
+    sortConferencesByPriorityKeyword,
+    handleKeywordSelection,
+    countMatchingConferences,
+    setSelectedKeywords,
+    getCountForSelectedKeyword
+
   }
 }
 

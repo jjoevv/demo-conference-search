@@ -46,6 +46,9 @@ export const initialState = {
     rating: [],
     category: [],
   },
+priorityKeywords: {},
+
+
 
   optionFilter: [],
   resultKeywordFilter: [],

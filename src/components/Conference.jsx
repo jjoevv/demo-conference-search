@@ -21,6 +21,7 @@ import useConference from '../hooks/useConferences'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
 import { capitalizeFirstLetter } from '../utils/formatWord'
+import PriorityOptions from './Filter/PriorityOptions'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, displaySortList, fetchData, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
@@ -29,7 +30,6 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     const navigate = useNavigate()
     const [page, setPage] = useState(0)
     const [isClickFollow, setIsClickFollow] = useState(false)
-    const [isFetchNew, setisFetchNew] = useState(false)
     const [displayConferences, setDisplayedConferences] = useState([])
     const [currentPage, setCurrentPage] = useState([])
     const [loadingPage, setLoadingPage] = useState(false)
@@ -127,12 +127,15 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 <div className="h5 fw-bold ms-4 mt-2">
                     {`${totalConferences} conferences`}
                 </div>
+            </div>
+            <div className="d-flex justify-content-end align-items-center w-100 px-5 mx-5">
+                <PriorityOptions />
+
                 <DropdownSort
                     options={["Random", "Upcoming", "Name A > Z", "Latest"]}
                     onSelect={handleDropdownSelect}
                 />
             </div>
-
             <Row>
 
                 <Col>
@@ -161,9 +164,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 </div>
 
                                                                 <div className='w-100'>
-                                                                    <Card.Body className='' onClick={() => chooseConf(conf.id)}>
-                                                                        <Card.Title className='text-color-black'>
-                                                                            <div className='fw-bold d-flex align-items-center justify-content-start mt-1'>
+                                                                    <Card.Body onClick={() => chooseConf(conf.id)}>
+                                                                        <Card.Title className=''>
+                                                                            <div className='fw-bold d-flex align-items-center justify-content-start'>
                                                                                 {
                                                                                     conf.organizations.length > 0 &&
                                                                                     <>
@@ -175,7 +178,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                         }
                                                                                     </>
                                                                                 }
-                                                                                <span className='fw-bold fs-5 text-justify'>{conf.information.name}</span>
+                                                                                <span className='fw-bold fs-5 text-justify text-color-darker'>{conf.information.name}</span>
                                                                             </div>
 
                                                                         </Card.Title>
@@ -216,46 +219,49 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                 <>Updating</>
                                                                             )}
                                                                         </Card.Text>
-                                                                        <Stack direction="horizontal" gap={3}>
-                                                                        {
+
+                                                                    </Card.Body>
+
+                                                                    <div className="d-flex align-items-center justify-content-between">
+                                                                        <div className='mx-2 d-flex flex-wrap w-100'>
+                                                                            {
                                                                                 conf.matchingKeywords &&
 
-                                                                                   <>
+                                                                                <>
                                                                                     {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
-                                                                                        <div key={index} className='bg-skyblue-light p-1 rounded'>
+                                                                                        <div key={index} className='bg-skyblue-light p-1 rounded mx-1'>
                                                                                             {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
                                                                                         </div>
                                                                                     ))}
-                                                                                   </>
+                                                                                </>
                                                                             }
-                                                                        </Stack>
-                                                                    </Card.Body>
-
-                                                                    {
-                                                                        isPost
-                                                                            ?
-                                                                            <>
-                                                                                <div className='d-flex justify-content-end'>
-                                                                                    <ButtonGroupUpdate conference={conf} />
-                                                                                </div>
-                                                                            </>
-                                                                            :
-                                                                            <>
-                                                                                {
-                                                                                    isObjectInList(conf.id, listFollowed)
-                                                                                        ?
-                                                                                        <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
-                                                                                            <Image src={FollowIcon} className='me-2' width={18} />
-                                                                                            <span>Unfollow</span>
-                                                                                        </Button>
-                                                                                        :
-                                                                                        <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
-                                                                                            <Image src={UnfollowIcon} className='me-2 ' width={18} />
-                                                                                            <span>Follow</span>
-                                                                                        </Button>
-                                                                                }
-                                                                            </>
-                                                                    }
+                                                                        </div>
+                                                                        {
+                                                                            isPost
+                                                                                ?
+                                                                                <>
+                                                                                    <div className='d-flex justify-content-end'>
+                                                                                        <ButtonGroupUpdate conference={conf} />
+                                                                                    </div>
+                                                                                </>
+                                                                                :
+                                                                                <>
+                                                                                    {
+                                                                                        isObjectInList(conf.id, listFollowed)
+                                                                                            ?
+                                                                                            <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
+                                                                                                <Image src={FollowIcon} className='me-2' width={18} />
+                                                                                                <span>Unfollow</span>
+                                                                                            </Button>
+                                                                                            :
+                                                                                            <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
+                                                                                                <Image src={UnfollowIcon} className='me-2 ' width={18} />
+                                                                                                <span>Follow</span>
+                                                                                            </Button>
+                                                                                    }
+                                                                                </>
+                                                                        }
+                                                                    </div>
 
                                                                 </div>
 
@@ -269,7 +275,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                             </>
                             :
                             <>
-                                <p className='mt-3'>No conferences available</p>
+                                <p className='my-5'>No conferences available</p>
                             </>
                     }
                     <ReactPaginate

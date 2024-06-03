@@ -21,7 +21,14 @@ const Homepage = () => {
     const {getItemInLocalStorage} = useLocalStorage()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
-    const {loading: loadingFilter, filterConferences}= useFilter()
+    const {
+      loading: loadingFilter, 
+      resultFilter,
+      priorityKeywords, 
+      filterConferences, 
+      sortConferencesByPriorityKeyword, 
+      countMatchingConferences,
+      setSelectedKeywords}= useFilter()
     
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
@@ -54,11 +61,11 @@ const Homepage = () => {
       if(isApliedFilter){
 
         const filterResult = filterConferences(conferences, optionsSelected)
-        setDisplayedConferences(filterResult)
+        const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
+  
+        setDisplayedConferences(sortConferences)
         setTotalConferences(filterResult.length)
         setTotalPages(Math.ceil(filterResult.length / 7))
-        console.log({filterResult})
-        
       }
       else {
         const totalConfLS = getItemInLocalStorage('totalConferences')
@@ -77,9 +84,10 @@ const Homepage = () => {
       } else {
         window.history.pushState({}, '', window.location.pathname);
       }
-    }, [optionsSelected, conferences])
+    }, [optionsSelected, conferences, priorityKeywords])
     
-  
+
+
     useEffect(() => {
       if (loadingFilter) {
         document.body.style.cursor='wait'

@@ -15,12 +15,16 @@ const useNotification = () => {
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
   const { getCurrentUser } = useAuth()
-
+  const [priorityOption, setPriorityOption] = useState()
   let socketRef = useRef(null);
   const user_id = JSON.parse(sessionStorage.getItem('user-id'))
 
   useEffect(() => {
-    getCurrentUser()
+    const getIDUser = async () =>{
+      await getCurrentUser()
+    }
+
+    getIDUser()
     const socket = io(`https://conference-searching.onrender.com`, {
       query: {
         "user-id": user_id

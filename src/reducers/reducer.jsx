@@ -107,6 +107,11 @@ const appReducer = (state, action) => {
                 appliedFilterResult: action.payload.clearedConferencesFilter,
                 loading: false
             };
+        case actionTypes.SET_PRIORITY_KEYWORD:
+            return {
+                ...state,
+                priorityKeywords: action.payload,
+            }; 
 
         case actionTypes.SET_SEARCH_RESULT:
             return {
