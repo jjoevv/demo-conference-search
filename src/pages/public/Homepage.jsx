@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
 
 
-import SlideShow from '../../components/SlideShow'
 import Conference from '../../components/Conference'
 
 
@@ -13,22 +12,19 @@ import useFilter from '../../hooks/useFilter'
 import usePost from '../../hooks/usePost'
 import Filter from '../../components/Filter/Filter'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import { useLocation } from 'react-router-dom'
 
 const Homepage = () => {
-    const [showSlideShow, setShowSlideShow] = useState(true)
-    const { optionsSelected, getOptionsFilter} = useSearch()
+    const { optionsSelected, getOptionsFilter, updateOptionsSelectedFromParams} = useSearch()
     const {loading: loadingAll, conferences, handleGetList} = useConference()
     const {getItemInLocalStorage} = useLocalStorage()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
+    const {pathname} = useLocation()
     const {
-      loading: loadingFilter, 
-      resultFilter,
       priorityKeywords, 
       filterConferences, 
-      sortConferencesByPriorityKeyword, 
-      countMatchingConferences,
-      setSelectedKeywords}= useFilter()
+      sortConferencesByPriorityKeyword}= useFilter()
     
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
@@ -74,33 +70,16 @@ const Homepage = () => {
         setTotalPages(Math.ceil(totalPagesLS))
         setDisplayedConferences(conferences)
       }
-      // Tạo query string 
-      const queryString  = Object.entries(optionsSelected)
-      .filter(([, values]) => values.length > 0)
-      .map(([key, values]) => `${key}=${values.join(',')}`)
-      .join('&');
-      if (queryString) {
-        window.history.pushState({}, '', `?${queryString}`);
-      } else {
-        window.history.pushState({}, '', window.location.pathname);
-      }
+      
     }, [optionsSelected, conferences, priorityKeywords])
-    
+  
+    useEffect(()=>{
+      console.log({pathname, optionsSelected})
+    }, [pathname, optionsSelected])
 
-
-    useEffect(() => {
-      if (loadingFilter) {
-        document.body.style.cursor='wait'
-      } else {
-        {document.body.style.cursor='default';}
-      }
-      return () => {
-        {document.body.style.cursor='default';}
-      };
-  }, [loadingFilter]);
    
   return (
-    <div style={{marginTop: "100px"}}>        
+    <div style={{marginTop: "100px"}} className='overflow-x-hidden'>        
         {/*showSlideShow &&
         <Container>
           <Stack direction='horizontal' className='w-100'>

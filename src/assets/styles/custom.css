@@ -379,7 +379,7 @@ a {
 .my-conf-card {
     border-radius: 15px;
     border: 1px solid #f2fbfc;
-    background-color: #d0f5f0;
+    background-color: #f2fbfc;
     cursor: pointer;
     padding: 20px 40px;
     margin: 20px 0px;
@@ -416,7 +416,6 @@ a {
 }
 
 .icon-follow {
-    position: absolute;
     width: 140px;
     height: 40px;
     right: 50px;
@@ -542,7 +541,9 @@ a {
 .sticky {
     position: fixed;
     top: 60px;
-    width: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
 }
 
 .sticky+.content {

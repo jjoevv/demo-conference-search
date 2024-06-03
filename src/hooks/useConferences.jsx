@@ -31,6 +31,18 @@ const useConference = () => {
     setSelectOptionSort(option)
   }
 
+  const saveDataToFile = (data) => {
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = './data/data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const fetchData = useCallback(async (page, size) => {
     try {
       const response = await fetch(`${baseURL}/conference?page=${page}&size=${size}`, {
@@ -86,7 +98,6 @@ const useConference = () => {
 
           // Fetch remaining pages asynchronously and save to localstorage
           for (let i = 2; i <= maxPagesFetch; i++) {
-            console.log({ i })
             const pageData = await fetchData(i, 20);
             const filteredNextData = pageData.data.filter(
               item => !listFollowed.some(conf => conf.id === item.id)
@@ -107,15 +118,14 @@ const useConference = () => {
           const conferencesStored = getItemInLocalStorage('conferences')
           const data = conferencesStored ? conferencesStored : []
           dispatch(getAllConf(data));
+          //saveDataToFile(data)
           setLoading(false)
           return
         }
         else {
           //a part of data saved in local storage
           if (currentFetchPage > 1) {
-
             setLoading(false)
-
             const conferencesStored = getItemInLocalStorage('conferences')
             const listFollowed = getDataListInStorage("listFollow")
             // Loại bỏ các phần tử trùng lặp
@@ -167,18 +177,6 @@ const useConference = () => {
       console.error('Error fetching data:', error);
     }
   }
-
-  const saveDataToFile = (data) => {
-    const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
 
   const getConferenceDate = (organizations) => {
     if (organizations.length > 0) {

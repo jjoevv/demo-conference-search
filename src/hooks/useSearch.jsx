@@ -23,7 +23,29 @@ const useSearch = () => {
     return storedDataFilters ? JSON.parse(storedDataFilters) : {};
   });
 
-
+  
+  const sortList = (list) => {
+    // Lọc các mục là các chữ cái duy nhất
+    const uniqueLetters = list.filter(item => /^[A-Z]$/.test(item));
+    // Lọc các mục không phải là chữ cái duy nhất
+    const nonUniqueLetters = list.filter(item => !/^[A-Z]$/.test(item)).sort();
+  
+    // Sắp xếp các chữ cái duy nhất theo thứ tự bảng chữ cái
+    const uniqueList = nonUniqueLetters.reduce((accumulator, currentValue) => {
+      const standardizedValue = currentValue.toLowerCase(); // Chuyển đổi giá trị thành chữ thường
+      if (!accumulator.includes(standardizedValue)) {
+        accumulator.push(standardizedValue);
+      }
+      return accumulator;
+    }, []);
+  
+    // Sắp xếp danh sách giá trị duy nhất theo thứ tự bảng chữ cái
+    uniqueList.sort();
+  
+    // Kết hợp lại
+    return [...uniqueLetters, ...uniqueList];
+  };
+  
   const getOptionsFilter = async (label, staticData) => {
     const params = ["source", "for", "acronym", "rank"];
     const existedOptions = state.filterOptions
@@ -44,7 +66,8 @@ const useSearch = () => {
               );
               const data = await response.json();
               // Gửi action để cập nhật dữ liệu cho label hiện tại
-              dispatch(getoptionsSelected({ [param]: data.data }));
+              const sorted = sortList(data.data)
+              dispatch(getoptionsSelected({ [param]: sorted }));
 
             } catch (error) {
               console.error(`Error fetching data for ${param}:`, error);
@@ -55,8 +78,9 @@ const useSearch = () => {
             try {
               const response = await fetch(`${baseURL}/${param}`);
               const data = await response.json();
-              // Gửi action để cập nhật dữ liệu cho label hiện tại
-              dispatch(getoptionsSelected({ [param]: data.data }));
+              // Gửi action để cập nhật dữ liệu cho label hiện tại 
+               const sorted = sortList(data.data)
+              dispatch(getoptionsSelected({ [param]: sorted }));
 
             } catch (error) {
               console.error(`Error fetching data for ${param}:`, error);
@@ -74,16 +98,16 @@ const useSearch = () => {
 
   }
   const addKeywords = (label, keywords) => {
-    if (!state.optionsSelected[label].includes(keywords[0])) {
-      dispatch(addFilter(label, keywords))
+    if(label === 'submissionDate' || label === 'conferenceDate'){
+      dispatch({type: "ADD_FILTER_DATE", payload: {label, keyword: keywords}})
     }
-    const quantity = extractQuantity(keywords[0])
-
-    const storedDataFilters = sessionStorage.getItem('keywordFilter');
-    const parsedDataFilters = storedDataFilters ? JSON.parse(storedDataFilters) : {};
-    parsedDataFilters[keywords[0]] = quantity
-    sessionStorage.setItem('keywordFilter', JSON.stringify(parsedDataFilters));
-    setActionWithKeyword('add')
+    else {
+      if (!state.optionsSelected[label].includes(keywords[0])) {
+        dispatch(addFilter(label, keywords))
+      }
+      else deleteKeyword(label, keywords[0])
+    }
+    
   }
 
   const sendFilterDate = async (startDate, endDate, label) => {
@@ -225,7 +249,28 @@ const useSearch = () => {
     return total;
   }
 
-
+ // Hàm để phân tích params từ URL và cập nhật optionsSelected
+ const updateOptionsSelectedFromParams = (searchParams) => {
+  const newOptionsSelected = { ...state.optionsSelected };
+  console.log({searchParams})
+  // Loop qua các key của optionsSelected
+  for (const key in newOptionsSelected) {
+    if (Object.hasOwnProperty.call(newOptionsSelected, key)) {
+      // Kiểm tra xem key có tồn tại trong params không
+      if (searchParams.has(key)) {
+        // Lấy giá trị tương ứng và cập nhật vào optionsSelected
+        newOptionsSelected[key] = searchParams.get(key).split(',');
+        const keyword = searchParams.get(key).split(',');
+        console.log({newOptionsSelected, key, keyword})
+      } else {
+        // Nếu không tồn tại, đặt giá trị là mảng trống
+        newOptionsSelected[key] = [];
+      }
+    }
+  }
+  // Cập nhật optionsSelected mới
+  console.log({newOptionsSelected})
+};
  
 
   return {
@@ -245,7 +290,8 @@ const useSearch = () => {
     sendFilter,
     getKeyword,
     extractQuantity,
-    getTotalConf
+    getTotalConf,
+    updateOptionsSelectedFromParams
   }
 }
 

@@ -79,7 +79,6 @@ const appReducer = (state, action) => {
                         ...action.payload.keywords, // Thêm giá trị mới vào mảng
                     ],
                 },
-                actionWithKeyword: 'add'
             };
         case actionTypes.ADD_FILTER_DATE:
             return {
@@ -89,7 +88,6 @@ const appReducer = (state, action) => {
                     ...state.optionsSelected,
                     [action.payload.label]: [...action.payload.keyword],
                 },
-                actionWithKeyword: 'add',
             }
         case actionTypes.REMOVE_FILTER:
             return {

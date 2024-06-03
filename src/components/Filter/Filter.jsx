@@ -1,5 +1,5 @@
-import { Stack, Form, InputGroup, Button, Image, Container, Row, Col, Spinner } from "react-bootstrap";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Stack, Form, InputGroup, Button, Image, Container, Row, Col } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
 
 import DateRangePicker from "./DateRangePicker";
 import AdvancedFilter from "./AdvancedFilter";
@@ -9,10 +9,11 @@ import downIcon from '../../assets/imgs/down.png'
 import FilterSelected from "./FilterSelected";
 import useSearch from "../../hooks/useSearch";
 import Options from "./Options";
-import { useLocation, UNSAFE_NavigationContext  } from "react-router-dom";
+import { useLocation, useSearchParams  } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import useFilter from "../../hooks/useFilter";
+import HeaderFilter from "./HeaderFilter";
 
 const Filter = () => {
   const {addKeywords, clearKeywords, optionsSelected} = useSearch()
@@ -21,12 +22,32 @@ const Filter = () => {
   const [searchInput, setSearchInput] = useState("")  
   const location = useLocation();
   const pathname = location.pathname;
-  
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(()=>{
+    
     // Lấy danh sách các location trước đó từ localStorage
-    clearKeywords()
+    //clearKeywords()
   }, [pathname])
+  const [showHeaderFilter, setShowHeaderFilter] = useState(false);
 
+  useEffect(() => {
+
+   /* window.onscroll = function () { myFunction() };
+
+    var header = document.getElementById("tab-header");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+      if (window.scrollY > sticky) {
+        header.classList.add("sticky");
+        setShowHeaderFilter(true)
+      } else {
+        header.classList.remove("sticky");
+        
+        setShowHeaderFilter(false)
+      }
+    }*/
+  }, [])
 
   
 
@@ -97,10 +118,10 @@ const Filter = () => {
       {/*Filer dropdown */}
 
       <Row direction="horizontal" gap={3} className="w-100  d-flex justify-content-center">
-        <Col>
+       {/* <Col>
           <span className="fw-bold text-color-black">Category</span>
           <Options label={"category"}/>
-        </Col>
+        </Col>* */}
         <Col >
           <span className="fw-bold text-color-black">Location</span>
           <Options label={"location"}/>
@@ -123,10 +144,12 @@ const Filter = () => {
         className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'}/>
       </Button>
       
-      {showAdvancedFilter && <AdvancedFilter/>}
-     
-      
+      {showAdvancedFilter && <AdvancedFilter/>}  
       {optionsSelected && <FilterSelected/>}  
+
+        {/*<div className={`header w-100 bg-beige-normal ${showHeaderFilter ? '' : 'visually-hidden'}`} id='tab-header'>
+          <HeaderFilter/>
+      </div>*/}
     </Container>
   );
 };

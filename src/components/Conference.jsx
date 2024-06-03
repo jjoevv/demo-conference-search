@@ -128,7 +128,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     {`${totalConferences} conferences`}
                 </div>
             </div>
-            <div className="d-flex justify-content-end align-items-center w-100 px-5 mx-5">
+            <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
                 <PriorityOptions />
 
                 <DropdownSort
@@ -159,7 +159,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             id={conf.id}
                                                             key={conf.id}>
                                                             <Stack className='p-0 w-100' direction='horizontal'>
-                                                                <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container '>
+                                                                <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container border border-teal-normal'>
                                                                     <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
                                                                 </div>
 
@@ -236,31 +236,33 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                 </>
                                                                             }
                                                                         </div>
-                                                                        {
-                                                                            isPost
-                                                                                ?
-                                                                                <>
-                                                                                    <div className='d-flex justify-content-end'>
-                                                                                        <ButtonGroupUpdate conference={conf} />
-                                                                                    </div>
-                                                                                </>
-                                                                                :
-                                                                                <>
-                                                                                    {
-                                                                                        isObjectInList(conf.id, listFollowed)
-                                                                                            ?
-                                                                                            <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
-                                                                                                <Image src={FollowIcon} className='me-2' width={18} />
-                                                                                                <span>Unfollow</span>
-                                                                                            </Button>
-                                                                                            :
-                                                                                            <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
-                                                                                                <Image src={UnfollowIcon} className='me-2 ' width={18} />
-                                                                                                <span>Follow</span>
-                                                                                            </Button>
-                                                                                    }
-                                                                                </>
-                                                                        }
+                                                                        <div>
+                                                                            {
+                                                                                isPost
+                                                                                    ?
+                                                                                    <>
+                                                                                        <div className='d-flex justify-content-end'>
+                                                                                            <ButtonGroupUpdate conference={conf} />
+                                                                                        </div>
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        {
+                                                                                            isObjectInList(conf.id, listFollowed)
+                                                                                                ?
+                                                                                                <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
+                                                                                                    <Image src={FollowIcon} className='me-2' width={18} />
+                                                                                                    <span>Unfollow</span>
+                                                                                                </Button>
+                                                                                                :
+                                                                                                <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
+                                                                                                    <Image src={UnfollowIcon} className='me-2 ' width={18} />
+                                                                                                    <span>Follow</span>
+                                                                                                </Button>
+                                                                                        }
+                                                                                    </>
+                                                                            }
+                                                                        </div>
                                                                     </div>
 
                                                                 </div>

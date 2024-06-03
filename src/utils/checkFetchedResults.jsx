@@ -43,7 +43,6 @@ const filterCommonConferences = (filteredList, authList) => {
 };
 
 const mergeConferencesByKeyword = (dataFilter, keywordList) => {
-  //console.log({dataFilter, keywordList})
   const extractedLists = [];
     // Duyệt qua từng cặp key-value trong object
     for (const [key, value] of Object.entries(dataFilter)) {

@@ -11,7 +11,7 @@ import dateIcon from '../../assets/imgs/conf_date_light.png'
 import { formatDate } from '../../utils/formatDate';
 import { formatLabel } from '../../utils/formatWord';
 const DateRangePicker = ({ label }) => {
-  const { sendFilterDate, addKeywords } = useSearch()
+  const { addKeywords } = useSearch()
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -26,8 +26,7 @@ const DateRangePicker = ({ label }) => {
     setEndDate(date);
   };
 
-  const handleApplyFilter = async () => {
-    
+  const handleApplyFilter = async () => {    
     handleToggleClick()
     const keywordFormat = `${formatLabel(label)}: from ${formatDate(startDate)} to ${formatDate(endDate)}`         
     addKeywords(label, [keywordFormat])

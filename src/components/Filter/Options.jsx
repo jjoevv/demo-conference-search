@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import useSearch from '../../hooks/useSearch'
 
 import { capitalizeFirstLetter } from '../../utils/formatWord'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 
 import data from './options.json'
 import useFilter from '../../hooks/useFilter'
@@ -13,7 +13,7 @@ const customStyles = {
     menuPortal: (provided) => ({
         ...provided,
         zIndex: 9999, // Đặt giá trị z-index cao để luôn nằm trên các thành phần khác
-      }),
+    }),
     control: (provided, state) => ({
         ...provided,
         cursor: 'pointer',
@@ -34,56 +34,76 @@ const customStyles = {
             color: 'black', // Điều chỉnh màu chữ khi hover
         },
     }),
+    singleValue: (provided) => ({
+        ...provided,
+        display: 'none'
+    })
 };
-const CustomOption = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className='d-flex align-items-start'>
+
+const CustomOption = ({ innerProps, label, selectedOptions }) => (
+    <div {...innerProps} className='d-flex align-items-center justify-content-start'>
         <input
             type="checkbox"
-            checked={isSelected}
-            onChange={() => { }}
-            className='m-2'
+            checked={selectedOptions.includes(label)}
+            onChange={() => null}
+            className='ms-2 me-1'
         />
-        <label style={{ fontWeight: isSelected ? 'bold' : 'normal' }} className='fs-6'>{label}</label>
+        <span
+            className={`fs-6 p-2 ${selectedOptions.includes(label) ? 'text-skyblue-dark' : 'text-color-black'}`}
+        >
+            {capitalizeFirstLetter(label)}
+        </span>
     </div>
 );
-const Options = ({ label}) => {
-    const { filterOptions, getOptionsFilter, sendFilter, addKeywords } = useSearch()
-    
+const MultiValue = ({ index, getValue, ...props }) => {
+    const maxToShow = 1;
+    const overflow = getValue()
+      .slice(0, -maxToShow)
+      .map((x) => x.label);
+  
+    return index === getValue().length - maxToShow ? (
+        `+ ${overflow.length+1} option${overflow.length !== 1 ? "s" : ""} selected`
+    ) : null;
+  };
+
+const Options = ({ label }) => {
+    const { optionsSelected, filterOptions, getOptionsFilter, addKeywords } = useSearch()
     const [options, setOptions] = useState([])
-    
+
     const handleOptionChange = async (item) => {
-        addKeywords(label,[item[0].label])
+        addKeywords(label, [item[item.length-1].label])
     }
 
     useEffect(() => {
         const staticValue = ["location", "type", "category"]
-        
-        if(staticValue.includes(label)){
-        
+
+        if (staticValue.includes(label)) {
+
             setOptions(data[label])
             getOptionsFilter(label, data[label])
         }
-        else { 
-            let transformedOptions = [] 
+        else {
+            let transformedOptions = []
             if (filterOptions[label]) {
-                transformedOptions = filterOptions[label].map((item, index) => ({
-                    value: index + 1,
-                    label: capitalizeFirstLetter(item),
+                transformedOptions = filterOptions[label].map((item) => ({
+                    value: item,
+                    label: item,
                 }));
             }
             setOptions(transformedOptions)
         }
-        
-    }, []);
 
+    }, []);
 
     return (
         <div>
             <Select
                 isMulti={true}
                 options={options}
-                value
-                components={{ Option: CustomOption }}
+                value={optionsSelected[label].map(value => ({ value, label: value }))}
+                hideSelectedOptions={false}
+                isClearable={false}
+                components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} /> , MultiValue }}
                 onChange={handleOptionChange}
                 closeMenuOnSelect={true}
                 styles={customStyles}

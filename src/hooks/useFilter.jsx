@@ -19,33 +19,35 @@ const useFilter = () => {
 
   useEffect(() => {  
     let updatedPriorityKeywords = { ...state.priorityKeywords };
-
+  
+    // Lặp qua từng key trong optionsSelected
     Object.entries(optionsSelected).forEach(([key, keywords]) => {
-        if (!(key in updatedPriorityKeywords)) {
-            updatedPriorityKeywords[key] = keywords[keywords.length - 1];
-        }
-    });
-
-    // Kiểm tra nếu priority keyword hiện tại đã bị xóa khỏi optionsSelected
-    Object.entries(priorityKeywords).forEach(([key, priorityKeyword]) => {
-      if (optionsSelected[key] && !optionsSelected[key].includes(priorityKeyword)) {
-        updatedPriorityKeywords[key] = optionsSelected[key][optionsSelected[key].length - 1];
+      // Nếu danh sách keywords có nhiều hơn 1 phần tử hoặc key chưa tồn tại trong updatedPriorityKeywords
+      if (keywords.length > 1 || !(key in updatedPriorityKeywords)) {
+        updatedPriorityKeywords[key] = keywords[keywords.length - 1]; // Thêm key vào updatedPriorityKeywords với giá trị cuối cùng trong danh sách
       }
     });
-
-    // Remove keys with only one keyword
+  
+    // Kiểm tra nếu priority keyword hiện tại đã bị xóa khỏi optionsSelected
+    Object.entries(priorityKeywords).forEach(([key, priorityKeyword]) => {
+      // Nếu optionsSelected vẫn chứa key và priorityKeyword không nằm trong danh sách keywords của key đó
+      if (optionsSelected[key] && !optionsSelected[key].includes(priorityKeyword)) {
+        updatedPriorityKeywords[key] = optionsSelected[key][optionsSelected[key].length - 1]; // Cập nhật priorityKeyword mới là giá trị cuối cùng trong danh sách keywords của key
+      }
+    });
+  
+    // Xóa các keys có chỉ một keyword
     Object.keys(updatedPriorityKeywords).forEach(key => {
-      if (optionsSelected[key].length <= 1) {
-        delete updatedPriorityKeywords[key];
+      if (optionsSelected[key].length < 1) {
+        delete updatedPriorityKeywords[key]; // Xóa key nếu chỉ có một keyword trong danh sách
       }
     });
     
+    // Cập nhật state và dispatch action mới
     setPriorityKeywords(updatedPriorityKeywords);
-
-  // Cập nhật priorityKeywords mới
-  setPriorityKeywords(updatedPriorityKeywords);
-  dispatch({type: 'SET_PRIORITY_KEYWORD', payload: updatedPriorityKeywords})
+    dispatch({type: 'SET_PRIORITY_KEYWORD', payload: updatedPriorityKeywords})
   }, [optionsSelected]);
+  
    
 
   
@@ -55,11 +57,14 @@ const useFilter = () => {
     
     Object.entries(optionsSelected).forEach(([key, keywords]) => {
       if(keywords.length > 0){
-        keywordsWithMultipleOptions[key] = keywords;
+        if(key === 'conferenceDate' || key === 'submissionDate'){
+          const extractKeyword = extractDateRangeFromKeyword(keywords[0])
+          keywordsWithMultipleOptions[key] = [extractKeyword]
+        }
+        else keywordsWithMultipleOptions[key] = keywords;
       }
     });
     setSelectedKeywords(keywordsWithMultipleOptions);
-    
   }, [optionsSelected])
 
 
@@ -76,10 +81,29 @@ const useFilter = () => {
     }})
   };
 
-
-  const getCountForSelectedKeyword = (countlist, keyword) => {
-    return countlist[keyword.toLowerCase()] || 0;
+// Hàm để trích xuất chuỗi ngày tháng từ từ khóa
+const extractDateRangeFromKeyword = (keyword) => {
+  const match = keyword.match(/from\s+\d{4}-\d{2}-\d{2}\s+to\s+\d{4}-\d{2}-\d{2}/);
+  return match ? match[0] : null;
 };
+
+const getCountForSelectedKeyword = (countlist, keyword, key) => {
+  // Xử lý các từ khóa đặc biệt như "conference date" hoặc "submission date"
+  
+  if ( key ==='conferenceDate' || key === 'submissionDate') {
+    for(const [keyCount, value] of Object.entries(countlist)){
+      
+      if(keyCount.includes(keyword)){
+        return value
+      }
+    }
+  } else {    
+  // Trường hợp thông thường
+  return countlist[keyword.toLowerCase()]
+  }
+
+};
+
 
   const searchInObject = (obj, keyword) => {
     keyword = keyword.toLowerCase();
@@ -204,7 +228,7 @@ const filterConferences = (listConferences, keywordSelected) => {
             }
 
             case 'category': {
-              isMatch = conference.information?.fieldOfResearch?.some(field => field?.toLowerCase().includes(keyword));
+              isMatch = true
               break;
             }
 
@@ -214,7 +238,12 @@ const filterConferences = (listConferences, keywordSelected) => {
 
           if (isMatch) {
             if (!matchKeywords[key]) matchKeywords[key] = [];
-            matchKeywords[key].push(keyword);
+            if(key === 'conferenceDate' || key === 'submissionDate'){
+              const match = keywords[0].match(/from\s+\d{4}-\d{2}-\d{2}\s+to\s+\d{4}-\d{2}-\d{2}/);
+              const extractKeyword = match ? match[0] : '';
+              matchKeywords[key].push(extractKeyword);
+            }
+            else matchKeywords[key].push(keyword);
             isCategoryMatch = true;
           }
         });
@@ -294,10 +323,21 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
         const matchingKeywords = conference.matchingKeywords[key];
 
         lowerKeywords.forEach(keyword => {
+          if(key==='submissionDate' || key === 'conferenceDate'){
+            const extractedRange = extractDateRangeFromKeyword(keyword);
+            if (extractedRange && matchingKeywords.includes(extractedRange)) {
+              keywordCounts[keyword]++;
+            }
+
+
+          }
+          else {
+
           // Check if keyword is included in matchingKeywords
           if (matchingKeywords.includes(keyword)) {
             // Increment keyword count
             keywordCounts[keyword]++;
+          }
           }
         });
       }
