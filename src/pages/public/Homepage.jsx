@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 
 
-import Conference from '../../components/Conference'
+import Conference from '../../components/Conference/Conference'
 
 
 import useSearch from '../../hooks/useSearch'
@@ -58,12 +58,13 @@ const Homepage = () => {
 
         const filterResult = filterConferences(conferences, optionsSelected)
         const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-  
+        console.log({sortConferences})
         setDisplayedConferences(sortConferences)
         setTotalConferences(filterResult.length)
         setTotalPages(Math.ceil(filterResult.length / 7))
       }
       else {
+        console.log('ko apply',conferences)
         const totalConfLS = getItemInLocalStorage('totalConferences')
         const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
         setTotalConferences(totalConfLS)

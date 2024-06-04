@@ -47,7 +47,7 @@ const HeaderNoti = () => {
     const unreadNotifications = notifications.filter(notification => !notification.read_status);
     
     await getNoticationById(unreadNotifications)
-    navigate(user ? '/notifications' : 'login')
+    navigate(user ? '/user/notifications' : 'login')
   }
   const splitNotificationMessage = (message) => {
     const parts = message.split('. ');

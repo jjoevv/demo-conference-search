@@ -138,18 +138,6 @@ button.bg-skyblue-light:active {
     background-color: #fffac1;
 }
 
-.bg-yellow-normal {
-    background-color: #ffee38;
-}
-
-button.bg-yellow-normal:hover {
-    background-color: #e6d632;
-}
-
-button.bg-yellow-normal:active {
-    background-color: #ccbe2d;
-}
-
 .bg-yellow-dark {
     background-color: #bfb32a;
 }

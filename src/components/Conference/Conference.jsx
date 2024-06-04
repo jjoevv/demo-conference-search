@@ -1,30 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Container, Card, Button, Image, Stack, Row, Col } from 'react-bootstrap'
+import { Container, Card, Button, Stack, Row, Col, Image } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 
-import UnfollowIcon from './../assets/imgs/unfollow.png'
-import FollowIcon from './../assets/imgs/follow.png'
-import TimeIcon from './../assets/imgs/time.png'
-import useFollow from '../hooks/useFollow'
-import { isObjectInList } from '../utils/checkExistInList'
+import useFollow from '../../hooks/useFollow'
+import { isObjectInList } from '../../utils/checkExistInList'
 
-import useSearch from '../hooks/useSearch'
-import { DropdownSort } from './DropdownSort'
-import { isUpcoming, sortByFollow, sortConferences } from '../utils/sortConferences'
+import useSearch from '../../hooks/useSearch'
+import { DropdownSort } from '../DropdownSort'
+import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
-import Loading from './Loading'
-import { getDateValue } from '../utils/formatDate'
-import { checkExistValue } from '../utils/checkFetchedResults'
-import ButtonGroupUpdate from './PostConference/ButtonGroupUpdate'
+import Loading from '../Loading'
+import { getDateValue } from '../../utils/formatDate'
+import ButtonGroupUpdate from '../PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
-import useConference from '../hooks/useConferences'
+import useConference from '../../hooks/useConferences'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
-import { capitalizeFirstLetter } from '../utils/formatWord'
-import PriorityOptions from './Filter/PriorityOptions'
+import { faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import UnFollowIcon from './../../assets/imgs/unfollow.png'
+import FollowIcon from './../../assets/imgs/follow.png'
+import { capitalizeFirstLetter } from '../../utils/formatWord'
+import PriorityOptions from '../Filter/PriorityOptions'
+import LoadingConferences from './LoadingConferences'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-    const { selectOptionSort, displaySortList, fetchData, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
+    const { selectOptionSort, displaySortList, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
     const { loading: loadingConf, listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
@@ -98,9 +97,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         // Cuộn lên đầu danh sách khi chuyển trang
         const element = document.getElementById('conferences-render');
         if (element) {
-            window.scrollTo({
-                top: element.offsetTop,
-                behavior: 'instant'
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         }
         setLoadingPage(true)
@@ -123,8 +122,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     if (loading) {
         return (
-            <Container className='d-flex flex-column align-items-center p-0'>
-                <Loading onReload={onReload} />
+            <Container className='d-flex flex-column align-items-center p-0 h-100 overflow-hidden'>
+                <LoadingConferences onReload={onReload}/>
             </Container>
         )
     }
@@ -136,7 +135,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     {`${totalConferences} conferences`}
                 </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
+            <div    className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
                 <PriorityOptions />
 
                 <DropdownSort
@@ -166,13 +165,13 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             className='my-conf-card'
                                                             id={conf.id}
                                                             key={conf.id}>
-                                                            <Stack className='p-0 w-100' direction='horizontal'>
+                                                            <Stack className='p-0 w-100 align-items-start' direction='horizontal'>
                                                                 <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container border border-teal-normal'>
                                                                     <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
                                                                 </div>
 
                                                                 <div className='w-100'>
-                                                                    <Card.Body onClick={() => chooseConf(conf.id)}>
+                                                                    <Card.Body onClick={() => chooseConf(conf.id)} className='py-0'>
                                                                         <Card.Title className=''>
                                                                             <div className='fw-bold d-flex align-items-center justify-content-start'>
                                                                                 {
@@ -191,8 +190,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
                                                                         </Card.Title>
                                                                         <Stack direction="horizontal" gap={5}>
-                                                                            <Card.Text className='d-flex align-items-center mb-1'>
-                                                                                <Image src={TimeIcon} className='me-2' width={18} />
+                                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                <FontAwesomeIcon icon={faClock} className='me-2'/>
                                                                                 <label className='conf-data-label'>Submission Date: </label>
                                                                                 <span className='conf-data'>
                                                                                     {
@@ -204,7 +203,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                             </Card.Text>
 
                                                                             <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                                <Image src={TimeIcon} className='me-2' width={18} />
+                                                                                <FontAwesomeIcon icon={faClock} className='me-2'/>
                                                                                 <label className='conf-data-label'>Conference Date: </label>
                                                                                 <span className='conf-data'>
 
@@ -217,7 +216,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                             </Card.Text>
 
                                                                         </Stack>
-                                                                        <Card.Text className='d-flex align-items-center fs-6 mt-2'>
+                                                                       <div className="d-flex align-items-center justify-content-between">
+                                                                       <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
                                                                             <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
                                                                             {conf.organizations.length > 0 ? (
                                                                                 // Nếu location không null, hiển thị giá trị của nó
@@ -227,23 +227,6 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                 <>Updating</>
                                                                             )}
                                                                         </Card.Text>
-
-                                                                    </Card.Body>
-
-                                                                    <div className="d-flex align-items-center justify-content-between">
-                                                                        <div className='mx-2 d-flex flex-wrap w-100'>
-                                                                            {
-                                                                                conf.matchingKeywords &&
-
-                                                                                <>
-                                                                                    {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
-                                                                                        <div key={index} className='bg-skyblue-light p-1 rounded mx-1'>
-                                                                                            {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
-                                                                                        </div>
-                                                                                    ))}
-                                                                                </>
-                                                                            }
-                                                                        </div>
                                                                         <div>
                                                                             {
                                                                                 isPost
@@ -259,18 +242,37 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                             isObjectInList(conf.id, listFollowed)
                                                                                                 ?
                                                                                                 <Button className='icon-follow border border-primary-light' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
-                                                                                                    <Image src={FollowIcon} className='me-2' width={18} />
+                                                                                                    <Image src={FollowIcon} width={18}/>
                                                                                                     <span>Unfollow</span>
                                                                                                 </Button>
                                                                                                 :
                                                                                                 <Button className='icon-follow border border-primary-light' onClick={() => handleFollow(conf.id)}>
-                                                                                                    <Image src={UnfollowIcon} className='me-2 ' width={18} />
+                                                                                                    <Image src={UnFollowIcon} width={18}/>
                                                                                                     <span>Follow</span>
                                                                                                 </Button>
                                                                                         }
                                                                                     </>
                                                                             }
                                                                         </div>
+                                                                       </div>
+
+                                                                    </Card.Body>
+
+                                                                    <div className="d-flex align-items-center justify-content-between">
+                                                                        <div className='mx-2 d-flex flex-wrap w-100'>
+                                                                            {
+                                                                                conf.matchingKeywords &&
+
+                                                                                <>
+                                                                                    {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
+                                                                                        <div key={index} className='bg-skyblue-light px-2 py-1 rounded mx-1 my-1'>
+                                                                                            {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </>
+                                                                            }
+                                                                        </div>
+
                                                                     </div>
 
                                                                 </div>

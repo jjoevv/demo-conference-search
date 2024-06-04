@@ -61,13 +61,13 @@ const Header = () => {
               </Dropdown.Toggle>
         
               <Dropdown.Menu>
-                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/followed')}>Followed Conferences</Dropdown.Item>
-                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/yourconferences')}>Your Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/followed')}>Followed Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             
 
-            <Link to={user ? '/schedule' : '/login'} className='mx-4 text-body-emphasis text-color-black fs-6' title='Timestamp'>
+            <Link to={user ? '/user/schedule' : '/login'} className='mx-4 text-body-emphasis text-color-black fs-6' title='Timestamp'>
               Schedule
             </Link>
             <HeaderNoti/>

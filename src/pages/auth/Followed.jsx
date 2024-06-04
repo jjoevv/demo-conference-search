@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Container, } from 'react-bootstrap'
-import Conference from './../../components/Conference'
+import Conference from '../../components/Conference/Conference'
 import useFollow from '../../hooks/useFollow'
 import useSearch from '../../hooks/useSearch'
 

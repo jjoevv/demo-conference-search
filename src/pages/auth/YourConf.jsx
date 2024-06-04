@@ -4,7 +4,7 @@ import { Container, Image, Button } from 'react-bootstrap'
 import editIcon from '../../assets/imgs/edit.png'
 import AddConference from '../../components/Modals/AddConference'
 import usePost from '../../hooks/usePost'
-import Conference from '../../components/Conference'
+import Conference from '../../components/Conference/Conference'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 import SuccessfulModal from '../../components/Modals/SuccessModal'

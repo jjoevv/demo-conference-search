@@ -1,16 +1,15 @@
 
-import { useLocation, Outlet, useNavigate } from 'react-router-dom'
-
-import NavBarDetailPage from '../components/NavBarDetailPage'
-import { useEffect } from 'react'
+import { useLocation, Outlet } from 'react-router-dom'
 import usePageNavigation from '../hooks/usePageNavigation'
 import Header from '../components/Header/Header'
+import RoutesApp from '../routes/RouteApp'
+import Footer from '../components/Footer/Footer'
 
 const MainLayout = () => {
     const location = useLocation()
     usePageNavigation()
   return (
-    <>
+    <div className='overflow-x-hidden'>
         {
             location.pathname === '/login' || location.pathname === '/signup'
             ?
@@ -19,10 +18,11 @@ const MainLayout = () => {
               <Header/>
             
         }
-        {location.pathname.includes("/detail/")&&<NavBarDetailPage/>}
+        <RoutesApp/>
+        
+        {!location.pathname.includes('user') && <Footer/>}
         <Outlet/>
-
-    </>
+    </div>
   )
 }
 

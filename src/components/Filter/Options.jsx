@@ -3,11 +3,9 @@ import { useEffect, useState } from 'react'
 import useSearch from '../../hooks/useSearch'
 
 import { capitalizeFirstLetter } from '../../utils/formatWord'
-import Select, { components } from 'react-select'
+import Select from 'react-select'
 
 import data from './options.json'
-import useFilter from '../../hooks/useFilter'
-
 
 const customStyles = {
     menuPortal: (provided) => ({
@@ -62,21 +60,31 @@ const MultiValue = ({ index, getValue, ...props }) => {
       .map((x) => x.label);
   
     return index === getValue().length - maxToShow ? (
-        `+ ${overflow.length+1} option${overflow.length !== 1 ? "s" : ""} selected`
+        `+ ${overflow.length+1} option${overflow.length !== 0 ? "s" : ""} selected`
     ) : null;
   };
 
 const Options = ({ label }) => {
-    const { optionsSelected, filterOptions, getOptionsFilter, addKeywords } = useSearch()
+    const { optionsSelected, filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
     const [options, setOptions] = useState([])
+    const [selectedOptions, setSelectedOptions] = useState(optionsSelected[label].map(value => ({ value, label: value })))
 
-    const handleOptionChange = async (item) => {
-        addKeywords(label, [item[item.length-1].label])
+    const handleOptionChange = async (items) => {
+        setSelectedOptions(items)
+        const itemsValues = items.map(item => item.value);
+        const removedOptions = selectedOptions.filter(option => !itemsValues.includes(option.value));
+
+        if (removedOptions.length <= 0) {
+            addKeywords(label, [items[items.length-1].label])
+        } 
+        else {
+            deleteKeyword(label, removedOptions[0].label)
+        }
+    
     }
 
     useEffect(() => {
         const staticValue = ["location", "type", "category"]
-
         if (staticValue.includes(label)) {
 
             setOptions(data[label])
@@ -92,7 +100,6 @@ const Options = ({ label }) => {
             }
             setOptions(transformedOptions)
         }
-
     }, []);
 
     return (

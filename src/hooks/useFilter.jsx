@@ -9,9 +9,7 @@ const useFilter = () => {
   const { state, dispatch } = useAppContext()
   const { optionsSelected, getKeyword } = useSearch()
   const [optionsFilter, setOptionsFilter] = useState([])
-  const [selectOptionFilter, setSelectOptionFilter] = useState([])
   const [inputValue, setInputValue] = useState('')
-  const {pathname} = useLocation()
   const [loading, setLoading] = useState(false)
 
   const [priorityKeywords, setPriorityKeywords] = useState({});
@@ -134,8 +132,8 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
 const filterConferences = (listConferences, keywordSelected) => {
   setLoading(true);
   let results = [];
-
-  listConferences.forEach(conference => {
+  const backupDataConferences = listConferences.map(conference => ({ ...conference }));
+  backupDataConferences.forEach(conference => {
     let matchKeywords = {}; // Object to store matching keywords for each key
 
     let isOverallMatch = true;

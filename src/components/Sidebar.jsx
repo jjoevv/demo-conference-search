@@ -12,12 +12,12 @@ import useToken from '../hooks/useToken'
 import usePageNavigation from '../hooks/usePageNavigation'
 
 const sidebar = [
-  { path: `/account`, title: 'Account', icon: test },
-  { path: '/followed', title: 'Followed Conferences', icon: test },
-  { path: '/yourconferences', title: 'Your conferences', icon: test },
-  { path: '/schedule', title: 'Note', icon: test },
-  { path: '/notifications', title: 'Notifications', icon: test },
-  { path: '/setting', title: 'Setting', icon: test },
+  { path: `/user/account`, title: 'Account', icon: test },
+  { path: '/user/followed', title: 'Followed Conferences', icon: test },
+  { path: '/user/yourconferences', title: 'Your conferences', icon: test },
+  { path: '/user/schedule', title: 'Note', icon: test },
+  { path: '/user/notifications', title: 'Notifications', icon: test },
+  { path: '/user/setting', title: 'Setting', icon: test },
 ]
 
 const Sidebar = () => {

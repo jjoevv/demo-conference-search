@@ -6,8 +6,8 @@ import settingIcon from '../../assets/imgs/setting.png'
 import logoutIcon from '../../assets/imgs/logout.png'
 import useAuth from '../../hooks/useAuth'
 const menu = [
-    {path: 'account', title: 'Account', icon: avatarIcon},
-    {path: 'setting', title: 'Setting', icon: settingIcon},
+    {path: 'user/account', title: 'Account', icon: avatarIcon},
+    {path: 'user/setting', title: 'Setting', icon: settingIcon},
 ]
 const AvatarDropdown = () => {
     const {handleLogout} = useAuth()
