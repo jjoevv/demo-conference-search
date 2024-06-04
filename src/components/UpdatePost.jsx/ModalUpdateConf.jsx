@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col, Accordion, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select'
 import usePost from '../../hooks/usePost';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faCircleExclamation, faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {  faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
 import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
+import data from './../Filter/options.json'
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const { loading, updatePost } = usePost()
@@ -25,16 +26,16 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     rank: conference.information.rank || "N/I",
     fieldsOfResearch: conference.information.fieldOfResearch || [],
     organizations: conference.organizations.filter(org => org.status === 'new') // Lọc ra các organizations có status là 'new'
-    .map(org => ({
-      name: org.name,
-      type: org.type,
-      location: org.location,
-      start_date: org.start_date,
-      end_date: org.end_date
-    })),
+      .map(org => ({
+        name: org.name,
+        type: org.type,
+        location: org.location,
+        start_date: org.start_date,
+        end_date: org.end_date
+      })),
 
     importantDates: conference.importantDates.filter(date => date.status === 'new') // Lọc ra các importantDates có status là 'new'
-    .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
+      .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
   });
 
   const [selectedOptions, setSelectedOptions] = useState(conference.information.fieldOfResearch.map(field => ({
@@ -115,23 +116,23 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
   const handleUpdatePost = async () => {
     setIsUpdateForm(true)
-    
+
     //kiểm tra location trùng name
     const hasDuplicateNames = formData.organizations.some((org, index) => {
       return formData.organizations.findIndex((item, i) => item.name === org.name && i !== index) !== -1;
     });
 
-   
+
     //kiểm tra importantdate trùng date_type
-    const seenDateTypes = {}; 
+    const seenDateTypes = {};
     const hasDuplicateDateType = formData.importantDates.some(date => {
       if (seenDateTypes[date.date_type]) {
-          // Nếu date_type đã xuất hiện trước đó, trả về true
-          return true;
+        // Nếu date_type đã xuất hiện trước đó, trả về true
+        return true;
       } else {
-          // Nếu chưa xuất hiện, đánh dấu là đã xuất hiện
-          seenDateTypes[date.date_type] = true;
-          return false;
+        // Nếu chưa xuất hiện, đánh dấu là đã xuất hiện
+        seenDateTypes[date.date_type] = true;
+        return false;
       }
     });
     setIsDuplicate(hasDuplicateNames)
@@ -142,9 +143,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     else if (hasDuplicateDateType) {
       setErrorMessage('Date type must be unique!')
       setTab(3)
-    }    
+    }
     else {
-   
+
       const result = await updatePost(formData, conference.id)
       setMesage(result.message)
       setStatus(result.status)
@@ -200,13 +201,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                     className='d-block'
                     value={formData.rank}
                     onChange={(e) => setFormData({ ...formData, rank: e.target.value })}>
-                    {
-                      filterOptions.rank.map((option, index) => (
-
-                        <option value={option} key={index}>{option}</option>
-
-                      ))
-                    }
+                    {(filterOptions.rank || data.rank).map((option, index) => (
+                      <option value={option.value || option} key={index}>{option.label || option}</option>
+                    ))}
                   </Form.Select>
 
                 </Col>
@@ -228,56 +225,56 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
             </Tab>
 
             <Tab eventKey={`2`} title="Organization" className='mx-4'>
-             
-                {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
-                {formData.organizations.map((org, index) => (
 
-                      <div  key={index} className='mt-5'>
-                        
-                        <Form.Group as={Row} className='my-3'>
-                        <Form.Label column sm="3">Organization name: </Form.Label>
-                        <Col>
-                          <div className='d-flex align-items-center'>
-                            <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)}/>
+              {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
+              {formData.organizations.map((org, index) => (
 
-                            {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
+                <div key={index} className='mt-5'>
 
-                          </div>
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} className='my-3'>
-                        <Form.Label column sm="3">Type: </Form.Label>
-                        <Col>
-                          <Form.Select value={org.type} onChange={(e) => handleOrganizationChange(index, 'type', e.target.value)}>
-                            <option value="">Select type...</option>
-                            <option value="online">Online</option>
-                            <option value="offline">Offline</option>
-                            <option value="hybrid">Hybrid</option>
-                          </Form.Select>
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} className='my-3'>
-                        <Form.Label column sm="3">Location: </Form.Label>
-                        <Col>
-                          <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} className='my-3'>
-                        <Form.Label column sm="3">Start Date: </Form.Label>
-                        <Col>
-                          <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} />
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} className='my-3'>
-                        <Form.Label column sm="3">End Date: </Form.Label>
-                        <Col>
-                          <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={org.isInvalidEndDate ? 'border-danger' : ''} />
-                        </Col>
-                      </Form.Group>
+                  <Form.Group as={Row} className='my-3'>
+                    <Form.Label column sm="3">Organization name: </Form.Label>
+                    <Col>
+                      <div className='d-flex align-items-center'>
+                        <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
+
+                        {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
+
                       </div>
-                      
-                ))}
-                {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} className='my-3'>
+                    <Form.Label column sm="3">Type: </Form.Label>
+                    <Col>
+                      <Form.Select value={org.type} onChange={(e) => handleOrganizationChange(index, 'type', e.target.value)}>
+                        <option value="">Select type...</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                        <option value="hybrid">Hybrid</option>
+                      </Form.Select>
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} className='my-3'>
+                    <Form.Label column sm="3">Location: </Form.Label>
+                    <Col>
+                      <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} className='my-3'>
+                    <Form.Label column sm="3">Start Date: </Form.Label>
+                    <Col>
+                      <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} className='my-3'>
+                    <Form.Label column sm="3">End Date: </Form.Label>
+                    <Col>
+                      <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={org.isInvalidEndDate ? 'border-danger' : ''} />
+                    </Col>
+                  </Form.Group>
+                </div>
+
+              ))}
+              {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
             <Tab eventKey={`3`} title="Important dates" className='mx-4'>
               <div className='w-100 d-flex justify-content-end'>
@@ -316,12 +313,12 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
         </Form>
       </Modal.Body>
       {
-          isupdateForm && !status && message !== '' && <p className="text-danger text-center">{message}</p>
-        }
+        isupdateForm && !status && message !== '' && <p className="text-danger text-center">{message}</p>
+      }
       <Modal.Footer className='d-flex justify-content-center'>
-     
+
         <ButtonGroup>
-          <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 text-black rounded'>
+          <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 rounded text-light'>
             Cancel
           </Button>
           <Button onClick={handleUpdatePost} className='bg-blue-normal border-light px-4 mx-3 rounded d-flex'>

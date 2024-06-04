@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import useToken from './useToken';
+import { useAppContext } from '../context/authContext';
 
 const useLocalStorage = () => {
+  const {state, dispatch} = useAppContext()
   const { savetokenToLocalStorage } = useToken()
 
   // Kiểm tra xem có dữ liệu người dùng trong localStorage không
@@ -13,15 +15,17 @@ const useLocalStorage = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       if (JSON.parse(storedUser).accessToken) {
-        savetokenToLocalStorage(JSON.parse(storedUser).accessToken)
+        savetokenToLocalStorage(JSON.parse(storedUser).accessToken)        
+        dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
       }
     }
-    else setUser(null)
+    else dispatch({type: 'LOGOUT_USER'})
   }, []);
 
   // Hàm để lưu thông tin người dùng vào localStorage
   const saveUserToLocalStorage = (userData, callback) => {
     localStorage.setItem('user', JSON.stringify(userData));
+    dispatch({type: 'LOGIN_SUCCESS', payload: userData})
     setUser(userData);
     callback && callback(userData); // Call the callback if provided
     return userData;
@@ -33,6 +37,7 @@ const useLocalStorage = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('user-id');
     setUser(null);
+    dispatch({type: 'LOGOUT_USER'})
   };
 
   const getItemInLocalStorage = (storedName) => {
@@ -46,12 +51,15 @@ const useLocalStorage = () => {
       ...user, // Giữ nguyên các trường khác không cần cập nhật
       ...updateData, // Cập nhật thông tin mới
     };
+    console.log({updateData, updatedUser})
     // Lưu object mới vào localStorage
+    setUser(updatedUser)
+    dispatch({type: 'LOGIN_SUCCESS', payload: updatedUser})
     localStorage.setItem('user', JSON.stringify(updatedUser));
   }
 
   return {
-    user,
+    user: state.user,
     saveUserToLocalStorage,
     deleteUserFromLocalStorage,
     updateUserInStorage,

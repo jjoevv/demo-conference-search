@@ -20,9 +20,9 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
             ?
             <>
             {status && (
-              <div className = {status ? 'success' : 'danger'}>
-                {message}
-                {status && <div>Closing in {countdown} seconds...</div>}
+              <div className = {status ? 'text-success' : 'text-danger'}>
+                {status && <div>
+                <span className='text-success'>{message}</span>. Closing in {countdown} seconds...</div>}
               </div>
         )}
             </>

@@ -122,14 +122,14 @@ const useAuth = () => {
         body: JSON.stringify(updateData),
       });
 
+      const responseData = await response.json();
+      setLoading(false)
       if (!response.ok) {
         if(response.status === 401){
           setIsExpired(true)
         }
-        setError(response.status)        
-        throw new Error(response.message);
+        setError(response.status) 
       }
-      const responseData = await response.json();
       return responseData
     } catch (error) {
       console.error(error);
@@ -139,6 +139,7 @@ const useAuth = () => {
   }
 
   const changePassword = async (currentPassword, newPassword) => {
+    setLoading(true)
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
     try {
@@ -154,14 +155,14 @@ const useAuth = () => {
         })
       });
 
+      const responseData = await response.json();
+      setLoading(false)
       if (!response.ok) {
         if(response.status === 401){
           setIsExpired(true)
         }
-        setError(response.status)        
-        throw new Error(response.message);
+        setError(response.status) 
       }
-      const responseData = await response.json();
       return responseData
     } catch (error) {
       console.error(error);
@@ -206,6 +207,7 @@ const useAuth = () => {
     userId,
     loading,
     isExpiredLogin,
+    isLogin: state.isLogin,
     setIsExpired,
     handleLogin,
     handleRegister,

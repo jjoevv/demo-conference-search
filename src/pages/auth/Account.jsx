@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Container, InputGroup, Button, Image, Form, Col } from 'react-bootstrap'
+import { Container, InputGroup, Button, Form, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
-import lockIcon from '../../assets/imgs/lock.png'
-import editIcon from '../../assets/imgs/edit.png'
 import ChangePasswordModal from '../../components/Modals/ChangePasswordModal'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useToken from '../../hooks/useToken'
 import SuccessfulModal from '../../components/Modals/SuccessModal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 const Account = () => {
   const { updateProfile } = useAuth()
   const [profile, setProfile] = useState([])
@@ -17,7 +17,7 @@ const Account = () => {
   const { user } = useLocalStorage()
   const { token } = useToken()
   useEffect(() => {
-    if(user){
+    if (user) {
       setProfile([
         { title: "Name", infor: user.name, val: 'name', placeholder: 'username' },
         { title: "Phone", infor: user.phone, val: 'phone', placeholder: 'phone number' },
@@ -25,7 +25,8 @@ const Account = () => {
         { title: "Nationality", infor: user.nationality, val: 'nationality', placeholder: 'your nationality' },
       ])
     }
-  }, [user, token, ])
+    console.log({user})
+  }, [user, token,])
   //profile 
   const [isUpdated, setIsUpdated] = useState(false)
 
@@ -43,21 +44,29 @@ const Account = () => {
   };
 
   const handleCheckStatus = (status, messageSuccess) => {
-    if(status){
+    if (status) {
       setMessage(messageSuccess)
       setShowModalChangePassword(false)
       setShowModalSuccess(true)
-    
+
     }
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = profile.reduce((acc, item) => {
       acc[item.val] = item.infor ?? '';
       return acc;
     }, {});
     // Gửi formData đến API tại đây
-    updateProfile(formData)
+    const response = await updateProfile(formData)
+    if (response) {
+      setShowModalSuccess(true)
+      setMessage('Your information changed')
+      // Đóng modal sau 3 giây
+      setTimeout(() => {
+        //  window.location.reload()
+      }, 2000);
+    }
     setIsUpdated(false)
   };
   return (
@@ -77,34 +86,42 @@ const Account = () => {
               </Link>
             }
           </div>
-          <InputGroup className="mb-3 ms-4">
-            <div className='me-5 pe-5 border-0 bg-transparent'>Email</div>
-            {
-              user === null
-                ? <Form.Control className='border-1 w-100' />
-                : <div id="basic-addon1" className='ms-5'>{user.email}</div>
-            }
 
-          </InputGroup>
-          <InputGroup className="mx-3 mt-4">
-            <div className='me-5 pe-5 border-0 bg-transparent'>Password</div>
-            <input
-              placeholder='*********'
-              className='border-1 rounded-2 ms-4 p-1 text-center border-primary-normal'
-              style={{ width: '200px'}}
+          <Form.Group as={Col} className="mb-3 mx-4 d-flex align-items-center">
+            <Form.Label column sm="3">
+              Email:
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={user.email}
+              name='email'
+              onChange={handleChange}
+              className='border-1 border-primary-normal w-25'
+              disabled
             />
-          </InputGroup>
+          </Form.Group>
+
+          <Form.Group as={Col} className="mb-3 mx-4 d-flex align-items-center">
+            <Form.Label column sm="3">
+              Password:
+            </Form.Label>
+            <Form.Control
+              placeholder='*********'
+              type='password'
+              className='rounded-2 p-1 text-center border-1 border-primary-normal w-25'
+            />
+          </Form.Group>
 
 
           <Button
             onClick={handleOpenModal}
             className='rounded-2 bg-red-normal border-0 d-flex align-items-center justify-content-between px-4 ms-3 mt-4'>
-            <Image width={18} height={20} className='me-2' src={lockIcon} />
+            <FontAwesomeIcon icon={faLock} className='me-2' />
             Change password
           </Button>
 
-          {showModalSuccess && <SuccessfulModal message={message} show={showModalSuccess} handleClose={()=>setShowModalSuccess(false)} />}
-          {showModalChangePassword && <ChangePasswordModal show={showModalChangePassword} handleClose={setShowModalChangePassword} handleShow={handleCheckStatus}/>}
+          {showModalSuccess && <SuccessfulModal message={message} show={showModalSuccess} handleClose={() => setShowModalSuccess(false)} />}
+          {showModalChangePassword && <ChangePasswordModal show={showModalChangePassword} handleClose={()=>setShowModalChangePassword(false)} handleShow={handleCheckStatus} />}
           <h4 className='mt-5 mb-4'>Personal Data</h4>
           <Form onSubmit={handleSubmit}>
             {
@@ -119,7 +136,7 @@ const Account = () => {
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        placeholder={item.infor !== '' ? item.infor : item.placeholder}
+                        placeholder={item.infor !== ' ' ? item.infor : item.placeholder}
                         name={item.val}
                         value={item.infor}
                         onChange={handleChange}
@@ -135,7 +152,7 @@ const Account = () => {
               type="submit"
               disabled={!isUpdated}
               className='rounded-2 bg-blue-normal border-0 d-flex align-items-center justify-content-between px-4 ms-3 mt-4'>
-              <Image width={20} height={20} className='me-2' src={editIcon} />
+              <FontAwesomeIcon icon={faEdit} className='me-2' />
               Update changes
             </Button>
           </Form>

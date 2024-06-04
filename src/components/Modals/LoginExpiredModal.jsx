@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import {  useNavigate } from 'react-router-dom'
 
-const LoginExpiredModal = ({show, onHide}) => {
-  const {setIsExpired, handleLogout} = useAuth()
+const LoginExpiredModal = ({show}) => {
+  const {setIsExpired, handleLogout, isLogin} = useAuth()
+
 const navigate = useNavigate()
   const handleLoginClick = () => {    
     setIsExpired(false)
@@ -24,7 +25,7 @@ const navigate = useNavigate()
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            Please log in again to continue using the app
+            Please log in again to continue using the app {`${isLogin}`}
         </Modal.Body> 
         <Modal.Footer className='border-0'>
          <ButtonGroup>

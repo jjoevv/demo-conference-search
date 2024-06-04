@@ -4,19 +4,19 @@ import { Modal } from 'react-bootstrap';
 
 function SuccessfulModal({ message, show, handleClose }) {
 
-  const [countdown, setCountdown] = useState(2);
+  const [countdown, setCountdown] = useState(1);
 
   useEffect(() => {
     if (show) {
       const timer = setInterval(() => {
         setCountdown(prevCountdown => prevCountdown - 1);
-      }, 1000);
+      }, 1);
 
       // Đóng modal sau 3 giây
       setTimeout(() => {
         handleClose()
         setCountdown(2); // Reset thời gian đếm ngược
-      }, 2000);
+      }, 1);
 
       // Hủy bỏ timer khi component unmount
       return () => {

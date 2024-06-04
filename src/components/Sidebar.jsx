@@ -6,7 +6,7 @@ import test from './../assets/imgs/location.png'
 
 import avatarIcon from '../assets/imgs/avatar_lg.png'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 import useToken from '../hooks/useToken'
 import usePageNavigation from '../hooks/usePageNavigation'
@@ -25,9 +25,12 @@ const Sidebar = () => {
   const location = useLocation()
   const navigate = useNavigate()
   usePageNavigation()
+  const [profile, setProfile] = useState(null)
   useEffect(()=>{
-   
-  }, [location])
+    if(user){
+      setProfile(user)
+    }
+  },[user])
 
   return (
     <Container fluid className="my-sidebar">
@@ -41,7 +44,7 @@ const Sidebar = () => {
           &&
           <>
           <div className='text-center mt-2 text-light'>
-          <h3 className='text-light'>{user.name}</h3>
+          <h3 className='text-light'>{user.name? user.name : ''}</h3>
         </div>
         <Stack md={3} className="fixed-left">
           {

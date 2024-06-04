@@ -14,18 +14,11 @@ const appReducer = (state, action) => {
                 loading: false,
                 error: action.payload,
             };
-        case actionTypes.LOGIN_REQUEST:
-            return {
-                ...state,
-                loading: true,
-                error: null,
-            };
         case actionTypes.LOGIN_SUCCESS:
             return {
                 ...state,
                 user: action.payload,
-                loading: false,
-                error: null,
+                isLogin: true,
             };
         case actionTypes.LOGIN_FAILURE:
             return {
@@ -37,8 +30,7 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 user: null,
-                loading: false,
-                error: null,
+                isLogin: false
             };
         case actionTypes.REGISTRATION_REQUEST:
             return {

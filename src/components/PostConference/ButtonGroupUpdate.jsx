@@ -30,13 +30,14 @@ const ButtonGroupUpdate = ({conference}) => {
           getPostedConferences()
           const countdownInterval = setInterval(() => {
             setCountdown((prevCountdown) => {
-              if (prevCountdown === 2) {
+              if (prevCountdown === 0) {
                 clearInterval(countdownInterval);
                 handleClose();
+                return 0;
               }
               return prevCountdown - 1;
             });
-          }, 3000);
+          }, 1000); // Giảm mỗi 1 giây
         }
     }
 

@@ -82,7 +82,9 @@ button.text-primary-normal:hover {
 .border-primary-normal {
     border-color: #4EB1A4 !important;
 }
-
+input:focus {
+    border: 1px solid #4EB1A4;
+  }
 .border-primary-light {
     border-color: #C2F1EB;
 }
@@ -379,7 +381,7 @@ a {
 .my-conf-card {
     border-radius: 15px;
     border: 1px solid #f2fbfc;
-    background-color: #f2fbfc;
+    background-color: #c8efea;
     cursor: pointer;
     padding: 20px 40px;
     margin: 20px 0px;

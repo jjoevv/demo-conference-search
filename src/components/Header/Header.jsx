@@ -11,7 +11,7 @@ import LoginExpiredModal from '../Modals/LoginExpiredModal'
 import useAuth from '../../hooks/useAuth'
 
 const Header = () => {
-  const {isExpiredLogin, setIsExpired, getCurrentUser} = useAuth()
+  const {isExpiredLogin, isLogin, getCurrentUser} = useAuth()
   const {user} = useLocalStorage();
   const navigate = useNavigate()
   const {goToPreviousPage} = usePageNavigation()
@@ -42,7 +42,7 @@ const Header = () => {
     className="bg-body-tertiary d-flex justify-content-between my-header w-100 fixed-top"
     
     >
-      <LoginExpiredModal show={isExpiredLogin}/>
+      <LoginExpiredModal show={isLogin ? isExpiredLogin : false}/>
       <Container fluid className='d-flex justify-content-between shadow-sm px-5'>
         <Navbar.Brand className='my-header-brand'>
           <Link to='/' className='mx-4 text-teal-dark fs-4 fw-bold' title='Homepage'>

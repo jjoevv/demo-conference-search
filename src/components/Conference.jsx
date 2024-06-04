@@ -25,7 +25,7 @@ import PriorityOptions from './Filter/PriorityOptions'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, displaySortList, fetchData, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
-    const { listFollowed, followConference, unfollowConference } = useFollow()
+    const { loading: loadingConf, listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
     const [page, setPage] = useState(0)
@@ -72,6 +72,16 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     }, [loadingPage, conferencesProp, page]);
 
+    useEffect(() => {
+        if (loadingConf) {
+          document.body.style.cursor='wait'
+        } else {
+          {document.body.style.cursor='default';}
+        }
+        return () => {
+          {document.body.style.cursor='default';}
+        };
+    }, [loadingConf]);
 
     const handleFollow = async (id) => {
         setIsClickFollow(true)
@@ -248,12 +258,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                         {
                                                                                             isObjectInList(conf.id, listFollowed)
                                                                                                 ?
-                                                                                                <Button className='icon-follow' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
+                                                                                                <Button className='icon-follow border border-primary-light' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
                                                                                                     <Image src={FollowIcon} className='me-2' width={18} />
                                                                                                     <span>Unfollow</span>
                                                                                                 </Button>
                                                                                                 :
-                                                                                                <Button className='icon-follow' onClick={() => handleFollow(conf.id)}>
+                                                                                                <Button className='icon-follow border border-primary-light' onClick={() => handleFollow(conf.id)}>
                                                                                                     <Image src={UnfollowIcon} className='me-2 ' width={18} />
                                                                                                     <span>Follow</span>
                                                                                                 </Button>

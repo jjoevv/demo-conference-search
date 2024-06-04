@@ -31,18 +31,6 @@ const useConference = () => {
     setSelectOptionSort(option)
   }
 
-  const saveDataToFile = (data) => {
-    const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = './data/data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
   const fetchData = useCallback(async (page, size) => {
     try {
       const response = await fetch(`${baseURL}/conference?page=${page}&size=${size}`, {
@@ -166,12 +154,14 @@ const useConference = () => {
   }
 
   const handleGetOne = async (id) => {
+    setLoading(true)
     try {
       //size = 5
       const response = await fetch(`${baseURL}/conference/${id}`);
       const data = await response.json();
       //Gửi action để cập nhật state
       dispatch(getOneConf(data.data));
+      setLoading(false)
     } catch (error) {
 
       console.error('Error fetching data:', error);
