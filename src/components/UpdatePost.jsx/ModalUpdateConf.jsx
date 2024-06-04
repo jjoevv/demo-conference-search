@@ -8,6 +8,7 @@ import useSearch from '../../hooks/useSearch';
 import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
 import data from './../Filter/options.json'
+import { capitalizeFirstLetter } from '../../utils/formatWord';
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const { loading, updatePost } = usePost()
@@ -19,12 +20,11 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const [isupdateForm, setIsUpdateForm] = useState()
   const [isDuplicate, setIsDuplicate] = useState(false)
   const [tab, setTab] = useState('1')
-  const [activeAccordionKey, setActiveAccordionKey] = useState([]);
   const [formData, setFormData] = useState({
     callForPaper: conference.callForPaper || "",
     link: conference.information.link || "",
     rank: conference.information.rank || "N/I",
-    fieldsOfResearch: conference.information.fieldOfResearch || [],
+    fieldsOfResearch: Array.from(new Set(conference.information.fieldOfResearch)) || [],
     organizations: conference.organizations.filter(org => org.status === 'new') // Lọc ra các organizations có status là 'new'
       .map(org => ({
         name: org.name,
@@ -38,9 +38,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
       .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
   });
 
-  const [selectedOptions, setSelectedOptions] = useState(conference.information.fieldOfResearch.map(field => ({
+  const [selectedOptions, setSelectedOptions] = useState(Array.from(new Set(conference.information.fieldOfResearch)).map(field => ({
     value: field,
-    label: field
+    label: capitalizeFirstLetter(field)
   })));
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
   // Tạo danh sách options từ fieldOfResearch và filterOptions['for']
   const options = [
-    ...conference.information.fieldOfResearch.map(option => ({ value: option, label: option })),
+    ...Array.from(new Set(conference.information.fieldOfResearch)).map(option => ({ value: option, label: option })),
     ...filterOptions['for'].map(option => ({ value: option, label: option }))
   ];
 

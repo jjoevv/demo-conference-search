@@ -113,7 +113,7 @@ const InformationPage = ({ conference }) => {
             }
             {renderFieldOfResearch(conference.information.fieldOfResearch)
               &&
-              <Row className='py-3 ps-4'>
+              <Row className='py-3 ps-4 bg-teal-light '>
                 <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
                 <Col className='fw-bold fs-5'>
                   {renderFieldOfResearch(conference.information.fieldOfResearch)}

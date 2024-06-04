@@ -8,6 +8,7 @@ import useToken from './useToken'
 import { useLocation } from 'react-router-dom'
 import useFollow from './useFollow'
 import usePost from './usePost'
+import { capitalizeFirstLetter } from '../utils/formatWord'
 
 const useSearch = () => {
   const { state, dispatch } = useAppContext()
@@ -17,12 +18,6 @@ const useSearch = () => {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const location = useLocation()
-  const [actionWithKeyword, setActionWithKeyword] = useState('')
-  const [keywordFilter, setKeywordFilter] = useState(() => {
-    const storedDataFilters = sessionStorage.getItem('keywordFilter');
-    return storedDataFilters ? JSON.parse(storedDataFilters) : {};
-  });
-
   
   const sortList = (list) => {
     // Lọc các mục là các chữ cái duy nhất
@@ -34,14 +29,13 @@ const useSearch = () => {
     const uniqueList = nonUniqueLetters.reduce((accumulator, currentValue) => {
       const standardizedValue = currentValue.toLowerCase(); // Chuyển đổi giá trị thành chữ thường
       if (!accumulator.includes(standardizedValue)) {
-        accumulator.push(standardizedValue);
+        accumulator.push(capitalizeFirstLetter(standardizedValue));
       }
       return accumulator;
     }, []);
   
     // Sắp xếp danh sách giá trị duy nhất theo thứ tự bảng chữ cái
     uniqueList.sort();
-  
     // Kết hợp lại
     return [...uniqueLetters, ...uniqueList];
   };
@@ -68,7 +62,7 @@ const useSearch = () => {
               const data = await response.json();
               // Gửi action để cập nhật dữ liệu cho label hiện tại
               const sorted = sortList(data.data)
-              dispatch(getoptionsSelected({ [param]: sorted }));
+              dispatch(getoptionsSelected({ [param]: Array.from(new Set(sorted)) }));
 
             } catch (error) {
               console.error(`Error fetching data for ${param}:`, error);
@@ -81,7 +75,7 @@ const useSearch = () => {
               const data = await response.json();
               // Gửi action để cập nhật dữ liệu cho label hiện tại 
                const sorted = sortList(data.data)
-              dispatch(getoptionsSelected({ [param]: sorted }));
+              dispatch(getoptionsSelected({ [param]: Array.from(new Set(sorted)) }));
 
             } catch (error) {
               console.error(`Error fetching data for ${param}:`, error);
@@ -146,7 +140,6 @@ const useSearch = () => {
 
     // Xóa 1 filter trong danh sách
     dispatch(removeFilter(updateOptionsSelected, updatedResultsFilter));
-    setActionWithKeyword('delete')
 
   }
   const clearKeywords = () => {
@@ -252,7 +245,6 @@ const useSearch = () => {
  // Hàm để phân tích params từ URL và cập nhật optionsSelected
  const updateOptionsSelectedFromParams = (searchParams) => {
   const newOptionsSelected = { ...state.optionsSelected };
-  console.log({searchParams})
   // Loop qua các key của optionsSelected
   for (const key in newOptionsSelected) {
     if (Object.hasOwnProperty.call(newOptionsSelected, key)) {
@@ -281,6 +273,7 @@ const useSearch = () => {
     resultFilter: state.resultFilter,
     total: total,
     actionWithKeyword: state.actionWithKeyword,
+    loading,
     setTotal,
     getOptionsFilter,
     addKeywords,

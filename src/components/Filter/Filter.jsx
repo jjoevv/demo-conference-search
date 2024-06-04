@@ -82,6 +82,7 @@ const Filter = () => {
   }
 
   useEffect(()=>{
+    console.log({loadingOption})
     if(loadingOption){
       setShowIsAvailableAdvancedFilter(false)
     }
@@ -152,16 +153,16 @@ const Filter = () => {
 
      
       <Button 
-        disabled={showIsAvailableAdvancedFilter}
+        disabled={!showIsAvailableAdvancedFilter}
         onClick={()=>setShowAdvancedFilter(!showAdvancedFilter)}
         className="bg-white border-0 text-primary-normal p-0 fw-bold my-3 btn-show-advanced">
-        Show more advanced search
+          Show more advanced search
         <Image src={downIcon} width={15}
         className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'}/>
       </Button>
       
       {showAdvancedFilter && <AdvancedFilter/>}  
-      {optionsSelected && <FilterSelected/>}  
+      <div className="filter-selected overflow-hidden">{optionsSelected && <FilterSelected/>}  </div>
 
         {/*<div className={`header w-100 bg-beige-normal ${showHeaderFilter ? '' : 'visually-hidden'}`} id='tab-header'>
           <HeaderFilter/>

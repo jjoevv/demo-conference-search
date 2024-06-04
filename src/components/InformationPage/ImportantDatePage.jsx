@@ -66,8 +66,9 @@ const ImportantDatePage = () => {
               <>
                 {
                   displayDates.map((date, index) => (
-                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center my-2`}>
-                      <Col xs={3} className='text-center text-teal-normal p-1 border-teal-normal border-4 border-start'>
+                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center my-2 position-relative overflow-hidden`}>
+                      <Col xs={3} className='text-center text-teal-normal p-1 border-teal-normal border-5 border-start '>
+                      
                         <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('MMM')}</p>
                         <p className='fs-5 fw-medium text-color-medium m-0'>{moment(date.date_value).format('DD')}</p>
                       </Col>
@@ -91,13 +92,15 @@ const ImportantDatePage = () => {
                               <>
                                 {moment(date.date_value).format('dddd, YYYY/MM/DD')}
                                 {checkDate(date.date_value) && <span className='text-secondary'> (Past date)</span>}
-                                {isUpcoming(date.date_value) &&
-                                  <span className="bg-yellow-normal d-inline p-1 px-2 rounded-3 mx-3 text-primary-emphasis fw-semibold">Upcoming</span>
-                                }
+
                               </>
 
                           }
                         </span>
+                        
+                      {isUpcoming(date.date_value) &&
+                                  <span className=" ribbon">Upcoming</span>
+                                }
                       </Col>
                     </Row>
                   ))

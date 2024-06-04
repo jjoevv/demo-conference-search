@@ -18,7 +18,6 @@ const PriorityOptions = () => {
     useEffect(() => {
         const keywordCount = countMatchingConferences(resultFilter, optionsSelected)
         setKeywordsCount(keywordCount)
-        console.log({ selectedKeywords })
     }, [optionsSelected, resultFilter])
 
     const renderOption = (key, option) => {

@@ -25,7 +25,6 @@ const Account = () => {
         { title: "Nationality", infor: user.nationality, val: 'nationality', placeholder: 'your nationality' },
       ])
     }
-    console.log({user})
   }, [user, token,])
   //profile 
   const [isUpdated, setIsUpdated] = useState(false)

@@ -596,3 +596,45 @@ a {
     white-space: normal;
 }
 
+.upcoming-tag {
+    content: "Upcoming";
+    position: absolute;
+    top: 0px;
+    right: -27px;
+    width: 75px;
+    text-align: center;
+    transform: rotate(45deg);
+    background: #FFB13B;
+    padding: 10px;
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+}
+/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+  }
+  .ribbon {
+    --f: .5em; /* control the folded part */
+    
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 1.8;
+    padding-inline: 1lh;
+    padding-bottom: var(--f);
+    border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+    clip-path: polygon(
+      100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+    transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+    transform-origin: 0% 100%;
+    background-color: #FFB13B; /* the main color  */
+  }
+
+.filter-selected{
+    transition: width 2s;
+    transition-timing-function: ease-in-out;
+}
+

@@ -51,7 +51,6 @@ const useLocalStorage = () => {
       ...user, // Giữ nguyên các trường khác không cần cập nhật
       ...updateData, // Cập nhật thông tin mới
     };
-    console.log({updateData, updatedUser})
     // Lưu object mới vào localStorage
     setUser(updatedUser)
     dispatch({type: 'LOGIN_SUCCESS', payload: updatedUser})

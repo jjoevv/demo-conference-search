@@ -28,7 +28,6 @@ const Sidebar = () => {
       setProfile(user)
     }
   },[user])
-  console.log({user})
   return (
     <Container fluid className="my-sidebar">
       <Stack>
