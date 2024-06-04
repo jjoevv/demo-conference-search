@@ -33,7 +33,7 @@ const PriorityOptions = () => {
         <div>
       <div className="d-flex align-items-start">
         
-      <span className="me-3">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </span>
+      <span className="me-3 mt-1">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </span>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
             <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>

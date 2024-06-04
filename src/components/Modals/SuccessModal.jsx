@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import usePost from '../../hooks/usePost';
+import { useState, useEffect } from 'react';
+import { Modal } from 'react-bootstrap';
 
 
 function SuccessfulModal({ message, show, handleClose }) {
@@ -33,7 +32,7 @@ function SuccessfulModal({ message, show, handleClose }) {
   return (
     <div>
       <Modal show={show} onHide={handleCloseSuccessModal} centered>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className='border-0'>
           <Modal.Title className='text-success text-center w-100'>Success</Modal.Title>
         </Modal.Header>
         <Modal.Body>

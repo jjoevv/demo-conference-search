@@ -79,7 +79,7 @@ const Homepage = () => {
 
    
   return (
-    <div style={{marginTop: "100px"}} className='overflow-x-hidden'>        
+    <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        
         {/*showSlideShow &&
         <Container>
           <Stack direction='horizontal' className='w-100'>

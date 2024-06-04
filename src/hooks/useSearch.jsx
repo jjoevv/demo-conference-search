@@ -49,6 +49,7 @@ const useSearch = () => {
   const getOptionsFilter = async (label, staticData) => {
     const params = ["source", "for", "acronym", "rank"];
     const existedOptions = state.filterOptions
+    setLoading(true)
     if (label === "") {
       for (const param of params) {
         if (!existedOptions[param]) {
@@ -93,9 +94,8 @@ const useSearch = () => {
     else {
       const options = staticData.map(item => item.label);
       dispatch(getoptionsSelected({ [label]: options }))
-
     }
-
+    setLoading(false)
   }
   const addKeywords = (label, keywords) => {
     if(label === 'submissionDate' || label === 'conferenceDate'){

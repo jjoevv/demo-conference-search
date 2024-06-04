@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { baseURL } from './api/baseApi';
 import useLocalStorage from './useLocalStorage';
 import useToken from './useToken';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
@@ -15,13 +15,17 @@ const useAuth = () => {
   const [error, setError] = useState('')
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isExpiredLogin, setIsExpired] = useState(false)
   const navigate = useNavigate()
+
+
+
 
   const handleLogin = async (email, password) => {
     dispatch(loginRequest());
     setLoading(true)
     try {
-      if (!user) {
+      if (!user || !token) {
         const response = await fetch(`${baseURL}/user/login`, {
           method: 'POST',
           headers: {
@@ -105,40 +109,58 @@ const useAuth = () => {
   };
 
 
-  const updateProfile = (updateData) => {
-    fetch(`${baseURL}/user/infomation`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(updateData),
-    })
-      .then(response => {
-        if (response.ok) {
-          updateUserInStorage(updateData)
-        }
-        return response.json();
-      })
-      .catch(error => {
-        setError(error)
+  const updateProfile = async (updateData) => {
+    let storedToken = JSON.parse(localStorage.getItem('token'));
+    const tokenHeader = token ? token : storedToken
+    try {
+      const response = await fetch(`${baseURL}/user/infomation`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenHeader}`
+        },
+        body: JSON.stringify(updateData),
       });
+
+      if (!response.ok) {
+        if(response.status === 401){
+          setIsExpired(true)
+        }
+        setError(response.status)        
+        throw new Error(response.message);
+      }
+      const responseData = await response.json();
+      return responseData
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+
   }
 
   const changePassword = async (currentPassword, newPassword) => {
-
+    let storedToken = JSON.parse(localStorage.getItem('token'));
+    const tokenHeader = token ? token : storedToken
     try {
       const response = await fetch(`${baseURL}/user/changePassword`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${tokenHeader}`
         },
         body: JSON.stringify({
           currentPassword: currentPassword,
           newPassword: newPassword
         })
       });
+
+      if (!response.ok) {
+        if(response.status === 401){
+          setIsExpired(true)
+        }
+        setError(response.status)        
+        throw new Error(response.message);
+      }
       const responseData = await response.json();
       return responseData
     } catch (error) {
@@ -149,7 +171,6 @@ const useAuth = () => {
 
   const getCurrentUser = async () => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
-
     const tokenHeader = token ? token : storedToken
     try {
       const response = await fetch(`${baseURL}/user/infomation`, {
@@ -161,6 +182,10 @@ const useAuth = () => {
       });
 
       if (!response.ok) {
+        if(response.status === 401){
+          setIsExpired(true)
+        }
+        setError(response.status)        
         throw new Error(response.message);
       }
       else {
@@ -180,6 +205,8 @@ const useAuth = () => {
     error: error,
     userId,
     loading,
+    isExpiredLogin,
+    setIsExpired,
     handleLogin,
     handleRegister,
     handleLogout,

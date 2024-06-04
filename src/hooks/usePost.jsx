@@ -4,8 +4,10 @@ import useLocalStorage from './useLocalStorage'
 import useSessionToken from './useToken'
 import { useAppContext } from '../context/authContext'
 import { getAllPosted } from '../actions/postAction'
+import useAuth from './useAuth'
 const usePost = () => {
   const {state, dispatch} = useAppContext()
+  const {setIsExpired} =useAuth()
   const {user} = useLocalStorage()
   const {token} = useSessionToken()
   const [loading, setLoading] = useState(false)
@@ -20,6 +22,9 @@ const usePost = () => {
     }
   });
     if (!response.ok) {
+      if(response.status === 401){
+        setIsExpired(true)
+      }
         throw new Error('Network response was not ok');
     }
     return response.json();
@@ -96,7 +101,12 @@ const updateNewList = (newConferences)  => {
         if (response.ok) {
           return {status: true, message}
         }
-        else return {status: false, message}
+        else {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
+          return {status: false, message}
+        }
       } catch (error) {
         throw new Error('Network response was not ok');
       }
@@ -126,7 +136,12 @@ const updateNewList = (newConferences)  => {
         if (response.ok) {
           return {status: true, message}
         }
-        else return {status: false, message}
+        else {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
+          return {status: false, message}
+        }
       } catch (error) {
         throw new Error('Network response was not ok');
       }
@@ -150,7 +165,12 @@ const updateNewList = (newConferences)  => {
           setLoading(false)
           return {status: true, message}
         }
-        else return {status: false, message}
+        else {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
+          return {status: false, message}
+        }
       } catch (error) {
         throw new Error('Network response was not ok');
       }

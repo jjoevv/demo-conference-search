@@ -7,11 +7,13 @@ import useLocalStorage from './useLocalStorage'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import useSessionStorage from './useSessionStorage'
+import useAuth from './useAuth'
 const useFollow = () => {
   const { state, dispatch } = useAppContext()
   const { token } = useToken()
   const {updateDataListInStorage} = useSessionStorage()
   const { user } = useLocalStorage()
+  const {setIsExpired} = useAuth()
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
@@ -46,6 +48,9 @@ const useFollow = () => {
       }
     });
     if (!response.ok) {
+      if(response.status === 401){
+        setIsExpired(true)
+      }
       throw new Error('Network response was not ok');
     }
     return response.json();
@@ -105,6 +110,9 @@ const useFollow = () => {
 
         setLoading(false)
         if (!response.ok) {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
           throw new Error(response.message);
         }
         else {
@@ -134,7 +142,9 @@ const useFollow = () => {
       });
       setLoading(false)
       if (!response.ok) {
-
+        if(response.status === 401){
+          setIsExpired(true)
+        }
         return false
       }
       else {

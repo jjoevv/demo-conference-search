@@ -240,7 +240,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                           <div className='d-flex align-items-center'>
                             <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)}/>
 
-                            <FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />
+                            {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
 
                           </div>
                         </Col>

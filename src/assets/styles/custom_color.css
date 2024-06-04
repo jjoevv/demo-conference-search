@@ -229,3 +229,7 @@ button.bg-yellow-normal:active {
 {
     background-color: #ddf1f6;
 }
+
+.btn-show-advanced:disabled{
+    color: #4EB1A4;
+}

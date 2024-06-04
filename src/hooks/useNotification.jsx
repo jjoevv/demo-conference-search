@@ -9,21 +9,21 @@ import useToken from './useToken';
 import { baseURL } from './api/baseApi';
 
 const useNotification = () => {
+
   const [isConnected, setIsConnected] = useState(false);
   const {user} = useLocalStorage()
   const {token} = useToken()
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
-  const { getCurrentUser } = useAuth()
-  const [priorityOption, setPriorityOption] = useState()
+  const { getCurrentUser, setIsExpired } = useAuth()
   let socketRef = useRef(null);
-  const user_id = JSON.parse(sessionStorage.getItem('user-id'))
 
   useEffect(() => {
     const getIDUser = async () =>{
       await getCurrentUser()
     }
 
+    const user_id = JSON.parse(sessionStorage.getItem('user-id'))
     getIDUser()
     const socket = io(`https://conference-searching.onrender.com`, {
       query: {
@@ -71,7 +71,7 @@ const useNotification = () => {
     return () => {
       socket.disconnect();
     };
-  }, [dispatch, user_id]);
+  }, [dispatch]);
 
  
 
@@ -94,6 +94,9 @@ const useNotification = () => {
         if (response.ok) {
           dispatch(getNotifications(data.data))
         }
+        else if(response.status === 401){
+          setIsExpired(true)
+        }
       } catch (error) {
         throw new Error('Network response was not ok');
       }
@@ -115,6 +118,9 @@ const useNotification = () => {
           });
           if(response.ok){
             getAllNotifications()
+          }
+          else if(response.status === 401){
+            setIsExpired(true)
           }
         }
       } catch (error) {

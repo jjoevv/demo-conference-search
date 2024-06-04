@@ -35,8 +35,6 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     const [loadingPage, setLoadingPage] = useState(false)
 
     const itemsPerPage = 7;
-    const pagesVisited = page * itemsPerPage;
-
     useEffect(() => {
         setPage(0)
     }, [optionsSelected, selectOptionSort])

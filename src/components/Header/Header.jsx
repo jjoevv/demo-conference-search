@@ -6,13 +6,17 @@ import AvatarDropdown from './AvatarDropdown'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import usePageNavigation from '../../hooks/usePageNavigation'
 import HeaderNoti from '../Notification/HeaderNoti'
-import useNotification from '../../hooks/useNotification'
+
+import LoginExpiredModal from '../Modals/LoginExpiredModal'
+import useAuth from '../../hooks/useAuth'
+
 const Header = () => {
+  const {isExpiredLogin, setIsExpired, getCurrentUser} = useAuth()
   const {user} = useLocalStorage();
   const navigate = useNavigate()
   const {goToPreviousPage} = usePageNavigation()
-const {notifications}  = useNotification()
   useEffect(()=>{ 
+    getCurrentUser()
     if (user === null){
       navigate('/')
     }
@@ -24,10 +28,6 @@ const {notifications}  = useNotification()
       goToPreviousPage(event);
   },[])
 
-  useEffect(()=>{
-    
-  }, [notifications])
-
 
   const handleNavigate = (link) => {
     if(user){
@@ -35,12 +35,14 @@ const {notifications}  = useNotification()
     }
     else navigate('/login')
   }
+
   return (
     <Navbar expand="md" 
     id='header'
     className="bg-body-tertiary d-flex justify-content-between my-header w-100 fixed-top"
     
     >
+      <LoginExpiredModal show={isExpiredLogin}/>
       <Container fluid className='d-flex justify-content-between shadow-sm px-5'>
         <Navbar.Brand className='my-header-brand'>
           <Link to='/' className='mx-4 text-teal-dark fs-4 fw-bold' title='Homepage'>

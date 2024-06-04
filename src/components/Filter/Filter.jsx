@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import DateRangePicker from "./DateRangePicker";
 import AdvancedFilter from "./AdvancedFilter";
 
-import searchIcon from '../../assets/imgs/search.png'
 import downIcon from '../../assets/imgs/down.png'
 import FilterSelected from "./FilterSelected";
 import useSearch from "../../hooks/useSearch";
@@ -14,11 +13,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import useFilter from "../../hooks/useFilter";
 import HeaderFilter from "./HeaderFilter";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const Filter = () => {
-  const {addKeywords, clearKeywords, optionsSelected} = useSearch()
+  const {loading:loadingOption, addKeywords, optionsSelected} = useSearch()
   const {loading} = useFilter()
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
+  const [showIsAvailableAdvancedFilter, setShowIsAvailableAdvancedFilter] = useState(false);
   const [searchInput, setSearchInput] = useState("")  
   const location = useLocation();
   const pathname = location.pathname;
@@ -80,17 +81,29 @@ const Filter = () => {
     }
   }
 
+  useEffect(()=>{
+    if(loadingOption){
+      setShowIsAvailableAdvancedFilter(false)
+    }
+    else setShowIsAvailableAdvancedFilter(true)
+  }, [loadingOption])
   return (
     <Container className="bg-white shadow rounded-4 px-5 pb-4 mb-5">
       <div className="d-flex align-items-center mb-1 pt-3">
-        <FontAwesomeIcon icon={faSearch} className="text-color-black fs-5 me-2"/>
-        <h4 className="mt-2">Searching</h4>
+        <FontAwesomeIcon icon={faFilter} className="text-color-black fs-5 me-2"/>
+        <h4 className="mt-2">Filter</h4>
       </div>
-      <Stack>
+      
+      <Stack direction="horizontal" className="align-items-center">
+
+       
+        <Row direction="horizontal" gap={3} className="w-100 d-flex justify-content-center">
+        <Col xs={4}>
+        
         <span className="fw-bold text-color-black">What are you looking for?</span>
-        <InputGroup className="mt-2 mb-3 border-0 w-50">
-          <InputGroup.Text className="border-0 bg-blue-light pe-0">
-            <Image src={searchIcon} width={20} />
+        <InputGroup className=" border-0 align-items-center d-flex">
+          <InputGroup.Text className="border-0 bg-blue-light">
+            <FontAwesomeIcon icon={faSearch} className="fs-4"/>
           </InputGroup.Text>
           <Form.Control
             placeholder="Search for location, conference name, acronym, etc"
@@ -113,15 +126,12 @@ const Filter = () => {
               </Button>
 
         </InputGroup>
-      </Stack>
-
-      {/*Filer dropdown */}
-
-      <Row direction="horizontal" gap={3} className="w-100  d-flex justify-content-center">
+        </Col>
        {/* <Col>
           <span className="fw-bold text-color-black">Category</span>
           <Options label={"category"}/>
         </Col>* */}
+
         <Col >
           <span className="fw-bold text-color-black">Location</span>
           <Options label={"location"}/>
@@ -136,9 +146,15 @@ const Filter = () => {
         </Col>
         
       </Row>
+      </Stack>
+
+      {/*Filer dropdown */}
+
+     
       <Button 
-      onClick={()=>setShowAdvancedFilter(!showAdvancedFilter)}
-      className="bg-white border-0 text-primary-normal p-0 fw-bold my-3">
+        disabled={showIsAvailableAdvancedFilter}
+        onClick={()=>setShowAdvancedFilter(!showAdvancedFilter)}
+        className="bg-white border-0 text-primary-normal p-0 fw-bold my-3 btn-show-advanced">
         Show more advanced search
         <Image src={downIcon} width={15}
         className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'}/>
