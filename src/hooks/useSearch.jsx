@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 import useFollow from './useFollow'
 import usePost from './usePost'
 import { capitalizeFirstLetter } from '../utils/formatWord'
-
+import countriesData from '../data/countries.json'
 const useSearch = () => {
   const { state, dispatch } = useAppContext()
   const { token } = useToken()
@@ -260,9 +260,20 @@ const useSearch = () => {
       }
     }
   }
-  // Cập nhật optionsSelected mới
-  console.log({newOptionsSelected})
 };
+
+function getCountryName(countryCode) { 
+  if (countryCode in countriesData) {
+      return countriesData[countryCode].country_name;
+  } else {
+      for (const code in countriesData) {
+          if (countriesData[code].country_code2 === countryCode || countriesData[code].country_code3 === countryCode) {
+              return countriesData[code].country_name;
+          }
+      }
+      return null
+  }
+}
  
 
   return {
@@ -284,7 +295,8 @@ const useSearch = () => {
     getKeyword,
     extractQuantity,
     getTotalConf,
-    updateOptionsSelectedFromParams
+    updateOptionsSelectedFromParams,
+    getCountryName,
   }
 }
 

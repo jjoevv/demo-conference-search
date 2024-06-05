@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react'
-import { getUniqueConferences } from '../utils/checkFetchedResults'
+
 import useSearch from './useSearch'
 import { useAppContext } from '../context/authContext'
-import { useLocation } from 'react-router-dom'
-import useLocalStorage from './useLocalStorage'
 
 const useFilter = () => {
   const { state, dispatch } = useAppContext()
-  const { optionsSelected, getKeyword } = useSearch()
-  const [optionsFilter, setOptionsFilter] = useState([])
-  const [inputValue, setInputValue] = useState('')
+  const { optionsSelected, getCountryName } = useSearch()
+
   const [loading, setLoading] = useState(false)
 
   const [priorityKeywords, setPriorityKeywords] = useState({});
@@ -208,6 +205,7 @@ const filterConferences = (listConferences, keywordSelected) => {
 
             case 'search': {
               isMatch = searchInObject(conference, keyword);
+              console.log({isMatch})
               break;
             }
 
@@ -326,8 +324,6 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
             if (extractedRange && matchingKeywords.includes(extractedRange)) {
               keywordCounts[keyword]++;
             }
-
-
           }
           else {
 
@@ -348,9 +344,7 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
 
   return {
     loading,
-    optionsFilter,
     selectOptionFilter: state.optionFilter,
-    inputValue,
     inputFilter: state.inputFilter,
     resultInputFilter: state.resultKeywordFilter,
     selectedKeywords,

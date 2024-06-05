@@ -55,13 +55,16 @@ const useConference = () => {
     setLoading(true)
 
     try {
+      localStorage.removeItem('conferences')
+      localStorage.removeItem('currentFetchPageLS')
+      localStorage.removeItem('totalPagesConferences')
+      
       const currentFetchPage = getItemInLocalStorage('currentFetchPageLS')
       const firstPageData = await fetchData(1, 1);
       const totalConf = firstPageData.maxRecords // get total conferences from first page data
       const maxPagesFetch = Math.ceil(totalConf / 20); // get total pages from first page data
 
       if (state.conferences.length === 0) {
-
 
         if (!currentFetchPage || currentFetchPage === 1) {
           //data didnt save in local storage
