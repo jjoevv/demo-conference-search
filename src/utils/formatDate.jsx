@@ -1,6 +1,8 @@
+import submission_date_dict from './../data/submission_date_dict.txt?raw'
+
 export function formatDate(inputString) {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  
+
   const date = new Date(inputString);
 
   // Lấy thông tin ngày, tháng, năm
@@ -36,8 +38,8 @@ export function getDateValue(date_type, list) {
       date_value: new Date(date.date_value),
     }))
     .sort((a, b) => a.date_value - b.date_value);
-const result = filteredDates.length > 0 ? filteredDates[0].date_value : null;
-    
+  const result = filteredDates.length > 0 ? filteredDates[0].date_value : null;
+
   // Lấy giá trị ngày gần nhất (nếu có)
   return formatDate(result)
 }
@@ -62,4 +64,27 @@ export function formatTime(datetime) {
     return formattedDateTime
   }
   return "NaN";
+}
+
+export const  getSubDate = (listImportantDates) => {
+  
+  const keywords = new Set();
+  const lines = submission_date_dict.split('\n');
+  for (const line of lines) {
+    const words = line.split();
+    for (const word of words) {
+      keywords.add(word.trim().toLowerCase());
+    }
+  }
+
+  for (const date of listImportantDates) {
+    const dateTypeWords = date.date_type.trim().toLowerCase().split();
+    for (const word of dateTypeWords) {
+      if (keywords.has(word) && date.status === 'new') {
+        console.log({date})
+        return date.date_value;
+      }
+    }
+  }
+  return null
 }

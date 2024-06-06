@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from '../../utils/formatWord'
 const ImportantDatePage = () => {
   const { conference } = useConference()
   const [displayDates, setDisplayDates] = useState([])
+  
   useEffect(() => {
     if (conference) {
       const processedDates = conference.importantDates.reduce((acc, date) => {
@@ -55,9 +56,10 @@ const ImportantDatePage = () => {
 };
 
   return (
-    <div className='px-5 m-5'>
+    <div className='px-5 m-5 me-0 ps-5 pe-0'>
       <span className='fs-4 fw-bold text-teal-dark'>Important dates</span>
-      <div className='mt-2'>
+      <div className='mt-2' style={{maxHeight: "600", overflowY: "scroll"}} >
+
         {conference ?
           <>
 
@@ -66,14 +68,14 @@ const ImportantDatePage = () => {
               <>
                 {
                   displayDates.map((date, index) => (
-                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center my-2 position-relative overflow-hidden`}>
-                      <Col xs={3} className='text-center text-teal-normal p-1 border-teal-normal border-5 border-start '>
+                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center m-2 position-relative  border-teal-normal border-5 border-start  overflow-hidden`}>
+                      <Col xs={3} className='text-center text-teal-normal p-1 '>
                       
                         <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('MMM')}</p>
                         <p className='fs-5 fw-medium text-color-medium m-0'>{moment(date.date_value).format('DD')}</p>
                       </Col>
                       <Col className=''>
-                        <span className=' fw-bold fs-5 text-color-black my-2 d-flex align-items-center'>
+                        <span className=' fw-bold fs-6 text-color-black my-2 d-flex align-items-center'>
                           {capitalizeFirstLetter(date.date_type)}
                         </span>
                         <span className='fs-6 fw-medium text-color-black m-0'>

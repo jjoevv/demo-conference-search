@@ -190,16 +190,35 @@ const Dashboard = () => {
             width: 200
         },
         {
-            Header: 'Type',
-            accessor: (row)=>capitalizeFirstLetter(row.organizations[0].type),
-            width: 100
+          Header: 'Type',
+          accessor: (row) => {
+            const newOrganizations = row.organizations.filter(org => org.status === 'new');
+            if (newOrganizations.length > 0) {
+              return capitalizeFirstLetter(newOrganizations[0].type);
+            } else {
+              return ''; // Hoặc giá trị mặc định khác nếu không có tổ chức nào có status là "new"
+            }
+          },
+          width: 100
         },
-        {
-            Header: 'Conference date',
-            accessor: (row) => `${row.organizations[0].start_date} ${row.organizations[0].end_date?`- ${row.organizations[0].end_date}`:''}`,
-            id: 'conference_date',
-            width: 200
-        },
+      // Định nghĩa cột "Conference date"
+{
+  Header: 'Conference date',
+  accessor: (row) => {
+    const newOrganizations = row.organizations.filter(org => org.status === 'new');
+    if (newOrganizations.length > 0) {
+      const startDate = newOrganizations[0].start_date;
+      const endDate = newOrganizations[0].end_date;
+      return endDate ? `${startDate} - ${endDate}` : startDate;
+    } else {
+      return ''; // Hoặc giá trị mặc định khác nếu không có tổ chức nào có status là "new"
+    }
+  },
+  id: 'conference_date',
+  width: 200
+},
+
+
         {
             Header: 'Crawl date',
             accessor: (row)=> moment(row.createdAt).format('YYYY/MM/DD,  h:mm:ss'),

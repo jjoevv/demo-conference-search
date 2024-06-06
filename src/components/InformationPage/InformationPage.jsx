@@ -32,7 +32,7 @@ const InformationPage = ({ conference }) => {
   };
 
   return (
-    <div className='px-5 m-5' >
+    <div className='ps-5 m-5 me-0' >
       <div className='fs-4 fw-bold fs-5 d-flex justify-content-between '>
         <span className='text-teal-dark'>Conference information</span>
         <RedirectButton conference={conference} />
@@ -45,7 +45,7 @@ const InformationPage = ({ conference }) => {
             {renderType(conference.organizations) &&
               <Row className='py-3 ps-4'>
                 <Col xs={4} className='d-flex align-items-center'>Type:</Col>
-                <Col className='fw-bold fs-5'>
+                <Col className='fw-bold fs-5 '>
                   {capitalizeFirstLetter(renderType(conference.organizations))}
                 </Col>
               </Row>
@@ -113,7 +113,7 @@ const InformationPage = ({ conference }) => {
             }
             {renderFieldOfResearch(conference.information.fieldOfResearch)
               &&
-              <Row className='py-3 ps-4 bg-teal-light '>
+              <Row className='py-3 ps-4 pe-1 bg-teal-light '>
                 <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
                 <Col className='fw-bold fs-5'>
                   {renderFieldOfResearch(conference.information.fieldOfResearch)}

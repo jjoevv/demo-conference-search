@@ -77,7 +77,7 @@ const AdminAccount = () => {
         &&
         <>
           <div className='d-flex justify-content-between align-items-center pe-5'>
-            <h4 className='mb-4'>Admin Account</h4>
+            
            
           </div>
 

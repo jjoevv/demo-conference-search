@@ -10,7 +10,7 @@ import { DropdownSort } from '../DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
 import Loading from '../Loading'
-import { getDateValue } from '../../utils/formatDate'
+import { getDateValue, getSubDate } from '../../utils/formatDate'
 import ButtonGroupUpdate from '../PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
 import useConference from '../../hooks/useConferences'
@@ -21,6 +21,7 @@ import FollowIcon from './../../assets/imgs/follow.png'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import PriorityOptions from '../Filter/PriorityOptions'
 import LoadingConferences from './LoadingConferences'
+import moment from 'moment'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, displaySortList, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
@@ -197,8 +198,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                 <label className='conf-data-label'>Submission Date: </label>
                                                                                 <span className='conf-data'>
                                                                                     {
-                                                                                        getDateValue("submission", conf.importantDates) ?
-                                                                                            getDateValue("submission", conf.importantDates) :
+                                                                                        getSubDate(conf.importantDates) ?
+                                                                                            moment(getSubDate(conf.importantDates)).format('YYYY/MM/DD') :
                                                                                             <span className='text-secondary'>Updating...</span>
                                                                                     }
                                                                                 </span>

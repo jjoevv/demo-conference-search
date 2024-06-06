@@ -58,7 +58,7 @@ const Homepage = () => {
 
         const filterResult = filterConferences(conferences, optionsSelected)
         const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-        //console.log({sortConferences})
+        console.log({sortConferences})
         setDisplayedConferences(sortConferences)
         setTotalConferences(filterResult.length)
         setTotalPages(Math.ceil(filterResult.length / 7))

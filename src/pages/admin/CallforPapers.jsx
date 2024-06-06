@@ -25,7 +25,7 @@ const CallforPapers = () => {
   }, [id])
   return (
     <div>
-      <h4>Call for paper detail</h4>
+   
         {
         loading ?
         <div className="my-4">

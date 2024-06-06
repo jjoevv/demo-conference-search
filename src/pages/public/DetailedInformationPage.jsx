@@ -32,18 +32,6 @@ const DetailedInformationPage = () => {
     }, [conference, conf_id.id, listFollowed]);
 
 
-    const extractYear = (source) => {
-        // Sử dụng regular expression để tìm và trích xuất phần số từ chuỗi
-        const yearMatch = source.match(/\d{4}/);
-
-        // Nếu tìm thấy số năm, trả về năm đó, ngược lại trả về null
-        if (yearMatch) {
-            return parseInt(yearMatch[0]);
-        } else {
-            return '';
-        }
-    }
-
     const renderLocation = (organizations) => {
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
@@ -123,12 +111,12 @@ const DetailedInformationPage = () => {
                         </>
                 }
             </Stack>
-            <Row>
-                <Col sm={7} xs={7}>
+            < Row>
+                <Col sm={6} xs={6}>
                     <InformationPage conference={conference} />
 
                 </Col>
-                <Col sm={5} xs={7}>
+                <Col sm={5} xs={5}>
                     <ImportantDatePage />
                 </Col>
             </Row>
