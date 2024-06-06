@@ -133,7 +133,7 @@ button.bg-blue-normal:hover {
 }
 
 .bg-blue-dark {
-    background-color: #1A7482;
+    background-color: #136470;
 }
 
 .text-blue-normal {
@@ -502,7 +502,7 @@ a {
     background-color: #419489;
     /* Màu nền của sidebar */
     border-right: 1px solid #dee2e6;
-    /* Viền phải của sidebar */
+    z-index: 999;
 }
 
 .my-sidebar-navlink {

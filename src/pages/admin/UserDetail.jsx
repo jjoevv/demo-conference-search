@@ -1,72 +1,109 @@
+import { faAddressCard, faEnvelope, faPhone, faUser, faUserXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useEffect } from 'react'
-import { Container,  Image, Row, Col } from 'react-bootstrap'
+import { Container, Image, Row, Col, Button } from 'react-bootstrap'
+import useAdmin from '../../hooks/useAdmin'
+import { useParams } from 'react-router-dom'
+import Loading from '../../components/Loading'
 
 
 
-const Dashboard = () => {
-  
+const UserDetail = () => {
+  const { loading: loadingUsers, userAccount, users, getAllUsers, getUserById } = useAdmin()
+
+  const id = useParams()
+  useEffect(() => {
+    if(users.length === 0 || !users){
+      getAllUsers()
+    }
+  }, [users])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const fetchData = async () => {
+      await getAllUsers(id.id);
+      getUserById(id.id)
+
+    }
+    if (!userAccount || id.id !== userAccount.id || users.length === 0 || !users) {
+      fetchData()
+    }
+  }, [id, userAccount])
+
   return (
     <Container
       fluid
       className='pt-5 bg-light main-container' style={{ paddingLeft: "350px" }}>
 
       <div className="d-flex justify-content-between align-items-center mb-3 content">
-        <h4>Account</h4>
+        <h4>User information</h4>
       </div>
-      <Row className='m-3'>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-      </Row>
-      <Row className='m-3'>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-      </Row>
-      <Row className='m-3'>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-        <Col className='border rounded-1 p-3 m-2'>
-        <div className='d-flex align-items-center mb-2'>
-          <Image src width={18} height={18} className='me-3'/>
-          Email:
-        </div>
-        <span className='ms-4'>example@gamil.com</span>
-        </Col>
-      </Row>
-      
-      <div className='mt-auto w-100  footer'>
-        
-      </div>
+      {
+        loadingUsers
+          ?
+          <div className="my-3">
+            <Loading />
+          </div>
+          :
+          <>
+            {
+              userAccount
+              &&
+              <>
+                <Row className='m-3'>
+                  <Col className='border rounded-1 p-3 m-2'>
+                    <div className='d-flex align-items-center mb-2'>
+                      <FontAwesomeIcon icon={faEnvelope} className='text-primary-normal me-2 fs-5' />
+                      <span className='text-color-medium'>Email:</span>
+                    </div>
+                    <span className='ms-4 text-color-black'>{userAccount.email}</span>
+                  </Col>
+                  <Col className='border rounded-1 p-3 m-2'>
+                    <div className='d-flex align-items-center mb-2'>
+                      <FontAwesomeIcon icon={faUser} className='text-primary-normal me-2 fs-5' />
+                      <span className='text-color-medium'>Username:</span>
+                    </div>
+                    <span className='ms-4 text-color-black'>{userAccount.name}</span>
+                  </Col>
+                </Row>
+                <Row className='m-3'>
+                  <Col className='border rounded-1 p-3 m-2'>
+                    <div className='d-flex align-items-center mb-2'>
+                      <FontAwesomeIcon icon={faPhone} className='text-primary-normal me-2 fs-5' />
+                      Phone:
+                    </div>
+                    <span className='ms-4 text-color-black'>{userAccount.phone}</span>
+                  </Col>
+                  <Col className='border rounded-1 p-3 m-2'>
+                    <div className='d-flex align-items-center mb-2'>
+                      <FontAwesomeIcon icon={faAddressCard} className='text-primary-normal me-2 fs-5' />
+                      Address/Nationality:
+                    </div>
+                    <span className='ms-4 text-color-black'>
+                      {
+                        userAccount.address && userAccount.nationality ?
+                         `${userAccount.address} / ${userAccount.nationality}`
+                        :
+                        userAccount.address ? userAccount.address :
+                        userAccount.nationality 
+
+                      }
+                    </span>
+                  </Col>
+                </Row>
+              </>
+            }
+          </>
+      }
+
+      <footer className='fixed-bottom mt-4 w-100 bg-primary-light py-3' style={{ paddingLeft: "10px" }}>
+        <Button style={{ marginLeft: "320px" }} className=' bg-blue-dark'>
+          <FontAwesomeIcon icon={faUserXmark} className='me-2 ' />
+          Block user
+        </Button>
+      </footer>
     </Container>
   )
 }
 
-export default Dashboard
+export default UserDetail

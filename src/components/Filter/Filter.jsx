@@ -82,7 +82,6 @@ const Filter = () => {
   }
 
   useEffect(()=>{
-    console.log({loadingOption})
     if(loadingOption){
       setShowIsAvailableAdvancedFilter(false)
     }

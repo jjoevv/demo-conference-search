@@ -253,7 +253,6 @@ const useSearch = () => {
         // Lấy giá trị tương ứng và cập nhật vào optionsSelected
         newOptionsSelected[key] = searchParams.get(key).split(',');
         const keyword = searchParams.get(key).split(',');
-        console.log({newOptionsSelected, key, keyword})
       } else {
         // Nếu không tồn tại, đặt giá trị là mảng trống
         newOptionsSelected[key] = [];

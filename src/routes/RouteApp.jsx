@@ -15,15 +15,14 @@ import Notifications from '../pages/auth/Notifications'
 import { AuthLayout } from '../layout/AuthLayout'
 import InformationPage from '../components/InformationPage/InformationPage'
 import ImportantDatePage from '../components/InformationPage/ImportantDatePage'
-import CallforpaperPage from '../components/InformationPage/CallforpaperPage'
 import Setting from '../pages/auth/Setting'
 import Dashboard from '../pages/admin/Dashboard'
 import Users from '../pages/admin/Users'
 import { AdminLayout } from '../layout/AdminLayout'
 import AdminAccount from '../pages/admin/AdminAccount'
-import CallforPapers from '../pages/admin/CallforPapers'
 import UserDetail from '../pages/admin/UserDetail'
 import DetailedInformationPage from '../pages/public/DetailedInformationPage'
+import CallforPapers from '../pages/admin/CallforPapers'
 
 const authPage = [
   { path: 'user/account', element: <Account /> },
@@ -35,11 +34,11 @@ const authPage = [
 ]
 
 const admin = [
-  { path: 'admin/dashboard', element: <Dashboard /> },
-  { path: 'admin/usersmanagement', element: <Users /> },
-  { path: 'admin/usersmanagement/userdetail/:id', element: <UserDetail /> },
-  { path: 'admin/admin_account', element: <AdminAccount /> },
-  { path: 'admin/callforpapers', element: <CallforPapers /> },
+  { path: '/admin/dashboard', element: <Dashboard /> },
+  { path: '/admin/usersmanagement', element: <Users /> },
+  { path: '/admin/usersmanagement/userdetail/:id', element: <UserDetail /> },
+  { path: '/admin/admin_account', element: <AdminAccount /> },
+  { path: '/admin/dashboard/:id', element: <CallforPapers /> },
 ]
 
 const RoutesApp = () => {
@@ -52,7 +51,7 @@ const RoutesApp = () => {
       <Route path="/detail/information/:id" element={<InformationPage />} />
       <Route path="/detailed-information/:id" element={<DetailedInformationPage />} />
       <Route path="/detail/importantdates/:id" element={<ImportantDatePage />} />
-      <Route path="/detail/callforpaper/:id" element={<CallforpaperPage />} />
+      <Route path="/detail/callforpaper/:id" element={<CallforPapers />} />
 
       <Route element={<AuthLayout />}>
         {

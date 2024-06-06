@@ -76,12 +76,12 @@ const Account = () => {
         user
         &&
         <>
-          <div>
+          <div className='d-flex justify-content-between align-items-center pe-5'>
             <h4 className='mb-4'>Account</h4>
             {
               user.role === "admin" &&
               <Link to="/admin/dashboard">
-                Go to Admin page
+                {`Go to Admin page >`}
               </Link>
             }
           </div>

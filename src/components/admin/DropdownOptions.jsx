@@ -1,106 +1,134 @@
 //lấy dữ liệu từ danh sách để đưa vào dropdown
 import React, { useEffect, useState } from 'react'
 import useSearch from '../../hooks/useSearch'
-import { Dropdown, Form, InputGroup, Image, ButtonGroup, Button } from 'react-bootstrap'
-
-import searchIcon from '../../assets/imgs/search.png'
-import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
-import { useLocation } from 'react-router-dom'
-const category = ["Conference", "Journal"]
-const owner = ["Admin", "User"]
+import data from './../Filter/options.json'
+const owner = ["Crawler", "User"]
 const customStyles = {
-    container: (provided, state) => ({
-        ...provided,        
-        borderBottom: '1px solid #ccc',
-        borderBottomColor: 'gray',
-      }),
-      control: (provided, state) => ({
+    menuPortal: (provided) => ({
         ...provided,
-        boxShadow: state.isFocused ? '0 0 0 1px lightgray' : null,
+        zIndex: 9999, // Đặt giá trị z-index cao để luôn nằm trên các thành phần khác
+    }),
+    control: (provided, state) => ({
+        ...provided,
+        cursor: 'pointer',
+        border: '1px solid #4EB1A4', // Điều chỉnh màu và độ dày của border khi focus
+        borderRadius: '4px', // Điều chỉnh độ cong của góc
+        boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(76, 139, 245, 0.25)' : null, // Hiệu ứng boxShadow khi focus
         '&:hover': {
-          
-        }
-      }),
+            border: '1px solid #469E92', // Điều chỉnh màu và độ dày của border khi hover
+        },
+    }),
     option: (provided, state) => ({
         ...provided,
-        background: state.isFocused ? '#C2F1EB' : 'white',
+        background: state.isFocused ? 'lightgray' : 'white',
+        color: state.isFocused ? 'black' : 'gray',
         cursor: 'pointer',
         '&:hover': {
             background: 'lightgray', // Điều chỉnh màu nền khi hover
             color: 'black', // Điều chỉnh màu chữ khi hover
         },
     }),
+    singleValue: (provided) => ({
+        ...provided,
+        display: 'none'
+    })
 };
-const CustomOption = ({ innerProps, label, isSelected }) => (
-    <div {...innerProps} className='d-flex align-items-start'>
-        <input
-            type="checkbox"
-            checked={isSelected}
-            onChange={() => { }}
-            className='m-2'
-        />
-        <label style={{ fontWeight: isSelected ? 'bold' : 'normal' }} className='fs-6'>{label}</label>
-    </div>
-);
+const CustomOption = (props) => {
+    const { innerProps, label, isSelected, isFocused } = props;
+    return (
+        <div 
+            {...innerProps} 
+            className={`d-flex align-items-center justify-content-start ${isFocused ? 'custom-hover' : ''}`}
+            style={{ 
+                backgroundColor: isFocused ? '#eaf9f3' : isSelected ? '#bcedd8' : 'white', 
+                
+                cursor: 'pointer' 
+            }}
+        >
+            <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => null}
+                className='ms-2 me-1'
+            />
+            <span className={`fs-6 p-2 ${isSelected ? 'text-skyblue-dark' : 'text-color-black'}`}>
+                {capitalizeFirstLetter(label)}
+            </span>
+        </div>
+    );
+};
+const MultiValue = ({ index, getValue, ...props }) => {
+    const maxToShow = 1;
+    const overflow = getValue()
+      .slice(0, -maxToShow)
+      .map((x) => x.label);
+  
+    return index === getValue().length - maxToShow ? (
+        `+ ${overflow.length+1} option${overflow.length !== 0 ? "s" : ""} selected`
+    ) : null;
+  };
 const DropdownOptions = ({ label, placeholder }) => {
-    const { filterOptions } = useConference()
-    const [tranformOptions, setTranformOptions] = useState([])
-    const { addKeywords, sendFilter } = useSearch()
-    const [statename, setStateName] = useState('')
-    const location = useLocation();
-    const pathname = location.pathname;
-    useEffect(()=>{
-      if(pathname === '/'){
-        setStateName('optionsSelected')
-      }
-      else setStateName('filterOptionsAuth')
-    }, [pathname])
-    const handleOptionChange = (item) => {
-        const selectedValues = item.map(option => option.label);
-        addKeywords(statename, label, selectedValues)
-        sendFilter(label, selectedValues)
-    };
+    const { optionsSelected, filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
+    const [options, setOptions] = useState([])
+    const [selectedOptions, setSelectedOptions] = useState(optionsSelected[label].map(value => ({ value, label: value })))
+
+    const handleOptionChange = async (items) => {
+        setSelectedOptions(items)
+        const itemsValues = items.map(item => item.value);
+        const removedOptions = selectedOptions.filter(option => !itemsValues.includes(option.value));
+
+        if (removedOptions.length <= 0) {
+            addKeywords(label, [items[items.length-1].label])
+        } 
+        else {
+            deleteKeyword(label, removedOptions[0].label)
+        }
+    
+    }
+
     useEffect(() => {
-        
-        let transformedState = []
-        if (filterOptions !== null) {
-            if (label === 'category') {
-                transformedState = category.map((item, index) => ({
-                    value: index + 1,
+        const staticValue = ["location", "type", "category", "owner"]
+        if (staticValue.includes(label)) {
+            if(label === "owner"){
+                let transformedOptions = []
+                transformedOptions = owner.map((item) => ({
+                    value: item,
                     label: item,
                 }));
-            } 
-            else if (label === 'owner') {
-                transformedState = category.map((item, index) => ({
-                    value: index + 1,
+                setOptions(transformedOptions)
+            }
+            setOptions(data[label])
+            getOptionsFilter(label, data[label])
+        }
+        else {
+            let transformedOptions = []
+            if (filterOptions[label]) {
+                transformedOptions = filterOptions[label].map((item) => ({
+                    value: item,
                     label: item,
-                }));
-            } else if (filterOptions[label]) {
-                transformedState = filterOptions[label].map((item, index) => ({
-                    value: index + 1,
-                    label: capitalizeFirstLetter(item),
                 }));
             }
-
+            setOptions(transformedOptions)
         }
-        setTranformOptions(transformedState);
-    }, [filterOptions, label, category]);
-
+    }, []);
 
     return (
         <div>
             <Select
-                isMulti={true}                
-                options={tranformOptions}
-                value
-                components={{ Option: CustomOption }}
+                isMulti={true}
+                options={options}
+                value={optionsSelected[label].map(value => ({ value, label: value }))}
+                hideSelectedOptions={false}
+                isClearable={false}
+                components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} /> , MultiValue }}
                 onChange={handleOptionChange}
-                closeMenuOnSelect={false}
+                closeMenuOnSelect={true}
                 styles={customStyles}
-                placeholder={placeholder}
-                
+                placeholder="All"
+                menuPortalTarget={document.body}
+                menuPosition="fixed"
             />
         </div>
 

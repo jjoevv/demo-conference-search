@@ -15,7 +15,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import { useLocation } from 'react-router-dom'
 
 const Homepage = () => {
-    const { optionsSelected, getOptionsFilter, updateOptionsSelectedFromParams} = useSearch()
+    const { optionsSelected, getOptionsFilter} = useSearch()
     const {loading: loadingAll, conferences, handleGetList} = useConference()
     const {getItemInLocalStorage} = useLocalStorage()
     const {getListFollowedConferences} = useFollow()
@@ -58,13 +58,13 @@ const Homepage = () => {
 
         const filterResult = filterConferences(conferences, optionsSelected)
         const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-        console.log({sortConferences})
+        //console.log({sortConferences})
         setDisplayedConferences(sortConferences)
         setTotalConferences(filterResult.length)
         setTotalPages(Math.ceil(filterResult.length / 7))
       }
       else {
-        console.log('ko apply',conferences)
+       // console.log('ko apply',conferences)
         const totalConfLS = getItemInLocalStorage('totalConferences')
         const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
         setTotalConferences(totalConfLS)
@@ -75,7 +75,7 @@ const Homepage = () => {
     }, [optionsSelected, conferences, priorityKeywords])
   
     useEffect(()=>{
-      console.log({pathname, optionsSelected})
+      //console.log({pathname, optionsSelected})
     }, [pathname, optionsSelected])
 
    

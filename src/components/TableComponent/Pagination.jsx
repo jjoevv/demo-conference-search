@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import './styles.css'; // Đảm bảo import file css cho react-paginate
+
 
 const TablePagination = ({ data, itemsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(0);

@@ -14,19 +14,18 @@ const useFilter = () => {
 
   useEffect(() => {  
     let updatedPriorityKeywords = { ...state.priorityKeywords };
-  
     // Lặp qua từng key trong optionsSelected
     Object.entries(optionsSelected).forEach(([key, keywords]) => {
       // Nếu danh sách keywords có nhiều hơn 1 phần tử hoặc key chưa tồn tại trong updatedPriorityKeywords
-      if (keywords.length > 1 || !(key in updatedPriorityKeywords)) {
+      if (keywords.length > 1 && !updatedPriorityKeywords[key]) {
         updatedPriorityKeywords[key] = keywords[keywords.length - 1]; // Thêm key vào updatedPriorityKeywords với giá trị cuối cùng trong danh sách
       }
     });
   
     // Kiểm tra nếu priority keyword hiện tại đã bị xóa khỏi optionsSelected
-    Object.entries(priorityKeywords).forEach(([key, priorityKeyword]) => {
+    Object.entries(updatedPriorityKeywords).forEach(([key, priorityKeyword]) => {
       // Nếu optionsSelected vẫn chứa key và priorityKeyword không nằm trong danh sách keywords của key đó
-      if (optionsSelected[key] && !optionsSelected[key].includes(priorityKeyword)) {
+      if (!optionsSelected[key] && !optionsSelected[key].includes(priorityKeyword)) {
         updatedPriorityKeywords[key] = optionsSelected[key][optionsSelected[key].length - 1]; // Cập nhật priorityKeyword mới là giá trị cuối cùng trong danh sách keywords của key
       }
     });
@@ -70,8 +69,9 @@ const useFilter = () => {
       ...priorityKeywords,
       [key]: selectedValue
     });
+
     dispatch({type: 'SET_PRIORITY_KEYWORD', payload: {
-      ...priorityKeywords,
+      ...state.priorityKeywords,
       [key]: selectedValue
     }})
   };
@@ -174,6 +174,10 @@ const filterConferences = (listConferences, keywordSelected) => {
               isMatch = conference.organizations?.some(org => org.type?.toLowerCase().includes(keyword));
               break;
             }
+            case 'owner': {
+              isMatch = conference.information?.owner?.toLowerCase().includes(keyword);
+              break;
+            }
 
             case 'conferenceDate': {
               const matchDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
@@ -205,7 +209,6 @@ const filterConferences = (listConferences, keywordSelected) => {
 
             case 'search': {
               isMatch = searchInObject(conference, keyword);
-              console.log({isMatch})
               break;
             }
 

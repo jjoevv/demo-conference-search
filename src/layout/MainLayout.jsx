@@ -20,7 +20,7 @@ const MainLayout = () => {
         }
         <RoutesApp/>
         
-        {!location.pathname.includes('user') && <Footer/>}
+        {!location.pathname.includes('user') && !location.pathname.includes('admin') && <Footer/>}
         <Outlet/>
     </div>
   )

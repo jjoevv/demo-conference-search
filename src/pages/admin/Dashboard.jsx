@@ -1,80 +1,237 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, ButtonGroup, Button, Image, Row, Col } from 'react-bootstrap'
 
 import InputSearch from '../../components/admin/InputSearch'
 import Filter from '../../components/admin/Filter'
-import SortBy from '../../components/admin/SortBy'
 import useConference from '../../hooks/useConferences'
-import EditIcon from '../../assets/imgs/edit.png'
-import Table from '../../components/TableComponent/Table'
-import TableContent from '../../components/TableComponent/TableContent'
 import { sortConferences } from '../../utils/sortConferences'
 import { DropdownSort } from '../../components/DropdownSort'
+import Loading from '../../components/Loading'
+import TableRender from '../../components/admin/TableRender'
+import { capitalizeFirstLetter } from '../../utils/formatWord'
+import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faFilter, faTrash } from '@fortawesome/free-solid-svg-icons'
+import usePost from '../../hooks/usePost'
+import DeleteModal from '../../components/Modals/DeleteModal'
+import ModalUpdateConf from '../../components/UpdatePost.jsx/ModalUpdateConf'
+import useSearch from '../../hooks/useSearch'
+import { checkExistValue } from '../../utils/checkFetchedResults'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import useFilter from '../../hooks/useFilter'
+import FilterSelected from '../../components/Filter/FilterSelected'
+import { useNavigate } from 'react-router-dom'
 const Dashboard = () => {
+  const navigate = useNavigate()
+  const { optionsSelected, getOptionsFilter} = useSearch()
+  const {
+    priorityKeywords, 
+    filterConferences, 
+    sortConferencesByPriorityKeyword}= useFilter()
+
   const [showFilter, setShowFilter] = useState(false)
-  const { conferences, handleGetList } = useConference()
-  const [fetchCount, setFetchCount] = useState(0);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [copiedConferences, setcopiedConferences] = useState([])
+  const { loading: loadingConf, conferences, selectOptionSort, displaySortList, handleSelectOptionSort, handleGetList, handleGetOne } = useConference()
   const [displayConferences, setDisplayedConferences] = useState([])
+
+  const [showUpdateConf, setShowUpdate] = useState(false)
+  const [showDeleteConf, setShowDelete] = useState(false)
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState(false)
+  const {loading, deletePost, getPostedConferences} = usePost()
+
+  const [countdown, setCountdown] = useState(3);
+  const [isConfirm, setIsConfirm] = useState(false)
+  
+  const [conferenceUpdate, setConferenceUpdate] = useState(null)
   useEffect(() => {
-    if (fetchCount < 3) {
-      handleGetList(1, 10)
-      setDisplayedConferences([...conferences])
-        setcopiedConferences([...conferences])
-      // Tăng giá trị fetchCount sau khi fetch
-      setFetchCount(fetchCount + 1);
+    if(conferences.length === 0 || !conferences){
+      handleGetList()
     }
-  }, [conferences, handleGetList])
+    getOptionsFilter("", [])
+    setDisplayedConferences(conferences)
+  }, [conferences])
 
-  const headers = ["ConferenceID", "Name", "Acronym", "Source", "Rank", "Field of Research", "Location", "Type", "Conference date", "Crawl date", "Update date"];
-  const accessors = ['cfp_id', 'name', 'acronym', 'source', 'rank', 'fieldOfResearch', 'location', 'type', 'conf_date', 'createdAt', 'updatedAt'];
-  const tableHeaders = [
-    "Items",
-    "Order #",
-    "Amount",
-    "Status",
-    "Delivery Driver"
-  ];
-  const status = [
-    { status: 'Complete', owner: 'Admin' },
-    { status: 'Partial', owner: 'Admin' },
-    { status: 'Approval', owner: 'User' },
-    { status: 'Complete', owner: 'User' },
-    { status: 'Partial', owner: 'Admin' },
-    { status: 'Approval', owner: 'User' },
-    { status: 'Complete', owner: 'Admin' },
-    { status: 'Partial', owner: 'User' },
-    { status: 'Approval', owner: 'Admin' },
-    { status: 'Complete', owner: 'User' },
-  ];
+  useEffect(()=>{
+    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    
+    if(isApliedFilter){
 
-  const handleEdit = (row) => {
-    // Code xử lý khi nhấn nút Edit
-    alert('edit')
-  };
-
-  // Hàm xử lý khi nhấn nút Delete
-  const handleDelete = (row) => {
-    // Code xử lý khi nhấn nút Delete
-    alert('delete')
-
-  };
-  const handleDropdownSelect = (value) => {
-    setSelectedValue(value);
-    if(value === "Random"){
-        sortConferences(value, displayConferences )             
-        setDisplayedConferences([...copiedConferences])
+      const filterResult = filterConferences(conferences, optionsSelected)
+      const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
+      //console.log({sortConferences})
+      setDisplayedConferences(sortConferences)
     }
     else {
-        sortConferences(value, displayConferences)
+      setDisplayedConferences(conferences)
     }
     
+  }, [optionsSelected, conferences, priorityKeywords])
+
+
+  useEffect(() => {
+    if (selectOptionSort === "Random") {
+        setDisplayedConferences(conferences)
+    }
+    else {
+        const sortedConferences = sortConferences(selectOptionSort, [...conferences])
+        setDisplayedConferences(sortedConferences)
+    }
+}, [selectOptionSort])
+
+
+  const handleDropdownSelect = (value) => {
+        setDisplayedConferences(displaySortList)
+        handleSelectOptionSort(value)
   };
+  const handleClose = () => {
+      setShowDelete(false);
+      setStatus(null);
+      setMessage('');
+      setCountdown(3);
+    };
+
+  const handleChooseEdit = (conf) => {
+    setConferenceUpdate(conf)
+    setShowUpdate(true)
+  }
+
+  const handleChooseDelete = (conf) => {
+    setConferenceUpdate(conf)
+    setShowDelete(true)
+  }
+  const handleDeletePost = async () => {
+      setIsConfirm(true)
+      const result = await deletePost(conferenceUpdate.id);
+      setStatus(result.status);
+      setMessage(result.message);
+      if (result.status) {
+        getPostedConferences()
+        const countdownInterval = setInterval(() => {
+          setCountdown((prevCountdown) => {
+            if (prevCountdown === 0) {
+              clearInterval(countdownInterval);
+              handleClose();
+              return 0;
+            }
+            return prevCountdown - 1;
+          });
+        }, 1000); // Giảm mỗi 1 giây
+      }
+  }
+  const handleChooseCfp = async (id) => {
+    await handleGetOne(id)
+  //  navigate(`/admin/dashboard/${id}`)
+  }
+
+
+  const columns = React.useMemo(
+    () => [
+        {
+            Header: () => (
+                <div className="d-flex fixed-column-1">
+                    <div className="border-start border-end" style={{width: '80px'}}>{`Actions`}</div>
+                    <div className="border-start border-end">Status</div>
+                    <div className="border-start ">Owner</div>
+                </div>
+            ),
+            accessor: 'actions',
+            Cell: ({ row }) => (
+                <div className='fixed-column-1 p-0 d-flex align-items-center'>
+                    <ButtonGroup style={{width: '80px'}}>
+                        <Button className='bg-transparent border-0 p-0 m-0' onClick={() => handleChooseEdit(row.original)}>
+                            <FontAwesomeIcon icon={faEdit} className='text-primary-normal' />
+                        </Button>
+
+                        <Button className='bg-transparent border-0 p-0 m-0'    onClick={()=>handleChooseDelete(row.original)}>
+                            <FontAwesomeIcon icon={faTrash} className='text-danger' />
+                        </Button>
+                    </ButtonGroup>
+
+                    <div className='border-start border-end'>
+                        {row.original.information.status ? "Active" : "Inactive"}   
+                    </div>
+                    <div>
+                        {capitalizeFirstLetter(row.original.information.owner)}    
+                    </div>
+                </div>
+            ),
+            width: 300,
+            disableResizing: false,
+        },
+        {
+            Header: 'ConferenceID',
+            accessor: 'id',
+            Cell: ({row})=>(
+              <div
+                title='Go to Call for paper page'
+                style={{cursor: 'pointer'}}
+                className='text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'
+                onClick={()=>handleChooseCfp(row.original.id)}
+              >
+                {row.original.id}
+              </div>
+            ),
+            width: 300
+        },
+        {
+            Header: 'Name',
+            accessor: 'information.name',
+            width: 400
+        },
+        {
+            Header: 'Acronym',
+            accessor: 'information.acronym',
+            width: 100
+        },
+        {
+            Header: 'Source',
+            accessor: 'information.source',
+            width: 100
+        },
+        {
+            Header: 'Rank',
+            accessor: 'information.rank',
+            width: 50,
+
+        },
+        {
+            Header: 'Field of Research',
+            accessor: 'information.fieldOfResearch[0]',
+            width: 200
+        },
+        {
+            Header: 'Location',
+            accessor: 'organizations[0].location',
+            width: 200
+        },
+        {
+            Header: 'Type',
+            accessor: (row)=>capitalizeFirstLetter(row.organizations[0].type),
+            width: 100
+        },
+        {
+            Header: 'Conference date',
+            accessor: (row) => `${row.organizations[0].start_date} ${row.organizations[0].end_date?`- ${row.organizations[0].end_date}`:''}`,
+            id: 'conference_date',
+            width: 200
+        },
+        {
+            Header: 'Crawl date',
+            accessor: (row)=> moment(row.createdAt).format('YYYY/MM/DD,  h:mm:ss'),
+            width: 200
+        },
+        {
+            Header: 'Update date',
+            accessor: (row)=> moment(row.updateAt).format('YYYY/MM/DD,  h:mm:ss'),
+            width: 200
+        }
+    ],
+    []
+);
   return (
     <Container
       fluid
-      className='pt-5 bg-light' style={{ paddingLeft: "350px" }}>
+      className='pt-5 mt-5 bg-light overflow-y-auto' style={{ paddingLeft: "350px" }}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Dashboard</h4>
@@ -122,15 +279,15 @@ const Dashboard = () => {
           </Row>
         </div>
 
-        <Row md={4} className='justify-content-end my-2'>
+        <Row md={4} className='justify-content-end my-2 mb-3'>
           <Col><InputSearch /></Col>
           <Col md='auto'>
             <Button
               className='bg-white text-color-black rounded-1'
               onClick={() => setShowFilter(!showFilter)}
             >
-              <Image src className='me-2' />
-              Filter
+              <FontAwesomeIcon icon={faFilter}/>
+                Filter
             </Button>
           </Col>
           <Col md='auto'>
@@ -140,14 +297,39 @@ const Dashboard = () => {
     />
           </Col>
         </Row>
+        
         {showFilter && <Filter />}
-        <Table
-          data={displayConferences}
-          headers={headers}
-          minCellWidth={150}
-          scroll={true}
-          tableContent={<TableContent data={displayConferences} accessors={accessors} />}
-        />
+        
+        <FilterSelected/>
+        {
+          loadingConf ?
+          <div className="my-4">
+            <Loading/>
+          </div>
+          :
+          <TableRender data={displayConferences} columns={columns}/>
+        }
+
+          {showDeleteConf && 
+            <DeleteModal
+            show={showDeleteConf} 
+            onClose={()=>setShowDelete(!showDeleteConf)}
+            onConfirm={handleDeletePost}
+            modalTitle = {'conference'}
+            message={message}
+            status={status}
+            loading={loading}
+            countdown={countdown}
+            isConfirm={isConfirm}
+            />}
+
+            {showUpdateConf && 
+            <ModalUpdateConf
+                conference={conferenceUpdate}
+                show={showUpdateConf}    
+                onClose={()=>setShowUpdate(!showUpdateConf)}
+                onUpdatePost={getPostedConferences}
+            />}
       </div>
     </Container>
   )

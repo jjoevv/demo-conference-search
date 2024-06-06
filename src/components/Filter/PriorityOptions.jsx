@@ -10,6 +10,7 @@ const PriorityOptions = () => {
     const { resultFilter, priorityKeywords, selectedKeywords, handleKeywordSelection, countMatchingConferences, getCountForSelectedKeyword } = useFilter()
     const [selected, setSelected] = useState([])
     const [keywordsCount, setKeywordsCount] = useState([])
+    
     useEffect(() => {
         const values = Object.values(priorityKeywords);
         setSelected(values);

@@ -8,7 +8,7 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton className='text-center'>
-        Delete
+        <Modal.Title className='text-danger'>Delete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="fs-5 fw-bold">{`Are you sure want to delete?`}</p>

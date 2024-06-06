@@ -26,21 +26,20 @@ function ContextAwareToggle({ children, eventKey, callback }) {
 
 function Filter() {
   return (
-    <div>
+    <div className='shadow p-3 border rounded mb-2'>
     <Row>
-      <Col><DropdownOptions label="location" placeholder="Location" /></Col>
-      <Col><DropdownOptions label="fors" placeholder="Field of research"/></Col>
-      <Col><DropdownOptions label="ranks" placeholder="Rank" /></Col>
-      <Col><DateRangePicker label="submissionDate"/></Col>
-      <Col><DateRangePicker label="date"/></Col>
+      <Col><span className="fw-bold text-color-black">Location</span><DropdownOptions label="location" placeholder="Location" /></Col>
+      <Col><span className="fw-bold text-color-black">Field of research</span><DropdownOptions label="for" placeholder="Field of research"/></Col>
+      <Col><span className="fw-bold text-color-black">Rank</span><DropdownOptions label="rank" placeholder="Rank" /></Col>
+      <Col><span className="fw-bold text-color-black">Submission date:</span><DateRangePicker label="submissionDate"/></Col>
+      <Col><span className="fw-bold text-color-black">Conference date:</span><DateRangePicker label="conferenceDate"/></Col>
     </Row>
     {/* Hàng 2 */}
     <Row className='my-2'> 
-      <Col><DropdownOptions label="sources" placeholder="Source" /></Col>
-      <Col><DropdownOptions label="acronyms" placeholder="Acronym" /></Col>
-      <Col><DropdownOptions label="rating" placeholder="Rating" /></Col>
-      <Col><DropdownOptions label="types" placeholder="Type" /></Col>
-      <Col><DropdownOptions label="owner" placeholder="Owner by" /></Col>
+      <Col><span className="fw-bold text-color-black">Source:</span><DropdownOptions label="source" placeholder="Source" /></Col>
+      <Col><span className="fw-bold text-color-black">Acronym:</span><DropdownOptions label="acronym" placeholder="Acronym" /></Col>
+      <Col><span className="fw-bold text-color-black">Type:</span><DropdownOptions label="type" placeholder="Type" /></Col>
+      <Col><span className="fw-bold text-color-black">Owner:</span><DropdownOptions label="owner" placeholder="Owner by" /></Col>
     </Row>
   </div>
   );

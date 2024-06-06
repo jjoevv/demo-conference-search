@@ -1,143 +1,168 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, ButtonGroup, Button, Image, Row, Col } from 'react-bootstrap'
 
 import InputSearch from '../../components/admin/InputSearch'
 import Filter from '../../components/admin/Filter'
-import SortBy from '../../components/admin/SortBy'
 import useConference from '../../hooks/useConferences'
-import EditIcon from '../../assets/imgs/edit.png'
-import Table from '../../components/TableComponent/Table'
-import TableContent from '../../components/TableComponent/TableContent'
+import { sortConferences } from '../../utils/sortConferences'
+import { DropdownSort } from '../../components/DropdownSort'
+import Loading from '../../components/Loading'
+import TableRender from '../../components/admin/TableRender'
+import { capitalizeFirstLetter } from '../../utils/formatWord'
+import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faFilter, faTrash, faUserCheck, faUserXmark } from '@fortawesome/free-solid-svg-icons'
+import usePost from '../../hooks/usePost'
+import useSearch from '../../hooks/useSearch'
+import { checkExistValue } from '../../utils/checkFetchedResults'
+import useFilter from '../../hooks/useFilter'
+import { useNavigate } from 'react-router-dom'
+import useAdmin from '../../hooks/useAdmin'
 const Users = () => {
-  const [showFilter, setShowFilter] = useState(false)
-  const {conferences, } = useConference()
-  const [fetchCount, setFetchCount] = useState(0);
-  useEffect(()=>{
-    if (fetchCount < 3) {            
-      //handleGetList(1, 10)
-      // Tăng giá trị fetchCount sau khi fetch
-      setFetchCount(fetchCount + 1);
+  const navigate = useNavigate()
+  const { optionsSelected, getOptionsFilter} = useSearch()
+  const {
+    priorityKeywords, 
+    filterConferences, 
+    }= useFilter()
+
+  const {  conferences, selectOptionSort } = useConference()
+  const {loading:loadingUsers, users, getAllUsers, getUserById} = useAdmin()
+  const [displayUsers, setDisplayedUsers] = useState([])
+
+  useEffect(() => {
+    if(users.length === 0 || !users){
+      getAllUsers()
     }
-    }, [conferences, ])
+    setDisplayedUsers(users)
+  }, [users])
 
-  const fixedcolumns = [
-    {
-      Header: 'Actions', // Tiêu đề của cột đầu tiên
-      accessor: 'actions', // Trường dữ liệu tương ứng (không cần thiết)
-      Cell: ({ row }) => ( // Sử dụng Cell để tạo nút button
-        <div>
-          <button onClick={() => handleEdit(row)} className='bg-transparent border-0 p-0 mx-1'>
-            <Image src={EditIcon} width={16} height={16} onClick={() => handleEdit(row)}/>
-          </button>
-          <button onClick={() => handleDelete(row)} className='bg-transparent border-0 p-0 mx-1'>
-          <Image src={EditIcon} width={16} height={16}/>
-          </button>
-        </div>
-      ),
-    },
-  {
-    Header: 'Owner',
-    accessor: 'owner',
-  },
-  {
-    Header: 'Status',
-    accessor: 'status',
-  },
-];
-const headers = ["ConferenceID", "Name", "Category", "Acronym", "Source", "Rank", "Field of Research", "Location", "Type", "Conference date", "Crawl date", "Update date"];
-const accessors = [ '_id',  'name',  'category',  'acronym',  'source', 'rank',  'fieldOfResearch',  'location',  'type',  'date',  'createdAt',  'updatedAt'];
-const tableHeaders = [
-  "Items",
-  "Order #",
-  "Amount",
-  "Status",
-  "Delivery Driver"
-];
-  const status = [
-    { status: 'Complete', owner: 'Admin' },
-    { status: 'Partial', owner: 'Admin' },
-    { status: 'Approval', owner: 'User' },
-    { status: 'Complete', owner: 'User' },
-    { status: 'Partial', owner: 'Admin' },
-    { status: 'Approval', owner: 'User' },
-    { status: 'Complete', owner: 'Admin' },
-    { status: 'Partial', owner: 'User' },
-    { status: 'Approval', owner: 'Admin' },
-    { status: 'Complete', owner: 'User' },
-  ];
-  
-  const handleEdit = (row) => {
-    // Code xử lý khi nhấn nút Edit
-    alert('edit')
-  };
+  useEffect(()=>{
+    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    
+    if(isApliedFilter){
 
-  // Hàm xử lý khi nhấn nút Delete
-  const handleDelete = (row) => {
-    // Code xử lý khi nhấn nút Delete
-    alert('delete')
+      const filterResult = filterConferences(users, optionsSelected)
+      setDisplayedUsers(filterResult)
+    }
+    else {
+      setDisplayedUsers(users)
+    }
+    
+  }, [optionsSelected, users, priorityKeywords])
 
-  };
+
+  useEffect(() => {
+    if (selectOptionSort === "Random") {
+        setDisplayedUsers(conferences)
+    }
+    else {
+        const sortedConferences = sortConferences(selectOptionSort, [...conferences])
+        setDisplayedUsers(sortedConferences)
+    }
+}, [selectOptionSort])
+
+
+
+  const handleChooseUser = async (id) => {
+    await getUserById(id)
+    navigate(`/admin/usersmanagement/userdetail/${id}`)
+  }
+
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "ID",
+        accessor: "id",
+        Cell: ({row})=>(
+          <div
+            title='Go to Call for paper page'
+            style={{cursor: 'pointer'}}
+            className='text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'
+            onClick={()=>handleChooseUser(row.original.id)}
+          >
+            {row.original.id}
+          </div>
+        ),
+      },
+      {
+        Header: "Name",
+        accessor: "name",
+      },
+      {
+        Header: "Phone",
+        accessor: "phone",
+      },
+      {
+        Header: "Email",
+        accessor: "email",
+      },
+      {
+        Header: "Address",
+        accessor: "address",
+      },
+      {
+        Header: "Nationality",
+        accessor: "nationality",
+      },
+       
+    ],
+    []
+);
   return (
     <Container
-    fluid
-      className='pt-5 bg-light' style={{ paddingLeft: "350px" }}>
+      fluid
+      className='py-5 mt-5 bg-light overflow-y-auto' style={{ paddingLeft: "350px" }}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>Users managemnet</h4>
+        <h4>Users management</h4>
         <ButtonGroup>
           <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
             <Image src className='p-2' />
             Export file
           </Button>
-          
+          <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
+            <Image src className='p-2' />
+            Setting
+          </Button>
         </ButtonGroup>
       </div>
 
       <div className='p-3 bg-white rounded'>
         <span className='fw-semibold text-color-medium'>Common</span>
         <div className="pb-3 border-bottom border-primary-light">
-          
-            <Row>
-              <Col xs={6} md={4}>
-                <label className='me-2'>Total users:</label>
-                <span className='me-2 fw-semibold'>2000</span>
-              </Col>
-              <Col xs={12} md={8}>
-                <label className='me-2'>Organizers {`(Users that can post conferences)`}</label>
-                <span className='me-2 fw-semibold'>2000</span>
-              </Col>
-            </Row>
 
-            <Row>
-              <Col>
-                <label className='me-2'>Locked accounts:</label>
-                <span className='me-2 fw-semibold'>2000</span>
-              </Col>
-              <Col></Col>
-            </Row>
+          <Row>
+            <Col>
+              <label className='me-2'>Total users:</label>
+              <span className='me-2 fw-semibold'>{users.length}</span>
+            </Col>
+        
+          </Row>
+
         </div>
-      
-    <Row md={4} className='justify-content-end my-2'>
-        <Col><InputSearch/></Col>
-        <Col md='auto'>
-        <Button
-          className='bg-white text-color-black rounded-1'
-          onClick={()=>setShowFilter(!showFilter)}
-          >
-          <Image src className='me-2'/>
-          Filter
-        </Button>
-        </Col>
-        <Col md='auto'><SortBy/></Col>
-      </Row>
-      {showFilter && <Filter/>}
-      <Table
-      data={conferences}
-      headers={headers}
-      minCellWidth={150}
-      tableContent={<TableContent data={conferences} accessors={accessors}/>}
-    />   
+
+        <Row md={4} className='justify-content-end my-2 mb-3'>
+          <Col><InputSearch /></Col>
+        
+          <Col md='auto'>
+       
+          </Col>
+        </Row>
+        
+        
+        {
+          loadingUsers ?
+          <div className="my-4">
+            <Loading/>
+          </div>
+          :
+          <TableRender data={users} columns={columns}/>
+        }
+
       </div>
+      
     </Container>
   )
 }

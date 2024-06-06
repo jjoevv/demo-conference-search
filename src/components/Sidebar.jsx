@@ -7,8 +7,6 @@ import test from './../assets/imgs/location.png'
 import avatarIcon from '../assets/imgs/avatar_lg.png'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useEffect, useState } from 'react'
-import useAuth from '../hooks/useAuth'
-import useToken from '../hooks/useToken'
 import usePageNavigation from '../hooks/usePageNavigation'
 
 const sidebar = [
@@ -23,7 +21,6 @@ const sidebar = [
 const Sidebar = () => {
   const {user} = useLocalStorage()
   const location = useLocation()
-  const navigate = useNavigate()
   usePageNavigation()
   const [profile, setProfile] = useState(null)
   useEffect(()=>{

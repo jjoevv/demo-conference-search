@@ -179,6 +179,17 @@ const appReducer = (state, action) => {
                 ...state,
                 notes: action.payload,
             };
+
+        case actionTypes.ADMIN_GET_USERS:
+            return {
+                ...state,
+                users: action.payload,
+            };
+        case actionTypes.ADMIN_GET_USER:
+            return {
+                ...state,
+                userAccount: action.payload,
+            };
         case actionTypes.GET_NOTIFICATIONS:
             return {
                 ...state,

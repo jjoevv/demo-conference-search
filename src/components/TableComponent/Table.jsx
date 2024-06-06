@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import "./styles.css";
+
 import TablePagination from "./Pagination";
 
 

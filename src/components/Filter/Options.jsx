@@ -38,21 +38,30 @@ const customStyles = {
     })
 };
 
-const CustomOption = ({ innerProps, label, selectedOptions }) => (
-    <div {...innerProps} className='d-flex align-items-center justify-content-start'>
-        <input
-            type="checkbox"
-            checked={selectedOptions.includes(label)}
-            onChange={() => null}
-            className='ms-2 me-1'
-        />
-        <span
-            className={`fs-6 p-2 ${selectedOptions.includes(label) ? 'text-skyblue-dark' : 'text-color-black'}`}
+const CustomOption = (props) => {
+    const { innerProps, label, isSelected, isFocused } = props;
+    return (
+        <div 
+            {...innerProps} 
+            className={`d-flex align-items-center justify-content-start ${isFocused ? 'custom-hover' : ''}`}
+            style={{ 
+                backgroundColor: isFocused ? '#eaf9f3' : isSelected ? '#bcedd8' : 'white', 
+                
+                cursor: 'pointer' 
+            }}
         >
-            {capitalizeFirstLetter(label)}
-        </span>
-    </div>
-);
+            <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => null}
+                className='ms-2 me-1'
+            />
+            <span className={`fs-6 p-2 ${isSelected ? 'text-skyblue-dark' : 'text-color-black'}`}>
+                {capitalizeFirstLetter(label)}
+            </span>
+        </div>
+    );
+};
 const MultiValue = ({ index, getValue, ...props }) => {
     const maxToShow = 1;
     const overflow = getValue()

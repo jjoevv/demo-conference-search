@@ -46,6 +46,7 @@ export const initialState = {
     impactfactor: [],
     rating: [],
     category: [],
+    owner: [],
   },
 priorityKeywords: {},
 
@@ -81,6 +82,10 @@ priorityKeywords: {},
   postedConferences: [],
 
   //notes
-  notes: []
+  notes: [],
+
+  //ADMIN MANAGEMENT
+  users: [],
+  userAccount: null,
 };
 
