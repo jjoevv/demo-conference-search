@@ -74,10 +74,6 @@ const Homepage = () => {
       
     }, [optionsSelected, conferences, priorityKeywords])
   
-    useEffect(()=>{
-      //console.log({pathname, optionsSelected})
-    }, [pathname, optionsSelected])
-
    
   return (
     <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        

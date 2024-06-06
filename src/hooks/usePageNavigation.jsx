@@ -5,6 +5,7 @@ import { getIdFromPathname } from '../utils/getID';
 const usePageNavigation = () => {
   const navigate = useNavigate()
   const location = useLocation()
+
   useEffect(() => {
     // Lưu đường dẫn của trang hiện tại vào localStorage
     const handleBeforeUnload = () => {

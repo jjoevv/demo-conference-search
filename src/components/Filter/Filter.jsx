@@ -16,7 +16,7 @@ import HeaderFilter from "./HeaderFilter";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const Filter = () => {
-  const {loading:loadingOption, addKeywords, optionsSelected} = useSearch()
+  const {loading:loadingOption, addKeywords, clearKeywords, optionsSelected} = useSearch()
   const {loading} = useFilter()
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
   const [showIsAvailableAdvancedFilter, setShowIsAvailableAdvancedFilter] = useState(false);
@@ -27,7 +27,7 @@ const Filter = () => {
   useEffect(()=>{
     
     // Lấy danh sách các location trước đó từ localStorage
-    //clearKeywords()
+    clearKeywords()
   }, [pathname])
   const [showHeaderFilter, setShowHeaderFilter] = useState(false);
 

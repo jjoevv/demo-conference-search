@@ -64,7 +64,7 @@ const Login = () => {
         setShowPassword(!showpassword);
     };
     return (
-        <Container className="100-w 100-h min-vh-100 d-flex justify-content-center align-items-center text-center" fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
+        <Container className="100-w 100-h min-vh-100 d-flex justify-content-center align-items-center text-center overflow-hidden" fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
             <Row className='bg-white rounded-4 d-flex box-area w-75 h-50 mx-auto'>
 
                 <Col className='p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light rounded-start-4' >

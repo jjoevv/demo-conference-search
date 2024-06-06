@@ -82,13 +82,15 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         };
     }, [loadingConf]);
 
-    const handleFollow = async (id) => {
+    const handleFollow = async (event, id) => {
+        event.stopPropagation();
         setIsClickFollow(true)
         const status = await followConference(id)
     }
 
 
-    const handleUnfollow = async (id) => {
+    const handleUnfollow = async (event, id) => {
+        event.stopPropagation();
         setIsClickFollow(true)
         const status = await unfollowConference(id)
     }
@@ -241,12 +243,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                         {
                                                                                             isObjectInList(conf.id, listFollowed)
                                                                                                 ?
-                                                                                                <Button className='icon-follow border border-primary-light' onClick={() => handleUnfollow(conf.id)} title='Unfollow'>
+                                                                                                <Button className='icon-follow border border-primary-light' onClick={(event) => handleUnfollow(event, conf.id)} title='Unfollow'>
                                                                                                     <Image src={FollowIcon} width={18}/>
                                                                                                     <span>Unfollow</span>
                                                                                                 </Button>
                                                                                                 :
-                                                                                                <Button className='icon-follow border border-primary-light' onClick={() => handleFollow(conf.id)}>
+                                                                                                <Button className='icon-follow border border-primary-light' onClick={(event) => handleFollow(event, conf.id)}>
                                                                                                     <Image src={UnFollowIcon} width={18}/>
                                                                                                     <span>Follow</span>
                                                                                                 </Button>
