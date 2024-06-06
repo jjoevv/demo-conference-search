@@ -39,7 +39,7 @@ const DetailedInformationPage = () => {
 
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
-            <Stack className='bg-blur p-5 mt-5 w-100 mw-100 text-center text-color-black'>
+            <Stack className='bg-blur p-5 w-100 mw-100 text-center text-color-black'>
                 {
                     loading ?
                         <div style={{height: "400px"}}>
@@ -54,24 +54,24 @@ const DetailedInformationPage = () => {
                                             {
                                                 conference.information ?
                                                     <>
-                                                        <h1 className='text-teal-normal px-5 fw-bold'>
+                                                        <p className='text-teal-normal px-5 fs-larger fw-bold mt-5'>
                                                             {conference.information.name}
-                                                        </h1>
+                                                        </p>
 
                                                         <h3 className='mb-4'>{`(${conference.information.acronym})`}</h3>
                                                         {
                                                             getConferenceDate(conference.organizations) !== '' &&
-                                                            <h4 className='text-yellow d-inline p-1'>
+                                                            <h3 className='text-yellow d-inline p-1'>
 
                                                                 <FontAwesomeIcon icon={faCalendar} className='mx-3 fs-4' />
                                                                 {getConferenceDate(conference.organizations)}
-                                                            </h4>
+                                                            </h3>
                                                         }
                                                         {renderLocation(conference.organizations) !== '' && (
                                                             <>
                                                                 <div className='d-flex justify-content-center align-items-center fs-4 my-2 mt-4 text-teal-dark fw-bold'>
                                                                     <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5' />
-                                                                    <span className='text-teal-black'> {renderLocation(conference.organizations)}</span>
+                                                                    <h3 className='text-teal-black'> {renderLocation(conference.organizations)}</h3>
 
                                                                 </div>
 
@@ -89,7 +89,7 @@ const DetailedInformationPage = () => {
                                                             </Col>
                                                         </p>
 
-                                                        <ButtonGroup className='mt-4'>
+                                                        <ButtonGroup className='mt-5'>
                                                             <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences} />
                                                             <UpdateNowButton />
                                                         </ButtonGroup>
@@ -111,18 +111,21 @@ const DetailedInformationPage = () => {
                         </>
                 }
             </Stack>
-            < Row>
-                <Col sm={6} xs={6}>
-                    <InformationPage conference={conference} />
-
-                </Col>
-                <Col sm={5} xs={5}>
-                    <ImportantDatePage />
-                </Col>
-            </Row>
-            <Row className='me-5'>
-                <CallforpaperPage conference={conference} />
-            </Row>
+            <div className='w-100 bg-skyblue-light -normal  p-5'>
+                < Row className='bg-white m-4  '>
+                    <Col sm={7} xs={7} className='p-0'>
+                        <InformationPage conference={conference} />
+                    </Col>
+                    <Col sm={5} xs={5} className="p-0" >
+                        <ImportantDatePage />
+                    </Col>
+                </Row>
+            </div>
+            <div className='w-100 bg-skyblue-normal'>
+                <Row className='p-0'>
+                    <CallforpaperPage conference={conference} />
+                </Row>
+            </div>
             <Row className='px-5 mx-5'>
                 <Feedbacks />
             </Row>

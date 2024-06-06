@@ -32,20 +32,20 @@ const InformationPage = ({ conference }) => {
   };
 
   return (
-    <div className='ps-5 m-5 me-0' >
-      <div className='fs-4 fw-bold fs-5 d-flex justify-content-between '>
-        <span className='text-teal-dark'>Conference information</span>
+    <div className='p-5 m-0' >
+      <div className='fs-4 fw-bold d-flex justify-content-between '>
+        <span className='text-beige-dark'>Conference information</span>
         <RedirectButton conference={conference} />
       </div>
       {conference ?
         <>
 
-          <div className='fw-bold fs-5 fs-5 fw-bold fs-5 mt-2 py-3'>{conference.information.name}</div>
+          <div className='fw-bold fs-large fs-large fw-bold fs-large mt-2 py-3'>{conference.information.name}</div>
           <div className='my-2'>
             {renderType(conference.organizations) &&
               <Row className='py-3 ps-4'>
                 <Col xs={4} className='d-flex align-items-center'>Type:</Col>
-                <Col className='fw-bold fs-5 '>
+                <Col className='fw-bold fs-large '>
                   {capitalizeFirstLetter(renderType(conference.organizations))}
                 </Col>
               </Row>
@@ -53,9 +53,9 @@ const InformationPage = ({ conference }) => {
             }
             {
               renderLocation(conference.organizations) &&
-              <Row className='py-3 ps-4 bg-teal-light'>
+              <Row className='py-3 ps-4 bg-beige-light'>
                 <Col xs={4} className='d-flex align-items-center'>Location:</Col>
-                <Col className='fw-bold fs-5'>
+                <Col className='fw-bold fs-large'>
                   {renderLocation(conference.organizations)}
                 </Col>
               </Row>
@@ -65,7 +65,7 @@ const InformationPage = ({ conference }) => {
               <Row className='py-3 ps-4'>
 
                 <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
-                <Col className='fw-bold fs-5'>
+                <Col className='fw-bold fs-large'>
 
                   {
                     getConferenceDate(conference.organizations)
@@ -76,46 +76,46 @@ const InformationPage = ({ conference }) => {
             }
 
 
-            <Row className='bg-teal-light py-3 ps-4'>
+            <Row className='bg-beige-light py-3 ps-4'>
               <Col xs={4} className='d-flex align-items-center'>Category:</Col>
-              <Col className='fw-bold fs-5'>Conference</Col>
+              <Col className='fw-bold fs-large'>Conference</Col>
             </Row>
             {
               conference.information.acronym &&
               <Row className='py-3 ps-4'>
                 <Col xs={4} className='d-flex align-items-center'>Acronym:</Col>
-                <Col className='fw-bold fs-5'>{conference.information.acronym}</Col>
+                <Col className='fw-bold fs-large'>{conference.information.acronym}</Col>
               </Row>
 
             }
             {
               conference.information.source &&
-              <Row className='bg-teal-light py-3 ps-4'>
+              <Row className='bg-beige-light py-3 ps-4'>
                 <Col xs={4} className='d-flex align-items-center'>Source:</Col>
-                <Col className='fw-bold fs-5'>{conference.information.source}</Col>
+                <Col className='fw-bold fs-large'>{conference.information.source}</Col>
               </Row>
             }
             {
               conference.information.rank &&
               <Row className='py-3 ps-4'>
                 <Col xs={4} className='d-flex align-items-center'>Rank:</Col>
-                <Col className='fw-bold fs-5'>{conference.information.rank}
+                <Col className='fw-bold fs-large'>{conference.information.rank}
                 </Col>
               </Row>
             }
             {
               conference.information.rating &&
-              <Row className='py-3 ps-4 bg-teal-light'>
+              <Row className='py-3 ps-4 bg-beige-light'>
                 <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
-                <Col className='fw-bold fs-5'>{conference.information.rating}
+                <Col className='fw-bold fs-large'>{conference.information.rating}
                 </Col>
               </Row>
             }
             {renderFieldOfResearch(conference.information.fieldOfResearch)
               &&
-              <Row className='py-3 ps-4 pe-1 bg-teal-light '>
+              <Row className='py-3 ps-4 pe-1 bg-beige-light '>
                 <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
-                <Col className='fw-bold fs-5'>
+                <Col className='fw-bold fs-large'>
                   {renderFieldOfResearch(conference.information.fieldOfResearch)}
                 </Col>
               </Row>

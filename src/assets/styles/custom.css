@@ -10,6 +10,15 @@ h5 {
     font-weight: bold;
 }
 
+.fs-medium {
+    font-size: medium;
+}
+.fs-large {
+    font-size: large;
+}
+.fs-larger{
+    font-size: 44px;
+}
 .fs-7 {
     font-size: 12px !important;
 }
@@ -178,11 +187,11 @@ button.bg-brown-normal:hover {
 
 /*text color*/
 .text-color-black {
-    color: #3f3f3f !important;
+    color: #222222 !important;
 }
 
 .text-color-medium {
-    color: #646665 !important;
+    color: #242524 !important;
 }
 
 .text-color-light {
@@ -609,7 +618,7 @@ a {
     font-size: 9px;
     font-weight: 600;
 }
-/* HTML: <div class="ribbon">Your text content</div> */
+ /* HTML: <div class="ribbon">Your text content</div> */
 .ribbon {
     font-size: 12px;
     font-weight: bold;
@@ -619,9 +628,9 @@ a {
     --f: .5em; /* control the folded part */
     
     position: absolute;
-    top: 0;
-    right: 0;
-    line-height: 1.8;
+    top: 2px;
+    right: -220px;
+    line-height: 2.0;
     padding-inline: 1lh;
     padding-bottom: var(--f);
     border-image: conic-gradient(#0008 0 0) 51%/var(--f);
@@ -629,7 +638,7 @@ a {
       100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
     transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
     transform-origin: 0% 100%;
-    background-color: #FFB13B; /* the main color  */
+    background-color: rgb(253, 202, 0); /* the main color  */
   }
 
 .filter-selected{
