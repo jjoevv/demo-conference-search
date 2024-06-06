@@ -151,7 +151,7 @@ const filterConferences = (listConferences, keywordSelected) => {
             }
 
             case 'rank': {
-              isMatch = conference.information?.rank?.toLowerCase().includes(keyword);
+              isMatch = conference.information?.rank?.toLowerCase() === keyword.toLowerCase();
               break;
             }
 
