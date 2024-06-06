@@ -58,7 +58,7 @@ const ImportantDatePage = () => {
   return (
     <div className='px-5 m-5 me-0 ps-5 pe-0'>
       <span className='fs-4 fw-bold text-teal-dark'>Important dates</span>
-      <div className='mt-2' style={{maxHeight: "600", overflowY: "scroll"}} >
+      <div className='mt-2' style={{maxHeight: "600px", overflowY: "auto"}} >
 
         {conference ?
           <>
@@ -69,7 +69,7 @@ const ImportantDatePage = () => {
                 {
                   displayDates.map((date, index) => (
                     <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center m-2 position-relative  border-teal-normal border-5 border-start  overflow-hidden`}>
-                      <Col xs={3} className='text-center text-teal-normal p-1 '>
+                      <Col xs={2} className='text-center text-teal-normal p-2 ps-3'>
                       
                         <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('MMM')}</p>
                         <p className='fs-5 fw-medium text-color-medium m-0'>{moment(date.date_value).format('DD')}</p>

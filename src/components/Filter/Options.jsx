@@ -76,12 +76,12 @@ const MultiValue = ({ index, getValue, ...props }) => {
 const Options = ({ label }) => {
     const { optionsSelected, filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
     const [options, setOptions] = useState([])
-    const [selectedOptions, setSelectedOptions] = useState(optionsSelected[label].map(value => ({ value, label: value })))
+    const [selectedOptions, setSelectedOptions] = useState([])
 
     const handleOptionChange = async (items) => {
         setSelectedOptions(items)
         const itemsValues = items.map(item => item.value);
-        const removedOptions = selectedOptions.filter(option => !itemsValues.includes(option.value));
+        const removedOptions = optionsSelected[label].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
 
         if (removedOptions.length <= 0) {
             addKeywords(label, [items[items.length-1].label])

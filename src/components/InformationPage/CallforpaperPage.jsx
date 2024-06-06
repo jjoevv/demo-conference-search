@@ -16,7 +16,7 @@ const CallforpaperPage = ({conference}) => {
         conference
           ?
           <>
-           <div className="ps-4 pe-5 fs-5">
+           <div className="pe-5" style={{fontSize: "17px"}}>
              <p className="text-justify">
              {processText(conference.callForPaper)}
              </p>

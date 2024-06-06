@@ -74,12 +74,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     useEffect(() => {
         if (loadingConf) {
-          document.body.style.cursor='wait'
+            document.body.style.cursor = 'wait'
         } else {
-          {document.body.style.cursor='default';}
+            { document.body.style.cursor = 'default'; }
         }
         return () => {
-          {document.body.style.cursor='default';}
+            { document.body.style.cursor = 'default'; }
         };
     }, [loadingConf]);
 
@@ -122,11 +122,15 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     const getLengthString = (string) => string.length
 
+    const renderLocation = (organizations) => {
+        const newOrg = organizations.find(org => org.status === "new");
+        return newOrg ? newOrg.location : ''
+    };
 
     if (loading) {
         return (
             <Container className='d-flex flex-column align-items-center p-0 h-100 overflow-hidden'>
-                <LoadingConferences onReload={onReload}/>
+                <LoadingConferences onReload={onReload} />
             </Container>
         )
     }
@@ -138,7 +142,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     {`${totalConferences} conferences`}
                 </div>
             </div>
-            <div    className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
+            <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
                 <PriorityOptions />
 
                 <DropdownSort
@@ -193,71 +197,99 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
                                                                         </Card.Title>
                                                                         <Stack direction="horizontal" gap={5}>
-                                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                                <FontAwesomeIcon icon={faClock} className='me-2'/>
-                                                                                <label className='conf-data-label'>Submission Date: </label>
-                                                                                <span className='conf-data'>
-                                                                                    {
-                                                                                        getSubDate(conf.importantDates) ?
-                                                                                            moment(getSubDate(conf.importantDates)).format('YYYY/MM/DD') :
-                                                                                            <span className='text-secondary'>Updating...</span>
-                                                                                    }
-                                                                                </span>
-                                                                            </Card.Text>
+                                                                            {
+                                                                                getSubDate(conf.importantDates) &&
+                                                                                    <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                        <FontAwesomeIcon icon={faClock} className='me-2' />
+                                                                                        <label className='conf-data-label'>Submission Date: </label>
+                                                                                        <span className='conf-data'>
+                                                                                            {getSubDate(conf.importantDates)}
+                                                                                        </span>
+                                                                                    </Card.Text>
+                                                                            }
 
-                                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                                <FontAwesomeIcon icon={faClock} className='me-2'/>
-                                                                                <label className='conf-data-label'>Conference Date: </label>
-                                                                                <span className='conf-data'>
+                                                                            {
+                                                                                getStartEndDate(conf.organizations)
+                                                                                    &&
+                                                                                    <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                        <FontAwesomeIcon icon={faClock} className='me-2' />
+                                                                                        <label className='conf-data-label'>Conference Date: </label>
+                                                                                        <span className='conf-data'>
 
-                                                                                    <>
-                                                                                        {getStartEndDate(conf.organizations)}
+                                                                                            <>
+                                                                                                {getStartEndDate(conf.organizations)}
 
-                                                                                    </>
+                                                                                            </>
 
-                                                                                </span>
-                                                                            </Card.Text>
+                                                                                        </span>
+                                                                                    </Card.Text>
+                                                                            }
+
+                                                                            {
+                                                                                !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
+                                                                                &&
+                                                                                <>
+                                                                                 <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                        <label className='conf-data-label'>Rank: </label>
+                                                                                        <span className='conf-data'>
+                                                                                            <>
+                                                                                                {conf.information.rank}
+                                                                                            </>
+                                                                                        </span>
+                                                                                </Card.Text>
+                                                                                <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                                        <label className='conf-data-label'>Source: </label>
+                                                                                        <span className='conf-data'>
+                                                                                            <>
+                                                                                                {conf.information.source}
+                                                                                            </>
+                                                                                        </span>
+                                                                                </Card.Text>
+                                                                                </>
+                                                                            }
 
                                                                         </Stack>
-                                                                       <div className="d-flex align-items-center justify-content-between">
-                                                                       <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
-                                                                            <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
-                                                                            {conf.organizations.length > 0 ? (
-                                                                                // Nếu location không null, hiển thị giá trị của nó
-                                                                                <>{conf.organizations[0].location || 'Updating...'}</>
-                                                                            ) : (
-                                                                                // Nếu location null, hiển thị 'updating'
-                                                                                <>Updating</>
-                                                                            )}
-                                                                        </Card.Text>
-                                                                        <div>
+                                                                        <div className="w-100 d-flex align-items-center justify-content-between">
                                                                             {
-                                                                                isPost
-                                                                                    ?
-                                                                                    <>
-                                                                                        <div className='d-flex justify-content-end'>
-                                                                                            <ButtonGroupUpdate conference={conf} />
-                                                                                        </div>
-                                                                                    </>
+                                                                                renderLocation(conf.organizations) ?
+                                                                                    <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
+                                                                                        <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
+                                                                                        {renderLocation(conf.organizations)}
+                                                                                    </Card.Text>
                                                                                     :
-                                                                                    <>
-                                                                                        {
-                                                                                            isObjectInList(conf.id, listFollowed)
-                                                                                                ?
-                                                                                                <Button className='icon-follow border border-primary-light' onClick={(event) => handleUnfollow(event, conf.id)} title='Unfollow'>
-                                                                                                    <Image src={FollowIcon} width={18}/>
-                                                                                                    <span>Unfollow</span>
-                                                                                                </Button>
-                                                                                                :
-                                                                                                <Button className='icon-follow border border-primary-light' onClick={(event) => handleFollow(event, conf.id)}>
-                                                                                                    <Image src={UnFollowIcon} width={18}/>
-                                                                                                    <span>Follow</span>
-                                                                                                </Button>
-                                                                                        }
-                                                                                    </>
+                                                                                    <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
+
+                                                                                    </Card.Text>
                                                                             }
+
+                                                                            <div>
+                                                                                {
+                                                                                    isPost
+                                                                                        ?
+                                                                                        <>
+                                                                                            <div className='d-flex justify-content-end'>
+                                                                                                <ButtonGroupUpdate conference={conf} />
+                                                                                            </div>
+                                                                                        </>
+                                                                                        :
+                                                                                        <>
+                                                                                            {
+                                                                                                isObjectInList(conf.id, listFollowed)
+                                                                                                    ?
+                                                                                                    <Button className='icon-follow border border-primary-light' onClick={(event) => handleUnfollow(event, conf.id)} title='Unfollow'>
+                                                                                                        <Image src={FollowIcon} width={18} />
+                                                                                                        <span>Unfollow</span>
+                                                                                                    </Button>
+                                                                                                    :
+                                                                                                    <Button className='icon-follow border border-primary-light' onClick={(event) => handleFollow(event, conf.id)}>
+                                                                                                        <Image src={UnFollowIcon} width={18} />
+                                                                                                        <span>Follow</span>
+                                                                                                    </Button>
+                                                                                            }
+                                                                                        </>
+                                                                                }
+                                                                            </div>
                                                                         </div>
-                                                                       </div>
 
                                                                     </Card.Body>
 

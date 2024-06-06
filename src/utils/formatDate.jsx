@@ -81,7 +81,6 @@ export const  getSubDate = (listImportantDates) => {
     const dateTypeWords = date.date_type.trim().toLowerCase().split();
     for (const word of dateTypeWords) {
       if (keywords.has(word) && date.status === 'new') {
-        console.log({date})
         return date.date_value;
       }
     }

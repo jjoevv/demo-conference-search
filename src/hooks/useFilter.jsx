@@ -17,7 +17,7 @@ const useFilter = () => {
     // Lặp qua từng key trong optionsSelected
     Object.entries(optionsSelected).forEach(([key, keywords]) => {
       // Nếu danh sách keywords có nhiều hơn 1 phần tử hoặc key chưa tồn tại trong updatedPriorityKeywords
-      if (keywords.length > 1 && !updatedPriorityKeywords[key]) {
+      if (keywords.length > 0 || !updatedPriorityKeywords[key]) {
         updatedPriorityKeywords[key] = keywords[keywords.length - 1]; // Thêm key vào updatedPriorityKeywords với giá trị cuối cùng trong danh sách
       }
     });
