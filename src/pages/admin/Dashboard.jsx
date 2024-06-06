@@ -159,21 +159,6 @@ const Dashboard = () => {
             disableResizing: false,
         },
         {
-            Header: 'ConferenceID',
-            accessor: 'id',
-            Cell: ({row})=>(
-              <div
-                title='Go to Call for paper page'
-                style={{cursor: 'pointer'}}
-                className='text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'
-                onClick={()=>handleChooseCfp(row.original.id)}
-              >
-                {row.original.id}
-              </div>
-            ),
-            width: 300
-        },
-        {
             Header: 'Name',
             accessor: 'information.name',
             width: 400

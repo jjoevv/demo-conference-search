@@ -70,7 +70,7 @@ const DetailedInformationPage = () => {
                                                             {conference.information.name}
                                                         </h1>
 
-                                                        <h3 className='mb-4'>{`(${conference.information.acronym}${extractYear(conference.information.source)})`}</h3>
+                                                        <h3 className='mb-4'>{`(${conference.information.acronym}`}</h3>
                                                         {
                                                             getConferenceDate(conference.organizations) !== '' &&
                                                             <h4 className='text-yellow d-inline p-1'>

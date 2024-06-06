@@ -133,7 +133,7 @@ const TableRender = ({ data, columns }) => {
                     </tbody>
                 </table>
             </div>
-            < div className='d-flex align-items-center justify-content-end'>
+            < div className='d-flex align-items-center justify-content-end mt-3'>
         <button onClick={() => previousPage()} disabled={!canPreviousPage} className='border-0 bg-transparent'>
           {`<`}
         </button>{' '}
@@ -147,6 +147,7 @@ const TableRender = ({ data, columns }) => {
                 onKeyDown={handlePageInput}
                 max={pageCount}
                 min={1}
+                className='ms-2 rounded'
             />
         <button onClick={() => nextPage()} disabled={!canNextPage} className='border-0 bg-transparent'>
           {`>`}
