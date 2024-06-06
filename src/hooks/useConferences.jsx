@@ -55,9 +55,9 @@ const useConference = () => {
     setLoading(true)
 
     try {
-    //  localStorage.removeItem('conferences')
-    // localStorage.removeItem('currentFetchPageLS')
-     //on localStorage.removeItem('totalPagesConferences')
+   localStorage.removeItem('conferences')
+     localStorage.removeItem('currentFetchPageLS')
+      localStorage.removeItem('totalPagesConferences')
       
       const currentFetchPage = getItemInLocalStorage('currentFetchPageLS')
       const firstPageData = await fetchData(1, 1);
