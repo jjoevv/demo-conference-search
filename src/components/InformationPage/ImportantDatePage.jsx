@@ -68,14 +68,14 @@ const ImportantDatePage = () => {
               <>
                 {
                   displayDates.map((date, index) => (
-                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center m-2 position-relative  border-teal-normal border-5 border-start  overflow-hidden`}>
+                    <Row key={index} className={`${index % 2 === 0 ? 'bg-teal-light' : ''} align-items-center justify-content-center m-2 py-1 position-relative  border-teal-normal border-5 border-start  overflow-hidden`}>
                       <Col xs={2} className='text-center text-teal-normal p-2 ps-3'>
                       
                         <p className='fs-4 fw-semibold text-teal-normal m-0'>{moment(date.date_value).format('MMM')}</p>
                         <p className='fs-5 fw-medium text-color-medium m-0'>{moment(date.date_value).format('DD')}</p>
                       </Col>
                       <Col className=''>
-                        <span className=' fw-bold fs-6 text-color-black my-2 d-flex align-items-center'>
+                        <span className=' fw-bold text-color-black d-flex align-items-center' style={{fontSize: "17px"}}>
                           {capitalizeFirstLetter(date.date_type)}
                         </span>
                         <span className='fs-6 fw-medium text-color-black m-0'>
