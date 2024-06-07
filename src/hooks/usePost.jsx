@@ -12,6 +12,7 @@ const usePost = () => {
   const {token} = useSessionToken()
   const [loading, setLoading] = useState(false)
 
+
   const fetchPage = async (page) => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken

@@ -174,7 +174,9 @@ button.bg-darkcyan-normal:hover {
 .text-skyblue-dark{ 
     color: #619eab;
 }
-
+.text-darkcyan-normal {
+    color: #00999f;
+}
 .bg-blur {
     position: relative;
     background-image: linear-gradient(to bottom, #bcedd8 , #f8fdfb);
@@ -216,6 +218,7 @@ button.bg-darkcyan-normal:hover {
 .noti-wrapper:active
 {
     background-color: #ddf1f6;
+    border: 1px solid #4EB1A4;
 }
 
 .btn-show-advanced:disabled{

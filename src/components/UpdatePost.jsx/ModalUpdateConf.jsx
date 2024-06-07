@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col, Spinner } from 'react-bootstrap';
 import Select from 'react-select'
 import usePost from '../../hooks/usePost';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faCircleXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEdit, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
 import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
 import data from './../Filter/options.json'
 import { capitalizeFirstLetter } from '../../utils/formatWord';
 
-const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
+const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick }) => {
+
   const { loading, updatePost } = usePost()
   const [message, setMesage] = useState('')
   const [status, setStatus] = useState(false)
@@ -20,23 +21,43 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
   const [isupdateForm, setIsUpdateForm] = useState()
   const [isDuplicate, setIsDuplicate] = useState(false)
   const [tab, setTab] = useState('1')
+  const [isOrgDateValid, setIsOrgDateValid] = useState(false)
+  const [countdown, setCountdown] = useState(3);
   const [formData, setFormData] = useState({
     callForPaper: conference.callForPaper || "",
     link: conference.information.link || "",
     rank: conference.information.rank || "N/I",
     fieldsOfResearch: Array.from(new Set(conference.information.fieldOfResearch)) || [],
-    organizations: conference.organizations.filter(org => org.status === 'new') // Lọc ra các organizations có status là 'new'
-      .map(org => ({
-        name: org.name,
-        type: org.type,
-        location: org.location,
-        start_date: org.start_date,
-        end_date: org.end_date
-      })),
-
-    importantDates: conference.importantDates.filter(date => date.status === 'new') // Lọc ra các importantDates có status là 'new'
-      .map(date => ({ date_type: date.date_type, date_value: date.date_value }))
+    organizations: conference.organizations.length > 0 ? 
+      conference.organizations
+        .filter(org => org.status === 'new') // Lọc chỉ lấy những mục có status 'new'
+        .map(org => ({
+          name: org.name ?? '',
+          type: org.type ?? '',
+          location: org.location ?? '',
+          start_date: org.start_date ?? '',
+          end_date: org.end_date ?? ''
+        })) :
+      [{
+        name: '',
+        type: '',
+        location: '',
+        start_date: '',
+        end_date: ''
+      }],
+    importantDates: conference.importantDates.length > 0 ?
+      conference.importantDates
+        .filter(date => date.status === 'new')
+        .map(date => ({
+          date_type: date.date_type ?? '',
+          date_value: date.date_value ?? ''
+        })) :
+      [{
+        date_type: '',
+        date_value: ''
+      }],
   });
+  
 
   const [selectedOptions, setSelectedOptions] = useState(Array.from(new Set(conference.information.fieldOfResearch)).map(field => ({
     value: field,
@@ -53,9 +74,6 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const isEndDateValid = (startDate, endDate) => {
-    return new Date(startDate) <= new Date(endDate);
-  };
   const handleOrganizationChange = (index, key, value) => {
     const updatedFormData = { ...formData };
     // Sao chép tổ chức cần được cập nhật
@@ -64,15 +82,15 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     updatedOrganization[key] = value;
     // Cập nhật tổ chức trong mảng organizations
     updatedFormData.organizations[index] = updatedOrganization;
+    // Kiểm tra nếu người dùng đang chọn giá trị cho cả end_date và start_date và nó phải thỏa thứ tự trước sau
+    if (key === 'end_date' || key === 'start_date') {
+      const startDate = formData.organizations[index].start_date;
+      const endDate = formData.organizations[index].end_date;
 
-    if (key === 'end_date') {
-      // Kiểm tra nếu end_date không hợp lệ
-      if (!isEndDateValid(updatedOrganization.start_date, value)) {
-        // Đánh dấu tổ chức này có lỗi
-        updatedOrganization.isInvalidEndDate = true;
+      if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+        setIsOrgDateValid(true);
       } else {
-        // Nếu end_date hợp lệ, loại bỏ đánh dấu lỗi
-        updatedOrganization.isInvalidEndDate = false;
+        setIsOrgDateValid(false);
       }
     }
 
@@ -114,7 +132,8 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     });
   };
 
-  const handleUpdatePost = async () => {
+  const handleUpdatePost = async (e) => {
+    onModalClick(e)
     setIsUpdateForm(true)
 
     //kiểm tra location trùng name
@@ -125,6 +144,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
     //kiểm tra importantdate trùng date_type
     const seenDateTypes = {};
+
     const hasDuplicateDateType = formData.importantDates.some(date => {
       if (seenDateTypes[date.date_type]) {
         // Nếu date_type đã xuất hiện trước đó, trả về true
@@ -145,15 +165,54 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
       setTab(3)
     }
     else {
+     // Lưu trữ mảng organizations và importantDates vào biến tạm thời
+  const tempOrganizations = [...formData.organizations];
+  const tempImportantDates = [...formData.importantDates];
 
-      const result = await updatePost(formData, conference.id)
+  // Loại bỏ các object rỗng từ mảng organizations
+  const filteredOrganizations = formData.organizations.filter(org => (
+    org.name !== '' || org.type !== '' || org.location !== '' || org.start_date !== '' || org.end_date !== ''
+  ));
+
+  // Loại bỏ các object rỗng từ mảng importantDates
+  const filteredImportantDates = formData.importantDates.filter(date => (
+    date.date_type !== '' || date.date_value !== ''
+  ));
+
+  // Cập nhật formData với mảng organizations và importantDates đã lọc
+  const updatedFormData = {
+    ...formData,
+    organizations: filteredOrganizations,
+    importantDates: filteredImportantDates
+  };
+
+
+      const result = await updatePost(updatedFormData, conference.id)
       setMesage(result.message)
       setStatus(result.status)
       onUpdatePost()
       if (result.status) {
-        setShowSuccessModal(true)
+        onUpdatePost()
+          const countdownInterval = setInterval(() => {
+            setCountdown((prevCountdown) => {
+              if (prevCountdown === 0) {
+                clearInterval(countdownInterval);
+                onClose(e);
+                return 0;
+              }
+              return prevCountdown - 1;
+            });
+          }, 1000); // Giảm mỗi 1 giây
       }
-
+      else
+      {
+        // Nếu gặp lỗi, khôi phục lại mảng organizations như cũ
+        setFormData({
+      ...formData,
+      organizations: tempOrganizations,
+      importantDates: tempImportantDates
+    });
+      }
     }
 
   }
@@ -162,14 +221,21 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
     setTab(selectIndex)
   }
 
-
   return (
     <Modal show={show} onHide={onClose} size="lg" centered scrollable >
-      {status && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={onClose} />}
-      <Modal.Header closeButton>
-        <Modal.Title className='text-center w-100 text-skyblue-dark'>Update conference</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={{ minHeight: "450px", maxHeight: "700px" }} className='pt-3'>
+      
+      <Modal.Body onClick={(e) => e.stopPropagation()} style={{ minHeight: "520px", maxHeight: "700px" }} className='pt-3'>
+        <div className="d-flex justify-content-between align-items-center py-2 mb-3">
+          <Modal.Title className='text-center w-100 text-skyblue-dark ps-5'>Update conference</Modal.Title>
+          <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
+            <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
+          </Button>
+        </div>
+
+        <div className="w-100 py-2">
+
+
+        </div>
         <Form>
 
           <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
@@ -226,7 +292,6 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
 
             <Tab eventKey={`2`} title="Organization" className='mx-4'>
 
-              {isDuplicate && <span className='text-warning'>Organization name must be unique!</span>}
               {formData.organizations.map((org, index) => (
 
                 <div key={index} className='mt-5'>
@@ -235,7 +300,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                     <Form.Label column sm="3">Organization name: </Form.Label>
                     <Col>
                       <div className='d-flex align-items-center'>
-                        <Form.Control type="text" value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
+                        <Form.Control type="text" placeholder='Organization name' value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
 
                         {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
 
@@ -260,15 +325,15 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">Start Date: </Form.Label>
+                    <Form.Label column sm="3">Start Date: {`${isOrgDateValid}`}</Form.Label>
                     <Col>
-                      <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} />
+                      <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row} className='my-3'>
                     <Form.Label column sm="3">End Date: </Form.Label>
                     <Col>
-                      <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={org.isInvalidEndDate ? 'border-danger' : ''} />
+                      <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
                     </Col>
                   </Form.Group>
                 </div>
@@ -315,26 +380,34 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost }) => {
       {
         isupdateForm && !status && message !== '' && <p className="text-danger text-center">{message}</p>
       }
-      <Modal.Footer className='d-flex justify-content-center'>
-
-        <ButtonGroup>
-          <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 rounded text-light'>
-            Cancel
-          </Button>
-          <Button onClick={handleUpdatePost} className='bg-blue-normal border-light px-4 mx-3 rounded d-flex'>
-            {
-              loading
-                ?
-                <Loading />
-                :
-                <div>
-                  <FontAwesomeIcon icon={faEdit} className='me-2' />
-                  Update
+      <Modal.Footer className='d-flex justify-content-center w-100 text-center' >
+        {status && message !== '' ? 
+                <div className = {status ? 'text-success' : 'text-danger'}>
+                  {status && <div>
+                  <span className='text-success'>Success {message}</span>. Closing in {countdown} seconds...</div>}
                 </div>
-            }
+                :
+                <ButtonGroup>
+                <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 rounded text-light'>
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdatePost} className='bg-blue-normal border-light px-4 mx-3 rounded d-flex'>
+                  {
+                    loading
+                      ?
+                      <Loading onReload={handleUpdatePost} size={'sm'} />
+                      :
+                      <div>
+                        <FontAwesomeIcon icon={faEdit} className='me-2' />
+                        Update
+                      </div>
+                  }
+      
+                </Button>
+              </ButtonGroup>
+        }
 
-          </Button>
-        </ButtonGroup>
+       
       </Modal.Footer>
     </Modal>
   );

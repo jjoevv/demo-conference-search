@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 
 
-function Loading({onReload}) {
+function Loading({onReload, size}) {
     const [showReloadMessage, setShowReloadMessage] = useState(false);
     const [showCount, setShowCount] = useState(0);
   
@@ -36,7 +36,7 @@ function Loading({onReload}) {
             <Button className='bg-transparent border-0' onClick={handleReload}>Reload</Button>
           </div>
         ) : (
-            <Spinner animation="border" />
+            <Spinner animation="border" size={size} />
         )}
       </div>
     );

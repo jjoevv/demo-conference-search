@@ -68,7 +68,7 @@ const UpcomingNote = () => {
 
                                                 </p>
                                                 <div>
-                                                    <p className="text-color-medium m-0">Date event:</p>
+                                                    <p className="text-color-medium m-0">Date event:
                                                     <p>
                                                         {checkRenderEnddate(note.start_date, note.end_date) ?
                                                             <>
@@ -96,15 +96,18 @@ const UpcomingNote = () => {
                                                             </>
                                                         }
                                                     </p>
+                                                    </p>
+                                                    
 
                                                 </div>
+                                                
 
                                             </Card.Body>
                                             <Card.Footer className=' bg-skyblue-light d-flex justify-content-between align-items-center'>
                                                 <>
                                                     {
                                                         note.start_date !== null &&
-                                                        <p className='text-skyblue-dark fw-semibold m-0'>
+                                                        <p className='text-darkcyan-normal fw-semibold m-0'>
                                                             <FontAwesomeIcon icon={faClock} />
                                                             {` ${daysUntilTargetDate(note.start_date)} days left`}
                                                         </p>
@@ -114,10 +117,10 @@ const UpcomingNote = () => {
                                                     note.conf_id !== null &&
                                                     <Button
                                                         onClick={() => handleNavigateUpcomingConference(note.conf_id)}
-                                                        className=' bg-transparent border-0 text-decoration-underline text-skyblue-dark p-0'
+                                                        className=' bg-transparent border-0 text-decoration-underline text-skyblue-dark p-0 btn-noti-more'
                                                         title='Click here for more details'
                                                     >
-                                                        {`View more >`}
+                                                        {`More details >`}
                                                     </Button>
                                                 }
                                             </Card.Footer>

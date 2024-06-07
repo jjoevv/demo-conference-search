@@ -14,8 +14,7 @@ const UpdateNowButton = () => {
                     {`To get the latest information, click "Update Now"`}
                 </Tooltip>
             }
-        >
-            
+        >            
             <Button 
                 className='bg-skyblue-normal rounded-5 mt-2 px-5 fw-semibold border-0 mx-2'
                 onClick={handleClick}

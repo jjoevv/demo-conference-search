@@ -83,7 +83,6 @@ const useFollow = () => {
 
         }
 
-        setLoading(false);
       } catch (error) {
         setLoading(false);
       }

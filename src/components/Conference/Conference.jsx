@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Container, Card, Button, Stack, Row, Col, Image } from 'react-bootstrap'
+import { Container, Card, Button, Stack, Row, Col, Image, Spinner } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 
 import useFollow from '../../hooks/useFollow'
@@ -10,7 +10,7 @@ import { DropdownSort } from '../DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
 import Loading from '../Loading'
-import { getDateValue, getSubDate } from '../../utils/formatDate'
+import { getSubDate } from '../../utils/formatDate'
 import ButtonGroupUpdate from '../PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
 import useConference from '../../hooks/useConferences'
@@ -21,10 +21,9 @@ import FollowIcon from './../../assets/imgs/follow.png'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import PriorityOptions from '../Filter/PriorityOptions'
 import LoadingConferences from './LoadingConferences'
-import moment from 'moment'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-    const { selectOptionSort, displaySortList, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
+    const { loading: loadingConf, selectOptionSort, displaySortList, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
     const { loading: loadingFollow, listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
@@ -33,13 +32,14 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     const [displayConferences, setDisplayedConferences] = useState([])
     const [currentPage, setCurrentPage] = useState([])
     const [loadingPage, setLoadingPage] = useState(false)
-
+    const [loadingMap, setLoadingMap] = useState({});
     const itemsPerPage = 7;
     useEffect(() => {
         setPage(0)
     }, [optionsSelected, selectOptionSort])
 
     useEffect(() => {
+        console.log({listFollowed})
         if (selectOptionSort === "Random") {
             const sortedConf = sortByFollow(conferencesProp, listFollowed)
             const current = sortedConf.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
@@ -73,7 +73,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [loadingPage, conferencesProp, page]);
 
     useEffect(() => {
-        if (loadingFollow) {
+        if (loadingFollow || loadingConf) {
             document.body.style.cursor = 'wait'
         } else {
             { document.body.style.cursor = 'default'; }
@@ -81,19 +81,41 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         return () => {
             { document.body.style.cursor = 'default'; }
         };
-    }, [loadingFollow]);
+    }, [loadingFollow, loadingConf]);
 
     const handleFollow = async (event, id) => {
         event.stopPropagation();
+        setLoadingMap((prevLoadingMap) => ({
+            ...prevLoadingMap,
+            [id]: true, // Đặt trạng thái loading của nút vừa nhấn thành true
+          }));
+      
+        if (event.defaultPrevented) return  // Exits here if event has been handled
+        event.preventDefault()
         setIsClickFollow(true)
         const status = await followConference(id)
+        setLoadingMap((prevLoadingMap) => ({
+            ...prevLoadingMap,
+            [id]: false, // Đặt trạng thái loading của nút vừa nhấn thành true
+          }));
     }
 
 
     const handleUnfollow = async (event, id) => {
         event.stopPropagation();
+        setLoadingMap((prevLoadingMap) => ({
+            ...prevLoadingMap,
+            [id]: true, // Đặt trạng thái loading của nút vừa nhấn thành true
+          }));
+      
+        if (event.defaultPrevented) return  // Exits here if event has been handled
+        event.preventDefault()
         setIsClickFollow(true)
         const status = await unfollowConference(id)
+        setLoadingMap((prevLoadingMap) => ({
+            ...prevLoadingMap,
+            [id]: false, // Đặt trạng thái loading của nút vừa nhấn thành true
+          }));
     }
     const handlePageClick = async (event) => {
         setPage(event.selected)
@@ -276,14 +298,34 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                             {
                                                                                                 isObjectInList(conf.id, listFollowed)
                                                                                                     ?
-                                                                                                    <Button className='icon-follow border border-primary-light' onClick={(event) => handleUnfollow(event, conf.id)} title='Unfollow'>
-                                                                                                        <Image src={FollowIcon} width={18} />
-                                                                                                        <span>Unfollow</span>
+                                                                                                    <Button 
+                                                                                                    className='icon-follow border border-primary-light'
+                                                                                                     onClick={(event) => handleUnfollow(event, conf.id)} 
+                                                                                                     title='Unfollow'
+                                                                                                     disabled={loadingMap[conf.id]}>
+                                                                                                            {
+                                                                                                                loadingMap[conf.id] ? <Spinner size={'sm'}/> :
+                                                                                                                <>
+                                                                                                                <Image src={FollowIcon} width={18} />
+                                                                                                                <span>Unfollow</span>
+                                                                                                                </>
+                                                                                                            }
                                                                                                     </Button>
                                                                                                     :
-                                                                                                    <Button className='icon-follow border border-primary-light' onClick={(event) => handleFollow(event, conf.id)}>
-                                                                                                        <Image src={UnFollowIcon} width={18} />
-                                                                                                        <span>Follow</span>
+                                                                                                    <Button 
+                                                                                                    title='Follow conference'
+                                                                                                    className='icon-follow border border-primary-light' 
+                                                                                                    onClick={(event) => handleFollow(event, conf.id)}
+                                                                                                    disabled={loadingMap[conf.id]}
+                                                                                                    >
+                                                                                                         {
+                                                                                                                loadingMap[conf.id] ? <Spinner size={'sm'}/> :
+                                                                                                                <>
+                                                                                                                <Image src={UnFollowIcon} width={18} />
+                                                                                                                <span>Follow</span>
+                                                                                                                </>
+                                                                                                            }
+                                                                                                       
                                                                                                     </Button>
                                                                                             }
                                                                                         </>

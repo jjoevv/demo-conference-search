@@ -207,7 +207,27 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
         }
         if (allValid) {
             setIsPosted(true)
-            const result = await postConference(formData)
+            const tempOrganizations = [...formData.organizations];
+            const tempImportantDates = [...formData.importantDates];
+
+            // Loại bỏ các object rỗng từ mảng organizations
+            const filteredOrganizations = formData.organizations.filter(org => (
+                org.name !== '' || org.type !== '' || org.location !== '' || org.start_date !== '' || org.end_date !== ''
+            ));
+
+            // Loại bỏ các object rỗng từ mảng importantDates
+            const filteredImportantDates = formData.importantDates.filter(date => (
+                date.date_type !== '' || date.date_value !== ''
+            ));
+
+            // Cập nhật formData với mảng organizations và importantDates đã lọc
+            const updatedFormData = {
+                ...formData,
+                organizations: filteredOrganizations,
+                importantDates: filteredImportantDates
+            };
+
+            const result = await postConference(updatedFormData)
             setMesage(result.message)
             setStatus(result.status)
             if (result.status) {
@@ -217,6 +237,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 onReloadList()
                 window.location.reload()
                 handleCloseForm()
+            }
+            else {
+                setFormData({
+                    ...formData,
+                    organizations: tempOrganizations,
+                    importantDates: tempImportantDates
+                  });
             }
 
         }
@@ -338,7 +365,6 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                                 name='name'
                                                                 placeholder='Organization name...'
                                                             />
-                                                            <FontAwesomeIcon icon={faCircleXmark} className='ms-2 text-warning' title='Organization name must be unique!' />
 
                                                         </div>
                                                     </Col>
