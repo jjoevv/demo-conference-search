@@ -85,7 +85,7 @@ const Notifications = () => {
                         {
                           noti.Follow.CallForPaperCfpId !== 'null'
                             ?
-                            `More information >`
+                            `More details >`
                             :
                             `You've unfollowed this conference.`
                         }

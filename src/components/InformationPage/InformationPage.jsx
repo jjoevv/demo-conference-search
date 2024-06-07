@@ -34,7 +34,7 @@ const InformationPage = ({ conference }) => {
   return (
     <div className='p-5 m-0' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
-        <span className='text-beige-dark'>Conference information</span>
+        <span className='text-teal-normal'>Conference information</span>
         <RedirectButton conference={conference} />
       </div>
       {conference ?

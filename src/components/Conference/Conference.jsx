@@ -25,7 +25,7 @@ import moment from 'moment'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, displaySortList, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
-    const { loading: loadingConf, listFollowed, followConference, unfollowConference } = useFollow()
+    const { loading: loadingFollow, listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const navigate = useNavigate()
     const [page, setPage] = useState(0)
@@ -73,7 +73,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [loadingPage, conferencesProp, page]);
 
     useEffect(() => {
-        if (loadingConf) {
+        if (loadingFollow) {
             document.body.style.cursor = 'wait'
         } else {
             { document.body.style.cursor = 'default'; }
@@ -81,7 +81,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         return () => {
             { document.body.style.cursor = 'default'; }
         };
-    }, [loadingConf]);
+    }, [loadingFollow]);
 
     const handleFollow = async (event, id) => {
         event.stopPropagation();
@@ -173,7 +173,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             id={conf.id}
                                                             key={conf.id}>
                                                             <Stack className='p-0 w-100 align-items-start' direction='horizontal'>
-                                                                <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center acronym-container border border-teal-normal'>
+                                                                <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center text-center acronym-container border border-teal-normal'>
                                                                     <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
                                                                 </div>
 

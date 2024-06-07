@@ -38,9 +38,15 @@ const HeaderNoti = () => {
   };
 
   const handleClickMessage = async (noti) => {
-    await handleGetOne(noti.Follow.CallForPaperCfpId)
-    await getNoticationById([noti])
-    navigate(`/detailed-information/${noti.Follow.CallForPaperCfpId}`)
+    if(!user){
+      alert('Please login before continue!')
+      navigate('/login')
+    }
+    else {
+      await handleGetOne(noti.Follow.CallForPaperCfpId)
+      await getNoticationById([noti])
+      navigate(user ? '/user/notifications' : 'login')
+    }
   }
   const handleViewAll = async () => {
     setDropdownOpen(!dropdownOpen);

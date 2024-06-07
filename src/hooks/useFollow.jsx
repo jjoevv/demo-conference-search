@@ -95,7 +95,6 @@ const useFollow = () => {
     setLoading(true)
     if (user || localStorage.getItem('user')) {
       let storedToken = JSON.parse(localStorage.getItem('token'));
-
       const tokenHeader = token ? token : storedToken
       try {
         const response = await fetch(`${baseURL}/follow`, {
@@ -106,7 +105,6 @@ const useFollow = () => {
           },
           body: JSON.stringify({ cfp_id: id })
         });
-        const responsedata = await response.json()
 
         setLoading(false)
         if (!response.ok) {

@@ -113,10 +113,10 @@ const DetailedInformationPage = () => {
             </Stack>
             <div className='w-100 bg-skyblue-light -normal  p-5'>
                 < Row className='bg-white m-4  '>
-                    <Col sm={7} xs={7} className='p-0'>
+                    <Col sm={6} xs={6} className='p-0'>
                         <InformationPage conference={conference} />
                     </Col>
-                    <Col sm={5} xs={5} className="p-0" >
+                    <Col sm={6} xs={6} className="p-0" >
                         <ImportantDatePage />
                     </Col>
                 </Row>

@@ -5,26 +5,14 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import useNote from '../../hooks/useNote';
 import useFollow from '../../hooks/useFollow';
 import EventCalendar from '../../components/Calendar/EventCalendar';
-import { useLocation } from 'react-router-dom';
 import UpcomingNote from '../../components/Calendar/UpcomingNote';
+import Loading from '../../components/Loading';
 
 const Timestamp = () => {
-  const {pathname} = useLocation()
-  const { notes, getAllNotes} = useNote()
+  const { loading, notes, getAllNotes} = useNote()
   const {listFollowed, getListFollowedConferences} = useFollow()
-  const {user} = useLocalStorage()
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getListFollowedConferences();
-      await getAllNotes()
-    };
-    if(listFollowed.length ===0 || notes.length === 0){
-
-      fetchData();
-    }
-    
-  }, [user, listFollowed]);
+  const {user} = useLocalStorage()  
+  
   
   return (
     <Container
@@ -41,12 +29,23 @@ const Timestamp = () => {
         />
       </div>
       <Row className='w-75'>
-
-      <UpcomingNote/>
+        {
+          loading
+          ?
+          <div className=""></div>
+          :          
+          <UpcomingNote/>
+        }
       </Row>
       <Row className='mt-5'>
         <Col xs="9" >          
+        {
+          loading
+          ?
+          <Loading onReload={getAllNotes}/>
+          :
           <EventCalendar notes={notes}/>
+        }
         </Col>
         <Col xs="3" className='ps-3'>          
           <div className='ms-1 mt-3'>

@@ -8,10 +8,12 @@ import Loading from '../Loading'
 import { useEffect } from 'react'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendar, faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faLink, faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import useConference from '../../hooks/useConferences'
+import { useNavigate } from 'react-router-dom'
 
 const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloadList }) => {
-
+    const {handleGetOne} = useConference()
     const [isUpdate, setIsUpdate] = useState(false)
     const [warning, setWarning] = useState('')
     const [inputvalue, setInputValue] = useState('');
@@ -23,6 +25,8 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
     const [message, setMessage] = useState(false)
     const [error, setError] = useState(false)
     const [statusUpdate, setStatusUpdate] = useState(false)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (statusUpdate) {
@@ -44,6 +48,10 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
         }
     }, [statusUpdate]);
 
+    const handleGotoCfp = async (id) => {
+        await handleGetOne(id)
+        navigate(`/detailed-information/${id}`)
+    }
     const handleChooseUpdate = () => {
         setIsInputUpdate(!isInputUpdate)
         setWarning('')
@@ -83,6 +91,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
     const checkRenderEnddate = (start, end) => {
         return end !== null && start !== null && start !== end
     }
+
     const handleDelete = async () => {
         try {
             setIsUpdate(true)
@@ -109,7 +118,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
 
             </Modal.Header>
             <Modal.Body>
-                <p className="text-teal-dark fw-bold fs-4 my-3">
+                <p className="text-teal-normal fw-bold fs-4 my-3">
                     {note.date_type}
                 </p>
                 {
@@ -133,17 +142,26 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         </>
                         :
                         <div className="my-3 fs-5">
-                            <span className="text-color-medium ">{note.subStyle === 'note-event' ? `Your note: ` : `Conference note: `}</span>
+                            <span className="text-color-medium ">{note.subStyle === 'note-event' ? `Your note: ` : `Conference: `}</span>
                             <span className='fw-semibold'>{note.note}</span>
                         </div>
                 }
                 {
-                    note.subStyle !== 'note-event' && <p className='text-color-black my-3'>
+                    note.location
+                    ?
+                    <>
+                      {
+                    note.subStyle !== 'note-event' && 
+                    <p className='text-color-black my-3 fs-5'>
                         <FontAwesomeIcon icon={faLocationPin} className='text-teal-normal me-2' />
                         {` ${note.location}`}
-
                     </p>
                 }
+                    </>
+                    :
+                    <p></p>
+                }
+              
                 <p className='text-color-black my-3 fs-5'>
                     <FontAwesomeIcon icon={faCalendar} className='text-skyblue-dark me-3'/>
                     {checkRenderEnddate(note.start_date, note.end_date) ?
@@ -162,14 +180,22 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                             {
                                 note.start_date !== null
                                 &&
-                                    <span className="text-color-black fw-semibold">
-                                        {moment(note.start_date).format('dddd, YYYY/MM/DD')}
-                                    </span>
+                                <span className="text-color-black fw-semibold">
+                                    {moment(note.start_date).format('dddd, YYYY/MM/DD')}
+                                </span>
                             }
                         </>
                     }
 
 
+                </p>
+                <p className='text-color-black my-3'>
+                    <FontAwesomeIcon icon={faLink} className='text-teal-normal me-2'/>
+                    <Button 
+                        onClick={()=>handleGotoCfp(note.conf_id)}
+                        className='btn-noti-more text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'>
+                        More details
+                    </Button>
                 </p>
 
                 {

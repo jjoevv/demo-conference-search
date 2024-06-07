@@ -7,8 +7,10 @@ import AddNewNote from './AddNewNote';
 
 import ArrowIcon from './../../assets/imgs/next.png'
 import moment from 'moment';
-const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetailNote, notesList, dateClicked, onDelete, onClose, onReloadList }) => {
+import useConference from '../../hooks/useConferences';
 
+const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetailNote, notesList, dateClicked, onDelete, onClose, onReloadList }) => {
+  const {handleGetOne} = useConference()
   const [index, setIndex] = useState(0);
   const navigate = useNavigate()
 
@@ -28,12 +30,18 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
     setShowDetailModal(!showDetailModal)
     onClose()
   }
+
+  
+  const handleGotoCfp = async (id) => {
+    await handleGetOne(id)
+    navigate(`/detailed-information/${id}`)
+  }
   return (
     <Modal show={show} onHide={onClose} centered size='lg'>
       <Modal.Header closeButton>
         <Modal.Title className='text-center w-100'>{`All events in ${moment(dateClicked).format('dddd, YYYY/MM/DD')}`}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className=' px-5'>
         <Carousel activeIndex={index} onSelect={handleSelect} indicators={false} controls={false} interval={null}>
 
           <Carousel.Item>
@@ -51,7 +59,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
                         <Button
                           onClick={() => handleShowDetailModal(note)}
                           className='w-100  border-0 text-start p-1 rounded mt-1 mb-2 ms-2 px-2 text-color-darker bg-transparent'
-                          title='More information about this note'
+                          title='More details about this note'
                         >
                           <Row>
                             <Col xs={2} className='text-color-medium'>{`Date type: `}</Col>
@@ -66,7 +74,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
                         </Button>
                         <Button
                           className='border-0 bg-transparent '
-                          onClick={() => navigate(`/detail/information/${note.conf_id}`)}
+                          onClick={() => handleGotoCfp(note.conf_id)}
                           title='Click here to go detailed information page'
                           disabled={note.date_type === 'Personal note' ? true : false}>
                           <Image src={ArrowIcon} width={20} className='rounded-circle border' />

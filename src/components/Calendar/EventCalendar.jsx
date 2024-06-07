@@ -8,15 +8,18 @@ import './customcalendar.css'
 import ListNotesInModal from './ListNotesInModal';
 import { formatDate } from '../../utils/formatDate';
 import DetailInforNoteModal from './DetailInforNoteModal';
+import useLocalStorage from '../../hooks/useLocalStorage';
+
 moment.updateLocale('en', {
     week: {
         dow: 1, // Thứ hai là ngày đầu tiên trong tuần
-        doy: 1, // Thứ hai là ngày đầu tiên trong năm
     },
 });
+
 const localizer = momentLocalizer(moment);
 
 function EventCalendar() {
+    const {user} = useLocalStorage()
     const { notes, getAllNotes, updateNote, deleteNote } = useNote()
     const { listFollowed, getListFollowedConferences } = useFollow()
 
@@ -28,13 +31,14 @@ function EventCalendar() {
     const [showDetailModal, setShowDetailModal] = useState(false)
     const [detailNote, setDetailNote] = useState(null)
     useEffect(() => {
-        if (notes.length === 0) {
-            getAllNotes()
+        getAllNotes()
+      }, [])
+    
+      useEffect(() => {
+        if (!notes) {
+          getAllNotes()
         }
-        if(listFollowed.length === 0){
-            getListFollowedConferences()
-        }
-    }, [notes]);
+      }, [user])
 
 
     const handleDateClick = (event) => {
@@ -69,10 +73,8 @@ function EventCalendar() {
             <div
                 className={`event-cell text-color-black text-start mx-2 fs-7 m-0 d-flex flex-column ${event.subStyle}`}
                 onClick={handleDateClick}>
-                <span className='fw-semibold'>
-                   {`Date type: ${event.event.date_type}`}
-                </span>
-                <span className=''>{event.event.note}</span>
+                <span>{event.event.date_type}</span>
+                <span className=''>{event.event.acronym}</span>
             </div>
         );
     };

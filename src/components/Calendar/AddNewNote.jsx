@@ -73,7 +73,7 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
   }
   return (
     <div>
-      <Form>
+      <Form >
         <Form.Group controlId="inputTextArea">
           <Form.Label>{`Date: ${dateClicked}`}</Form.Label>
           <Form.Control

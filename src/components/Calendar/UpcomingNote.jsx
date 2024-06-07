@@ -5,8 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
+import useConference from '../../hooks/useConferences';
 
 const UpcomingNote = () => {
+    const {handleGetOne} = useConference()
     const { notes } = useNote()
     const checkRenderEnddate = (start, end) => {
         return end !== null && start !== null && start !== end
@@ -18,11 +20,18 @@ const UpcomingNote = () => {
     }
     const navigate = useNavigate()
 
+    const handleNavigateUpcomingConference = async (id) => {
+        await handleGetOne(id)
+        navigate(`/detailed-information/${id}`)
+    }
+
     const sortedNotes = [...notes].sort((a, b) => {
         const dateA = new Date(a.start_date);
         const dateB = new Date(b.start_date);
         return dateA - dateB;
     });
+
+    
     return (
         <div>
             <h5 className='text-danger mt-3'>Upcoming event</h5>
@@ -104,7 +113,7 @@ const UpcomingNote = () => {
                                                 {
                                                     note.conf_id !== null &&
                                                     <Button
-                                                        onClick={() => navigate(`/detailed-information/${note.conf_id}`)}
+                                                        onClick={() => handleNavigateUpcomingConference(note.conf_id)}
                                                         className=' bg-transparent border-0 text-decoration-underline text-skyblue-dark p-0'
                                                         title='Click here for more details'
                                                     >
