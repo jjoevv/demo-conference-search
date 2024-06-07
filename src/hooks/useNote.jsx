@@ -87,6 +87,7 @@ const useNote = () => {
             }
         } else if (note.OrganizationOrgId) {
             for (const conference of conferencesList) {
+              extractedItem.acronym = conference.information.acronym;
                 for (const organization of conference.organizations) {
                     if (organization.org_id === note.OrganizationOrgId && organization.status === 'new') {
                         extractedItem.date_type = 'Conference date';
