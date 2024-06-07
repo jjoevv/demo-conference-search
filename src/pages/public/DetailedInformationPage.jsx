@@ -121,11 +121,19 @@ const DetailedInformationPage = () => {
                     </Col>
                 </Row>
             </div>
-            <div className='w-100 bg-skyblue-normal'>
+           {
+            conference  &&
+            <>
+                {
+                    conference.callForPaper && conference.callForPaper !== '' && conference.callForPaper !== 'Not found'
+                &&
+                <div className='w-100 bg-skyblue-normal'>
                 <Row className='p-0'>
                     <CallforpaperPage conference={conference} />
                 </Row>
-            </div>
+            </div>}
+            </>
+           }
             <Row className='px-5 mx-5'>
                 <Feedbacks />
             </Row>
