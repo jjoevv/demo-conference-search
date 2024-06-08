@@ -36,16 +36,28 @@ const PriorityOptions = () => {
         <Col className="d-flex flex-column w-100 p-0">
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
             <Row key={key} className="w-100 align-items-start my-2">
-              <Col sm={1} style={{ fontWeight: 'bold', marginRight: '10px' }}>{capitalizeFirstLetter(key)}:</Col>
+              <Col sm={1} style={{ fontWeight: 'bold', marginRight: '10px' }}>
+              {
+                key === 'conferenceDate' ? 
+                'CD:'
+                :
+                key === 'submissionDate' ?
+                'SD:'
+                :
+                `${capitalizeFirstLetter(key)}:`
+              }
+              </Col>
               <Col className="">
                 {valueList.map((option, index) => (
                   <span key={index} style={{ marginRight: '5px' }}>
                      <Button
                             key={index}
                             onClick={() => handleKeywordSelection(key, option)}
-                            className={`px-2 py-1 border text-teal-normal mx-2 my-1 rounded-2 text-nowrap
+                            className={`px-2 py-1 border text-teal-normal mx-2 rounded-2 text-nowrap
                             ${selected.includes(option) ? `bg-primary-light border-primary-normal`
-                                    : `bg-white border-color-medium`}`}
+                                    : `bg-white border-color-medium`}
+                            ${valueList.length > 3 ? 'my-1' : ''}        
+                            `}
                         >
                             {renderOption(key, option)}
                         </Button>

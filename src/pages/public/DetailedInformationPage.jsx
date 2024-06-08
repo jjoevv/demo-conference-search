@@ -79,7 +79,7 @@ const DetailedInformationPage = () => {
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
     };
-
+    const getLengthString = (string) => string.length
 
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
@@ -91,7 +91,7 @@ const DetailedInformationPage = () => {
                     </Container>
                     :
                     <>
-                        <Stack className='bg-blur p-5 w-100 vh-100 d-inline-block text-center text-color-black'>
+                        <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 40 ? 'vh-75' : 'vh-100'}`}>
 
                             {
                                 conference && !loading ?
@@ -100,7 +100,7 @@ const DetailedInformationPage = () => {
                                             {
                                                 conference.information ?
                                                     <>
-                                                        <p className={`text-teal-normal px-5 fs-larger fw-bold mt-5 pt-5`}>
+                                                        <p className={`text-teal-normal px-5 fs-larger fw-bold mt-5 pt-5 `}>
                                                             {conference.information.name}
                                                         </p>
 

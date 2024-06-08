@@ -17,7 +17,6 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid, onReloadList }) => {
     const handleSubmit = async () => {
         setLoading(true)
         if (user || localStorage.getItem('user')) {
-            console.log({feedback})
             if (feedback !== '') {
                 // Gửi feedback qua API ở đây
                 const res = await onClick(id, feedback, rating)
@@ -26,7 +25,7 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid, onReloadList }) => {
                 // Reset ô nhập feedback sau khi gửi
                 if (res.status) {
                     setFeedback('');
-                    onReloadList(cfpid)
+                    await onReloadList(cfpid)
                     onCheck()
                     setMessage('')
                 }

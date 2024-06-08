@@ -41,8 +41,6 @@ const useFeedback = () => {
       setQuantity(data.data.count);
       dispatch({type: "GET_FEEDBACKS", payload: data.data.rows})
       setLoading(false)
-      // Trả về dữ liệu từ API để có thể xử lý tiếp
-      return data.data;
     } catch (error) {
       // Nếu có lỗi xảy ra trong quá trình gửi yêu cầu hoặc xử lý dữ liệu, ném ra một lỗi
       throw new Error(`Error fetching feedbacks: ${error.message}`);
@@ -112,6 +110,7 @@ const useFeedback = () => {
   }
   const deleteFeedback = async (id) => {
     setLoading(true)
+    console.log({id})
     if (user || localStorage.getItem('user')) {
       let storedToken = JSON.parse(localStorage.getItem('token'));
       const tokenHeader = token ? token : storedToken

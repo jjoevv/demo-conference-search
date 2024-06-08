@@ -44,7 +44,7 @@ const AllFeedbackOfConf = () => {
     }
 
     const handleDeleteFeedback = async (tid)=> {
-        
+        console.log({tid})
         deleteFeedback(tid)
         
     }
