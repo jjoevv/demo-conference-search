@@ -9,10 +9,7 @@ import UpcomingNote from '../../components/Calendar/UpcomingNote';
 import Loading from '../../components/Loading';
 
 const Timestamp = () => {
-  const { loading, notes, getAllNotes} = useNote()
-  const {listFollowed, getListFollowedConferences} = useFollow()
-  const {user} = useLocalStorage()  
-  
+  const { loading, notes, getAllNotes} = useNote()  
   
   return (
     <Container
@@ -20,13 +17,19 @@ const Timestamp = () => {
       className='py-5 overflow-hidden' style={{marginLeft: "360px", marginTop: "60px" }}>
       <div className='d-flex justify-content-between align-items-center'>
         <h4 className='mb-3'>Schedule</h4>
-        <Form.Check // prettier-ignore
+      {
+        /**
+         * 
+         *  <Form.Check // prettier-ignore
           reverse
           type="switch"
           id="custom-switch"
           label="Automatically add conference events to the schedule"
           value={true}
+          checked={true}
         />
+         */
+      } 
       </div>
       <Row className='w-75'>
         {

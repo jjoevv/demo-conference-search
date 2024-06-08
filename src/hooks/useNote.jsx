@@ -60,6 +60,7 @@ const useNote = () => {
         const extractedItem = {
             id: note.tid,
             conf_id: null,
+            name: null,
             note: null,
             acronym: null,
             start_date: null,
@@ -75,7 +76,8 @@ const useNote = () => {
                 for (const importantDate of conference.importantDates) {
                     if (importantDate.date_id === note.ImportantDateDateId) {
                         extractedItem.acronym = conference.information.acronym;
-                        extractedItem.note = conference.information.name;
+                        extractedItem.name = conference.information.name
+                        extractedItem.note = note.note;
                         extractedItem.conf_id = conference.id
                         extractedItem.date_type = capitalizeFirstLetter( importantDate.date_type)
                         extractedItem.end_date = importantDate.date_value;
@@ -94,7 +96,8 @@ const useNote = () => {
                         extractedItem.start_date = organization.start_date;
                         extractedItem.end_date = organization.end_date;
                         extractedItem.conf_id = conference.id;
-                        extractedItem.note = conference.information.name;
+                        extractedItem.name = conference.information.name
+                        extractedItem.note = note.note;
                         extractedItem.subStyle = 'conference-event'
                         extractedItem.location = organization.location
                     }
@@ -109,9 +112,7 @@ const useNote = () => {
         }
         // Kiểm tra xem đã tồn tại object có các thuộc tính giống với object mới không
         const isDuplicate = extractedData.some(item => (
-          item.date_type === extractedItem.date_type &&
-          item.conf_id === extractedItem.conf_id &&
-          item.start_date === extractedItem.start_date
+          item.tid === extractedItem.id
         ));
         if (!isDuplicate) {
           extractedData.push(extractedItem);
@@ -165,6 +166,7 @@ const useNote = () => {
         body: JSON.stringify(updateData)
       });
       const data = await response.json();    
+      setLoading(false)
       if (!response.ok) {
         throw new Error(response.message);
       }
@@ -180,6 +182,7 @@ const useNote = () => {
       note: note,
       date_value: date_value
     }
+    setLoading(true)
     if(user || localStorage.getItem('user')){
       let storedToken = JSON.parse(localStorage.getItem('token'));
       const tokenHeader = token ? token : storedToken
@@ -191,6 +194,7 @@ const useNote = () => {
           },
           body: JSON.stringify(postData)
         });
+        setLoading(false)
         if (!response.ok) {
           throw new Error(response.message);
         }

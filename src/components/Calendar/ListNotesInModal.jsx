@@ -10,7 +10,7 @@ import moment from 'moment';
 import useConference from '../../hooks/useConferences';
 
 const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetailNote, notesList, dateClicked, onDelete, onClose, onReloadList }) => {
-  const {handleGetOne} = useConference()
+  const { handleGetOne } = useConference()
   const [index, setIndex] = useState(0);
   const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
     onClose()
   }
 
-  
+
   const handleGotoCfp = async (id) => {
     await handleGetOne(id)
     navigate(`/detailed-information/${id}`)
@@ -55,30 +55,43 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
 
                   {
                     notesList.map((note, index) => (
-                      <div className="d-flex justify-content-between border-0 border-top" key={index}>
+                      <div className="d-flex justify-content-between bg-teal-light my-2 border-5 border-start" key={index}>
                         <Button
                           onClick={() => handleShowDetailModal(note)}
                           className='w-100  border-0 text-start p-1 rounded mt-1 mb-2 ms-2 px-2 text-color-darker bg-transparent'
                           title='More details about this note'
                         >
-                          <Row>
+                          <Row >
                             <Col xs={2} className='text-color-medium'>{`Date type: `}</Col>
                             <Col>{note.date_type}</Col>
                           </Row>
+                          {
+                            note.subStyle !== 'note-event' &&
+                            <Row>
+                              <Col xs={2} className='text-color-medium'>
+                                {`Conference: `}
+                              </Col>
+                              <Col>{note.acronym}</Col>
+                            </Row>
+                          }
                           <Row>
                             <Col xs={2} className='text-color-medium'>
-                              {`${note.subStyle === 'note-event' ? `Your note: ` : `Conference: `}`}
+                              {`Note: `}
                             </Col>
                             <Col>{note.note}</Col>
                           </Row>
                         </Button>
-                        <Button
-                          className='border-0 bg-transparent '
-                          onClick={() => handleGotoCfp(note.conf_id)}
-                          title='Click here to go detailed information page'
-                          disabled={note.date_type === 'Personal note' ? true : false}>
-                          <Image src={ArrowIcon} width={20} className='rounded-circle border' />
-                        </Button>
+                        {
+                          note.subStyle !== 'note-event' &&
+                          <Button
+                            className='border-0 bg-transparent '
+                            onClick={() => handleGotoCfp(note.conf_id)}
+                            title='Click here to go detailed information page'
+                          >
+                            <Image src={ArrowIcon} width={20} className='rounded-circle border' />
+                          </Button>
+                        }
+
                       </div>
                     ))
                   }

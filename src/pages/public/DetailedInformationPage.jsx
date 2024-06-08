@@ -22,39 +22,50 @@ const DetailedInformationPage = () => {
     const [zoom, setZoom] = useState(false);
     const contentRefs = useRef({});
     const [visibleSections, setVisibleSections] = useState([]);
-  
+
+    const [displayConf, setDisplayConf] = useState(null)
     useEffect(() => {
-      const handleScroll = () => {
-        Object.keys(contentRefs.current).forEach(key => {
-          const ref = contentRefs.current[key];
-          if (ref) {
-            const top = ref.getBoundingClientRect().top;
-            if (top < window.innerHeight * 0.75) {
-              setVisibleSections(prevVisibleSections => 
-                prevVisibleSections.includes(key) ? prevVisibleSections : [...prevVisibleSections, key]
-              );
-            }
-          }
-        });
-      };
-  
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
+        handleGetOne(conf_id.id)
+    }, [conf_id])
+
+    useEffect(()=>{
+        setDisplayConf(conference)
+    },[conference])
+    
+    useEffect(() => {
+
+        const handleScroll = () => {
+            Object.keys(contentRefs.current).forEach(key => {
+                const ref = contentRefs.current[key];
+                if (ref) {
+                    const top = ref.getBoundingClientRect().top;
+                    if (top < window.innerHeight * 0.75) {
+                        setVisibleSections(prevVisibleSections =>
+                            prevVisibleSections.includes(key) ? prevVisibleSections : [...prevVisibleSections, key]
+                        );
+                    }
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if(!loading){
-        setZoom(true);
-    }
-  }, [loading]);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (!loading) {
+            setZoom(true);
+        }
+    }, [loading]);
 
     useEffect(() => {
         const fetchData = async () => {
             await handleGetOne(conf_id.id);
             await getListFollowedConferences()
+            setDisplayConf(conference)
             setLoading(false)
         }
         if (!conference && conf_id.id) {
@@ -62,25 +73,26 @@ const DetailedInformationPage = () => {
             fetchData()
         }
     }, [conference, conf_id.id, listFollowed]);
-    
+
 
     const renderLocation = (organizations) => {
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
     };
 
-    if (loading) {
-        return (
-            <Container fluid className='d-flex flex-column justify-content-center align-items-center p-0 vh-100 bg-blur'>
-                < Spinner size='lg'/>
-            </Container>
-        )
-    }
 
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
-            <Stack className='bg-blur p-5 w-100 vh-100 d-inline-block text-center text-color-black'>
-              
+            {
+                loading
+                    ?
+                    <Container fluid className='d-flex flex-column justify-content-center align-items-center p-0 vh-100 bg-blur'>
+                        < Spinner size='lg' />
+                    </Container>
+                    :
+                    <>
+                        <Stack className='bg-blur p-5 w-100 vh-100 d-inline-block text-center text-color-black'>
+
                             {
                                 conference && !loading ?
                                     <>
@@ -142,39 +154,42 @@ const DetailedInformationPage = () => {
 
                             }
 
-            </Stack>
-            <div  
-            className={`w-100 bg-skyblue-light -normal  p-5 content ${visibleSections.includes('infor') ? 'visible' : ''}`} 
-            ref={el => contentRefs.current['infor'] = el}
-            >
-                < Row className='bg-white m-4  '>
-                    <Col sm={6} xs={6} className='p-0'>
-                        <InformationPage conference={conference} />
-                    </Col>
-                    <Col sm={6} xs={6} className="p-0" >
-                        <ImportantDatePage />
-                    </Col>
-                </Row>
-            </div>
-           {
-            conference  &&
-            <>
-                {
-                    conference.callForPaper && conference.callForPaper !== '' && conference.callForPaper !== 'Not found'
-                &&
-                <div className='w-100 bg-skyblue-normal'>
-                <Row 
-                ref={el => (contentRefs.current['cfp'] = el)}
-                className={`p-0 content ${visibleSections.includes('cfp') ? 'visible' : ''}`}>
-                    <CallforpaperPage conference={conference} />
-                </Row>
-            </div>}
-            </>
-           }
-            <Row className='px-5 mx-5'>
-                <Feedbacks />
-            </Row>
-            <ScrollToTopButton/>
+                        </Stack>
+                        <div
+                            className={`w-100 bg-skyblue-light -normal  p-5 content ${visibleSections.includes('infor') ? 'visible' : ''}`}
+                            ref={el => contentRefs.current['infor'] = el}
+                        >
+                            < Row className='bg-white m-4  '>
+                                <Col sm={6} xs={6} className='p-0'>
+                                    <InformationPage conference={conference} />
+                                </Col>
+                                <Col sm={6} xs={6} className="p-0" >
+                                    <ImportantDatePage />
+                                </Col>
+                            </Row>
+                        </div>
+                        {
+                            conference &&
+                            <>
+                                {
+                                    conference.callForPaper && conference.callForPaper !== '' && conference.callForPaper !== 'Not found'
+                                    &&
+                                    <div className='w-100 bg-skyblue-normal'>
+                                        <Row
+                                            ref={el => (contentRefs.current['cfp'] = el)}
+                                            className={`p-0 content ${visibleSections.includes('cfp') ? 'visible' : ''}`}>
+                                            <CallforpaperPage conference={conference} />
+                                        </Row>
+                                    </div>}
+                            </>
+                        }
+                        <Row className='px-5 mx-5'>
+                            <Feedbacks />
+                        </Row>
+                        <ScrollToTopButton />
+                    </>
+            }
+
         </Container>
     )
 }

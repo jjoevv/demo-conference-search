@@ -30,12 +30,12 @@ const PriorityOptions = () => {
         )
     }
     return (
-      <div className="d-flex align-items-start w-100">
+      <Row className="d-flex align-items-start w-100 justify-content-center">
         
-      <span className="me-3 mt-1">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </span>
-        <div className="d-flex flex-column w-100">
+      <Col sm={2} className="p-0">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </Col>
+        <Col className="d-flex flex-column w-100 p-0">
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
-            <Row key={key} className="w-100 align-items-center my-2">
+            <Row key={key} className="w-100 align-items-start my-2">
               <Col sm={1} style={{ fontWeight: 'bold', marginRight: '10px' }}>{capitalizeFirstLetter(key)}:</Col>
               <Col className="">
                 {valueList.map((option, index) => (
@@ -54,8 +54,8 @@ const PriorityOptions = () => {
               </Col>
             </Row>
           ))}
-        </div>
-      </div>
+        </Col>
+      </Row>
     
     
 

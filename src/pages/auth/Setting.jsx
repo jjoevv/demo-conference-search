@@ -5,14 +5,9 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Loading from '../../components/Loading'
 
 
-const updateCircle = [
-  { id: '1', option: "Every 3 days" },
-  { id: '2', option: "Everyday" },
-  { id: '3', option: "Every 5 days" },
-  { id: '4', option: "Every one week" },
-]
 const Setting = () => {
   const { settings, loading, getAllSetting, updateSetting } = useSetting()
+  const [displaySetting, setDisplaySetting] = useState([])
   const { user } = useLocalStorage()
   const [selectedOption, setSelectedOption] = useState(3);
   const [switchValue, setSwitchValue] = useState(true);
@@ -30,6 +25,11 @@ const Setting = () => {
   useEffect(() => {
     getAllSetting()
   }, [])
+
+  useEffect(()=>{
+    setDisplaySetting(settings)
+  },[settings])
+
 
   const handleChangeSelect = (e) => {
     updateSetting(e.target.name, true, e.target.value)
@@ -70,7 +70,7 @@ const Setting = () => {
           :
           <>
 
-            {settings ?
+            {displaySetting ?
               <>
                 <Form>
                   {sortedSettings.map((setting, index) => (

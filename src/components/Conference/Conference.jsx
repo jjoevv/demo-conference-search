@@ -150,7 +150,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     };
 
     const chooseConf = async (id) => {
-        await handleGetOne(id)
+        //await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
 
@@ -173,7 +173,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 {
                         loading ?
                             <>
-                                <Container fluid className='d-flex flex-column align-items-center p-0 vh-100 overflow-hidden'>
+                                <Container fluid className='d-flex flex-column align-items-center p-0 h-100 overflow-hidden'>
                                     <LoadingConferences onReload={onReload} />
                                 </Container>
                             </>

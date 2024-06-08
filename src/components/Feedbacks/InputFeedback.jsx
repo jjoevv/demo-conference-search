@@ -5,31 +5,30 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 
 import AvatarIcon from '../../assets/imgs/avatar.png'
 import useFeedback from '../../hooks/useFeedbacks';
-const InputFeedback = ({ onClick, onCheck, id, cfpid}) => {
+import Loading from '../Loading';
+const InputFeedback = ({ onClick, onCheck, id, cfpid, onReloadList }) => {
     const { user } = useLocalStorage()
-    const { getAllFeedbacks } = useFeedback()
     const [feedback, setFeedback] = useState('')
     const [rating, setRating] = useState(5)
     const [error, setError] = useState(false)
     const [message, setMessage] = useState('')
+    const [loading, setLoading] = useState(false)
+
     const handleSubmit = async () => {
+        setLoading(true)
         if (user || localStorage.getItem('user')) {
+            console.log({feedback})
             if (feedback !== '') {
                 // Gửi feedback qua API ở đây
                 const res = await onClick(id, feedback, rating)
+                console.log({res})
+                setLoading(false)
                 // Reset ô nhập feedback sau khi gửi
-                if(res.data){
-
+                if (res.status) {
                     setFeedback('');
-                    
-                    getAllFeedbacks(cfpid)
-                    window.location.reload()
-                    const timer = setTimeout(() => {
-                        if(onCheck){onCheck()}
-                    }, 5000);
-            
-                    // Hủy bỏ timer khi component unmount
-                    return () => clearTimeout(timer);
+                    onReloadList(cfpid)
+                    onCheck()
+                    setMessage('')
                 }
                 else {
                     setMessage('Something wrong! Try again or refresh page')
@@ -47,6 +46,7 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid}) => {
         setFeedback(e.target.value)
         setError(false)
     }
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setError(false);
@@ -55,10 +55,11 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid}) => {
         // Hủy bỏ timer khi component unmount
         return () => clearTimeout(timer);
     }, [error]); // Chạy effect chỉ một lần khi component mount
+
     return (
         <div className='w-100 d-flex align-items-center justify-content-start mt-3'>
             <div className='h-100 align-self-start'>
-                <Image src={AvatarIcon} className='me-3' width={30}/>
+                <Image src={AvatarIcon} className='me-3' width={30} />
             </div>
 
             <div className='w-100 my-1'>
@@ -79,15 +80,17 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid}) => {
 
                             <RateConference rating={rating} setRating={setRating} />
                             <div>
-                                {error && message!== ''&& <p className='text-danger'>{message}</p>}
-{
-    onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck} title='Post your feedback'>
-    Cancel
-</Button>
-}
-                            <Button className='bg-primary-dark border-light  px-4' onClick={handleSubmit} title='Post your feedback'>
-                                Post
-                            </Button>
+                                {error && message !== '' && <p className='text-danger'>{message}</p>}
+                                {
+                                    onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck} title='Post your feedback'>
+                                        Cancel
+                                    </Button>
+                                }
+                                <Button className='bg-primary-dark border-light  px-4' onClick={handleSubmit} title='Post your feedback'>
+                                    {
+                                        loading ? <Loading size={'sm'}/> : 'Post'
+                                    }
+                                </Button>
                             </div>
                         </div>
                     </Form.Group>

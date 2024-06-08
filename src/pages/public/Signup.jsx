@@ -77,7 +77,7 @@ const Signup = () => {
             <Row className='bg-white rounded-4 d-flex box-area w-75 h-50 mx-auto'>
                 <Col sm={4} xs={12} className='d-flex flex-column align-items-center justify-content-center rounded-start-4 text-light' style={{ backgroundColor: "#419489" }}>
                     <span className='h1 fw-bold my-2'>Hello!</span>
-                    <span className='w-75 fs-5'>Enter your personal details and start following conferences/magazines!</span>
+                    <span className='w-75 fs-5'>Enter your account and start following conferences/magazines!</span>
                     <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
                         <Link to='/' className='fs-6 text-light'>  {"<  "}Back to Homepage</Link>
                     </div>
@@ -145,7 +145,7 @@ const Signup = () => {
                           
                              <InputGroup>
                                 <Form.Control
-                                    type={showpassword ? "text" : "password"}
+                                    type={showpConfirmassword ? "text" : "password"}
                                     value={account.confirm}
                                     name="confirm"
                                     placeholder='Your password'

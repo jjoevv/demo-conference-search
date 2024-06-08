@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import useNote from '../../hooks/useNote';
+import Loading from '../Loading';
 
 const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
 
-  const { addNote } = useNote()
+  const { loading, addNote } = useNote()
   const [warning, setWarning] = useState('')
   const [inputvalue, setInputValue] = useState('');
   const [isSubmit, setIsSubmit] = useState(false)
   const [autoClose, setAutoCLose] = useState(3)
 
-  const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(false)
   const [error, setError] = useState(false)
   const [statusUpdate, setStatusUpdate] = useState(false)
@@ -47,7 +47,6 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
   const handleAddNew = async () => {
     try {
       if (inputvalue !== '') {
-        setLoading(true)
         setIsSubmit(true)
         setWarning('')
         const { status, message } = await addNote(inputvalue, dateClicked)
@@ -55,7 +54,6 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
         if (status) {
           setStatusUpdate(status)
           setMessage(message)
-          setLoading(false)
           onReloadList()
         }
         else {
@@ -93,7 +91,11 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
         {!error && isSubmit && <p className="text-success text-center">{message}</p>}
         <ButtonGroup className="w-100 my-1">
           <Button className='bg-transparent me-2 rounded text-color-black' onClick={handleButtonClick}>Back</Button>
-          <Button className='bg-primary-normal border-light ms-2 rounded' onClick={handleAddNew}>Add</Button>
+          <Button className='bg-primary-normal border-light ms-2 rounded' onClick={handleAddNew}>
+            {
+              loading ? <Loading size={'sm'}/> : 'Add'
+            }
+          </Button>
         </ButtonGroup>
       </div>
       {statusUpdate && isSubmit && <p>Auto closing in {autoClose} seconds</p>}

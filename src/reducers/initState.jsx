@@ -81,6 +81,9 @@ priorityKeywords: {},
   //postedConf
   postedConferences: [],
 
+  //feedbacks
+  feedbacks: [],
+
   //notes
   notes: [],
 

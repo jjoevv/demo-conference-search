@@ -1,10 +1,7 @@
 import  { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { getIdFromPathname } from '../../utils/getID'
 import useFeedback from '../../hooks/useFeedbacks'
 import { SortFeedbacks } from './SortFeedbacks'
-import useLocalStorage from '../../hooks/useLocalStorage'
-import { Button, Image } from 'react-bootstrap'
+import { Button, Image, Spinner } from 'react-bootstrap'
 
 import starIcon from '../../assets/imgs/star.png'
 import unstarIcon from '../../assets/imgs/unstar.png'
@@ -13,25 +10,25 @@ import EditIcon from '../../assets/imgs/edit_green.png'
 import DeleteIcon from '../../assets/imgs/delete_bin.png'
 import InputFeedback from './InputFeedback'
 import { formatTime } from '../../utils/formatDate'
+import { useParams } from 'react-router-dom'
+
 const AllFeedbackOfConf = () => {
-    const {pathname} = useLocation()
-    const {quantity, feedbacks, getAllFeedbacks, updateFeedback, deleteFeedback, sortFeedback, checkEditFeedback} = useFeedback()
-    const {user} = useLocalStorage()
+    const {loading, feedbacks, getAllFeedbacks, updateFeedback, deleteFeedback, sortFeedback, checkEditFeedback} = useFeedback()
     const [idEdit, setIdEdit] = useState(null)
-    const [idCFP, setidCFP] = useState(null)
-    
     const [selectedOption, setSelectedOption] = useState(null);
     const [displayFeedback, setDisplayfeedback] = useState([])
-   
-    useEffect(()=>{        
-        const handleGetFeedbacks = async () => {
-            
-            const idinpathname = await getIdFromPathname(pathname)
-            const response = await getAllFeedbacks(idinpathname)
-            setDisplayfeedback(response.rows)
-        }   
-        handleGetFeedbacks()
-    },[pathname, user])
+    
+    const id = useParams()
+
+    useEffect(() => {
+        getAllFeedbacks(id.id);
+      }, [id]);
+    
+      useEffect(() => {
+        console.log({feedbacks})
+        setDisplayfeedback(feedbacks);
+      }, [feedbacks]);
+
     const options = [
         { value: 'ratingAscending', label: 'Rating Ascending' },
         { value: 'ratingDescending', label: 'Rating Descending' },
@@ -44,12 +41,12 @@ const AllFeedbackOfConf = () => {
     };
     const handleChooseFeedback = (e, index) => {
         setIdEdit(feedbacks[index].tid)
-        setidCFP(feedbacks[index].CallForPaperCfpId)
     }
 
-    const handleDeleteFeedback = (tid)=> {
+    const handleDeleteFeedback = async (tid)=> {
+        
         deleteFeedback(tid)
-        window.location.reload()
+        
     }
     useEffect(()=>{
         const handleSortFeedback = async () => {
@@ -67,7 +64,7 @@ const AllFeedbackOfConf = () => {
   return (
     <div className='ps-5'>
         <div className="d-flex align-items-center justify-content-between mt-4">
-            <p className="fw-bold">{quantity} feedback</p>
+            <p className="fw-bold">{displayFeedback.length} feedback</p>
             <SortFeedbacks options={options} onSelect={handleSelectOption}/>
         </div>
             <div>
@@ -104,14 +101,20 @@ const AllFeedbackOfConf = () => {
                     onClick={updateFeedback} 
                     onCheck={() => setIdEdit(false)} 
                     id={idEdit}
-                    cfpid={idCFP}
+                    cfpid={id.id}
+                    onReloadList={getAllFeedbacks}
+                    loading={loading}
                 />
             ) : (
                 <>
                    
                     <div className="d-flex justify-content-end align-items-center">
                         <Button className='bg-transparent border-0' onClick={(e) => handleChooseFeedback(e, index)}><Image src={EditIcon} width={20} /></Button>
-                        <Button className='bg-transparent border-0'> <Image src={DeleteIcon} className='mx-1' width={20} onClick={() => handleDeleteFeedback(feedback.tid)} /></Button>
+                       
+                        <Button className='bg-transparent border-0'> 
+                          <Image src={DeleteIcon} className='mx-1' width={20} onClick={() => handleDeleteFeedback(feedback.tid)} />
+                        </Button>
+                       
                     </div>
                 </>
             )}

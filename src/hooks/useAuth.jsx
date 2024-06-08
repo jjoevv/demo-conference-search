@@ -7,6 +7,7 @@ import { baseURL } from './api/baseApi';
 import useLocalStorage from './useLocalStorage';
 import useToken from './useToken';
 import { useEffect, useState } from 'react';
+import usePageNavigation from './usePageNavigation';
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
@@ -17,13 +18,14 @@ const useAuth = () => {
   const [loading, setLoading] = useState(false)
   const [isExpiredLogin, setIsExpired] = useState(false)
   const navigate = useNavigate()
-
+  const {previousPath} = usePageNavigation()
 
 
 
   const handleLogin = async (email, password) => {
     dispatch(loginRequest());
     setLoading(true)
+    console.log({previousPath})
     try {
       if (!user || !token) {
         const response = await fetch(`${baseURL}/user/login`, {
@@ -41,7 +43,7 @@ const useAuth = () => {
           dispatch(loginSuccess(userData));
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-          navigate('/')
+          navigate(`${previousPath}`)
 
           return { status: true, message: responseData.message }
         } else {

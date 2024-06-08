@@ -5,21 +5,28 @@ import { baseURL } from './api/baseApi'
 import useToken from './useToken'
 import useLocalStorage from './useLocalStorage'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 const useFeedback = () => {
   const { state, dispatch } = useAppContext()
   const { user } = useLocalStorage()
   const { token } = useToken()
   const [feedbacks, setFeedbacks] = useState([])
   const [quantity, setQuantity] = useState(0)
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const getAllFeedbacks = async (id) => {
+    setLoading(true)
     try {
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
       // Gửi yêu cầu lấy danh sách feedback đến API
       const response = await fetch(`${baseURL}/conference/${id}/feedback`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${tokenHeader}`
         },
       });
 
@@ -32,7 +39,8 @@ const useFeedback = () => {
       const data = await response.json();
       setFeedbacks(data.data.rows);
       setQuantity(data.data.count);
-
+      dispatch({type: "GET_FEEDBACKS", payload: data.data.rows})
+      setLoading(false)
       // Trả về dữ liệu từ API để có thể xử lý tiếp
       return data.data;
     } catch (error) {
@@ -46,20 +54,23 @@ const useFeedback = () => {
       content: content,
       rating: rating
     }
-
     if (user || localStorage.getItem('user')) {
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
       try {
         const response = await fetch(`${baseURL}/conference/${id}/feedback`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
           body: JSON.stringify(postData),
         });
-
+        const data = await response.json()        
+        const message = data.message || data.data
+        setLoading(false)
         if (response.ok) {
-          return response.json()
+          return {status: true, message}
         }
       } catch (error) {
         throw new Error('Network response was not ok');
@@ -71,40 +82,53 @@ const useFeedback = () => {
       content: content,
       rating: rating
     }
-
     if (user || localStorage.getItem('user') ) {
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
       try {
         const response = await fetch(`${baseURL}/feedback/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
           body: JSON.stringify(postData),
         });
-
+        const data = await response.json()        
+        const message = data.message || data.data
+        setLoading(false)
         if (response.ok) {
-          return response.json()
+          return {status: true, message}
         }
       } catch (error) {
         throw new Error('Network response was not ok');
       }
     }
+    else {
+      alert('Log in before continuing, please!')
+      navigate('/login')
+    }
+
   }
   const deleteFeedback = async (id) => {
-
+    setLoading(true)
     if (user || localStorage.getItem('user')) {
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
       try {
         const response = await fetch(`${baseURL}/feedback/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
         });
-
+        setLoading(false)
+        const data = await response.json()        
+        const message = data.message || data.data
+        setLoading(false)
         if (response.ok) {
-          return response.json()
+          return {status: true, message}
         }
       } catch (error) {
         throw new Error(error);
@@ -143,7 +167,8 @@ const useFeedback = () => {
     return  false
   }
   return {
-    feedbacks,
+    loading,
+    feedbacks: state.feedbacks,
     quantity,
     getAllFeedbacks,
     addFeedback,

@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { Form } from 'react-bootstrap'
+import { Form, Row } from 'react-bootstrap'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { Modal } from 'react-bootstrap'
 import DeleteModal from '../Modals/DeleteModal'
@@ -13,7 +13,7 @@ import useConference from '../../hooks/useConferences'
 import { useNavigate } from 'react-router-dom'
 
 const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloadList }) => {
-    const {handleGetOne} = useConference()
+    const { handleGetOne } = useConference()
     const [isUpdate, setIsUpdate] = useState(false)
     const [warning, setWarning] = useState('')
     const [inputvalue, setInputValue] = useState('');
@@ -60,6 +60,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
         setInputValue(val)
     }
     const handleUpdate = async () => {
+        console.log({ inputvalue })
         try {
             if (inputvalue !== '') {
                 const id = note.id
@@ -121,59 +122,44 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                 <p className="text-teal-normal fw-bold fs-4 my-3">
                     {note.date_type}
                 </p>
+
                 {
-                    isInputUpdate ?
-                        <>
-                            <Form onSubmit={handleUpdate}>
-                                <Form.Group className='d-flex align-items-center'>
-                                    <Form.Label>Note:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder={note.note}
-                                        value={inputvalue}
-                                        onChange={(event) => handleInputChange(event.target.value)}
-                                        className='border-0 border-bottom ms-3 p-1'
-                                        autoFocus={true}
-                                    />
-                                </Form.Group>
-
-
-                            </Form>
-                        </>
-                        :
-                        <div className="my-3 fs-5">
-                            <span className="text-color-medium ">{note.subStyle === 'note-event' ? `Your note: ` : `Conference: `}</span>
-                            <span className='fw-semibold'>{note.note}</span>
-                        </div>
+                    note.subStyle !== 'note-event'
+                    &&
+                    <div className="my-3 fs-5">
+                        <span className="text-color-medium ">{`Conference: `}</span>
+                        <span className='fw-semibold'> {`${note.acronym}`}</span>
+                    </div>
                 }
+                
                 {
                     note.location
-                    ?
-                    <>
-                      {
-                    note.subStyle !== 'note-event' && 
-                    <p className='text-color-black my-3 fs-5'>
-                        <FontAwesomeIcon icon={faLocationPin} className='text-teal-normal me-2' />
-                        {` ${note.location}`}
-                    </p>
+                        ?
+                        <>
+                            {
+                                note.subStyle !== 'note-event' &&
+                                <p className='text-color-black my-3 fs-5'>
+                                    <FontAwesomeIcon icon={faLocationPin} className='text-teal-normal me-2' />
+                                    {` ${note.location}`}
+                                </p>
+                            }
+                        </>
+                        :
+                        <p></p>
                 }
-                    </>
-                    :
-                    <p></p>
-                }
-              
+
                 <p className='text-color-black my-3 fs-5'>
-                    <FontAwesomeIcon icon={faCalendar} className='text-skyblue-dark me-3'/>
+                    <FontAwesomeIcon icon={faCalendar} className='text-skyblue-dark me-3' />
                     {checkRenderEnddate(note.start_date, note.end_date) ?
                         <>
-                            
-                                <span className="text-color-black fw-semibold">
-                                    {moment(note.start_date).format('ddd, YYYY/MM/DD')}
-                                </span>
-                                <span>{` to `}</span>
-                                <span className="text-color-black fw-semibold">
-                                    {moment(note.end_date).format('ddd, YYYY/MM/DD')}
-                                </span>
+
+                            <span className="text-color-black fw-semibold">
+                                {moment(note.start_date).format('ddd, YYYY/MM/DD')}
+                            </span>
+                            <span>{` to `}</span>
+                            <span className="text-color-black fw-semibold">
+                                {moment(note.end_date).format('ddd, YYYY/MM/DD')}
+                            </span>
                         </>
                         :
                         <>
@@ -189,10 +175,46 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
 
 
                 </p>
+                {
+                    isInputUpdate ?
+                        <>
+                            <Form onSubmit={handleUpdate}>
+                                <Form.Group className='d-flex align-items-start'>
+                                    <Form.Label>Note:</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder={note.note}
+                                        value={inputvalue}
+                                        onChange={(event) => handleInputChange(event.target.value)}
+                                        className='border-0 border-bottom ms-3 p-1'
+                                        autoFocus={true}
+
+                                        as="textarea"
+                                        rows={4}
+                                    />
+                                </Form.Group>
+
+
+                            </Form>
+                        </>
+                        :
+                        <>
+                            <div className='d-flex '>
+                                <span>Note:</span>
+                                <Form.Control
+                                    type="text"
+                                    placeholder={note.note !== '' ? note.note : `Enter your note`}
+                                    onClick={handleChooseUpdate}
+                                    className='border-0 border-bottom ms-3 p-1'
+                                />
+                            </div>
+                        </>
+                }
+
                 <p className='text-color-black my-3'>
-                    <FontAwesomeIcon icon={faLink} className='text-teal-normal me-2'/>
-                    <Button 
-                        onClick={()=>handleGotoCfp(note.conf_id)}
+                    <FontAwesomeIcon icon={faLink} className='text-teal-normal me-2' />
+                    <Button
+                        onClick={() => handleGotoCfp(note.conf_id)}
                         className='btn-noti-more text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'>
                         More details
                     </Button>
@@ -221,7 +243,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                                 </Button>
 
                                 <Button className='bg-primary-normal border-light ms-1 rounded' onClick={handleUpdate}>
-                                    {loading ? <Loading onReload={handleUpdate} /> : 'Update'}
+                                    {loading ? <Loading onReload={handleUpdate} /> : 'Submit'}
                                 </Button>
                             </>
                             :
@@ -230,7 +252,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                                     Delete
                                 </Button>
                                 <Button className='bg-skyblue-dark border-light ms-1 rounded' onClick={handleChooseUpdate}>
-                                    Update
+                                    Update note
                                 </Button>
                             </>
                     }

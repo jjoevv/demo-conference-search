@@ -195,6 +195,12 @@ const appReducer = (state, action) => {
                 ...state,
                 notifications: action.payload,
             };
+        case actionTypes.GET_FEEDBACKS:
+            console.log({action})
+            return {
+                ...state,
+                feedbacks: action.payload,
+            };
         default:
             return state;
     }

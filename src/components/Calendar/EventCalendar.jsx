@@ -21,7 +21,6 @@ const localizer = momentLocalizer(moment);
 function EventCalendar() {
     const {user} = useLocalStorage()
     const { notes, getAllNotes, updateNote, deleteNote } = useNote()
-    const { listFollowed, getListFollowedConferences } = useFollow()
 
     const [showListModal, setShowListModal] = useState(false)
     const [dateClicked, setDateClicked] = useState('')
@@ -39,7 +38,7 @@ function EventCalendar() {
           getAllNotes()
         }
       }, [user])
-
+      
 
     const handleDateClick = (event) => {
         const dateEvents = notes.filter((note) => moment(note.start_date).isSame(event.start, 'day'));
@@ -73,8 +72,10 @@ function EventCalendar() {
             <div
                 className={`event-cell text-color-black text-start mx-2 fs-7 m-0 d-flex flex-column ${event.subStyle}`}
                 onClick={handleDateClick}>
-                <span>{event.event.date_type}</span>
-                <span className=''>{event.event.acronym}</span>
+                <span> {event.event.subStyle !== 'note-event' && `${event.event.acronym} -`} {event.event.date_type}</span>
+                {
+                    (event.event.note !== '' || event.event.note) && <span className=''>{`Note: ${event.event.note}`}</span>
+                }
             </div>
         );
     };

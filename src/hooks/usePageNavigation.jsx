@@ -1,12 +1,14 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getIdFromPathname } from '../utils/getID';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const usePageNavigation = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const previousPath = useRef(null);
 
   useEffect(() => {
+    previousPath.current = localStorage.getItem('lastVisitedPage');
+
     // Lưu đường dẫn của trang hiện tại vào localStorage
     const handleBeforeUnload = () => {
       localStorage.setItem('lastVisitedPage', location.pathname);
@@ -31,7 +33,10 @@ const usePageNavigation = () => {
       }
   };
 
-  return { goToPreviousPage };
+  return { 
+    previousPath: previousPath.current,
+    goToPreviousPage,
+   };
 };
 
 export default usePageNavigation;

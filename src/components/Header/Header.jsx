@@ -64,7 +64,7 @@ const Header = () => {
         
               <Dropdown.Menu>
                 <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/followed')}>Followed Conferences</Dropdown.Item>
-                <Dropdown.Item className='fs-6 text-header' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             

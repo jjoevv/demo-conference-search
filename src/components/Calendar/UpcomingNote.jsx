@@ -52,7 +52,8 @@ const UpcomingNote = () => {
                                                     <span className='fw-semibold text-teal-normal fs-6'>{`${note.date_type}`}</span>
                                                     <span className='text-truncate d-inline-block '>
                                                         {
-                                                            `${note.subStyle === 'note-event' ? `Your note: ` : `Conference: `} ${note.note}`
+                                                            `${note.subStyle === 'note-event' 
+                                                                ? `Your note: ${note.note}` : `Conference: ${note.acronym}`} `
                                                         }
                                                     </span>
                                                 </div>

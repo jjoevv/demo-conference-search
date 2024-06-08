@@ -107,6 +107,7 @@ const Account = () => {
             <Form.Control
               placeholder='*********'
               type='password'
+              autoComplete='off'
               className='rounded-2 p-1 text-center border-1 border-primary-normal w-25'
             />
           </Form.Group>
