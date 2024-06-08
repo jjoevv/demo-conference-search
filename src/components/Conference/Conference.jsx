@@ -150,7 +150,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     };
 
     const chooseConf = async (id) => {
-        //await handleGetOne(id)
+        await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
 
