@@ -1,0 +1,79 @@
+/* ScrollToTop.css */
+.scroll-to-top {
+    position: fixed;
+    bottom: 15px;
+    right: 10px;
+    z-index: 1000;
+    background-color: #00999f;
+    color: #e6f5f5;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: large;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-out;
+  }
+  
+  .scroll-to-top:hover {
+    background-color: #008a8f;
+  }
+  
+.zoom-in {
+    animation: zoomIn 0.8s ease-in-out forwards;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+.content {
+    transform: translateY(20px); /* Di chuyển toàn bộ div xuống 20px từ phía dưới */
+    transition: transform 0.5s ease, opacity 0.5s ease; /* Thêm thuộc tính transition cho hiệu ứng mượt mà */
+    opacity: 0;
+  }
+  
+  .content.visible {
+    transform: translateY(0); /* Chuyển toàn bộ div về vị trí ban đầu */
+    opacity: 1;
+  }
+
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .popup {
+    position: fixed;
+   
+    top: 80px;
+    right: 0px;
+    color: #34766D;
+    transform: translateY(-10px);
+    background-color: #ffffff;
+    border: 1px solid #34766D;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 9999; /* Đảm bảo popup luôn nằm trên cùng */
+    display: inline-block; /* Đảm bảo popup bao quanh đoạn text */
+    white-space: nowrap; /* Đảm bảo đoạn text nằm trên một dòng */
+    animation: slideDown 0.5s ease-out; /* Hiệu ứng trượt xuống trong 0.5 giây */
+  }
+  

@@ -16,11 +16,11 @@ import { useLocation } from 'react-router-dom'
 
 const Homepage = () => {
     const { optionsSelected, getOptionsFilter} = useSearch()
-    const {loading: loadingAll, conferences, handleGetList} = useConference()
-    const {getItemInLocalStorage} = useLocalStorage()
+    const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
     const {pathname} = useLocation()
+
     const {
       priorityKeywords, 
       filterConferences, 
@@ -28,27 +28,22 @@ const Homepage = () => {
     
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
-    const [totalConferences, setTotalConferences] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-
-
-    useEffect(()=>{
-      getOptionsFilter("", [])
-      if(conferences.length === 0 || !conferences){
-        handleGetList()
-      }
-      const totalConfLS = getItemInLocalStorage('totalConferences')
-      const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
-      setTotalConferences(totalConfLS)
-      setTotalPages(Math.ceil(totalPagesLS))
-      setDisplayedConferences(conferences)
-    }, [conferences])
-
 
     useEffect(()=>{
       getListFollowedConferences()
       getPostedConferences()
     },[])
+
+
+    useEffect(()=>{
+      getOptionsFilter("", [])
+      if(conferences.length === 0 || !conferences){
+
+        getAllConferences()
+      }
+    }, [conferences])
+
+
   
 
     useEffect(()=>{
@@ -60,15 +55,8 @@ const Homepage = () => {
         const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
        
         setDisplayedConferences(sortConferences)
-        setTotalConferences(filterResult.length)
-        setTotalPages(Math.ceil(filterResult.length / 7))
       }
       else {
-       // console.log('ko apply',conferences)
-        const totalConfLS = getItemInLocalStorage('totalConferences')
-        const totalPagesLS = getItemInLocalStorage('totalPagesConferences')
-        setTotalConferences(totalConfLS)
-        setTotalPages(Math.ceil(totalPagesLS))
         setDisplayedConferences(conferences)
       }
       
@@ -87,9 +75,7 @@ const Homepage = () => {
          <Filter />
          <Conference 
          conferencesProp={displayConferences} 
-         onReloadPage={handleGetList} 
-         totalPages={totalPages} 
-         totalConferences={totalConferences} 
+         onReloadPage={getAllConferences}
          loading={loadingAll}/>
     </div>
     

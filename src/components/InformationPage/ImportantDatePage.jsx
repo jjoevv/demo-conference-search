@@ -90,7 +90,7 @@ const ImportantDatePage = () => {
                               :
                               <>
                                 {moment(date.date_value).format('dddd, YYYY/MM/DD')}
-                                {checkDate(date.date_value) && <span className='text-secondary'> (Past date)</span>}
+                                {checkDate(date.date_value) && <span className='text-secondary'> (Time expired)</span>}
 
                               </>
 

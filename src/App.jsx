@@ -1,6 +1,7 @@
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './assets/styles/custom.css'
 import './assets/styles/custom_color.css'
+import './assets/styles/custom_animation.css'
 import './assets/styles/responsive.css'
 import { HashRouter} from 'react-router-dom'
 

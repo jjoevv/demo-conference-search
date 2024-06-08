@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import useSessionStorage from "./useSessionStorage"
 import useLocalStorage from "./useLocalStorage"
+import { sortByFollow } from "../utils/sortConferences"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
@@ -56,9 +57,9 @@ const useConference = () => {
 
     try {
       
-      localStorage.removeItem('conferences')
-      localStorage.removeItem('currentFetchPageLS')
-      localStorage.removeItem('totalPagesConferences')
+     // localStorage.removeItem('conferences')
+     // localStorage.removeItem('currentFetchPageLS')
+     // localStorage.removeItem('totalPagesConferences')
       
       const currentFetchPage = getItemInLocalStorage('currentFetchPageLS')
       const firstPageData = await fetchData(1, 1);
@@ -85,7 +86,7 @@ const useConference = () => {
 
           const updatedConferences = [...new Set([...listFollowed, ...filteredData])];
 
-          localStorage.setItem('conferences', JSON.stringify(updatedConferences))
+          localStorage.setItem('conferences', JSON.stringify(firstPageData))
           dispatch(getAllConf(updatedConferences));
 
           // Fetch remaining pages asynchronously and save to localstorage
@@ -157,10 +158,33 @@ const useConference = () => {
     }
   }
 
+  const getAllConferences = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${baseURL}/conference?status=true`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      
+      const listFollowed = getDataListInStorage("listFollow")
+      const sortedByFollow = sortByFollow(data.data, listFollowed)
+      dispatch(getAllConf(data.data));
+      setLoading(false);
+      return data
+    } catch (error) {
+      setError(error);
+    }
+  }
   const handleGetOne = async (id) => {
     setLoading(true)
     try {
-      //size = 5
       const response = await fetch(`${baseURL}/conference/${id}`);
       const data = await response.json();
       //Gửi action để cập nhật state
@@ -268,12 +292,13 @@ const useConference = () => {
     selectOptionSort,
     displaySortList,
     fetchData,
+    getAllConferences,
     handleGetList,
     handleGetOne,
     getConferenceDate,
     getStartEndDate,
     getLocation,
-    handleSelectOptionSort
+    handleSelectOptionSort,
   }
 }
 

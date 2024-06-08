@@ -121,7 +121,7 @@ const sortAndFilterConferences = (conferences) => {
   else return []
 };
 
-const sortByFollow = (conferences, followedConferences) => {
+const sortByFollow =  (conferences, followedConferences) => {
   
   // Hàm sắp xếp để ưu tiên các conf đã follow
   const sortedConferences = [...conferences].sort((a, b) => {

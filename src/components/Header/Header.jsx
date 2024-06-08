@@ -51,10 +51,12 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto d-flex align-items-center">
-            <Link to='/' className='mx-4 text-body-emphasis text-color-black fs-6' title='Homepage'>
+          <Nav className="ms-auto d-flex align-items-center" >
+            <Nav.Item>
+            <Link to='/' className='mx-4 text-body-emphasis fs-6' title='Homepage'>
               Home
             </Link>
+            </Nav.Item>
             <Dropdown>
               <Dropdown.Toggle className='bg-transparent text-color-black border-0 fs-6'>
                 Conferences
@@ -62,7 +64,7 @@ const Header = () => {
         
               <Dropdown.Menu>
                 <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/followed')}>Followed Conferences</Dropdown.Item>
-                <Dropdown.Item className='fs-6' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6 text-header' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             
