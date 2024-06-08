@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import useSearch from "../../hooks/useSearch"
 import { capitalizeFirstLetter } from "../../utils/formatWord"
 import useFilter from "../../hooks/useFilter"
-import { Button } from "react-bootstrap"
+import { Button, Col, Row } from "react-bootstrap"
 
 
 const PriorityOptions = () => {
@@ -30,21 +30,20 @@ const PriorityOptions = () => {
         )
     }
     return (
-        <div>
-      <div className="d-flex align-items-start">
+      <div className="d-flex align-items-start w-100">
         
       <span className="me-3 mt-1">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </span>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="d-flex flex-column w-100">
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
-            <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-              <div style={{ fontWeight: 'bold', marginRight: '10px' }}>{capitalizeFirstLetter(key)}:</div>
-              <div>
+            <Row key={key} className="w-100 align-items-center my-2">
+              <Col sm={1} style={{ fontWeight: 'bold', marginRight: '10px' }}>{capitalizeFirstLetter(key)}:</Col>
+              <Col className="">
                 {valueList.map((option, index) => (
                   <span key={index} style={{ marginRight: '5px' }}>
                      <Button
                             key={index}
                             onClick={() => handleKeywordSelection(key, option)}
-                            className={`px-2 py-1 border text-teal-normal mx-2 rounded-2 
+                            className={`px-2 py-1 border text-teal-normal mx-2 my-1 rounded-2 text-nowrap
                             ${selected.includes(option) ? `bg-primary-light border-primary-normal`
                                     : `bg-white border-color-medium`}`}
                         >
@@ -52,12 +51,11 @@ const PriorityOptions = () => {
                         </Button>
                   </span>
                 ))}
-              </div>
-            </div>
+              </Col>
+            </Row>
           ))}
         </div>
       </div>
-    </div>
     
     
 

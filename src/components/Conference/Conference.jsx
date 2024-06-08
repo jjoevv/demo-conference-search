@@ -55,7 +55,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     useEffect(() => {
         const current = conferencesProp.slice(page * itemsPerPage, (page + 1) * itemsPerPage)
         setCurrentPage(current)
-    }, [conferencesProp])
+    }, [conferencesProp, listFollowed])
 
 
     useEffect(() => {

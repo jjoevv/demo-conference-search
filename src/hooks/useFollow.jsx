@@ -68,18 +68,14 @@ const useFollow = () => {
         sessionStorage.setItem('totalConfFollow', JSON.stringify(totalConf))
         sessionStorage.setItem('totalPagesFollow', JSON.stringify(totalPages))
 
-        const extractData = firstPageData.data.map(item => item.callForPaper);
-        const newConferences = updateNewList(extractData)
        
-        updateDataListInStorage("listFollow", newConferences)
-        dispatch(getFollowedConferenceAction(newConferences))
+        updateDataListInStorage("listFollow", firstPageData.data)
+        dispatch(getFollowedConferenceAction(firstPageData.data))
 
         // Fetch remaining pages asynchronously
         for (let i = 2; i <= totalPages; i++) {
           const pageData = await fetchPage(i);
-          const extractData = pageData.data.map(item => item.callForPaper);
-          const newConferences = updateNewList(extractData)
-          dispatch(getFollowedConferenceAction(newConferences))
+          dispatch(getFollowedConferenceAction(pageData.data))
 
         }
 

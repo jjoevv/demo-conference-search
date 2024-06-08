@@ -35,8 +35,10 @@ const Followed = () => {
   useEffect(() => {
     if (!listFollowed) {
       getListFollowedConferences()
+      setDisplayConferences(listFollowed)
     }
   }, [user])
+
   useEffect(()=>{
     const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
     
@@ -44,15 +46,9 @@ const Followed = () => {
 
       const filterResult = filterConferences(listFollowed, optionsSelected)
       setDisplayConferences(filterResult)
-      setTotalConferences(filterResult.length)
-      setTotalPages(Math.ceil(filterResult.length / 7))
       
     }
     else {
-      const totalConfLS = getDataListInStorage('totalConfFollow')
-      const totalPagesLS = getDataListInStorage('totalPagesFollow')
-      setTotalConferences(totalConfLS)
-      setTotalPages(Math.ceil(totalPagesLS))
       setDisplayConferences(listFollowed)
     }
     // Tạo query string 
@@ -67,6 +63,7 @@ const Followed = () => {
      // Cập nhật URL
      window.history.pushState({}, '', newUrl);
   }, [optionsSelected, listFollowed])
+
   return (
     <Container
       fluid
@@ -86,8 +83,6 @@ const Followed = () => {
                   <Conference 
                     conferencesProp={displayConferences} 
                     onReloadPage={getListFollowedConferences} 
-                    totalPages={totalPages} 
-                    totalConferences={totalConferences} 
                     loading={loadingFollow} />
                 </>
                 :
