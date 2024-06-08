@@ -11,7 +11,6 @@ import useFollow from '../../hooks/useFollow'
 import useFilter from '../../hooks/useFilter'
 import usePost from '../../hooks/usePost'
 import Filter from '../../components/Filter/Filter'
-import useLocalStorage from '../../hooks/useLocalStorage'
 import { useLocation } from 'react-router-dom'
 
 const Homepage = () => {

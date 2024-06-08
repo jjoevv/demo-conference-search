@@ -149,7 +149,8 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         setLoadingPage(true)
     };
 
-    const chooseConf = async (id) => {
+    const chooseConf = async (e, id) => {
+        e.preventDefault()
         await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
@@ -211,7 +212,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             </div>
 
                                                             <div className='w-100'>
-                                                                <Card.Body onClick={() => chooseConf(conf.id)} className='py-0'>
+                                                                <Card.Body onClick={(e) => chooseConf(e, conf.id)} className='py-0'>
                                                                     <Card.Title className=''>
                                                                         <div className='fw-bold d-flex align-items-center justify-content-start'>
                                                                             {

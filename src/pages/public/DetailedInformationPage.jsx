@@ -12,8 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLocationPin } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom'
 import useFollow from '../../hooks/useFollow'
+import useAuth from '../../hooks/useAuth'
 import ScrollToTopButton from '../../components/ScrollToTopButton'
 const DetailedInformationPage = () => {
+    const{user} = useAuth()
     const { conference, handleGetOne, getConferenceDate } = useConference()
     const { listFollowed, getListFollowedConferences } = useFollow()
     const [loading, setLoading] = useState(false)
@@ -72,7 +74,7 @@ const DetailedInformationPage = () => {
             setLoading(true)
             fetchData()
         }
-    }, [conference, conf_id.id, listFollowed]);
+    }, [conference, conf_id.id, listFollowed, user]);
 
 
     const renderLocation = (organizations) => {
@@ -84,18 +86,19 @@ const DetailedInformationPage = () => {
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             {
-                loading
+                loading && conference
                     ?
                     <Container fluid className='d-flex flex-column justify-content-center align-items-center p-0 vh-100 bg-blur'>
                         < Spinner size='lg' />
                     </Container>
                     :
                     <>
-                        <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 40 ? 'vh-75' : 'vh-100'}`}>
+                      
 
                             {
-                                conference && !loading ?
+                                conference && !loading &&
                                     <>
+                                      <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 40 ? 'vh-75' : 'vh-100'}`}>
                                         <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>
                                             {
                                                 conference.information ?
@@ -145,16 +148,11 @@ const DetailedInformationPage = () => {
 
                                         </div>
 
+                                        </Stack>
                                     </>
-                                    :
-                                    <>
-                                        <h1>404</h1>
-                                        <h3>Something went wrong! Try again</h3>
-                                    </>
-
+                                  
                             }
 
-                        </Stack>
                         <div
                             className={`w-100 bg-skyblue-light -normal  p-5 content ${visibleSections.includes('infor') ? 'visible' : ''}`}
                             ref={el => contentRefs.current['infor'] = el}
