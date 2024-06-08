@@ -35,14 +35,14 @@ const PriorityOptions = () => {
       <Col sm={2} className="p-0">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </Col>
         <Col className="d-flex flex-column w-100 p-0">
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
-            <Row key={key} className="w-100 align-items-start my-2">
-              <Col sm={1} style={{ fontWeight: 'bold', marginRight: '10px' }}>
+            <Row key={key} className={`w-100 my-2 align-items-start`}>
+              <Col sm={2} style={{ fontWeight: 'bold', marginRight: '10px' }} className="text-end">
               {
                 key === 'conferenceDate' ? 
-                'CD:'
+                'Conference:'
                 :
                 key === 'submissionDate' ?
-                'SD:'
+                'Submission:'
                 :
                 `${capitalizeFirstLetter(key)}:`
               }
