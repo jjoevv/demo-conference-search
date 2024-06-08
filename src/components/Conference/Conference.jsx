@@ -95,16 +95,6 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     }, [loadingPage, conferencesProp, page]);
 
-    useEffect(() => {
-        if (loadingFollow || loadingConf) {
-            document.body.style.cursor = 'wait'
-        } else {
-            { document.body.style.cursor = 'default'; }
-        }
-        return () => {
-            { document.body.style.cursor = 'default'; }
-        };
-    }, [loadingFollow, loadingConf]);
 
 
 
@@ -181,7 +171,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         <Container id='conferences-render' className='d-flex flex-column align-items-center p-0'>
 
 {
-                        loadingConf || loading ?
+                        loading ?
                             <>
                                 <Container fluid className='d-flex flex-column align-items-center p-0 vh-100 overflow-hidden'>
                                     <LoadingConferences onReload={onReload} />

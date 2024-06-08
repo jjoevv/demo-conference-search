@@ -183,13 +183,11 @@ const useConference = () => {
     }
   }
   const handleGetOne = async (id) => {
-    setLoading(true)
     try {
       const response = await fetch(`${baseURL}/conference/${id}`);
       const data = await response.json();
       //Gửi action để cập nhật state
       dispatch(getOneConf(data.data));
-      setLoading(false)
     } catch (error) {
 
       console.error('Error fetching data:', error);
