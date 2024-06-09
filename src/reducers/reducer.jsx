@@ -61,6 +61,7 @@ const appReducer = (state, action) => {
                 filterOptions: { ...state.filterOptions, ...action.payload }
             };
         case actionTypes.ADD_FILTER:
+            console.log({action})
             return {
                 ...state,
                 loading: false,
@@ -87,15 +88,13 @@ const appReducer = (state, action) => {
                 },
             }
         case actionTypes.REMOVE_FILTER:
+            console.log('co xoa', action.payload)
             return {
-                ...state,
-                appliedFilterResult: action.payload.updatedResultsFilter,
-                optionsSelected: action.payload.updateOptionsSelected,
+                ...state,                
+                optionsSelected: action.payload,
                 loading: false,
-                actionWithKeyword: 'delete'
             }
         case actionTypes.CLEAR_FILTERS:
-            console.log({action})
             return {
                 ...state,
                 optionsSelected: action.payload,

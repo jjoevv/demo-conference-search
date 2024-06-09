@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Container, Card, Button, Stack, Row, Col, Image, Spinner } from 'react-bootstrap'
 import ReactPaginate from 'react-paginate'
 
@@ -9,7 +9,6 @@ import useSearch from '../../hooks/useSearch'
 import { DropdownSort } from '../DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
-import Loading from '../Loading'
 import { getSubDate } from '../../utils/formatDate'
 import ButtonGroupUpdate from '../PostConference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
@@ -26,34 +25,38 @@ import ExpiredModal from '../Modals/ExpiredModal'
 import useParamsFilter from '../../hooks/useParamsFilter'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
-    const { loading: loadingConf, selectOptionSort, handleGetOne, getStartEndDate, handleSelectOptionSort } = useConference()
-    const { loading: loadingFollow, listFollowed, followConference, unfollowConference } = useFollow()
-    const {optionsSelected } = useSearch()
-    const {pageParam, setPage} = useParamsFilter()
+    const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
+    const { listFollowed, followConference, unfollowConference } = useFollow()
+    const { optionsSelected } = useSearch()
+    const { pageParam, setPage } = useParamsFilter()
     const { user } = useAuth()
     const navigate = useNavigate()
     const [showPopupFollow, setShowPopupFollow] = useState(false)
     const [followedIds, setFollowedIds] = useState(new Set());
-    const [loadingFollowId, setLoadingFollowId] = useState(true);
-
+    const [pageDisplay, setPageDisplay] = useState(pageParam)
     const [displayConferences, setDisplayedConferences] = useState(conferencesProp)
-    const [loadingPage, setLoadingPage] = useState(false)
     const [loadingMap, setLoadingMap] = useState({});
+    const scrollPositions = useRef({});
     const itemsPerPage = 7;
-    const pageNumber = parseInt(pageParam);
+    let pageCount = Math.ceil(conferencesProp.length / 7)
+
 
     useEffect(() => {
-        setPage(0)
-    }, [optionsSelected, selectOptionSort])
+        setPageDisplay(pageParam)
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }, [pageParam])
 
     useEffect(() => {
         const idsSet = new Set(listFollowed.map(item => item.id));
         setFollowedIds(idsSet);
-        setLoadingFollowId(false); // Khi kiểm tra hoàn tất, set loading thành false
     }, [listFollowed]);
 
     useEffect(() => {
         setDisplayedConferences(conferencesProp)
+
     }, [conferencesProp, listFollowed])
 
 
@@ -116,8 +119,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
             [id]: false, // Đặt trạng thái loading của nút vừa nhấn thành true
         }));
     }
-    const handlePageClick = async (event) => {
-        setPage(event.selected)
+
+
+    const handlePageClick = async (pagenumber) => {
+        setPage(pagenumber)
         // Cuộn lên đầu danh sách khi chuyển trang
         const element = document.getElementById('conferences-render');
         if (element) {
@@ -126,13 +131,30 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 block: 'start'
             });
         }
-        setLoadingPage(true)
     };
 
     const chooseConf = async (e, id) => {
         e.preventDefault()
-        //await handleGetOne(id)
+        // Lưu vị trí cuộn hiện tại trước khi cập nhật URL
+        scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
+        // Cập nhật URL với trang mới
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('page', pageDisplay + 1); // Thêm 1 để page bắt đầu từ 1 thay vì 0
+        window.history.pushState({}, '', newUrl);
+
+        // Cuộn lên đầu danh sách khi chuyển trang
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+
+        const searchParam = newUrl.href + `/detailed-information/${id}`
+
+         // Navigate to new URL
+        window.history.pushState({}, '', searchParam);
+        //window.location.href = newUrl
         navigate(`/detailed-information/${id}`)
+
     }
 
 
@@ -147,9 +169,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
     };
- //   console.log({loading, conferencesProp, displayConferences})
+    //   console.log({loading, conferencesProp, displayConferences})
 
-    if(loading){
+    if (loading) {
         return (
             <Container fluid className='d-flex flex-column align-items-center vh-100 p-0 overflow-hidden'>
                 <LoadingConferences onReload={onReload} />
@@ -158,205 +180,204 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }
     return (
         <Container id='conferences-render' className='d-flex flex-column align-items-center p-0'>
+            <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
+                <div className="h5 fw-bold ms-4 mt-2">
+                    {`${conferencesProp.length} conferences`}
+                </div>
+            </div>
+            <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
+                <PriorityOptions />
 
-                        <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
-                            <div className="h5 fw-bold ms-4 mt-2">
-                                {`${conferencesProp.length} conferences`}
-                            </div>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
-                            <PriorityOptions />
-
-                            <DropdownSort
-                                options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
-                                onSelect={handleDropdownSelect}
-                            />
-                        </div>
-                        <ExpiredModal onClose={() => setShowPopupFollow(false)} isOpen={showPopupFollow} />
+                <DropdownSort
+                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
+                    onSelect={handleDropdownSelect}
+                />
+            </div>
+            <ExpiredModal onClose={() => setShowPopupFollow(false)} isOpen={showPopupFollow} />
+            {
+                conferencesProp && !loading
+                    ?
+                    <div style={{ minHeight: "700px" }}>
                         {
-                            conferencesProp && !loading
-                                ?
-                                <>
-                                    {
-                                        displayConferences
-                                        .slice(pageNumber * itemsPerPage, (pageNumber + 1) * itemsPerPage)
-                                        .map((conf) => (
-                                            <Card
-                                                className='my-conf-card'
-                                                id={conf.id}
-                                                key={conf.id}>
-                                                <Stack className='p-0 w-100 align-items-start' direction='horizontal'>
-                                                    <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center text-center acronym-container border border-teal-normal'>
-                                                        <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
-                                                    </div>
+                            displayConferences
+                                .slice(pageDisplay * itemsPerPage, (pageDisplay + 1) * itemsPerPage)
+                                .map((conf) => (
+                                    <Card
+                                        className='my-conf-card'
+                                        id={conf.id}
+                                        key={conf.id}>
+                                        <Stack className='p-0 w-100 align-items-start' direction='horizontal'>
+                                            <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center text-center acronym-container border border-teal-normal'>
+                                                <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
+                                            </div>
 
-                                                    <div className='w-100'>
-                                                        <Card.Body onClick={(e) => chooseConf(e, conf.id)} className='py-0'>
-                                                            <Card.Title className=''>
-                                                                <div className='fw-bold d-flex align-items-center justify-content-start'>
-                                                                    {
-                                                                        conf.organizations.length > 0 &&
-                                                                        <>
-                                                                            {isUpcoming(conf.organizations[0].start_date)
-                                                                                &&
-                                                                                <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
-                                                                                    Upcoming
-                                                                                </div>
-                                                                            }
-                                                                        </>
+                                            <div className='w-100'>
+                                                <Card.Body onClick={(e) => chooseConf(e, conf.id)} className='py-0'>
+                                                    <Card.Title className=''>
+                                                        <div className='fw-bold d-flex align-items-center justify-content-start'>
+                                                            {
+                                                                conf.organizations.length > 0 &&
+                                                                <>
+                                                                    {isUpcoming(conf.organizations[0].start_date)
+                                                                        &&
+                                                                        <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                            Upcoming
+                                                                        </div>
                                                                     }
-                                                                    <span className='fw-bold fs-5 text-justify text-color-darker'>{conf.information.name}</span>
-                                                                </div>
-
-                                                            </Card.Title>
-                                                            <Stack direction="horizontal" gap={5}>
-                                                                {
-                                                                    getSubDate(conf.importantDates) &&
-                                                                    <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                        <FontAwesomeIcon icon={faClock} className='me-2' />
-                                                                        <label className='conf-data-label'>Submission Date: </label>
-                                                                        <span className='conf-data'>
-                                                                            {getSubDate(conf.importantDates)}
-                                                                        </span>
-                                                                    </Card.Text>
-                                                                }
-
-                                                                {
-                                                                    getStartEndDate(conf.organizations)
-                                                                    &&
-                                                                    <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                        <FontAwesomeIcon icon={faClock} className='me-2' />
-                                                                        <label className='conf-data-label'>Conference Date: </label>
-                                                                        <span className='conf-data'>
-
-                                                                            <>
-                                                                                {getStartEndDate(conf.organizations)}
-
-                                                                            </>
-
-                                                                        </span>
-                                                                    </Card.Text>
-                                                                }
-
-                                                                {
-                                                                    !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
-                                                                    &&
-                                                                    <>
-                                                                        <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                            <label className='conf-data-label'>Rank: </label>
-                                                                            <span className='conf-data'>
-                                                                                <>
-                                                                                    {conf.information.rank}
-                                                                                </>
-                                                                            </span>
-                                                                        </Card.Text>
-                                                                        <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                            <label className='conf-data-label'>Source: </label>
-                                                                            <span className='conf-data'>
-                                                                                <>
-                                                                                    {conf.information.source}
-                                                                                </>
-                                                                            </span>
-                                                                        </Card.Text>
-                                                                    </>
-                                                                }
-
-                                                            </Stack>
-                                                            <div className="w-100 d-flex align-items-center justify-content-between">
-                                                                {
-                                                                    renderLocation(conf.organizations) ?
-                                                                        <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
-                                                                            <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
-                                                                            {renderLocation(conf.organizations)}
-                                                                        </Card.Text>
-                                                                        :
-                                                                        <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
-
-                                                                        </Card.Text>
-                                                                }
-
-                                                                <div>
-                                                                    {
-                                                                        isPost
-                                                                            ?
-                                                                            <>
-                                                                                <div className='d-flex justify-content-end'>
-                                                                                    <ButtonGroupUpdate conference={conf} />
-                                                                                </div>
-                                                                            </>
-                                                                            :
-                                                                            <>
-                                                                                {
-                                                                                    isFollowed(conf.id)
-                                                                                        ?
-                                                                                        <Button
-                                                                                            className='icon-follow border border-primary-light'
-                                                                                            onClick={(event) => handleUnfollow(event, conf.id)}
-                                                                                            title='Unfollow'
-                                                                                            disabled={loadingMap[conf.id]}>
-                                                                                            {
-                                                                                                loadingMap[conf.id] ? <Spinner size={'sm'} /> :
-                                                                                                    <>
-                                                                                                        <Image src={FollowIcon} width={18} />
-                                                                                                        <span>Unfollow</span>
-                                                                                                    </>
-                                                                                            }
-                                                                                        </Button>
-                                                                                        :
-                                                                                        <Button
-                                                                                            title='Follow conference'
-                                                                                            className='icon-follow border border-primary-light'
-                                                                                            onClick={(event) => handleFollow(event, conf.id)}
-                                                                                            disabled={loadingMap[conf.id]}
-                                                                                        >
-                                                                                            {
-                                                                                                loadingMap[conf.id] ? <Spinner size={'sm'} /> :
-                                                                                                    <>
-                                                                                                        <Image src={UnFollowIcon} width={18} />
-                                                                                                        <span>Follow</span>
-                                                                                                    </>
-                                                                                            }
-
-                                                                                        </Button>
-                                                                                }
-                                                                            </>
-                                                                    }
-                                                                </div>
-                                                            </div>
-
-                                                        </Card.Body>
-
-                                                        <div className="d-flex align-items-center justify-content-between">
-                                                            <div className='mx-2 d-flex flex-wrap w-100'>
-                                                                {
-                                                                    conf.matchingKeywords &&
-
-                                                                    <>
-                                                                        {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
-                                                                            <div key={index} className='bg-skyblue-light px-2 py-1 rounded mx-1 my-1'>
-                                                                                {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
-                                                                            </div>
-                                                                        ))}
-                                                                    </>
-                                                                }
-                                                            </div>
-
+                                                                </>
+                                                            }
+                                                            <span className='fw-bold fs-5 text-justify text-color-darker'>{conf.information.name}</span>
                                                         </div>
 
+                                                    </Card.Title>
+                                                    <Stack direction="horizontal" gap={5}>
+                                                        {
+                                                            getSubDate(conf.importantDates) &&
+                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                <FontAwesomeIcon icon={faClock} className='me-2' />
+                                                                <label className='conf-data-label'>Submission Date: </label>
+                                                                <span className='conf-data'>
+                                                                    {getSubDate(conf.importantDates)}
+                                                                </span>
+                                                            </Card.Text>
+                                                        }
+
+                                                        {
+                                                            getStartEndDate(conf.organizations)
+                                                            &&
+                                                            <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                <FontAwesomeIcon icon={faClock} className='me-2' />
+                                                                <label className='conf-data-label'>Conference Date: </label>
+                                                                <span className='conf-data'>
+
+                                                                    <>
+                                                                        {getStartEndDate(conf.organizations)}
+
+                                                                    </>
+
+                                                                </span>
+                                                            </Card.Text>
+                                                        }
+
+                                                        {
+                                                            !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
+                                                            &&
+                                                            <>
+                                                                <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                    <label className='conf-data-label'>Rank: </label>
+                                                                    <span className='conf-data'>
+                                                                        <>
+                                                                            {conf.information.rank}
+                                                                        </>
+                                                                    </span>
+                                                                </Card.Text>
+                                                                <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
+                                                                    <label className='conf-data-label'>Source: </label>
+                                                                    <span className='conf-data'>
+                                                                        <>
+                                                                            {conf.information.source}
+                                                                        </>
+                                                                    </span>
+                                                                </Card.Text>
+                                                            </>
+                                                        }
+
+                                                    </Stack>
+                                                    <div className="w-100 d-flex align-items-center justify-content-between">
+                                                        {
+                                                            renderLocation(conf.organizations) ?
+                                                                <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
+                                                                    <FontAwesomeIcon icon={faLocationPin} className='me-2 fs-5' />
+                                                                    {renderLocation(conf.organizations)}
+                                                                </Card.Text>
+                                                                :
+                                                                <Card.Text className='d-flex align-items-center fs-6 mt-2 text-color-black'>
+
+                                                                </Card.Text>
+                                                        }
+
+                                                        <div>
+                                                            {
+                                                                isPost
+                                                                    ?
+                                                                    <>
+                                                                        <div className='d-flex justify-content-end'>
+                                                                            <ButtonGroupUpdate conference={conf} />
+                                                                        </div>
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        {
+                                                                            isFollowed(conf.id)
+                                                                                ?
+                                                                                <Button
+                                                                                    className='icon-follow border border-primary-light'
+                                                                                    onClick={(event) => handleUnfollow(event, conf.id)}
+                                                                                    title='Unfollow'
+                                                                                    disabled={loadingMap[conf.id]}>
+                                                                                    {
+                                                                                        loadingMap[conf.id] ? <Spinner size={'sm'} /> :
+                                                                                            <>
+                                                                                                <Image src={FollowIcon} width={18} />
+                                                                                                <span>Unfollow</span>
+                                                                                            </>
+                                                                                    }
+                                                                                </Button>
+                                                                                :
+                                                                                <Button
+                                                                                    title='Follow conference'
+                                                                                    className='icon-follow border border-primary-light'
+                                                                                    onClick={(event) => handleFollow(event, conf.id)}
+                                                                                    disabled={loadingMap[conf.id]}
+                                                                                >
+                                                                                    {
+                                                                                        loadingMap[conf.id] ? <Spinner size={'sm'} /> :
+                                                                                            <>
+                                                                                                <Image src={UnFollowIcon} width={18} />
+                                                                                                <span>Follow</span>
+                                                                                            </>
+                                                                                    }
+
+                                                                                </Button>
+                                                                        }
+                                                                    </>
+                                                            }
+                                                        </div>
                                                     </div>
 
-                                                </Stack>
-                                            </Card>
-                                        ))
-                                    }
+                                                </Card.Body>
 
-                                </>
-                                :
-                                <>
-                                    <p className='my-5'>No conferences available</p>
-                                </>
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div className='mx-2 d-flex flex-wrap w-100'>
+                                                        {
+                                                            conf.matchingKeywords &&
+
+                                                            <>
+                                                                {Object.entries(conf.matchingKeywords).map(([key, keywords], index) => (
+                                                                    <div key={index} className='bg-skyblue-light px-2 py-1 rounded mx-1 my-1'>
+                                                                        {capitalizeFirstLetter(key)}: {keywords.map(k => capitalizeFirstLetter(k)).join(', ')}
+                                                                    </div>
+                                                                ))}
+                                                            </>
+                                                        }
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </Stack>
+                                    </Card>
+                                ))
                         }
-            
+
+                    </div>
+                    :
+                    <>
+                        <p className='my-5'>No conferences available</p>
+                    </>
+            }
+
 
             <Row>
                 <Col>
@@ -365,11 +386,11 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                         breakLabel="..."
                         nextLabel=">"
                         previousLabel="<"
-                        onPageChange={handlePageClick}
-                        forcePage={pageNumber -1 }
+                        onPageChange={(e) => handlePageClick(e.selected)}
+                        forcePage={pageDisplay}
                         pageRangeDisplayed={4}
                         marginPagesDisplayed={1}
-                        pageCount={Math.ceil(conferencesProp.length / 7)}
+                        pageCount={pageCount}
                         renderOnZeroPageCount={null}
                         containerClassName="justify-content-center pagination"
                         previousClassName="page-item"

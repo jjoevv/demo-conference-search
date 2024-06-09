@@ -25,7 +25,6 @@ const useAuth = () => {
   const handleLogin = async (email, password) => {
     dispatch(loginRequest());
     setLoading(true)
-    console.log({previousPath})
     try {
       if (!user || !token) {
         const response = await fetch(`${baseURL}/user/login`, {

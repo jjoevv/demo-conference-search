@@ -21,17 +21,16 @@ const Homepage = () => {
     const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
-    const {pathname} = useLocation()
-    const params = useParams()
+    const location = useLocation()
+
     const {
       priorityKeywords, 
       filterConferences, 
       sortConferencesByPriorityKeyword}= useFilter()   
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
+    const {pageParam, addtoParams} = useParamsFilter()
 
-
-    const {pageParam, addtoParams} = useParamsFilter(optionsSelected)
     useEffect(()=>{
       getListFollowedConferences()
       getPostedConferences()
@@ -39,34 +38,29 @@ const Homepage = () => {
 
 
     useEffect(()=>{
-     // console.log({loadingAll})
       getOptionsFilter("", [])
       if(conferences.length === 0 || !conferences){
         getAllConferences()
       }
     }, [conferences])
 
-
     useEffect(()=>{
-      addtoParams(optionsSelected)
-      console.log({params})
+      addtoParams(optionsSelected, pageParam)
     }, [pageParam, optionsSelected])
-  
+
 
     useEffect(()=>{
       const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-      
       if(isApliedFilter){
-
         const filterResult = filterConferences(conferences, optionsSelected)
-        const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-       
-        setDisplayedConferences(sortConferences)
+        const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)       
+        setDisplayedConferences(sortConferences)      
       }
       else {
         setDisplayedConferences(conferences)
       }
     }, [optionsSelected, conferences, priorityKeywords])
+  
   
   return (
     <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        

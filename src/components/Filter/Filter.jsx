@@ -16,20 +16,12 @@ import HeaderFilter from "./HeaderFilter";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const Filter = () => {
-  const {loading:loadingOption, addKeywords, clearKeywords, optionsSelected} = useSearch()
+  const {loading:loadingOption, addKeywords, optionsSelected} = useSearch()
   const {loading} = useFilter()
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
   const [showIsAvailableAdvancedFilter, setShowIsAvailableAdvancedFilter] = useState(false);
   const [searchInput, setSearchInput] = useState("")  
-  const location = useLocation();
-  const pathname = useParams()
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(()=>{
-    console.log({location, pathname})
-    // Lấy danh sách các location trước đó từ localStorage
-    //clearKeywords()
-  }, [pathname, location])
   const [showHeaderFilter, setShowHeaderFilter] = useState(false);
 
   useEffect(() => {

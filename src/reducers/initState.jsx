@@ -79,5 +79,7 @@ export const initialState = {
   //ADMIN MANAGEMENT
   users: [],
   userAccount: null,
+
+  settings: []
 };
 

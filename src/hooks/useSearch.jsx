@@ -1,15 +1,14 @@
 import { useAppContext } from '../context/authContext'
-import { addFilter, clearFilters, getResult, getoptionsSelected, removeFilter } from '../actions/filterActions'
+import { addFilter, getoptionsSelected, removeFilter } from '../actions/filterActions'
 
 import { baseURL } from './api/baseApi'
-import { formatDateFilter } from '../utils/formatDate'
-import { useEffect, useState } from 'react'
-import useToken from './useToken'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useLocation,  } from 'react-router-dom'
 import useFollow from './useFollow'
 import usePost from './usePost'
 import { capitalizeFirstLetter } from '../utils/formatWord'
 import countriesData from '../data/countries.json'
+
 const useSearch = () => {
   const { state, dispatch } = useAppContext()
   const { listFollowed } = useFollow()
@@ -97,13 +96,17 @@ const useSearch = () => {
 
 
 
-  const addKeywords = (label, keywords) => {
+  const addKeywords =  (label, keywords) => {
+    const ischeck= state.optionsSelected[label].includes(keywords)
+    
+    console.log(label, keywords, state.optionsSelected[label], ischeck)
     if (label === 'submissionDate' || label === 'conferenceDate') {
-      dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords } })
+       dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords } })
     }
     else {
       if (!state.optionsSelected[label].includes(keywords[0])) {
         dispatch(addFilter(label, keywords))
+        console.log('ko trung',state.optionsSelected[label], keywords )
       }
       else deleteKeyword(label, keywords[0])
     }
@@ -111,10 +114,6 @@ const useSearch = () => {
 
 
   const deleteKeyword = (label, keyword) => {
-    const updatedResultsFilter = {
-      ...state.appliedFilterResult,
-      [label]: []
-    }
 
     const updateOptionsSelected = {
       ...state.optionsSelected,
@@ -122,10 +121,10 @@ const useSearch = () => {
     };
 
     // Xóa 1 filter trong danh sách
-    dispatch(removeFilter(updateOptionsSelected, updatedResultsFilter));
+    dispatch({type: "REMOVE_FILTER", payload: updateOptionsSelected});
 
   }
-  const clearKeywords = () => {
+  const clearKeywords = () => {    
     if (state.optionsSelected) {
       const clearedOptionsSelected = Object.fromEntries(Object.keys(state.optionsSelected).map((key) => [key, []]));
       dispatch({type: 'CLEAR_FILTERS', payload: clearedOptionsSelected})
@@ -212,7 +211,6 @@ const useSearch = () => {
   }
   const filterAndAddToParams = () => {
     const params = {};
-    console.log({ state })
     // Lặp qua mỗi cặp key-value trong optionsSelected
     for (const key in state.optionsSelected) {
       if (Object.prototype.hasOwnProperty.call(state.optionsSelected, key)) {

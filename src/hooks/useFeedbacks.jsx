@@ -110,7 +110,6 @@ const useFeedback = () => {
   }
   const deleteFeedback = async (id) => {
     setLoading(true)
-    console.log({id})
     if (user || localStorage.getItem('user')) {
       let storedToken = JSON.parse(localStorage.getItem('token'));
       const tokenHeader = token ? token : storedToken

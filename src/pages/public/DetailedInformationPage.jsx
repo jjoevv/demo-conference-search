@@ -24,15 +24,16 @@ const DetailedInformationPage = () => {
     const [zoom, setZoom] = useState(false);
     const contentRefs = useRef({});
     const [visibleSections, setVisibleSections] = useState([]);
+    const [loadingConf, setLoadingConf] = useState(true)
 
-    const [displayConf, setDisplayConf] = useState(null)
     useEffect(() => {
-        handleGetOne(conf_id.id)
+        const fetchData = async ()=>{
+            await handleGetOne(conf_id.id)
+            setLoadingConf(false)
+        }
+        fetchData()
     }, [conf_id])
 
-    useEffect(()=>{
-        setDisplayConf(conference)
-    },[conference])
     
     useEffect(() => {
 
@@ -67,7 +68,6 @@ const DetailedInformationPage = () => {
         const fetchData = async () => {
             await handleGetOne(conf_id.id);
             await getListFollowedConferences()
-            setDisplayConf(conference)
             setLoading(false)
         }
         if (!conference && conf_id.id) {
@@ -86,19 +86,17 @@ const DetailedInformationPage = () => {
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             {
-                loading && conference
+               loadingConf || loading
                     ?
                     <Container fluid className='d-flex flex-column justify-content-center align-items-center p-0 vh-100 bg-blur'>
                         < Spinner size='lg' />
                     </Container>
                     :
                     <>
-                      
-
                             {
                                 conference && !loading &&
                                     <>
-                                      <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 40 ? 'vh-75' : 'vh-100'}`}>
+                                      <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 80 ? 'vh-75' : 'vh-100'}`}>
                                         <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>
                                             {
                                                 conference.information ?

@@ -50,7 +50,6 @@ const Dashboard = () => {
     }
     getOptionsFilter("", [])
     setDisplayedConferences(conferences)
-    console.log({conferences})
   }, [conferences])
 
   useEffect(()=>{
