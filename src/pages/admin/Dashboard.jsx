@@ -30,7 +30,7 @@ const Dashboard = () => {
     sortConferencesByPriorityKeyword}= useFilter()
 
   const [showFilter, setShowFilter] = useState(false)
-  const { loading: loadingConf, conferences, selectOptionSort, displaySortList, handleSelectOptionSort, handleGetList, handleGetOne } = useConference()
+  const { loading: loadingConf, conferences, selectOptionSort, displaySortList, handleSelectOptionSort, handleGetList, handleGetOne, getAllConferences } = useConference()
   const [displayConferences, setDisplayedConferences] = useState([])
 
   const [showUpdateConf, setShowUpdate] = useState(false)
@@ -43,12 +43,14 @@ const Dashboard = () => {
   const [isConfirm, setIsConfirm] = useState(false)
   
   const [conferenceUpdate, setConferenceUpdate] = useState(null)
+  
   useEffect(() => {
     if(conferences.length === 0 || !conferences){
-      handleGetList()
+      getAllConferences()
     }
     getOptionsFilter("", [])
     setDisplayedConferences(conferences)
+    console.log({conferences})
   }, [conferences])
 
   useEffect(()=>{
@@ -218,17 +220,7 @@ const Dashboard = () => {
   width: 200
 },
 
-
-        {
-            Header: 'Crawl date',
-            accessor: (row)=> moment(row.createdAt).format('YYYY/MM/DD,  h:mm:ss'),
-            width: 200
-        },
-        {
-            Header: 'Update date',
-            accessor: (row)=> moment(row.updateAt).format('YYYY/MM/DD,  h:mm:ss'),
-            width: 200
-        }
+   
     ],
     []
 );

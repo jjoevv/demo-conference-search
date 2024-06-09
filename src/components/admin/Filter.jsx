@@ -3,26 +3,6 @@ import { Button, Accordion, AccordionContext, useAccordionButton, Card, Row, Ima
 import DropdownOptions from './DropdownOptions';
 import DateRangePicker from '../Filter/DateRangePicker';
 
-function ContextAwareToggle({ children, eventKey, callback }) {
-  const { activeEventKey } = useContext(AccordionContext);
-
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => callback && callback(eventKey),
-  );
-
-  const isCurrentEventKey = activeEventKey === eventKey;
-
-  return (
-    <Button
-      className='bg-white rounded-2'
-      style={{ backgroundColor: isCurrentEventKey ? "white" : "pink" }}
-      onClick={decoratedOnClick}
-    >
-      {children}
-    </Button>
-  );
-}
 
 function Filter() {
   return (

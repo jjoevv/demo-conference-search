@@ -16,23 +16,6 @@ export const initialState = {
   maxpage: 0,
   amount: 0,
   filterOptions: [],
-  filterResults: [],
-  appliedFilterResult: {
-    //lưu kết quả đã filter theo từng tiêu chí
-    location: [], 
-    rank: [], 
-    for: [], 
-    source: [],
-    acronym: [],
-    type: [],
-    conferenceDate: [],
-    submissionDate: [],
-    search: [],
-    impactfactor: [],
-    rating: [],
-    category: [],
-  },
-
   optionsSelected: {
     location: [],
     rank: [], 
@@ -48,15 +31,21 @@ export const initialState = {
     category: [],
     owner: [],
   },
-priorityKeywords: {},
+  priorityKeywords: {},
 
+  pageParam: 0,
+  paramsFilter: {
+    homepage: "",
+    follow: "",
+    post: "",
+  },
 
 
   optionFilter: [],
   resultKeywordFilter: [],
   resultFilter: [],
   inputFilter: '',
-  actionWithKeyword:'',
+  actionWithKeyword:'alo',
 
 
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 
 import Conference from '../../components/Conference/Conference'
@@ -11,7 +11,10 @@ import useFollow from '../../hooks/useFollow'
 import useFilter from '../../hooks/useFilter'
 import usePost from '../../hooks/usePost'
 import Filter from '../../components/Filter/Filter'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
+import LoadingConferences from '../../components/Conference/LoadingConferences'
+import { Container } from 'react-bootstrap'
+import useParamsFilter from '../../hooks/useParamsFilter'
 
 const Homepage = () => {
     const { optionsSelected, getOptionsFilter} = useSearch()
@@ -19,15 +22,16 @@ const Homepage = () => {
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
     const {pathname} = useLocation()
-
+    const params = useParams()
     const {
       priorityKeywords, 
       filterConferences, 
-      sortConferencesByPriorityKeyword}= useFilter()
-    
+      sortConferencesByPriorityKeyword}= useFilter()   
 
     const [displayConferences, setDisplayedConferences] = useState(conferences)
 
+
+    const {pageParam, addtoParams} = useParamsFilter(optionsSelected)
     useEffect(()=>{
       getListFollowedConferences()
       getPostedConferences()
@@ -35,14 +39,18 @@ const Homepage = () => {
 
 
     useEffect(()=>{
+     // console.log({loadingAll})
       getOptionsFilter("", [])
       if(conferences.length === 0 || !conferences){
-
         getAllConferences()
       }
     }, [conferences])
 
 
+    useEffect(()=>{
+      addtoParams(optionsSelected)
+      console.log({params})
+    }, [pageParam, optionsSelected])
   
 
     useEffect(()=>{
@@ -58,10 +66,8 @@ const Homepage = () => {
       else {
         setDisplayedConferences(conferences)
       }
-      
     }, [optionsSelected, conferences, priorityKeywords])
   
-   
   return (
     <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        
         {/*showSlideShow &&
@@ -72,10 +78,18 @@ const Homepage = () => {
           </Stack>
   </Container>*/}
          <Filter />
-         <Conference 
-         conferencesProp={displayConferences} 
-         onReloadPage={getAllConferences}
-         loading={loadingAll}/>
+        {
+          loadingAll ?
+          <Container fluid className='d-flex flex-column align-items-center vh-100 p-0 overflow-hidden'>
+          <LoadingConferences onReload={getAllConferences} />
+      </Container>
+          :
+          <Conference 
+          conferencesProp={displayConferences} 
+          onReloadPage={getAllConferences}
+          loading={loadingAll}
+         />
+        }
     </div>
     
   )

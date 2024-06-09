@@ -3,17 +3,21 @@ import './assets/styles/custom.css'
 import './assets/styles/custom_color.css'
 import './assets/styles/custom_animation.css'
 import './assets/styles/responsive.css'
-import { HashRouter} from 'react-router-dom'
+import { BrowserRouter, HashRouter} from 'react-router-dom'
 
 import MainLayout from './layout/MainLayout.jsx'
 import { AppContextProvider } from './context/authContext.jsx'
+import RoutesApp from './routes/RouteApp.jsx'
+import Footer from './components/Footer/Footer.jsx'
 
 function App() {
   return (
     <AppContextProvider>
-      <HashRouter>
+      <BrowserRouter>
         <MainLayout />
-      </HashRouter>
+        <RoutesApp/>
+        <Footer/>
+      </BrowserRouter>
     </AppContextProvider>
   )
 }

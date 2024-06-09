@@ -72,6 +72,11 @@ const appReducer = (state, action) => {
                     ],
                 },
             };
+            case actionTypes.SET_PARAMS:
+            return {
+                ...state,
+                pageParam: action.payload
+            };
         case actionTypes.ADD_FILTER_DATE:
             return {
                 ...state,
@@ -90,11 +95,10 @@ const appReducer = (state, action) => {
                 actionWithKeyword: 'delete'
             }
         case actionTypes.CLEAR_FILTERS:
-            // Cập nhật state với appliedFilterResult đã xóa hết giá trị
+            console.log({action})
             return {
                 ...state,
-                optionsSelected: action.payload.clearedOptionsSelected,
-                appliedFilterResult: action.payload.clearedConferencesFilter,
+                optionsSelected: action.payload,
                 loading: false
             };
         case actionTypes.SET_PRIORITY_KEYWORD:

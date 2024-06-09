@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useLocation, useNavigate,  } from 'react-router-dom';
 
 const usePageNavigation = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const previousPath = useRef(null);
-
   useEffect(() => {
     previousPath.current = localStorage.getItem('lastVisitedPage');
 
@@ -23,6 +22,7 @@ const usePageNavigation = () => {
     handleBeforeUnload()
     window.addEventListener('beforeunload', handleBeforeUnloadEvent);
   }, []);
+
 
   const goToPreviousPage = (event) => {
     if ((event.ctrlKey || event.metaKey) && (event.key === 'r' || event.key === 'R')) {

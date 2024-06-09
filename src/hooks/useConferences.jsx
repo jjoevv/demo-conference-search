@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 
 import { useAppContext } from "../context/authContext"
 
@@ -8,13 +8,11 @@ import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import useSessionStorage from "./useSessionStorage"
-import useLocalStorage from "./useLocalStorage"
 import { sortByFollow } from "../utils/sortConferences"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
   const { getDataListInStorage } = useSessionStorage()
-  const { getItemInLocalStorage } = useLocalStorage()
   const [quantity] = useState(0)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -32,131 +30,6 @@ const useConference = () => {
     setSelectOptionSort(option)
   }
 
-  const fetchData = useCallback(async (page, size) => {
-    try {
-      const response = await fetch(`${baseURL}/conference?page=${page}&size=${size}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      return data
-    } catch (error) {
-      setError(error);
-    }
-  }, []);
-
-  const handleGetList = async () => {
-
-    setLoading(true)
-
-    try {
-      
-     // localStorage.removeItem('conferences')
-     // localStorage.removeItem('currentFetchPageLS')
-     // localStorage.removeItem('totalPagesConferences')
-      
-      const currentFetchPage = getItemInLocalStorage('currentFetchPageLS')
-      const firstPageData = await fetchData(1, 1);
-      const totalConf = firstPageData.maxRecords // get total conferences from first page data
-      const maxPagesFetch = Math.ceil(totalConf / 20); // get total pages from first page data
-
-      if (state.conferences.length === 0) {
-
-        if (!currentFetchPage || currentFetchPage === 1) {
-          //data didnt save in local storage
-          localStorage.setItem('currentFetchPageLS', JSON.stringify(1))
-          localStorage.setItem('totalConferences', JSON.stringify(totalConf))
-          const maxPages = Math.ceil(totalConf / 7)
-          localStorage.setItem('totalPagesConferences', JSON.stringify(maxPages))
-
-          const firstPageData = await fetchData(1, 20);
-
-          setLoading(false)
-
-          const listFollowed = getDataListInStorage("listFollow")
-          const filteredData = firstPageData.data.filter(
-            item => !listFollowed.some(conf => conf.id === item.id)
-          );
-
-          const updatedConferences = [...new Set([...listFollowed, ...filteredData])];
-
-          localStorage.setItem('conferences', JSON.stringify(firstPageData))
-          dispatch(getAllConf(updatedConferences));
-
-          // Fetch remaining pages asynchronously and save to localstorage
-          for (let i = 2; i <= maxPagesFetch; i++) {
-            const pageData = await fetchData(i, 20);
-            const filteredNextData = pageData.data.filter(
-              item => !listFollowed.some(conf => conf.id === item.id)
-            );
-            localStorage.setItem('currentFetchPageLS', JSON.stringify(i)) //save current fetch page
-            dispatch(getAllConf(filteredNextData));
-            const conferencesStored = getItemInLocalStorage('conferences')
-
-            const updatedConferencesNext = [...new Set([...conferencesStored, ...filteredNextData])];
-
-            localStorage.setItem('conferences', JSON.stringify(updatedConferencesNext))
-          }
-          return
-        }
-
-        if (currentFetchPage && maxPagesFetch === currentFetchPage) {
-          //full data saved in local storage
-          const conferencesStored = getItemInLocalStorage('conferences')
-          const data = conferencesStored ? conferencesStored : []
-          dispatch(getAllConf(data));
-          //saveDataToFile(data)
-          setLoading(false)
-          return
-        }
-        else {
-          //a part of data saved in local storage
-          if (currentFetchPage > 1) {
-            setLoading(false)
-            const conferencesStored = getItemInLocalStorage('conferences')
-            const listFollowed = getDataListInStorage("listFollow")
-            // Loại bỏ các phần tử trùng lặp
-            const uniqueData = conferencesStored.filter(item => !listFollowed.some(followedItem => followedItem.id === item.id));
-
-            // Gộp `listFollowed` lên đầu `uniqueData`
-            const sortedData = [...listFollowed, ...uniqueData];
-            dispatch(getAllConf(sortedData));
-            localStorage.setItem('conferences', JSON.stringify(sortedData))
-
-
-            // Fetch remaining pages asynchronously and save to localstorage
-            for (let i = currentFetchPage + 1; i <= maxPagesFetch; i++) {
-              const pageData = await fetchData(i, 20);
-              const filteredNextData = pageData.data.filter(
-                item => !listFollowed.some(conf => conf.id === item.id)
-              );
-              localStorage.setItem('currentFetchPageLS', JSON.stringify(i)) //save current fetch page
-              dispatch(getAllConf(filteredNextData));
-              const conferencesStored = getItemInLocalStorage('conferences')
-
-              const updatedConferencesNext = [...new Set([...conferencesStored, ...filteredNextData])];
-
-              localStorage.setItem('conferences', JSON.stringify(updatedConferencesNext))
-            }
-            return
-
-          }
-        }
-      }
-
-
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  }
 
   const getAllConferences = async () => {
     setLoading(true);
@@ -289,9 +162,7 @@ const useConference = () => {
     error: error,
     selectOptionSort,
     displaySortList,
-    fetchData,
     getAllConferences,
-    handleGetList,
     handleGetOne,
     getConferenceDate,
     getStartEndDate,

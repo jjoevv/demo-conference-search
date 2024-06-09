@@ -86,10 +86,15 @@ const Signup = () => {
 
                     <Form className='w-75 '> 
                         <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>Create Account</h1>
-                        <Button className='border-0 w-100 p-2' style={{ backgroundColor: "#E8F1F3", color: "#434343" }}>
+                        {
+                            /*
+    <Button className='border-0 w-100 p-2' style={{ backgroundColor: "#E8F1F3", color: "#434343" }}>
                             <Image src={googleIcon} width={20} className="me-2" />
                             You can join with your Google account
                         </Button>
+                             */
+                        }
+                    
                         <div className='d-flex flex-row align-items-center'>
                             <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
 

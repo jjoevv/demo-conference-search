@@ -8,7 +8,7 @@ import downIcon from '../../assets/imgs/down.png'
 import FilterSelected from "./FilterSelected";
 import useSearch from "../../hooks/useSearch";
 import Options from "./Options";
-import { useLocation, useSearchParams  } from "react-router-dom";
+import { useLocation, useParams, useSearchParams  } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import useFilter from "../../hooks/useFilter";
@@ -22,13 +22,14 @@ const Filter = () => {
   const [showIsAvailableAdvancedFilter, setShowIsAvailableAdvancedFilter] = useState(false);
   const [searchInput, setSearchInput] = useState("")  
   const location = useLocation();
-  const pathname = location.pathname;
+  const pathname = useParams()
   const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(()=>{
-    
+    console.log({location, pathname})
     // Lấy danh sách các location trước đó từ localStorage
-    clearKeywords()
-  }, [pathname])
+    //clearKeywords()
+  }, [pathname, location])
   const [showHeaderFilter, setShowHeaderFilter] = useState(false);
 
   useEffect(() => {

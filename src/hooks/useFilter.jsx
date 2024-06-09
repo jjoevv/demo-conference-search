@@ -5,7 +5,7 @@ import { useAppContext } from '../context/authContext'
 
 const useFilter = () => {
   const { state, dispatch } = useAppContext()
-  const { optionsSelected, getCountryName } = useSearch()
+  const { optionsSelected } = useSearch()
 
   const [loading, setLoading] = useState(false)
 
