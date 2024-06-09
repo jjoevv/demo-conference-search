@@ -9,6 +9,8 @@ const useParamsFilter = () => {
   const {optionsSelected, addKeywords} = useSearch()
   const location = useLocation()
 const [lastlocation, setLastLocation] = useState(null)
+
+
   useEffect(() => {
      // console.log({location})
      const search = location.search;
@@ -24,10 +26,10 @@ const [lastlocation, setLastLocation] = useState(null)
        const keys = Object.keys(queryLocation);
        keys.forEach(key => {
          if (key === 'page') {
-           setPage(parseInt(queryLocation[key])-1)
+           setPage(parseInt(queryLocation[key])-1)  //set page
            console.log({key})
          } else {
-           addKeywords(key, [queryLocation[key]])
+           addKeywords(key, [queryLocation[key]]) //add keyword
          }
        });
      }
