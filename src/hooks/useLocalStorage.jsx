@@ -15,7 +15,7 @@ const useLocalStorage = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       if (JSON.parse(storedUser).accessToken) {
-        savetokenToLocalStorage(JSON.parse(storedUser).accessToken)        
+        savetokenToLocalStorage(JSON.parse(storedUser).accessToken)
         dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
       }
     }

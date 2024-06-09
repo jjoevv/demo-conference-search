@@ -74,7 +74,7 @@ function EventCalendar() {
                 onClick={handleDateClick}>
                 <span> {event.event.subStyle !== 'note-event' && `${event.event.acronym} -`} {event.event.date_type}</span>
                 {
-                    (event.event.note !== '' || event.event.note) && <span className=''>{`Note: ${event.event.note}`}</span>
+                    (event.event.note !== '' && event.event.note!=='default' && event.event.note) && <span className=''>{`Note: ${event.event.note}`}</span>
                 }
             </div>
         );
@@ -96,6 +96,7 @@ function EventCalendar() {
                 selectable
                 onSelectEvent={handleSelectEvent}
                 onSelectSlot={handleSelectSlot}
+                allDayAccessor="allDay" 
             />
 
             {

@@ -4,41 +4,49 @@ import RateConference from './RateConference';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import AvatarIcon from '../../assets/imgs/avatar.png'
-import useFeedback from '../../hooks/useFeedbacks';
 import Loading from '../Loading';
-const InputFeedback = ({ onClick, onCheck, id, cfpid, onReloadList }) => {
+import { useParams } from 'react-router-dom';
+const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList }) => {
     const { user } = useLocalStorage()
-    const [feedback, setFeedback] = useState('')
-    const [rating, setRating] = useState(5)
+    const [feedback, setFeedback] = useState(defaultValue? defaultValue.content:'')
+    const [rating, setRating] = useState(defaultValue? defaultValue.rating: 5)
     const [error, setError] = useState(false)
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
-
+    const confid = useParams()
     const handleSubmit = async () => {
         setLoading(true)
         if (user || localStorage.getItem('user')) {
             if (feedback !== '') {
                 // Gửi feedback qua API ở đây
                 const res = await onClick(id, feedback, rating)
-                console.log({res})
+               
                 setLoading(false)
                 // Reset ô nhập feedback sau khi gửi
                 if (res.status) {
                     setFeedback('');
-                    await onReloadList(cfpid)
-                    onCheck()
+                    onReloadList(confid.id)
+                    if(onCheck){
+                        onCheck()
+                    }
                     setMessage('')
+                    setRating(5)
                 }
                 else {
                     setMessage('Something wrong! Try again or refresh page')
                     setError(true)
+                    setLoading(false)
                 }
             }
             else {
                 setError(true)
+                setLoading(false)
             }
         }
-        else alert('Please log in to leave feedback.')
+        else {
+            setLoading(false)
+            alert('Please log in to leave feedback.')
+        }
     };
 
     const handleInputChange = (e) => {
@@ -67,10 +75,10 @@ const InputFeedback = ({ onClick, onCheck, id, cfpid, onReloadList }) => {
                     <Form.Group className=' border rounded'>
                         <Form.Control
                             as="textarea"
-                            rows={4}
+                            rows={5}
                             value={feedback}
                             onChange={e => handleInputChange(e)}
-                            placeholder="Feedback..."
+                            placeholder="Your feedback go here..."
                             required={true}
                             className={error ? 'border-danger' : 'border-0'}
                         />

@@ -375,8 +375,11 @@ a {
     justify-content: center;
 
 }
-
+.form-switch .form-check-input{
+    border-color: #419489 !important;
+}
 .form-check-input {
+    border: 2px sold #419489;
     cursor: pointer;
 }
 

@@ -53,76 +53,77 @@ const useNote = () => {
         )
         .join('');
 };
-  const extractDataByOrgId = (conferencesList, notesList) => {
-    const extractedData = [];
+const extractDataByOrgId = (conferencesList, notesList) => {
+  const extractedData = [];
 
-    for (const note of notesList) {
-        const extractedItem = {
-            id: note.tid,
-            conf_id: null,
-            name: null,
-            note: null,
-            acronym: null,
-            start_date: null,
-            end_date: null,
-            date_type: null,
-            location: null,
-            subStyle: null,
-        };
-        if (note.ImportantDateDateId) {
-            for (const conference of conferencesList) {
-              const org = conference.organizations.find(org => org.status === 'new');
-    
-                for (const importantDate of conference.importantDates) {
-                    if (importantDate.date_id === note.ImportantDateDateId) {
-                        extractedItem.acronym = conference.information.acronym;
-                        extractedItem.name = conference.information.name
-                        extractedItem.note = note.note;
-                        extractedItem.conf_id = conference.id
-                        extractedItem.date_type = capitalizeFirstLetter( importantDate.date_type)
-                        extractedItem.end_date = importantDate.date_value;
-                        extractedItem.start_date = importantDate.date_value;
-                        extractedItem.subStyle = getSubStyle(importantDate.date_type)
-                        extractedItem.location = org ? org.location : null
-                    }
-                }
-            }
-        } else if (note.OrganizationOrgId) {
-            for (const conference of conferencesList) {
-              extractedItem.acronym = conference.information.acronym;
-                for (const organization of conference.organizations) {
-                    if (organization.org_id === note.OrganizationOrgId && organization.status === 'new') {
-                        extractedItem.date_type = 'Conference date';
-                        extractedItem.start_date = organization.start_date;
-                        extractedItem.end_date = organization.end_date;
-                        extractedItem.conf_id = conference.id;
-                        extractedItem.name = conference.information.name
-                        extractedItem.note = note.note;
-                        extractedItem.subStyle = 'conference-event'
-                        extractedItem.location = organization.location
-                    }
-                }
-            }
-        } else {
-            extractedItem.date_type = 'Personal note';
-            extractedItem.start_date = note.date_value;
-            extractedItem.end_date = note.date_value;
-            extractedItem.note = note.note;
-            extractedItem.subStyle = 'note-event';
-        }
-        // Kiểm tra xem đã tồn tại object có các thuộc tính giống với object mới không
-        const isDuplicate = extractedData.some(item => (
-          item.tid === extractedItem.id
-        ));
-        if (!isDuplicate) {
+  for (const note of notesList) {
+      const extractedItem = {
+          id: note.tid,
+          conf_id: null,
+          name: null,
+          note: note.note || null,
+          acronym: null,
+          start_date: null,
+          end_date: null,
+          date_type: null,
+          location: null,
+          subStyle: null,
+          allDay: true, // Đánh dấu sự kiện là nguyên ngày
+      };
+
+      if (note.ImportantDateDateId) {
+          for (const conference of conferencesList) {
+              for (const importantDate of conference.importantDates) {
+                  if (importantDate.date_id === note.ImportantDateDateId) {
+                      extractedItem.acronym = conference.information.acronym;
+                      extractedItem.name = conference.information.name;
+                      extractedItem.conf_id = conference.id;
+                      extractedItem.date_type = capitalizeFirstLetter(importantDate.date_type);
+                      extractedItem.start_date = new Date(importantDate.date_value);
+                      extractedItem.end_date = new Date(importantDate.date_value); // Chuyển đổi thành đối tượng Date
+                      extractedItem.subStyle = getSubStyle(importantDate.date_type);
+
+                      const org = conference.organizations.find(org => org.status === 'new');
+                      extractedItem.location = org ? org.location : null;
+                  }
+              }
+          }
+      } else if (note.OrganizationOrgId) {
+          for (const conference of conferencesList) {
+              const organization = conference.organizations.find(org => org.org_id === note.OrganizationOrgId && org.status === 'new');
+              if (organization) {
+                  extractedItem.acronym = conference.information.acronym;
+                  extractedItem.name = conference.information.name;
+                  extractedItem.conf_id = conference.id;
+                  extractedItem.date_type = 'Conference date';
+                  extractedItem.start_date = new Date(organization.start_date);
+                  extractedItem.end_date = new Date(organization.end_date); // Chuyển đổi thành đối tượng Date
+                  extractedItem.subStyle = 'conference-event';
+                  extractedItem.location = organization.location;
+              }
+          }
+      } else {
+          extractedItem.date_type = 'Personal note';
+          extractedItem.start_date = new Date(note.date_value);
+          extractedItem.end_date = new Date(note.date_value); // Chuyển đổi thành đối tượng Date
+          extractedItem.subStyle = 'note-event';
+      }
+
+      // Kiểm tra xem đã tồn tại object có các thuộc tính giống với object mới không
+      const isDuplicate = extractedData.some(item => item.id === extractedItem.id);
+      if (!isDuplicate) {
           extractedData.push(extractedItem);
-        }
-        
-    }
-    
-    return extractedData
-      
-  };
+      }
+  }
+
+  return extractedData;
+};
+
+// Các hàm phụ trợ cần thiết như capitalizeFirstLetter và getSubStyle cần được định nghĩa bên ngoài hoặc nhập vào file này
+
+
+// Các hàm phụ trợ cần thiết như capitalizeFirstLetter và getSubStyle cần được định nghĩa bên ngoài hoặc nhập vào file này
+
     
   const getAllNotes = async () => {
     setLoading(true)
@@ -142,7 +143,6 @@ const useNote = () => {
         const data = await response.json(); 
         // Sử dụng hàm này để lấy thông tin từ danh sách dựa trên OrganizationOrgId
         const newDataByOrgId = extractDataByOrgId(listFollowed, data.data);
-       
         dispatch(getNotes(newDataByOrgId))
         setLoading(false)
       }

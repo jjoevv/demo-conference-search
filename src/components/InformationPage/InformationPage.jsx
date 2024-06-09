@@ -37,7 +37,7 @@ const InformationPage = ({ conference }) => {
         <span className='text-teal-normal'>Conference information</span>
         <RedirectButton conference={conference} />
       </div>
-      {conference ?
+      {conference && conference !== null ?
         <>
 
           <div className='fw-bold fs-large fs-large fw-bold fs-large mt-2 py-3'>{conference.information.name}</div>
@@ -107,13 +107,13 @@ const InformationPage = ({ conference }) => {
               conference.information.rating &&
               <Row className='py-3 ps-4 bg-beige-light'>
                 <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
-                <Col className='fw-bold fs-large'>{conference.information.rating}
+                <Col className='fw-bold fs-large'>{parseFloat(conference.information.rating.toFixed(2))}
                 </Col>
               </Row>
             }
             {renderFieldOfResearch(conference.information.fieldOfResearch)
               &&
-              <Row className='py-3 ps-4 pe-1 bg-beige-light '>
+              <Row className={`py-3 ps-4 pe-1  ${!conference.information.rating ? 'bg-beige-light' : '' }`}>
                 <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
                 <Col className='fw-bold fs-large'>
                   {renderFieldOfResearch(conference.information.fieldOfResearch)}

@@ -111,6 +111,7 @@ const useAuth = () => {
 
 
   const updateProfile = async (updateData) => {
+    setLoading(true)
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
     try {
@@ -131,6 +132,7 @@ const useAuth = () => {
         }
         setError(response.status) 
       }
+      setLoading(false)
       return responseData
     } catch (error) {
       console.error(error);
@@ -192,6 +194,8 @@ const useAuth = () => {
       }
       else {
         const data = await response.json()
+        
+        dispatch({type: "LOGIN_SUCCESS", payload: data.data})
         const user_id = data.data.id
         sessionStorage.setItem('user-id', JSON.stringify(user_id))
         setUserId(user_id)

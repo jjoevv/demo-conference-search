@@ -99,7 +99,6 @@ const useSearch = () => {
   const addKeywords =  (label, keywords) => {
     const ischeck= state.optionsSelected[label].includes(keywords)
     
-    console.log(label, keywords, state.optionsSelected[label], ischeck)
     if (label === 'submissionDate' || label === 'conferenceDate') {
        dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords } })
     }

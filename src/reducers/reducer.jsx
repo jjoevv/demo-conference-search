@@ -61,7 +61,6 @@ const appReducer = (state, action) => {
                 filterOptions: { ...state.filterOptions, ...action.payload }
             };
         case actionTypes.ADD_FILTER:
-            console.log({action})
             return {
                 ...state,
                 loading: false,
@@ -73,7 +72,7 @@ const appReducer = (state, action) => {
                     ],
                 },
             };
-            case actionTypes.SET_PARAMS:
+        case actionTypes.SET_PARAMS:
             return {
                 ...state,
                 pageParam: action.payload
@@ -88,9 +87,9 @@ const appReducer = (state, action) => {
                 },
             }
         case actionTypes.REMOVE_FILTER:
-            console.log('co xoa', action.payload)
+
             return {
-                ...state,                
+                ...state,
                 optionsSelected: action.payload,
                 loading: false,
             }
@@ -104,7 +103,7 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 priorityKeywords: action.payload,
-            }; 
+            };
 
         case actionTypes.SET_SEARCH_RESULT:
             return {
@@ -198,8 +197,13 @@ const appReducer = (state, action) => {
                 ...state,
                 notifications: action.payload,
             };
+        case actionTypes.GET_SETTINGS:
+            return {
+                ...state,
+                settings: action.payload,
+            };
         case actionTypes.GET_FEEDBACKS:
-            console.log({action})
+         
             return {
                 ...state,
                 feedbacks: action.payload,

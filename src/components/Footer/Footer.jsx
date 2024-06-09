@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 
 const Footer = () => {
     const location = useLocation()
-    console.log({location})
     if(
         location.pathname.includes('user') ||
         location.pathname.includes('admin') ||
@@ -12,7 +11,6 @@ const Footer = () => {
         }
     return (
         <div className="mt-5">
-            {``}
             <footer className="position-absolute w-100 d-flex align-items-center flex-column justify-content-center text-center mt-5 py-5 bg-teal-light">
                 <div className="py-5">
                     <p className="mt-4"><strong>Graduation Thesis: Conference Searching</strong> </p>

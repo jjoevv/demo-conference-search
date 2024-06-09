@@ -46,8 +46,6 @@ const useConference = () => {
       }
       const data = await response.json();
       
-      const listFollowed = getDataListInStorage("listFollow")
-      const sortedByFollow = sortByFollow(data.data, listFollowed)
       dispatch(getAllConf(data.data));
       setLoading(false);
       return data
@@ -66,6 +64,32 @@ const useConference = () => {
       console.error('Error fetching data:', error);
     }
   }
+
+  const crawlNow = async (id) => {
+
+    try {
+        const response = await fetch(`https://conference-crawler-v2.onrender.com/api/scrape/conference/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            // Nếu yêu cầu không thành công, throw một Error với thông báo lỗi
+            throw new Error('Request failed with status ' + response.status);
+        }
+
+        const data = await response.json();
+        
+        console.log({ data });
+        return { status: true, data: data };
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return { status: false, message: error.message };
+    } 
+};
+
 
   const getConferenceDate = (organizations) => {
     if (organizations.length > 0) {
@@ -168,6 +192,7 @@ const useConference = () => {
     getStartEndDate,
     getLocation,
     handleSelectOptionSort,
+    crawlNow
   }
 }
 

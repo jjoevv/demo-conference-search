@@ -1,64 +1,54 @@
 
 import { useAppContext } from '../context/authContext'
-import { getFollowedConferenceAction } from '../actions/followAction'
 import { baseURL } from './api/baseApi'
 import useToken from './useToken'
 import useLocalStorage from './useLocalStorage'
 import { useState } from 'react'
-import useConference from './useConferences'
+
+const labelMap = {
+  'DATA_UPDATE_CYCLE': {
+      label: 'Data Update Cycle',
+      describe: 'Select the data update cycle. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  },
+  'CHANGE_AND_UPDATE': {
+      label: 'Change and Update',
+      describe: 'Our system will send you email notifications about conferences with extended dates'
+  },
+  'CANCELLED_EVENT': {
+      label: 'Cancelled conference',
+      describe: 'Our system will send you email notifications about cancelled events'
+  },
+  'YOUR_UPCOMING_EVENT': {
+      label: 'Your upcoming event',
+      describe: 'Our system will send you email notifications about your upcoming events in the timestamp'
+  },
+  'AUTO_ADD_EVENT_TO_SCHEDULE': {
+      label: 'Auto add events to schedule',
+      describe: "Important dates from conferences you follow will be automatically added to your schedule."
+  }
+};
 const useSetting = () => {
+  const {state, dispatch} = useAppContext()
   const { user } = useLocalStorage()
   const { token } = useToken()
-  const [settings, setSetttings] = useState([])
   const [loading, setLoading] = useState(false)
-  const updateData = (data) => {
-    return data.map(item => {
-      switch (item.name) {
-        case 'DATA_UPDATE_CYCLE':
-          return {
-            ...item,
-            label: 'Data Update Cycle',
-            describe: 'Select the data update cycle. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-          };
-        case 'CHANGE_AND_UPDATE':
-          return {
-            ...item,
-            label: 'Change and Update',
-            describe: 'Our system will send you email notifications about conferences with extended dates'
-          };
-        case 'CANCELLED_EVENT':
-          return {
-            ...item,
-            label: 'Cancelled conference',
-            describe: 'Our system will send you email notifications about cancelled events'
-          };
-        case 'YOUR_UPCOMING_EVENT':
-          return {
-            ...item,
-            label: 'Your upcoming event',
-            describe: 'Our system will send you email notifications about your upcoming events in the timestamp'
-          };
-        case 'AUTO_ADD_EVENT_TO_SCHEDULE':
-          return {
-            ...item,
-            label: 'Auto add events to schedule',
-            describe: "Important dates from conferences you follow will be automatically added to your schedule."
-          };
-        default:
-          return item;
-      }
-    });
-  };
-  
+
+  const [selectedValue, setSelectedValue] = useState();
+
+    const handleSelect = (value) => {
+        setSelectedValue(value);
+    };
+
   const getAllSetting = async () => {
     setLoading(true);
-    try {
       if(user || localStorage.getItem('user')){
+        let storedToken = JSON.parse(localStorage.getItem('token'));
+        const tokenHeader = token ? token : storedToken
         const response = await fetch(`${baseURL}/user/setting`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
         });
     
@@ -67,15 +57,20 @@ const useSetting = () => {
         }
     
         const data = await response.json();
-        setLoading(false);
-        const updatedData = await updateData(data.data)
-        setSetttings(updatedData)
-        return updatedData;
+
+        const transformedData = {};
+        for (const item of data.data) {
+          transformedData[item.name] = {
+              ...item,
+              label: labelMap[item.name] ? labelMap[item.name].label : item.name,
+              describe: labelMap[item.name] ? labelMap[item.name].describe : '',
+              value: item.value,
+              status: item.status
+          };
       }
-    } catch (error) {
-      setLoading(false); // Đặt trạng thái loading thành false trong trường hợp xảy ra lỗi
-      throw new Error(`Error fetching settings: ${error.message}`);
-    }
+        setLoading(false);
+        dispatch({type: 'GET_SETTINGS', payload: transformedData})
+      }
   };
   
 
@@ -95,12 +90,14 @@ const useSetting = () => {
           status: status
         }
       }
+        let storedToken = JSON.parse(localStorage.getItem('token'));
+        const tokenHeader = token ? token : storedToken
         // Gửi yêu cầu lấy danh sách feedback đến API
         const response = await fetch(`${baseURL}/user/setting`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
           body: JSON.stringify( postData ),
         });
@@ -113,6 +110,7 @@ const useSetting = () => {
         // Lấy dữ liệu từ phản hồi và cập nhật state
         const data = await response.json();
         setLoading(false)
+        setLoading(false)
         // Trả về dữ liệu từ API để có thể xử lý tiếp
         return data.data;
       } catch (error) {
@@ -123,7 +121,9 @@ const useSetting = () => {
 
     return {
      loading, 
-     settings,
+     settings: state.settings,
+     selectedValue,
+     handleSelect,
      getAllSetting, 
      updateSetting
     }

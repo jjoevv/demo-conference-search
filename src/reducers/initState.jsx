@@ -80,6 +80,6 @@ export const initialState = {
   users: [],
   userAccount: null,
 
-  settings: []
+  settings: {},
 };
 

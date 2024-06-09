@@ -8,6 +8,7 @@ import avatarIcon from '../assets/imgs/avatar_lg.png'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useEffect, useState } from 'react'
 import usePageNavigation from '../hooks/usePageNavigation'
+import useAuth from '../hooks/useAuth'
 
 const sidebar = [
   { path: `/user/account`, title: 'Account', icon: test },
@@ -19,15 +20,18 @@ const sidebar = [
 ]
 
 const Sidebar = () => {
+  const {user: account} = useAuth()
   const {user} = useLocalStorage()
   const location = useLocation()
   usePageNavigation()
   const [profile, setProfile] = useState(null)
+
   useEffect(()=>{
     if(user){
       setProfile(user)
     }
-  },[user])
+    console.log({account, user})
+  },[user, account])
 
   return (
     <Container fluid className="my-sidebar">

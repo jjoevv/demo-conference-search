@@ -20,14 +20,11 @@ const [lastlocation, setLastLocation] = useState(null)
      if (!search) {
        queryLocation.page = ['1']
      } else {
-       console.log(search, queryLocation)
-   
        // Lặp qua một mảng chứa tất cả các key
        const keys = Object.keys(queryLocation);
        keys.forEach(key => {
          if (key === 'page') {
            setPage(parseInt(queryLocation[key])-1)  //set page
-           console.log({key})
          } else {
            addKeywords(key, [queryLocation[key]]) //add keyword
          }
@@ -57,8 +54,7 @@ const [lastlocation, setLastLocation] = useState(null)
        
        window.history.replaceState({}, '', newUrl);
 
-    // Chuyển hướng đến URL mới
-    console.log({paramsFilter, newUrl})
+    // Chuyển hướng đến URL 
 }, [])
 
   return { 

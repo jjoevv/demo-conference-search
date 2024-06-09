@@ -60,7 +60,6 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
         setInputValue(val)
     }
     const handleUpdate = async () => {
-        console.log({ inputvalue })
         try {
             if (inputvalue !== '') {
                 const id = note.id
@@ -203,7 +202,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                                 <span>Note:</span>
                                 <Form.Control
                                     type="text"
-                                    placeholder={note.note !== '' ? note.note : `Enter your note`}
+                                    placeholder={note.note !== '' && note.note !== 'default' ? note.note : `Your notes go here...`}
                                     onClick={handleChooseUpdate}
                                     className='border-0 border-bottom ms-3 p-1'
                                 />
@@ -211,7 +210,9 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         </>
                 }
 
-                <p className='text-color-black my-3'>
+                {
+                    note.subStyle !== 'note-event' &&
+                    <p className='text-color-black my-3'>
                     <FontAwesomeIcon icon={faLink} className='text-teal-normal me-2' />
                     <Button
                         onClick={() => handleGotoCfp(note.conf_id)}
@@ -219,6 +220,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         More details
                     </Button>
                 </p>
+                }
 
                 {
                     showConfirmDelete &&

@@ -74,7 +74,7 @@ const ChangePasswordModal = ({ show, handleClose, handleShow }) => {
           <Modal.Title className="text-center w-100 fw-bold text-color-black">Change Password</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form className='px-5'>
+          <Form className='px-5' autoComplete='off'>
             <Form.Group as={Col} className="my-4 d-flex align-items-center">
               <Form.Label column sm="4">Current password:</Form.Label>
               <Form.Control
@@ -91,11 +91,12 @@ const ChangePasswordModal = ({ show, handleClose, handleShow }) => {
             <Form.Group as={Col} className="my-4 d-flex align-items-center">
               <Form.Label column sm="4">New password:</Form.Label>
               <Form.Control
-                type="password"
+                type="text"
                 value={newPassword}
-                autoComplete='off'
+                autoComplete='new-password'
                 placeholder='Enter new password'
                 className={isClickedChange && isMatch && !status ? 'border border-danger' : 'border-blue-normal'}
+                
                 onChange={(e) => setNewPassword(e.target.value)}
               />
             </Form.Group>

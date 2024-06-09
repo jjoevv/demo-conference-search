@@ -23,6 +23,7 @@ import LoadingConferences from './LoadingConferences'
 import useAuth from '../../hooks/useAuth'
 import ExpiredModal from '../Modals/ExpiredModal'
 import useParamsFilter from '../../hooks/useParamsFilter'
+import ScrollToTopButton from '../ScrollToTopButton'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
     const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
@@ -180,6 +181,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }
     return (
         <Container id='conferences-render' className='d-flex flex-column align-items-center p-0'>
+              <ScrollToTopButton />
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
                 <div className="h5 fw-bold ms-4 mt-2">
                     {`${conferencesProp.length} conferences`}
