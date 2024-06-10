@@ -20,6 +20,7 @@ const useNote = () => {
   const {getDataListInStorage} = useSessionStorage()
 
   const checkDateTypeWithKeywords = (filekeywords, dateType) => {
+    
     const lines = filekeywords.split('\n').map(line => line.trim().toLowerCase());
 
       const dateTypeFormat = dateType.trim().toLowerCase();
@@ -231,7 +232,8 @@ const extractDataByOrgId = (conferencesList, notesList) => {
         getAllNotes,
         updateNote,
         addNote,
-        deleteNote
+        deleteNote,
+        checkDateTypeWithKeywords
     }
   }
 

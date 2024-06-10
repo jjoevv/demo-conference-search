@@ -22,7 +22,8 @@ const Homepage = () => {
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
     const location = useLocation()
-
+    const [loadingFilter, setLoadingFilter] = useState(false)
+    const [selected, setSelected] = useState(false)
     const {
       priorityKeywords, 
       filterConferences, 
@@ -50,16 +51,30 @@ const Homepage = () => {
 
 
     useEffect(()=>{
-      const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-      if(isApliedFilter){
-        const filterResult = filterConferences(conferences, optionsSelected)
-        const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)       
-        setDisplayedConferences(sortConferences)      
-      }
-      else {
-        setDisplayedConferences(conferences)
-      }
-    }, [optionsSelected, conferences, priorityKeywords])
+      setLoadingFilter(true);
+      const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+      setSelected(isAppliedFilter);
+    
+      const applyFilter = async () => {
+        if (isAppliedFilter) {
+          try {
+            const filterResult = await filterConferences(conferences, optionsSelected);
+            const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords);
+            setDisplayedConferences(sortConferences);
+          } catch (error) {
+            console.error("Error applying filter:", error);
+          } finally {
+            setLoadingFilter(false);
+          }
+        } else {
+          setDisplayedConferences(conferences);
+          setLoadingFilter(false);
+        }
+      };
+    
+      applyFilter();
+    }, [optionsSelected, conferences, priorityKeywords]);
+    
   
   
   return (
@@ -82,6 +97,7 @@ const Homepage = () => {
           conferencesProp={displayConferences} 
           onReloadPage={getAllConferences}
           loading={loadingAll}
+          isFilter={loadingFilter}
          />
         }
     </div>

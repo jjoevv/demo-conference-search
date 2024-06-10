@@ -32,11 +32,11 @@ const PriorityOptions = () => {
     return (
       <Row className="d-flex align-items-start w-100 justify-content-center">
         
-      <Col sm={2} className="p-0">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </Col>
+     {/**  <Col sm={2} className="p-0">{Object.keys(selectedKeywords).length > 0 && `Display priority by:` } </Col>*/}
         <Col className="d-flex flex-column w-100 p-0">
           {Object.entries(selectedKeywords).map(([key, valueList]) => (
             <Row key={key} className={`w-100 my-2 align-items-start`}>
-              <Col sm={2} style={{ fontWeight: 'bold', marginRight: '10px' }} className="text-end">
+              <Col sm={2}  className="text-end p-0 fw-bold">
               {
                 key === 'conferenceDate' ? 
                 'Conference:'
@@ -56,7 +56,7 @@ const PriorityOptions = () => {
                             className={`px-2 py-1 border text-teal-normal mx-2 rounded-2 text-nowrap
                             ${selected.includes(option) ? `bg-primary-light border-primary-normal`
                                     : `bg-white border-color-medium`}
-                            ${valueList.length > 3 ? 'my-1' : ''}        
+                            ${valueList.length >= 3 ? 'my-1' : ''}        
                             `}
                         >
                             {renderOption(key, option)}

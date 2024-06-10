@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 
 import useSearch from './useSearch'
 import { useAppContext } from '../context/authContext'
+import useNote from './useNote'
 
+import submission_date_dict from './../data/submission_date_dict.txt?raw'
+import moment from 'moment'
 const useFilter = () => {
   const { state, dispatch } = useAppContext()
   const { optionsSelected } = useSearch()
-
+  const {checkDateTypeWithKeywords} = useNote()
   const [loading, setLoading] = useState(false)
 
   const [priorityKeywords, setPriorityKeywords] = useState({});
@@ -52,8 +55,9 @@ const useFilter = () => {
     Object.entries(optionsSelected).forEach(([key, keywords]) => {
       if(keywords.length > 0){
         if(key === 'conferenceDate' || key === 'submissionDate'){
-          const extractKeyword = extractDateRangeFromKeyword(keywords[0])
-          keywordsWithMultipleOptions[key] = [extractKeyword]
+          const fromIndex = keywords[0].indexOf("from");
+          const extractedString = keywords[0].substring(fromIndex);
+          keywordsWithMultipleOptions[key] = [extractedString]
         }
         else keywordsWithMultipleOptions[key] = keywords;
       }
@@ -78,13 +82,13 @@ const useFilter = () => {
 
 // Hàm để trích xuất chuỗi ngày tháng từ từ khóa
 const extractDateRangeFromKeyword = (keyword) => {
-  const match = keyword.match(/from\s+\d{4}-\d{2}-\d{2}\s+to\s+\d{4}-\d{2}-\d{2}/);
+  const match = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
   return match ? match[0] : null;
 };
 
 const getCountForSelectedKeyword = (countlist, keyword, key) => {
   // Xử lý các từ khóa đặc biệt như "conference date" hoặc "submission date"
-  
+
   if ( key ==='conferenceDate' || key === 'submissionDate') {
     for(const [keyCount, value] of Object.entries(countlist)){
       
@@ -180,28 +184,34 @@ const filterConferences = (listConferences, keywordSelected) => {
             }
 
             case 'conferenceDate': {
-              const matchDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
+              const matchDates = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
               if (matchDates) {
                 const startDate = new Date(matchDates[1]);
                 const endDate = new Date(matchDates[2]);
                 isMatch = conference.organizations?.some(org => {
-                  const dateValue = new Date(org.start_date);
-                  return dateValue >= startDate && dateValue <= endDate && org.status === "new";
+                  const orgStart = new Date(org.start_date);
+                  const orgEnd = new Date(org.start_date);
+                  
+                  return orgStart <= startDate && orgEnd >= endDate && org.status === "new";
                 });
               }
               break;
             }
 
             case 'submissionDate': {
-              const matchSubDates = keyword.match(/from\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
+              const matchSubDates = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
               if (matchSubDates) {
                 const startDate = new Date(matchSubDates[1]);
                 const endDate = new Date(matchSubDates[2]);
                 isMatch = conference.importantDates?.some(date => {
                   const dateValue = new Date(date.date_value);
-                  return date.date_type?.toLowerCase().includes('sub') &&
-                         dateValue >= startDate && dateValue <= endDate &&
-                         date.status === "new";
+                  if( checkDateTypeWithKeywords(submission_date_dict, date.date_type) &&
+                  dateValue >= startDate && dateValue <= endDate &&
+                  date.status === "new"){
+                    matchKeywords[key] = [`${date.date_type} (${moment(date.date_value).format('YYYY/MM/DD')})`]
+                    return true
+                  }
+                  return false
                 });
               }
               break;
@@ -237,12 +247,16 @@ const filterConferences = (listConferences, keywordSelected) => {
 
           if (isMatch) {
             if (!matchKeywords[key]) matchKeywords[key] = [];
-            if(key === 'conferenceDate' || key === 'submissionDate'){
-              const match = keywords[0].match(/from\s+\d{4}-\d{2}-\d{2}\s+to\s+\d{4}-\d{2}-\d{2}/);
-              const extractKeyword = match ? match[0] : '';
-              matchKeywords[key].push(extractKeyword);
+            if(key !== 'submissionDate'){
+
+              if(key === 'conferenceDate'){
+                const match = keywords[0].match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
+                const extractKeyword = match ? match[0] : '';
+                matchKeywords[key].push(extractKeyword);
+              }
+              else matchKeywords[key].push(keyword);
             }
-            else matchKeywords[key].push(keyword);
+            
             isCategoryMatch = true;
           }
         });
@@ -306,7 +320,7 @@ const sortConferencesByPriorityKeyword = (conferences, prioritySelectedKeywords)
 
 const countMatchingConferences = (listConferences, keywordSelected) => {
   let keywordCounts = {}; // Object to store counts of matching conferences for each keyword
-
+ 
   // Initialize keywordCounts with 0 for each keyword in keywordSelected
   Object.values(keywordSelected).forEach(keywords => {
     keywords.forEach(keyword => {
@@ -322,9 +336,15 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
         const matchingKeywords = conference.matchingKeywords[key];
 
         lowerKeywords.forEach(keyword => {
-          if(key==='submissionDate' || key === 'conferenceDate'){
+          if(key === 'conferenceDate'){
             const extractedRange = extractDateRangeFromKeyword(keyword);
             if (extractedRange && matchingKeywords.includes(extractedRange)) {
+              keywordCounts[keyword]++;
+            }
+          }
+          else if (key === 'submissionDate'){
+            const submissionKeywords = keywordSelected['submissionDate']; // Lấy danh sách keyword của submissionDate
+            if (submissionKeywords.length > 0 && conference.matchingKeywords['submissionDate']) {
               keywordCounts[keyword]++;
             }
           }

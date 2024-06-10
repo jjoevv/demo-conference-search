@@ -24,11 +24,13 @@ import useAuth from '../../hooks/useAuth'
 import ExpiredModal from '../Modals/ExpiredModal'
 import useParamsFilter from '../../hooks/useParamsFilter'
 import ScrollToTopButton from '../ScrollToTopButton'
+import { checkExistValue } from '../../utils/checkFetchedResults'
 
-const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost }) => {
+const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost, isFilter }) => {
     const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
     const { listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
+    const [selected, setSelected] = useState(false)
     const { pageParam, setPage } = useParamsFilter()
     const { user } = useAuth()
     const navigate = useNavigate()
@@ -60,6 +62,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
     }, [conferencesProp, listFollowed])
 
+    useEffect(() => {
+        const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+        setSelected(isApliedFilter)
+    }, [optionsSelected])
 
     useEffect(() => {
         if (selectOptionSort === "Random") {
@@ -140,20 +146,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
         scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
         // Cập nhật URL với trang mới
         const newUrl = new URL(window.location);
-        newUrl.searchParams.set('page', pageDisplay + 1); // Thêm 1 để page bắt đầu từ 1 thay vì 0
         window.history.pushState({}, '', newUrl);
-
-        // Cuộn lên đầu danh sách khi chuyển trang
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
-
-        const searchParam = newUrl.href + `/detailed-information/${id}`
-
-         // Navigate to new URL
-        window.history.pushState({}, '', searchParam);
-        //window.location.href = newUrl
         navigate(`/detailed-information/${id}`)
 
     }
@@ -184,17 +177,41 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
               <ScrollToTopButton />
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
                 <div className="h5 fw-bold ms-4 mt-2">
-                    {`${conferencesProp.length} conferences`}
+                    {`${conferencesProp.length} conferences`} 
                 </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center w-100 px-5 mx-5">
-                <PriorityOptions />
-
-                <DropdownSort
+            <Row className='w-100'>
+                {
+                    selected ?
+                    <>
+                    <Col sm={2} className='d-flex align-items-start justify-content-end p-0'>
+                         Display priority by:
+                    </Col>
+                    <Col sm={8} className='d-flex align-items-start p-0'>
+                         <PriorityOptions/>
+                    </Col>
+                    <Col className='p-0'>
+                    <DropdownSort
                     options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
                     onSelect={handleDropdownSelect}
                 />
-            </div>
+                    </Col>
+                    </>
+                    :
+                    <>
+                    <Col sm={9}></Col>
+                    <Col>
+                    <DropdownSort
+                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
+                    onSelect={handleDropdownSelect}
+                />
+                    </Col>
+                    </>
+                    
+                }
+
+            </Row>
+           
             <ExpiredModal onClose={() => setShowPopupFollow(false)} isOpen={showPopupFollow} />
             {
                 conferencesProp && !loading

@@ -11,7 +11,7 @@ import TableRender from '../../components/admin/TableRender'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faFilter, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faEdit, faFilter, faGear, faTrash } from '@fortawesome/free-solid-svg-icons'
 import usePost from '../../hooks/usePost'
 import DeleteModal from '../../components/Modals/DeleteModal'
 import ModalUpdateConf from '../../components/UpdatePost.jsx/ModalUpdateConf'
@@ -59,7 +59,8 @@ const Dashboard = () => {
 
       const filterResult = filterConferences(conferences, optionsSelected)
       const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-      //console.log({sortConferences})
+
+      
       setDisplayedConferences(sortConferences)
     }
     else {
@@ -138,10 +139,8 @@ const Dashboard = () => {
             accessor: 'actions',
             Cell: ({ row }) => (
                 <div className='fixed-column-1 p-0 d-flex align-items-center'>
-                    <ButtonGroup style={{width: '80px'}}>
-                        <Button className='bg-transparent border-0 p-0 m-0' onClick={() => handleChooseEdit(row.original)}>
-                            <FontAwesomeIcon icon={faEdit} className='text-primary-normal' />
-                        </Button>
+                    <ButtonGroup style={{width: '20px'}}>
+                     
 
                         <Button className='bg-transparent border-0 p-0 m-0'    onClick={()=>handleChooseDelete(row.original)}>
                             <FontAwesomeIcon icon={faTrash} className='text-danger' />
@@ -232,11 +231,11 @@ const Dashboard = () => {
         <h4>Dashboard</h4>
         <ButtonGroup>
           <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
-            <Image src className='p-2' />
+            <FontAwesomeIcon icon={faDownload} className='me-2'/>
             Export file
           </Button>
           <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
-            <Image src className='p-2' />
+          <FontAwesomeIcon icon={faGear} className='me-2'/>
             Setting
           </Button>
         </ButtonGroup>
@@ -248,30 +247,11 @@ const Dashboard = () => {
 
           <Row>
             <Col>
-              <label className='me-2'>Crawled web pages:</label>
-              <span className='me-2 fw-semibold'>2000</span>
-            </Col>
-            <Col>
-              <label className='me-2'>Recent data crawling time:</label>
-              <span className='me-2 fw-semibold'>2000</span>
-            </Col>
-            <Col>
-              <label className='me-2'>Data crawling cycle:</label>
-              <span className='me-2 fw-semibold'>Every 3 days</span>
+              <label className='me-2'>Total conferences:</label>
+              <span className='me-2 fw-semibold'>{displayConferences.length}</span>
             </Col>
           </Row>
 
-          <Row>
-            <Col>
-              <label className='me-2'>Crawled conferences:</label>
-              <span className='me-2 fw-semibold'>2000</span>
-            </Col>
-            <Col>
-              <label className='me-2'>Success rate of the crawl process:</label>
-              <span className='me-2 fw-semibold'>2000</span>
-            </Col>
-            <Col></Col>
-          </Row>
         </div>
 
         <Row md={4} className='justify-content-end my-2 mb-3'>

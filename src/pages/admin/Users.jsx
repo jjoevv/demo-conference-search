@@ -118,14 +118,7 @@ const Users = () => {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Users management</h4>
         <ButtonGroup>
-          <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
-            <Image src className='p-2' />
-            Export file
-          </Button>
-          <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
-            <Image src className='p-2' />
-            Setting
-          </Button>
+          
         </ButtonGroup>
       </div>
 

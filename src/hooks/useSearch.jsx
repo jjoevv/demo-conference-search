@@ -105,7 +105,6 @@ const useSearch = () => {
     else {
       if (!state.optionsSelected[label].includes(keywords[0])) {
         dispatch(addFilter(label, keywords))
-        console.log('ko trung',state.optionsSelected[label], keywords )
       }
       else deleteKeyword(label, keywords[0])
     }

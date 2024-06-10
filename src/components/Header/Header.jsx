@@ -58,13 +58,13 @@ const Header = () => {
             </Link>
             </Nav.Item>
             <Dropdown>
-              <Dropdown.Toggle className='bg-transparent text-color-black border-0 fs-6 text-header'>
+              <Dropdown.Toggle className='bg-transparent text-color-black border-0 fs-6 '>
                 Conferences
               </Dropdown.Toggle>
         
               <Dropdown.Menu>
-                <Dropdown.Item className='fs-6 text-header' onClick={()=>handleNavigate('/user/followed')}>Followed Conferences</Dropdown.Item>
-                <Dropdown.Item className='fs-6 text-header' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6 ' onClick={()=>handleNavigate('/user/followed')}>Followed Conferences</Dropdown.Item>
+                <Dropdown.Item className='fs-6 ' onClick={()=>handleNavigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             

@@ -30,7 +30,6 @@ const Sidebar = () => {
     if(user){
       setProfile(user)
     }
-    console.log({account, user})
   },[user, account])
 
   return (

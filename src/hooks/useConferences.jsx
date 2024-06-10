@@ -66,29 +66,24 @@ const useConference = () => {
   }
 
   const crawlNow = async (id) => {
-
     try {
         const response = await fetch(`https://conference-crawler-v2.onrender.com/api/scrape/conference/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            timeout: 60000, // Thiết lập thời gian chờ là 1 phút (60 giây)
         });
-
+//console.log(response.status)
         if (!response.ok) {
-            // Nếu yêu cầu không thành công, throw một Error với thông báo lỗi
             throw new Error('Request failed with status ' + response.status);
         }
 
         const data = await response.json();
         
-        console.log({ data });
         return { status: true, data: data };
     } catch (error) {
         console.error('Error fetching data:', error);
         return { status: false, message: error.message };
     } 
 };
+
 
 
   const getConferenceDate = (organizations) => {
@@ -176,6 +171,10 @@ const useConference = () => {
 
     // Nếu tìm thấy đối tượng thỏa mãn, trả về location của nó, ngược lại trả về null
     return newOrg ? newOrg.location : '';
+  }
+
+  const getSubDate = (importantDates) => {
+
   }
 
   return {

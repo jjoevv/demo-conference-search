@@ -10,28 +10,25 @@ const useParamsFilter = () => {
   const location = useLocation()
 const [lastlocation, setLastLocation] = useState(null)
 
+useEffect(() => {
+  const search = location.search;
+  const queryLocation = queryString.parse(search);
 
-  useEffect(() => {
-     // console.log({location})
-     const search = location.search;
-     const queryLocation = queryString.parse(search);
-     
-     // Kiểm tra nếu location.search không có giá trị
-     if (!search) {
-       queryLocation.page = ['1']
-     } else {
-       // Lặp qua một mảng chứa tất cả các key
-       const keys = Object.keys(queryLocation);
-       keys.forEach(key => {
-         if (key === 'page') {
-           setPage(parseInt(queryLocation[key])-1)  //set page
-         } else {
-           addKeywords(key, [queryLocation[key]]) //add keyword
-         }
-       });
-     }
+  // Kiểm tra nếu location.search không có giá trị
+  if (!search) {
+    queryLocation.page = ['1'];
+  } else {
+    // Lặp qua mỗi cặp key-value trong queryLocation
+    Object.entries(queryLocation).forEach(([key, value]) => {
+      if (key === 'page') {
+        setPage(parseInt(value) - 1); //set page
+      } else {
+       // addKeywords(key, [value]); //add keyword
+      }
+    });
+  }
+}, [location.search]);
 
-  }, [location.search]);
 
   const setPage = (page) => {
     dispatch({type: "SET_PARAMS", payload: page})
@@ -52,7 +49,7 @@ const [lastlocation, setLastLocation] = useState(null)
        const queryFilter = new URLSearchParams(paramsFilter).toString()
        const newUrl = `?page=${pagenumber + 1}&${queryFilter}`;
        
-       window.history.replaceState({}, '', newUrl);
+       window.history.pushState({}, '', newUrl);
 
     // Chuyển hướng đến URL 
 }, [])
