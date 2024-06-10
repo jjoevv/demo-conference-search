@@ -58,8 +58,9 @@ const Homepage = () => {
       const applyFilter = async () => {
         if (isAppliedFilter) {
           try {
-            const filterResult = await filterConferences(conferences, optionsSelected);
+            const filterResult =  filterConferences(conferences, optionsSelected);
             const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords);
+            console.log({filterResult})
             setDisplayedConferences(sortConferences);
           } catch (error) {
             console.error("Error applying filter:", error);

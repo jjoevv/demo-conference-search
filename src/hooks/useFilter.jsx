@@ -80,11 +80,6 @@ const useFilter = () => {
     }})
   };
 
-// Hàm để trích xuất chuỗi ngày tháng từ từ khóa
-const extractDateRangeFromKeyword = (keyword) => {
-  const match = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
-  return match ? match[0] : null;
-};
 
 const getCountForSelectedKeyword = (countlist, keyword, key) => {
   // Xử lý các từ khóa đặc biệt như "conference date" hoặc "submission date"
@@ -130,7 +125,7 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
     return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
 }
 
-const filterConferences = async (listConferences, keywordSelected) => {
+const filterConferences =  (listConferences, keywordSelected) => {
   setLoading(true);
   let results = [];
   const backupDataConferences = listConferences.map(conference => ({ ...conference }));
@@ -191,10 +186,10 @@ const filterConferences = async (listConferences, keywordSelected) => {
                 isMatch = conference.organizations?.some(org => {
                   const orgStart = new Date(org.start_date);
                   const orgEnd = new Date(org.start_date);
-                  if(orgStart <= startDate && orgEnd >= endDate && org.status === "new"){
-                    console.log({org})
+                  if (orgStart >= startDate && orgEnd <= endDate && org.status === "new") {
+                    return true
                   }
-                  return orgStart <= startDate && orgEnd >= endDate && org.status === "new";
+                  return false
                 });
               }
               break;
@@ -283,6 +278,7 @@ const filterConferences = async (listConferences, keywordSelected) => {
 
 
 const sortConferencesByPriorityKeyword = (conferences, prioritySelectedKeywords) => {
+  console.log({conferences, prioritySelectedKeywords})
   // Sắp xếp hội nghị dựa trên priorityKeywords
   return conferences.sort((a, b) => {
     const priorityKeys = Object.keys(prioritySelectedKeywords);
@@ -320,9 +316,14 @@ const sortConferencesByPriorityKeyword = (conferences, prioritySelectedKeywords)
 };
 
 
+const extractDateRangeFromKeyword = (keyword) => {
+  const match = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/);
+  return match ? match[0] : null;
+};
+
 const countMatchingConferences = (listConferences, keywordSelected) => {
   let keywordCounts = {}; // Object to store counts of matching conferences for each keyword
- 
+
   // Initialize keywordCounts with 0 for each keyword in keywordSelected
   Object.values(keywordSelected).forEach(keywords => {
     keywords.forEach(keyword => {
@@ -335,28 +336,26 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
     for (const [key, keywords] of Object.entries(keywordSelected)) {
       if (keywords.length > 0 && key in conference.matchingKeywords) {
         const lowerKeywords = keywords.map(keyword => keyword.toLowerCase());
-        const matchingKeywords = conference.matchingKeywords[key];
+        const matchingKeywords = conference.matchingKeywords[key].map(mKeyword => mKeyword.toLowerCase());
 
         lowerKeywords.forEach(keyword => {
-          if(key === 'conferenceDate'){
+          if (key === 'conferenceDate') {
+            
             const extractedRange = extractDateRangeFromKeyword(keyword);
-            if (extractedRange && matchingKeywords.includes(extractedRange)) {
+            console.log({extractedRange, matchingKeywords})
+            if (extractedRange && matchingKeywords[0].includes(extractedRange)) {
               keywordCounts[keyword]++;
             }
-          }
-          else if (key === 'submissionDate'){
-            const submissionKeywords = keywordSelected['submissionDate']; // Lấy danh sách keyword của submissionDate
-            if (submissionKeywords.length > 0 && conference.matchingKeywords['submissionDate']) {
+          } else if (key === 'submissionDate') {
+            if (matchingKeywords.length > 0) {
               keywordCounts[keyword]++;
             }
-          }
-          else {
-
-          // Check if keyword is included in matchingKeywords
-          if (matchingKeywords.includes(keyword)) {
-            // Increment keyword count
-            keywordCounts[keyword]++;
-          }
+          } else {
+            // Check if keyword is included in matchingKeywords
+            if (matchingKeywords.includes(keyword)) {
+              // Increment keyword count
+              keywordCounts[keyword]++;
+            }
           }
         });
       }
@@ -365,6 +364,7 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
 
   return keywordCounts;
 };
+
 
 
   return {
