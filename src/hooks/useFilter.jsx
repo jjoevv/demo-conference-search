@@ -130,7 +130,7 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
     return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
 }
 
-const filterConferences = (listConferences, keywordSelected) => {
+const filterConferences = async (listConferences, keywordSelected) => {
   setLoading(true);
   let results = [];
   const backupDataConferences = listConferences.map(conference => ({ ...conference }));
@@ -191,7 +191,9 @@ const filterConferences = (listConferences, keywordSelected) => {
                 isMatch = conference.organizations?.some(org => {
                   const orgStart = new Date(org.start_date);
                   const orgEnd = new Date(org.start_date);
-                  
+                  if(orgStart <= startDate && orgEnd >= endDate && org.status === "new"){
+                    console.log({org})
+                  }
                   return orgStart <= startDate && orgEnd >= endDate && org.status === "new";
                 });
               }
