@@ -13,11 +13,11 @@ import Footer from './components/Footer/Footer.jsx'
 function App() {
   return (
     <AppContextProvider>
-      <Router  basename="/demo-conference-search/">
+      <HashRouter>
         <MainLayout />
         <RoutesApp/>
         <Footer/>
-      </Router>
+      </HashRouter>
     </AppContextProvider>
   )
 }

@@ -19,18 +19,19 @@ const Setting = () => {
   const [switchValue, setSwitchValue] = useState(true);
 
   useEffect(() => {
-   if(!settings){
-    getAllSetting()
-   }
+    if (!settings) {
+      getAllSetting()
+    }
   }, [user])
 
   useEffect(() => {
     getAllSetting()
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setDisplaySetting(settings)
-  },[settings])
+    console.log({settings})
+  }, [settings])
 
 
   const handleChangeSelect = (e) => {
@@ -47,7 +48,7 @@ const Setting = () => {
 
   const order = ["AUTO_ADD_EVENT_TO_SCHEDULE", "CHANGE_AND_UPDATE", "YOUR_UPCOMING_EVENT", "DATA_UPDATE_CYCLE", "CANCELLED_EVENT"];
 
-  return (  
+  return (
     <Container
       fluid
       className='pt-5 overflow-hidden' style={{ marginLeft: "350px", marginTop: "60px" }}>
@@ -55,42 +56,49 @@ const Setting = () => {
       <h6 className='text-color-darker mb-2'>How would you like to recieve notifications?</h6>
 
 
-      {settings ?
-              <>
-                <Form>
-                {order.map((name, index) => {
-    const setting = settings[name];
-    if (setting.name === 'DATA_UPDATE_CYCLE' || setting.name === 'CANCELLED_EVENT') return null;
+     {
+      loading ?
+      <Loading/>
+      :
+      <>
+       {settings ?
+        <>
+          <Form>
+            {order.map((name, index) => {
+              const setting = displaySetting[name];
+              if (setting?.name === 'DATA_UPDATE_CYCLE' || setting?.name === 'CANCELLED_EVENT') return null;
 
-    return (
-        <Form.Group key={setting.tid} className="w-100 my-2 ps-3 pe-5 d-flex align-items-center justify-content-space">
-            <Form.Label column sm="6" className='pe-5 me-5'>
-                <div className='fw-bold text-color-black'>{setting.label}</div>
-                <div className="text-color-medium">{setting.describe}</div>
-            </Form.Label>
-            <Col sm="2" className='ms-3'>
-                {switchValue === setting.tid && loading ? (
-                    <Spinner animation="border" size="sm" className="text-teal-normal"/>
-                ) : (
-                    <Form.Check
+              return (
+                <Form.Group key={setting?.tid} className="w-100 my-2 ps-3 pe-5 d-flex align-items-center justify-content-space">
+                  <Form.Label column sm="6" className='pe-5 me-5'>
+                    <div className='fw-bold text-color-black'>{setting?.label}</div>
+                    <div className="text-color-medium">{setting?.describe}</div>
+                  </Form.Label>
+                  <Col sm="2" className='ms-3'>
+                    {switchValue === setting?.tid && loading ? (
+                      <Spinner animation="border" size="sm" className="text-teal-normal" />
+                    ) : (
+                      <Form.Check
                         type="switch"
-                        id={setting.tid}
-                        checked={setting.status}
-                        name={setting.name}
-                        className={` ${setting.value ? 'checked' : ''}`}                          
-                        onChange={(e)=>handleChangeSwitch(e, setting.tid)}
-                    />
-                )}
-            </Col>
-        </Form.Group>
-    );
-})}
+                        id={setting?.tid}
+                        checked={setting?.status}
+                        name={setting?.name}
+                        className={` ${setting?.value ? 'checked' : ''}`}
+                        onChange={(e) => handleChangeSwitch(e, setting?.tid)}
+                      />
+                    )}
+                  </Col>
+                </Form.Group>
+              );
+            })}
 
-                </Form>
-              </>
-              :
-              <p>Something wrong! Please reload page</p>
-            }
+          </Form>
+        </>
+        :
+        <p>Something wrong! Please reload page</p>
+      }
+      </>
+     }
     </Container>
   )
 }
