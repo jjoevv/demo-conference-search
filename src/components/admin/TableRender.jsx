@@ -100,7 +100,10 @@ const TableRender = ({ data, columns }) => {
                                 <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
                                     {headerGroup.headers.map((column, index) => (
                                         <th {...column.getHeaderProps()} key={column.id}
-                                            className={`bg-primary-light text-color-black text-center ${index === 0 && 'fixed-column-1'}`}>
+                                            className={`bg-primary-light text-color-black text-center 
+                                            ${index === columns.length -1  && 'fixed-column fixed-right'}
+                                            ${index === 0  && 'fixed-column fixed-left'}
+                                            `}>
                                             {column.render('Header')}
                                             {!column.disableResizing && (
                                                 <div
@@ -113,23 +116,39 @@ const TableRender = ({ data, columns }) => {
                                 </tr>
                             ))}
                     </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {page.map((row, index) => {
-                            prepareRow(row);
-                            return (
-                                <tr {...row.getRowProps()} key={row.id} className={` ${index % 2 === 0 ? 'bg-blue-light' : 'bg-white'}`}>
-                                    {row.cells.map((cell, index) => {
-                                        return (
-                                            <td {...cell.getCellProps()} key={cell.column.id}
-                                                className={`text-color-black text-start d-flex align-items-center ${index === 0 && 'fixed-column-1'}`}
-                                            >
-                                                {cell.render('Cell')}
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            );
-                        })}
+                    <tbody {...getTableBodyProps()} style={{minHeight:'200px'}}>
+                        {
+                          page.length > 0 ? 
+                          <>
+                            {page.map((row, index) => {
+                              prepareRow(row);
+                              return (
+                                  <tr {...row.getRowProps()} key={row.id} className={` ${index % 2 === 0 ? 'bg-blue-light' : 'bg-white'}`}>
+                                      {row.cells.map((cell, index) => {
+                                          return (
+                                              <td {...cell.getCellProps()} key={cell.column.id}
+                                                  className={` p-1 text-color-black d-flex align-items-center 
+                                                      ${index === columns.length - 1 && 'fixed-column fixed-right justify-content-center '} 
+                                                      ${index === 0 && 'fixed-column fixed-left'} 
+                                                      ${(index === 0 || cell.column.Header === 'Type' || cell.column.Header === 'Rank' || cell.column.Header === 'Acronym') && 'justify-content-center '}`}
+                                              >
+                                                  {cell.render('Cell')}
+                                              </td>
+                                          );
+                                      })}
+                                  </tr>
+                              );
+                          })}
+                          </>
+                          : 
+                          (
+                            <tr>
+            <td colSpan={columns.length} style={{ textAlign: 'center',  }}>
+              No data available
+            </td>
+          </tr>
+                          )
+                        }
                     </tbody>
                 </table>
             </div>

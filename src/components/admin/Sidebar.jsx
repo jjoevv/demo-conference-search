@@ -29,7 +29,7 @@ const Sidebar = () => {
   },[user])
 
   return (
-    <Container fluid className="my-sidebar">
+    <Container fluid className="my-sidebar" style={{zIndex: "100"}}>
       <Stack>
         {/* Sidebar */}
         <div className='text-center mt-5 pt-5'>

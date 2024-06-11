@@ -8,7 +8,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import useToken from '../../hooks/useToken'
 import SuccessfulModal from '../../components/Modals/SuccessModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faDiamondTurnRight, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 const Account = () => {
   const { loading, updateProfile, getCurrentUser } = useAuth()
   const [profile, setProfile] = useState([])
@@ -83,8 +83,8 @@ const Account = () => {
             <h4 className='mb-4'>Account</h4>
             {
               user.role === "admin" &&
-              <Link to="/admin/dashboard">
-                {`Go to Admin page >`}
+              <Link to="/admin/dashboard" className='p-1 border border-primary-normal rounded text-primary-normal'>
+                <span>{`Go to Dashboard`}</span> <FontAwesomeIcon icon={faDiamondTurnRight} />
               </Link>
             }
           </div>

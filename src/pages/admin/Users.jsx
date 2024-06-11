@@ -11,7 +11,7 @@ import TableRender from '../../components/admin/TableRender'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faFilter, faTrash, faUserCheck, faUserXmark } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpRightFromSquare, faEdit, faFilter, faTrash, faUserCheck, faUserXmark } from '@fortawesome/free-solid-svg-icons'
 import usePost from '../../hooks/usePost'
 import useSearch from '../../hooks/useSearch'
 import { checkExistValue } from '../../utils/checkFetchedResults'
@@ -76,14 +76,14 @@ const Users = () => {
         Header: "ID",
         accessor: "id",
         Cell: ({row})=>(
-          <div
-            title='Go to Call for paper page'
-            style={{cursor: 'pointer'}}
-            className='text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'
-            onClick={()=>handleChooseUser(row.original.id)}
+          <div className='fixed-column p-0 d-flex align-items-center justify-content-center'>
+          <Button className='bg-transparent  p-0 mx-2 my-0 border-0 action-btn tb-icon-view  '
+            onClick={() => handleChooseUser(row.original.id)}
+            title='View user'
           >
-            {row.original.id}
-          </div>
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon' />
+            </Button>
+        </div>
         ),
       },
       {

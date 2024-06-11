@@ -33,9 +33,6 @@ const HeaderNoti = () => {
 
   }, [notifications]);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const handleClickMessage = async (noti) => {
     if (!user) {
@@ -77,7 +74,7 @@ const HeaderNoti = () => {
 
       <Dropdown.Menu className='shadow' style={{ right: 0, left: 'auto' }}>
         <div style={{ width: "300px", maxHeight: "400px" }} className='overflow-auto'>
-          {`${dropdownOpen}`}
+         
           {
             notifications ?
               <>

@@ -79,7 +79,7 @@ const AllFeedbackOfConf = () => {
             <>
               {
                 displayFeedback.map((feedback, index) => (
-                  <div className="p-3 m-1 mt-4 rounded shadow-sm w-100 border-2 border-light" key={feedback.tid}>
+                  <div className="p-3 m-1 mt-4 rounded shadow-sm w-100 border-2 border-secondary" key={feedback.tid}>
                     <div className="d-flex justify-content-between align-items-center bg-primary-light p-2 rounded">
                       <span className="fw-bold m-0">{
                         renderUser(feedback.User)} wrote:</span>
@@ -98,7 +98,7 @@ const AllFeedbackOfConf = () => {
                     </div>
                     {
                       feedback.tid !==idEdit &&
-                      <div className="p-2 pe-5 text-justify">
+                      <div className="p-2 text-justify">
                       {feedback.content}
                     </div>
                     }

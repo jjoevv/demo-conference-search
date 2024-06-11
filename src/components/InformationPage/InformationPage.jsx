@@ -30,7 +30,78 @@ const InformationPage = ({ conference }) => {
     const newOrg = organizations.find(org => org.status === "new");
     return newOrg ? newOrg.type : null
   };
-
+  const rows = [
+    conference.information.acronym && (
+      <Row key="acronym" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Acronym:</Col>
+        <Col className='fw-bold fs-large'>{conference.information.acronym}</Col>
+      </Row>
+    ),
+    <Row key="category" className='py-3 ps-4'>
+      <Col xs={4} className='d-flex align-items-center'>Category:</Col>
+      <Col className='fw-bold fs-large'>Conference</Col>
+    </Row>,
+    conference.information.source && (
+      <Row key="source-1" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Source:</Col>
+        <Col className='fw-bold fs-large'>{conference.information.source}</Col>
+      </Row>
+    ),
+    renderType(conference.organizations) && (
+      <Row key="type" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Type:</Col>
+        <Col className='fw-bold fs-large'>
+          {capitalizeFirstLetter(renderType(conference.organizations))}
+        </Col>
+      </Row>
+    ),
+    renderLocation(conference.organizations) && (
+      <Row key="location" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Location:</Col>
+        <Col className='fw-bold fs-large'>
+          {renderLocation(conference.organizations)}
+        </Col>
+      </Row>
+    ),
+    getConferenceDate(conference.organizations) && (
+      <Row key="conference-date" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
+        <Col className='fw-bold fs-large'>
+          {getConferenceDate(conference.organizations)}
+        </Col>
+      </Row>
+    ),
+    conference.information.source && (
+      <Row key="source-2" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Source:</Col>
+        <Col className='fw-bold fs-large'>{conference.information.source}</Col>
+      </Row>
+    ),
+    conference.information.rank && (
+      <Row key="rank" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Rank:</Col>
+        <Col className='fw-bold fs-large'>{conference.information.rank}</Col>
+      </Row>
+    ),
+    conference.information.rating && (
+      <Row key="rating" className='py-3 ps-4'>
+        <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
+        <Col className='fw-bold fs-large'>
+          {parseFloat(conference.information.rating.toFixed(2))}
+        </Col>
+      </Row>
+    ),
+    renderFieldOfResearch(conference.information.fieldOfResearch) && (
+      <Row key="field-of-research" className={`py-3 ps-4 pe-1`}>
+        <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
+        <Col className='fw-bold fs-large'>
+          {renderFieldOfResearch(conference.information.fieldOfResearch)}
+        </Col>
+      </Row>
+    ),
+  ];
+    // Loại bỏ các hàng không hợp lệ (null, undefined)
+    const validRows = rows.filter(row => row);
   return (
     <div className='p-5 m-0' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
@@ -42,84 +113,11 @@ const InformationPage = ({ conference }) => {
 
           <div className='fw-bold fs-large fs-large fw-bold fs-large mt-2 py-3'>{conference.information.name}</div>
           <div className='my-2'>
-            {renderType(conference.organizations) &&
-              <Row className='py-3 ps-4'>
-                <Col xs={4} className='d-flex align-items-center'>Type:</Col>
-                <Col className='fw-bold fs-large '>
-                  {capitalizeFirstLetter(renderType(conference.organizations))}
-                </Col>
-              </Row>
-
-            }
-            {
-              renderLocation(conference.organizations) &&
-              <Row className='py-3 ps-4 bg-beige-light'>
-                <Col xs={4} className='d-flex align-items-center'>Location:</Col>
-                <Col className='fw-bold fs-large'>
-                  {renderLocation(conference.organizations)}
-                </Col>
-              </Row>
-            }
-            {
-              getConferenceDate(conference.organizations) &&
-              <Row className='py-3 ps-4'>
-
-                <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
-                <Col className='fw-bold fs-large'>
-
-                  {
-                    getConferenceDate(conference.organizations)
-                  }
-
-                </Col>
-              </Row>
-            }
-
-
-            <Row className='bg-beige-light py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>Category:</Col>
-              <Col className='fw-bold fs-large'>Conference</Col>
-            </Row>
-            {
-              conference.information.acronym &&
-              <Row className='py-3 ps-4'>
-                <Col xs={4} className='d-flex align-items-center'>Acronym:</Col>
-                <Col className='fw-bold fs-large'>{conference.information.acronym}</Col>
-              </Row>
-
-            }
-            {
-              conference.information.source &&
-              <Row className='bg-beige-light py-3 ps-4'>
-                <Col xs={4} className='d-flex align-items-center'>Source:</Col>
-                <Col className='fw-bold fs-large'>{conference.information.source}</Col>
-              </Row>
-            }
-            {
-              conference.information.rank &&
-              <Row className='py-3 ps-4'>
-                <Col xs={4} className='d-flex align-items-center'>Rank:</Col>
-                <Col className='fw-bold fs-large'>{conference.information.rank}
-                </Col>
-              </Row>
-            }
-            {
-              conference.information.rating &&
-              <Row className='py-3 ps-4 bg-beige-light'>
-                <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
-                <Col className='fw-bold fs-large'>{parseFloat(conference.information.rating.toFixed(2))}
-                </Col>
-              </Row>
-            }
-            {renderFieldOfResearch(conference.information.fieldOfResearch)
-              &&
-              <Row className={`py-3 ps-4 pe-1  ${!conference.information.rating ? 'bg-beige-light' : '' }`}>
-                <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
-                <Col className='fw-bold fs-large'>
-                  {renderFieldOfResearch(conference.information.fieldOfResearch)}
-                </Col>
-              </Row>
-            }
+          {validRows.map((row, index) => (
+        <div key={index} className={index % 2 === 0 ? 'bg-beige-light' : ''}>
+          {row}
+        </div>
+      ))}
 
           </div>
         </>

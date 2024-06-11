@@ -91,18 +91,20 @@ const FollowButton = () => {
                     >
 
 
-                        <Button
-                            className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
-                            onClick={handleFollow}
-                        >
-                            {
-                                loading
-                                    ?
-                                    <Loading />
-                                    :
-                                    `Follow`
-                            }
-                        </Button>
+                        <div className='wrap'>
+                            <Button
+                                className=' bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
+                                onClick={handleFollow}
+                            >
+                                {
+                                    loading
+                                        ?
+                                        <Loading />
+                                        :
+                                        `Follow`
+                                }
+                            </Button>
+                        </div>
                     </OverlayTrigger>
             }
         </>

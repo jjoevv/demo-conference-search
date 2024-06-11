@@ -342,7 +342,7 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
           if (key === 'conferenceDate') {
             
             const extractedRange = extractDateRangeFromKeyword(keyword);
-            console.log({extractedRange, matchingKeywords})
+            
             if (extractedRange && matchingKeywords[0].includes(extractedRange)) {
               keywordCounts[keyword]++;
             }

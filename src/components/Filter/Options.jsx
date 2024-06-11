@@ -69,7 +69,7 @@ const MultiValue = ({ index, getValue, ...props }) => {
       .map((x) => x.label);
   
     return index === getValue().length - maxToShow ? (
-        `+ ${overflow.length+1} option${overflow.length !== 0 ? "s" : ""} selected`
+        `+ ${overflow.length+1} option${overflow.length !== 0 ? "s" : ""}   `
     ) : null;
   };
 

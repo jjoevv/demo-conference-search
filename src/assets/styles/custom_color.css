@@ -2,11 +2,11 @@
     background-color: #f1fcf8;
 }
 
-.bg-beige-light:hover {
+.btn.bg-beige-light:hover {
     background-color: #f5fcf9;
 }
 
-.bg-beige-light:active {
+.btn.bg-beige-light:active {
     background-color: #eaf9f3;
 }
 

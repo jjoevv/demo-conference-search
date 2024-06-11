@@ -78,7 +78,7 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                             rows={5}
                             value={feedback}
                             onChange={e => handleInputChange(e)}
-                            placeholder="Your feedback go here..."
+                            placeholder="Your feedback goes here..."
                             required={true}
                             className={error ? 'border-danger' : 'border-0'}
                         />

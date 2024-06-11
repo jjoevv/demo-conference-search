@@ -1,16 +1,16 @@
-import { faAddressCard, faEnvelope, faPhone, faUser, faUserXmark } from '@fortawesome/free-solid-svg-icons'
+import { faAddressCard, faArrowRightToBracket, faEnvelope, faPhone, faUser, faUserXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useEffect } from 'react'
 import { Container, Image, Row, Col, Button } from 'react-bootstrap'
 import useAdmin from '../../hooks/useAdmin'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../components/Loading'
 
 
 
 const UserDetail = () => {
   const { loading: loadingUsers, userAccount, users, getAllUsers, getUserById } = useAdmin()
-
+  const navigate = useNavigate()
   const id = useParams()
   useEffect(() => {
     if(users.length === 0 || !users){
@@ -46,6 +46,10 @@ const UserDetail = () => {
           </div>
           :
           <>
+          <Button className='bg-teal-normal' onClick={()=>navigate('/admin/usersmanagement')}>
+            <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180'/>
+            Back to Users Management
+          </Button>
             {
               userAccount
               &&

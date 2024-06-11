@@ -82,6 +82,16 @@ const DetailedInformationPage = () => {
         return newOrg ? newOrg.location : ''
     };
     const getLengthString = (string) => string.length
+    
+    const renderName = (name) => {
+          // Replace the opening parenthesis with a line break followed by the parenthesis
+          name = name.replace(/\(/g, '<br>(');
+
+            // Replace the closing parenthesis with a parenthesis followed by a line break
+            name = name.replace(/\)/g, ')<br>');
+
+            return name;
+    }
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             {
@@ -100,9 +110,8 @@ const DetailedInformationPage = () => {
                                         {
                                             conference.information ?
                                                 <>
-                                                    <p className={`text-teal-normal px-5 fs-larger fw-bold mt-5 pt-5 `}>
-                                                        {conference.information.name}
-                                                    </p>
+                                                    <p className={`text-teal-normal px-5 fs-larger fw-bold mt-5 pt-5 `} dangerouslySetInnerHTML={{ __html: renderName(conference.information.name) }}/>
+                                                     
 
                                                     <h3 className='mb-4'>{`(${conference.information.acronym})`}</h3>
                                                     {

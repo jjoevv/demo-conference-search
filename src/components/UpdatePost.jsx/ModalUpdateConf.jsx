@@ -185,7 +185,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
     organizations: filteredOrganizations,
     importantDates: filteredImportantDates
   };
-
+console.log({updatedFormData})
 
       const result = await updatePost(updatedFormData, conference.id)
       setMesage(result.message)

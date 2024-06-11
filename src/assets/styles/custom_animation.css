@@ -76,4 +76,158 @@
     white-space: nowrap; /* Đảm bảo đoạn text nằm trên một dòng */
     animation: slideDown 0.5s ease-out; /* Hiệu ứng trượt xuống trong 0.5 giây */
   }
+
+
+  .btn-epic{
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 260px;
+  height: 52px;
+  background: #fff;
+  transform: translate3d(0px, 0%, 0px);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: .05em;
+  transition-delay: .6s;
+  overflow: hidden;
+  &:before{
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: #3ad2d0
+    border-radius: 50% 50% 0 0
+    transform: translateY(100%) scaleY(.5)
+    transition: all .6s ease}
+  &:after
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: white
+    border-radius: 0
+    transform: translateY(0) scaleY(1)
+    transition: all .6s ease
+  div
+    position: relative
+    top: 16px
+    width: 100%
+    height: 26px
+    text-transform: uppercase
+    overflow: hidden
+  span
+    position: absolute
+    z-index: 1
+    top: 0
+    width: 100%
+    text-align: center
+    transition: transform .5s ease
+    &:first-child
+      color: white
+      transform: translateY(24px)
+    &:last-child
+      color: #1E0F21
+      transform: translateY(0)
+  &:hover
+    background: #3ad2d0    
+    transition: background .2s linear
+    transition-delay: .6s
+    &:after
+      border-radius: 0 0 50% 50% 
+      transform: translateY(-100%) scaleY(.5)
+      transition-delay: 0
+    &:before
+      border-radius: 0
+      transform: translateY(0) scaleY(1)
+      transition-delay: 0
+    span
+      &:first-child
+        transform: translateY(0)
+      &:last-child
+  }
+
+
+  .wrap {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
+  .follow-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    font-weight: 700;
+    background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+    border: none;
+    border-radius: 1000px;
+    box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+    transition: all 0.3s ease-in-out 0s;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    padding: 10px;
+    }
+  
+    .follow-btn::before {
+  content: '';
+    border-radius: 1000px;
+    min-width: calc(200px + 12px);
+    min-height: calc(50px + 12px);
+    border: 6px solid #00FFCB;
+    box-shadow: 0 0 60px rgba(0,255,203,.64);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all .3s ease-in-out 0s;
+  }
+  
+  .follow-btn:hover, .follow-btn:focus {
+    color: #313133;
+    transform: translateY(-6px);
+  }
+  
+  .follow-btn:hover::before, .follow-btn:focus::before {
+    opacity: 1;
+  }
+  
+  .follow-btn::after {
+    content: '';
+    width: 30px; height: 30px;
+    border-radius: 100%;
+    border: 6px solid #00FFCB;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ring 1.5s infinite;
+  }
+  
+  .follow-btn:hover::after, .follow-btn:focus::after {
+    animation: none;
+    display: none;
+  }
+  
+  @keyframes ring {
+    0% {
+      width: 30px;
+      height: 30px;
+      opacity: 1;
+    }
+    100% {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
