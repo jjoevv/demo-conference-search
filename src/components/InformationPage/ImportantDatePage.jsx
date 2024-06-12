@@ -1,14 +1,12 @@
-import { Col, Image, Row } from 'react-bootstrap'
+import { Image, Row } from 'react-bootstrap'
 import moment from 'moment'
-import useConference from '../../hooks/useConferences'
 
 import { isUpcoming } from '../../utils/sortConferences'
 import ArrowIcon from './../../assets/imgs/arrow.png'
 import { useEffect, useState } from 'react'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 
-const ImportantDatePage = () => {
-  const { conference } = useConference()
+const ImportantDatePage = ({conference}) => {
   const [displayDates, setDisplayDates] = useState([])
   
   useEffect(() => {

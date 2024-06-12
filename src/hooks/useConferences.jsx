@@ -173,9 +173,6 @@ const useConference = () => {
     return newOrg ? newOrg.location : '';
   }
 
-  const getSubDate = (importantDates) => {
-
-  }
 
   return {
     conferences: state.conferences,

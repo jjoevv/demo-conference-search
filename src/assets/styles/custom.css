@@ -514,7 +514,7 @@ a {
     background-color: #419489;
     /* Màu nền của sidebar */
     border-right: 1px solid #dee2e6;
-    z-index: 999;
+    z-index: 1050 !important;
 }
 
 .my-sidebar-navlink {

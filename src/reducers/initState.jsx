@@ -6,6 +6,8 @@ export const initialState = {
   
   conferences: [],
   conference: null,
+  pendingConferences: [],
+  pendingConf: null,
   notifications: [],
   isFollow: false,//????
 

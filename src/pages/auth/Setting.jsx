@@ -30,7 +30,6 @@ const Setting = () => {
 
   useEffect(() => {
     setDisplaySetting(settings)
-    console.log({settings})
   }, [settings])
 
 

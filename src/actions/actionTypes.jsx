@@ -16,7 +16,8 @@ export const SEARCH_KEYWORD_FAILURE = 'SEARCH_KEYWORD_FAILURE'; //get FAILED
 
 export const GET_ALL_CONFERENCES = 'GET_ALL_CONFERENCES';   //get all conferences from server
 export const GET_ONE_CONFERENCE = 'GET_ONE_CONFERENCE'  //get data of one conference by id
-export const REQUEST_CONFERENCE = 'REQUEST_CONFERENCE'
+export const GET_ALL_PENDING_CONFERENCES = 'GET_ALL_PENDING_CONFERENCES';
+export const GET_PENDING_CONFERENCE = 'GET_PENDING_CONFERENCE';
 
 export const FOLLOW = "FOLLOW";
 export const UNFOLLOW = "UNFOLLOW"

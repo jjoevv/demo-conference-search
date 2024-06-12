@@ -1,9 +1,9 @@
 import { faAddressCard, faArrowRightToBracket, faEnvelope, faPhone, faUser, faUserXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect } from 'react'
-import { Container, Image, Row, Col, Button } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 import useAdmin from '../../hooks/useAdmin'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../components/Loading'
 
 

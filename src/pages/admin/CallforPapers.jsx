@@ -1,55 +1,111 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import useConference from "../../hooks/useConferences"
-import { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Loading from "../../components/Loading"
-import { Tab, Tabs } from "react-bootstrap"
+import { Button, Container, Tab, Tabs } from "react-bootstrap"
 import InformationPage from "../../components/InformationPage/InformationPage"
 import ImportantDatePage from "../../components/InformationPage/ImportantDatePage"
+import useAdmin from "../../hooks/useAdmin"
+import useAuth from "../../hooks/useAuth"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons"
+
+import Information from "../../components/admin/Information"
+import ButtonGroupActive from "../../components/admin/ButtonGroupActive"
 
 
 const CallforPapers = () => {
-  const {conference, handleGetOne} = useConference()
-  const [loading, setLoading] = useState(false)
-  const id = useParams()
+  const { pendingConf, getPendingConfById } = useAdmin()
+  const conf_id = useParams()
+  const [loadingConf, setLoadingConf] = useState(true)
+  const navigate = useNavigate()
 
-  useEffect(()=>{
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-        const fetchData = async () => {
-            await handleGetOne(id.id);
-            setLoading(false)
-        }
-        if(id.id !== conference.id || !conference){
-            setLoading(true)
-            fetchData()
-        }
-  }, [id])
+  useEffect(() => {
+    const fetchData = async () => {
+      await getPendingConfById(conf_id.id)
+      setLoadingConf(false)
+    }
+    fetchData()
+  }, [conf_id])
+
+  const tabContentRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (tabContentRef.current) {
+        tabContentRef.current.style.minHeight = `${window.innerHeight - tabContentRef.current.getBoundingClientRect().top - 20}px`;
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const processText = (text) => {
+    // Split text by \n
+    const lines = text.split('\n');
+
+    // Render lines with appropriate line breaks
+    return lines.map((line, index) => {
+      if (line === '' && index > 0 && lines[index - 1] === '') {
+        // Ignore consecutive empty lines beyond the first two
+        return null;
+      }
+      return (
+        <React.Fragment key={index}>
+          {line}
+          {index < lines.length - 1 && <br />}
+          {line === '' && lines[index + 1] === '' && <br />}
+        </React.Fragment>
+      );
+    }).filter(element => element !== null);
+  };
   return (
-    <div>
-   
-        {
-        loading ?
-        <div className="my-4">
-          <Loading/>
-        </div>
-        :
-       <>
-       {
-        conference &&
-        <Tabs defaultActiveKey="one" id="uncontrolled-tab-example" className="mb-3">
-        <Tab eventKey="one" title="Information">
-          <InformationPage />
-        </Tab>
-        <Tab eventKey="two" title="Important dates">
-          <ImportantDatePage />
-        </Tab>
-        <Tab eventKey="three" title="Call for paper">
-          <CallforPapers />
-        </Tab>
-      </Tabs>
-       }
-       </>
-        }
-    </div>
+    <Container
+      className='pt-5 mt-5' style={{ paddingLeft: "300px" }}>
+
+      {
+        loadingConf ?
+          <div className="my-4">
+            <Loading />
+          </div>
+          :
+          <>
+            <div className="d-flex justify-content-end">
+              <Button className='bg-teal-normal align-item' onClick={() => navigate('/admin/dashboard')}>
+                <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
+                Back to Dashboard
+              </Button>
+            
+              </div>
+              {
+                pendingConf.information.status && <div className="mt-4 fs-large text-success">{`This conference is active now`}</div>
+              }
+            <div className="bg-skyblue-light">
+              {
+                pendingConf &&
+                <div className='pb-5'>
+                  <Information conference={pendingConf} />
+                  <div className='px-4 mx-4 fs-4 fw-bold mb-5'>
+                      <span className='text-teal-normal fs-4 fw-bold'>Conference information</span>
+                    <p className="text-justify fs-medium pb-5">
+                      {processText(pendingConf.callForPaper)}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          </>
+      }
+
+      <div className="fixed-bottom mt-5 py-3 bg-darkcyan-light">
+        <ButtonGroupActive conference={pendingConf}/>
+      </div>
+    </Container>
   )
 }
 

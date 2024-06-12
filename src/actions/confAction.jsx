@@ -1,4 +1,4 @@
-import { GET_ALL_CONFERENCES, GET_ONE_CONFERENCE, REQUEST_CONFERENCE } from "./actionTypes";
+import { GET_ALL_CONFERENCES, GET_ONE_CONFERENCE } from "./actionTypes";
 
 export const getAllConf = (conferences) => {
     return {
@@ -13,9 +13,3 @@ export const getOneConf = (data) => {
       payload: data,
     };
 };
-
-export const requestConference = () => {
-  return {
-    type: REQUEST_CONFERENCE,
-  }
-}

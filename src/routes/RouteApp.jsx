@@ -38,7 +38,7 @@ const admin = [
   { path: '/admin/usersmanagement', element: <Users /> },
   { path: '/admin/usersmanagement/userdetail/:id', element: <UserDetail /> },
   { path: '/admin/admin_account', element: <AdminAccount /> },
-  { path: '/admin/dashboard/:id', element: <CallforPapers /> },
+  { path: '/admin/dashboard/cfp/:id', element: <CallforPapers /> },
 ]
 
 const RoutesApp = () => {

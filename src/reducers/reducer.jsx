@@ -142,13 +142,6 @@ const appReducer = (state, action) => {
                 ...state,
                 inputFilter: action.payload,
             };
-        case actionTypes.REQUEST_CONFERENCE:
-            return {
-                ...state,
-                loading: true,
-                conferences: [],
-                error: null,
-            };
         case actionTypes.GET_ALL_CONFERENCES:
             return {
                 ...state,
@@ -192,6 +185,11 @@ const appReducer = (state, action) => {
                 ...state,
                 userAccount: action.payload,
             };
+        case actionTypes.GET_PENDING_CONFERENCE:
+            return {
+                ...state,
+                pendingConf: action.payload,
+            };
         case actionTypes.GET_NOTIFICATIONS:
             return {
                 ...state,
@@ -202,11 +200,15 @@ const appReducer = (state, action) => {
                 ...state,
                 settings: action.payload,
             };
-        case actionTypes.GET_FEEDBACKS:
-         
+        case actionTypes.GET_FEEDBACKS:         
             return {
                 ...state,
                 feedbacks: action.payload,
+            };
+            case actionTypes.GET_ALL_PENDING_CONFERENCES:         
+            return {
+                ...state,
+                pendingConferences: action.payload,
             };
         default:
             return state;

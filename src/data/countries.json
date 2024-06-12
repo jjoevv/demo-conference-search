@@ -1,13 +1,4 @@
 {
-    "AD": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "AD",
-      "country_code3": "AND",
-      "country_name": "Andorra",
-      "country_name_full": "Principality of Andorra",
-      "iso3": "020"
-    },
     "AE": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -26,60 +17,6 @@
       "country_name_full": "Islamic Republic of Afghanistan",
       "iso3": "004"
     },
-    "AG": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "AG",
-      "country_code3": "ATG",
-      "country_name": "Antigua and Barbuda",
-      "country_name_full": "Antigua and Barbuda",
-      "iso3": "028"
-    },
-    "AI": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "AI",
-      "country_code3": "AIA",
-      "country_name": "Anguilla",
-      "country_name_full": "Anguilla",
-      "iso3": "660"
-    },
-    "AL": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "AL",
-      "country_code3": "ALB",
-      "country_name": "Albania",
-      "country_name_full": "Republic of Albania",
-      "iso3": "008"
-    },
-    "AM": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "AM",
-      "country_code3": "ARM",
-      "country_name": "Armenia",
-      "country_name_full": "Republic of Armenia",
-      "iso3": "051"
-    },
-    "AO": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "AO",
-      "country_code3": "AGO",
-      "country_name": "Angola",
-      "country_name_full": "Republic of Angola",
-      "iso3": "024"
-    },
-    "AQ": {
-      "continent_code": "AN",
-      "continent_name": "Antarctica",
-      "country_code2": "AQ",
-      "country_code3": "ATA",
-      "country_name": "Antarctica",
-      "country_name_full": "Antarctica (the territory South of 60 deg S)",
-      "iso3": "010"
-    },
     "AR": {
       "continent_code": "SA",
       "continent_name": "South America",
@@ -88,15 +25,6 @@
       "country_name": "Argentina",
       "country_name_full": "Argentine Republic",
       "iso3": "032"
-    },
-    "AS": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "AS",
-      "country_code3": "ASM",
-      "country_name": "American Samoa",
-      "country_name_full": "American Samoa",
-      "iso3": "016"
     },
     "AT": {
       "continent_code": "EU",
@@ -116,15 +44,6 @@
       "country_name_full": "Commonwealth of Australia",
       "iso3": "036"
     },
-    "AW": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "AW",
-      "country_code3": "ABW",
-      "country_name": "Aruba",
-      "country_name_full": "Aruba",
-      "iso3": "533"
-    },
     "AX": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -133,33 +52,6 @@
       "country_name": "\u00c5land Islands",
       "country_name_full": "\u00c5land Islands",
       "iso3": "248"
-    },
-    "AZ": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "AZ",
-      "country_code3": "AZE",
-      "country_name": "Azerbaijan",
-      "country_name_full": "Republic of Azerbaijan",
-      "iso3": "031"
-    },
-    "BA": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "BA",
-      "country_code3": "BIH",
-      "country_name": "Bosnia and Herzegovina",
-      "country_name_full": "Bosnia and Herzegovina",
-      "iso3": "070"
-    },
-    "BB": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "BB",
-      "country_code3": "BRB",
-      "country_name": "Barbados",
-      "country_name_full": "Barbados",
-      "iso3": "052"
     },
     "BD": {
       "continent_code": "AS",
@@ -179,75 +71,12 @@
       "country_name_full": "Kingdom of Belgium",
       "iso3": "056"
     },
-    "BF": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "BF",
-      "country_code3": "BFA",
-      "country_name": "Burkina Faso",
-      "country_name_full": "Burkina Faso",
-      "iso3": "854"
-    },
-    "BG": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "BG",
-      "country_code3": "BGR",
-      "country_name": "Bulgaria",
-      "country_name_full": "Republic of Bulgaria",
-      "iso3": "100"
-    },
-    "BH": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "BH",
-      "country_code3": "BHR",
-      "country_name": "Bahrain",
-      "country_name_full": "Kingdom of Bahrain",
-      "iso3": "048"
-    },
-    "BI": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "BI",
-      "country_code3": "BDI",
-      "country_name": "Burundi",
-      "country_name_full": "Republic of Burundi",
-      "iso3": "108"
-    },
-    "BJ": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "BJ",
-      "country_code3": "BEN",
-      "country_name": "Benin",
-      "country_name_full": "Republic of Benin",
-      "iso3": "204"
-    },
-    "BL": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "BL",
-      "country_code3": "BLM",
-      "country_name": "Saint Barth\u00e9lemy",
-      "country_name_full": "Saint Barth\u00e9lemy",
-      "iso3": "652"
-    },
-    "BM": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "BM",
-      "country_code3": "BMU",
-      "country_name": "Bermuda",
-      "country_name_full": "Bermuda",
-      "iso3": "060"
-    },
     "BN": {
       "continent_code": "AS",
       "continent_name": "Asia",
       "country_code2": "BN",
       "country_code3": "BRN",
-      "country_name": "Brunei Darussalam",
+      "country_name": "Brunei",
       "country_name_full": "Brunei Darussalam",
       "iso3": "096"
     },
@@ -259,15 +88,6 @@
       "country_name": "Bolivia",
       "country_name_full": "Plurinational State of Bolivia",
       "iso3": "068"
-    },
-    "BQ": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "BQ",
-      "country_code3": "BES",
-      "country_name": "Bonaire, Sint Eustatius and Saba",
-      "country_name_full": "Bonaire, Sint Eustatius and Saba",
-      "iso3": "535"
     },
     "BR": {
       "continent_code": "SA",
@@ -295,15 +115,6 @@
       "country_name": "Bhutan",
       "country_name_full": "Kingdom of Bhutan",
       "iso3": "064"
-    },
-    "BV": {
-      "continent_code": "AN",
-      "continent_name": "Antarctica",
-      "country_code2": "BV",
-      "country_code3": "BVT",
-      "country_name": "Bouvet Island (Bouvetoya)",
-      "country_name_full": "Bouvet Island (Bouvetoya)",
-      "iso3": "074"
     },
     "BW": {
       "continent_code": "AF",
@@ -341,15 +152,6 @@
       "country_name_full": "Canada",
       "iso3": "124"
     },
-    "CC": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "CC",
-      "country_code3": "CCK",
-      "country_name": "Cocos (Keeling) Islands",
-      "country_name_full": "Cocos (Keeling) Islands",
-      "iso3": "166"
-    },
     "CD": {
       "continent_code": "AF",
       "continent_name": "Africa",
@@ -358,15 +160,6 @@
       "country_name": "Congo",
       "country_name_full": "Democratic Republic of the Congo",
       "iso3": "180"
-    },
-    "CF": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "CF",
-      "country_code3": "CAF",
-      "country_name": "Central African Republic",
-      "country_name_full": "Central African Republic",
-      "iso3": "140"
     },
     "CG": {
       "continent_code": "AF",
@@ -385,15 +178,6 @@
       "country_name": "Switzerland",
       "country_name_full": "Swiss Confederation",
       "iso3": "756"
-    },
-    "CI": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "CI",
-      "country_code3": "CIV",
-      "country_name": "Cote d'Ivoire",
-      "country_name_full": "Republic of Cote d'Ivoire",
-      "iso3": "384"
     },
     "CK": {
       "continent_code": "OC",
@@ -458,33 +242,6 @@
       "country_name_full": "Republic of Cuba",
       "iso3": "192"
     },
-    "CV": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "CV",
-      "country_code3": "CPV",
-      "country_name": "Cape Verde",
-      "country_name_full": "Republic of Cape Verde",
-      "iso3": "132"
-    },
-    "CW": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "CW",
-      "country_code3": "CUW",
-      "country_name": "Cura\u00e7ao",
-      "country_name_full": "Cura\u00e7ao",
-      "iso3": "531"
-    },
-    "CX": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "CX",
-      "country_code3": "CXR",
-      "country_name": "Christmas Island",
-      "country_name_full": "Christmas Island",
-      "iso3": "162"
-    },
     "CY": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -494,15 +251,6 @@
       "country_name_full": "Republic of Cyprus",
       "iso3": "196"
     },
-    "CZ": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "CZ",
-      "country_code3": "CZE",
-      "country_name": "Czech Republic",
-      "country_name_full": "Czech Republic",
-      "iso3": "203"
-    },
     "DE": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -511,15 +259,6 @@
       "country_name": "Germany",
       "country_name_full": "Federal Republic of Germany",
       "iso3": "276"
-    },
-    "DJ": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "DJ",
-      "country_code3": "DJI",
-      "country_name": "Djibouti",
-      "country_name_full": "Republic of Djibouti",
-      "iso3": "262"
     },
     "DK": {
       "continent_code": "EU",
@@ -538,15 +277,6 @@
       "country_name": "Dominica",
       "country_name_full": "Commonwealth of Dominica",
       "iso3": "212"
-    },
-    "DO": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "DO",
-      "country_code3": "DOM",
-      "country_name": "Dominican Republic",
-      "country_name_full": "Dominican Republic",
-      "iso3": "214"
     },
     "DZ": {
       "continent_code": "AF",
@@ -593,15 +323,6 @@
       "country_name_full": "Western Sahara",
       "iso3": "732"
     },
-    "ER": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "ER",
-      "country_code3": "ERI",
-      "country_name": "Eritrea",
-      "country_name_full": "State of Eritrea",
-      "iso3": "232"
-    },
     "ES": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -610,15 +331,6 @@
       "country_name": "Spain",
       "country_name_full": "Kingdom of Spain",
       "iso3": "724"
-    },
-    "ET": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "ET",
-      "country_code3": "ETH",
-      "country_name": "Ethiopia",
-      "country_name_full": "Federal Democratic Republic of Ethiopia",
-      "iso3": "231"
     },
     "FI": {
       "continent_code": "EU",
@@ -638,33 +350,6 @@
       "country_name_full": "Republic of Fiji",
       "iso3": "242"
     },
-    "FK": {
-      "continent_code": "SA",
-      "continent_name": "South America",
-      "country_code2": "FK",
-      "country_code3": "FLK",
-      "country_name": "Falkland Islands (Malvinas)",
-      "country_name_full": "Falkland Islands (Malvinas)",
-      "iso3": "238"
-    },
-    "FM": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "FM",
-      "country_code3": "FSM",
-      "country_name": "Micronesia",
-      "country_name_full": "Federated States of Micronesia",
-      "iso3": "583"
-    },
-    "FO": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "FO",
-      "country_code3": "FRO",
-      "country_name": "Faroe Islands",
-      "country_name_full": "Faroe Islands",
-      "iso3": "234"
-    },
     "FR": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -673,24 +358,6 @@
       "country_name": "France",
       "country_name_full": "French Republic",
       "iso3": "250"
-    },
-    "GA": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "GA",
-      "country_code3": "GAB",
-      "country_name": "Gabon",
-      "country_name_full": "Gabonese Republic",
-      "iso3": "266"
-    },
-    "GB": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "GB",
-      "country_code3": "GBR",
-      "country_name": "United Kingdom of Great Britain & Northern Ireland",
-      "country_name_full": "United Kingdom of Great Britain & Northern Ireland",
-      "iso3": "826"
     },
     "GD": {
       "continent_code": "NA",
@@ -719,15 +386,6 @@
       "country_name_full": "French Guiana",
       "iso3": "254"
     },
-    "GG": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "GG",
-      "country_code3": "GGY",
-      "country_name": "Guernsey",
-      "country_name_full": "Bailiwick of Guernsey",
-      "iso3": "831"
-    },
     "GH": {
       "continent_code": "AF",
       "continent_name": "Africa",
@@ -736,15 +394,6 @@
       "country_name": "Ghana",
       "country_name_full": "Republic of Ghana",
       "iso3": "288"
-    },
-    "GI": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "GI",
-      "country_code3": "GIB",
-      "country_name": "Gibraltar",
-      "country_name_full": "Gibraltar",
-      "iso3": "292"
     },
     "GL": {
       "continent_code": "NA",
@@ -755,42 +404,6 @@
       "country_name_full": "Greenland",
       "iso3": "304"
     },
-    "GM": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "GM",
-      "country_code3": "GMB",
-      "country_name": "Gambia",
-      "country_name_full": "Republic of the Gambia",
-      "iso3": "270"
-    },
-    "GN": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "GN",
-      "country_code3": "GIN",
-      "country_name": "Guinea",
-      "country_name_full": "Republic of Guinea",
-      "iso3": "324"
-    },
-    "GP": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "GP",
-      "country_code3": "GLP",
-      "country_name": "Guadeloupe",
-      "country_name_full": "Guadeloupe",
-      "iso3": "312"
-    },
-    "GQ": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "GQ",
-      "country_code3": "GNQ",
-      "country_name": "Equatorial Guinea",
-      "country_name_full": "Republic of Equatorial Guinea",
-      "iso3": "226"
-    },
     "GR": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -800,51 +413,6 @@
       "country_name_full": "Hellenic Republic Greece",
       "iso3": "300"
     },
-    "GS": {
-      "continent_code": "AN",
-      "continent_name": "Antarctica",
-      "country_code2": "GS",
-      "country_code3": "SGS",
-      "country_name": "South Georgia and the South Sandwich Islands",
-      "country_name_full": "South Georgia and the South Sandwich Islands",
-      "iso3": "239"
-    },
-    "GT": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "GT",
-      "country_code3": "GTM",
-      "country_name": "Guatemala",
-      "country_name_full": "Republic of Guatemala",
-      "iso3": "320"
-    },
-    "GU": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "GU",
-      "country_code3": "GUM",
-      "country_name": "Guam",
-      "country_name_full": "Guam",
-      "iso3": "316"
-    },
-    "GW": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "GW",
-      "country_code3": "GNB",
-      "country_name": "Guinea-Bissau",
-      "country_name_full": "Republic of Guinea-Bissau",
-      "iso3": "624"
-    },
-    "GY": {
-      "continent_code": "SA",
-      "continent_name": "South America",
-      "country_code2": "GY",
-      "country_code3": "GUY",
-      "country_name": "Guyana",
-      "country_name_full": "Co-operative Republic of Guyana",
-      "iso3": "328"
-    },
     "HK": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -853,15 +421,6 @@
       "country_name": "Hong Kong",
       "country_name_full": "Hong Kong Special Administrative Region of China",
       "iso3": "344"
-    },
-    "HM": {
-      "continent_code": "AN",
-      "continent_name": "Antarctica",
-      "country_code2": "HM",
-      "country_code3": "HMD",
-      "country_name": "Heard Island and McDonald Islands",
-      "country_name_full": "Heard Island and McDonald Islands",
-      "iso3": "334"
     },
     "HN": {
       "continent_code": "NA",
@@ -944,15 +503,6 @@
       "country_name_full": "Republic of India",
       "iso3": "356"
     },
-    "IO": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "IO",
-      "country_code3": "IOT",
-      "country_name": "British Indian Ocean Territory (Chagos Archipelago)",
-      "country_name_full": "British Indian Ocean Territory (Chagos Archipelago)",
-      "iso3": "086"
-    },
     "IQ": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -1034,15 +584,6 @@
       "country_name_full": "Republic of Kenya",
       "iso3": "404"
     },
-    "KG": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "KG",
-      "country_code3": "KGZ",
-      "country_name": "Kyrgyz Republic",
-      "country_name_full": "Kyrgyz Republic",
-      "iso3": "417"
-    },
     "KH": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -1052,15 +593,6 @@
       "country_name_full": "Kingdom of Cambodia",
       "iso3": "116"
     },
-    "KI": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "KI",
-      "country_code3": "KIR",
-      "country_name": "Kiribati",
-      "country_name_full": "Republic of Kiribati",
-      "iso3": "296"
-    },
     "KM": {
       "continent_code": "AF",
       "continent_name": "Africa",
@@ -1069,15 +601,6 @@
       "country_name": "Comoros",
       "country_name_full": "Union of the Comoros",
       "iso3": "174"
-    },
-    "KN": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "KN",
-      "country_code3": "KNA",
-      "country_name": "Saint Kitts and Nevis",
-      "country_name_full": "Federation of Saint Kitts and Nevis",
-      "iso3": "659"
     },
     "KP": {
       "continent_code": "AS",
@@ -1106,15 +629,6 @@
       "country_name_full": "State of Kuwait",
       "iso3": "414"
     },
-    "KY": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "KY",
-      "country_code3": "CYM",
-      "country_name": "Cayman Islands",
-      "country_name_full": "Cayman Islands",
-      "iso3": "136"
-    },
     "KZ": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -1129,7 +643,7 @@
       "continent_name": "Asia",
       "country_code2": "LA",
       "country_code3": "LAO",
-      "country_name": "Lao People's Democratic Republic",
+      "country_name": "Lao",
       "country_name_full": "Lao People's Democratic Republic",
       "iso3": "418"
     },
@@ -1141,24 +655,6 @@
       "country_name": "Lebanon",
       "country_name_full": "Lebanese Republic",
       "iso3": "422"
-    },
-    "LC": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "LC",
-      "country_code3": "LCA",
-      "country_name": "Saint Lucia",
-      "country_name_full": "Saint Lucia",
-      "iso3": "662"
-    },
-    "LI": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "LI",
-      "country_code3": "LIE",
-      "country_name": "Liechtenstein",
-      "country_name_full": "Principality of Liechtenstein",
-      "iso3": "438"
     },
     "LK": {
       "continent_code": "AS",
@@ -1178,15 +674,6 @@
       "country_name_full": "Republic of Liberia",
       "iso3": "430"
     },
-    "LS": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "LS",
-      "country_code3": "LSO",
-      "country_name": "Lesotho",
-      "country_name_full": "Kingdom of Lesotho",
-      "iso3": "426"
-    },
     "LT": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -1204,15 +691,6 @@
       "country_name": "Luxembourg",
       "country_name_full": "Grand Duchy of Luxembourg",
       "iso3": "442"
-    },
-    "LV": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "LV",
-      "country_code3": "LVA",
-      "country_name": "Latvia",
-      "country_name_full": "Republic of Latvia",
-      "iso3": "428"
     },
     "LY": {
       "continent_code": "AF",
@@ -1249,24 +727,6 @@
       "country_name": "Moldova",
       "country_name_full": "Republic of Moldova",
       "iso3": "498"
-    },
-    "ME": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "ME",
-      "country_code3": "MNE",
-      "country_name": "Montenegro",
-      "country_name_full": "Montenegro",
-      "iso3": "499"
-    },
-    "MF": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "MF",
-      "country_code3": "MAF",
-      "country_name": "Saint Martin",
-      "country_name_full": "Saint Martin (French part)",
-      "iso3": "663"
     },
     "MG": {
       "continent_code": "AF",
@@ -1439,15 +899,6 @@
       "country_name_full": "Republic of Namibia",
       "iso3": "516"
     },
-    "NC": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "NC",
-      "country_code3": "NCL",
-      "country_name": "New Caledonia",
-      "country_name_full": "New Caledonia",
-      "iso3": "540"
-    },
     "NE": {
       "continent_code": "AF",
       "continent_name": "Africa",
@@ -1456,15 +907,6 @@
       "country_name": "Niger",
       "country_name_full": "Republic of Niger",
       "iso3": "562"
-    },
-    "NF": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "NF",
-      "country_code3": "NFK",
-      "country_name": "Norfolk Island",
-      "country_name_full": "Norfolk Island",
-      "iso3": "574"
     },
     "NG": {
       "continent_code": "AF",
@@ -1511,24 +953,6 @@
       "country_name_full": "Federal Democratic Republic of Nepal",
       "iso3": "524"
     },
-    "NR": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "NR",
-      "country_code3": "NRU",
-      "country_name": "Nauru",
-      "country_name_full": "Republic of Nauru",
-      "iso3": "520"
-    },
-    "NU": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "NU",
-      "country_code3": "NIU",
-      "country_name": "Niue",
-      "country_name_full": "Niue",
-      "iso3": "570"
-    },
     "NZ": {
       "continent_code": "OC",
       "continent_name": "Oceania",
@@ -1565,24 +989,6 @@
       "country_name_full": "Republic of Peru",
       "iso3": "604"
     },
-    "PF": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "PF",
-      "country_code3": "PYF",
-      "country_name": "French Polynesia",
-      "country_name_full": "French Polynesia",
-      "iso3": "258"
-    },
-    "PG": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "PG",
-      "country_code3": "PNG",
-      "country_name": "Papua New Guinea",
-      "country_name_full": "Independent State of Papua New Guinea",
-      "iso3": "598"
-    },
     "PH": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -1609,42 +1015,6 @@
       "country_name": "Poland",
       "country_name_full": "Republic of Poland",
       "iso3": "616"
-    },
-    "PM": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "PM",
-      "country_code3": "SPM",
-      "country_name": "Saint Pierre and Miquelon",
-      "country_name_full": "Saint Pierre and Miquelon",
-      "iso3": "666"
-    },
-    "PN": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "PN",
-      "country_code3": "PCN",
-      "country_name": "Pitcairn Islands",
-      "country_name_full": "Pitcairn Islands",
-      "iso3": "612"
-    },
-    "PR": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "PR",
-      "country_code3": "PRI",
-      "country_name": "Puerto Rico",
-      "country_name_full": "Commonwealth of Puerto Rico",
-      "iso3": "630"
-    },
-    "PS": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "PS",
-      "country_code3": "PSE",
-      "country_name": "Palestinian Territory",
-      "country_name_full": "Occupied Palestinian Territory",
-      "iso3": "275"
     },
     "PT": {
       "continent_code": "EU",
@@ -1682,15 +1052,6 @@
       "country_name_full": "State of Qatar",
       "iso3": "634"
     },
-    "RE": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "RE",
-      "country_code3": "REU",
-      "country_name": "R\u00e9union",
-      "country_name_full": "R\u00e9union",
-      "iso3": "638"
-    },
     "RO": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -1714,18 +1075,9 @@
       "continent_name": "Europe",
       "country_code2": "RU",
       "country_code3": "RUS",
-      "country_name": "Russian Federation",
+      "country_name": "Russian",
       "country_name_full": "Russian Federation",
       "iso3": "643"
-    },
-    "RW": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "RW",
-      "country_code3": "RWA",
-      "country_name": "Rwanda",
-      "country_name_full": "Republic of Rwanda",
-      "iso3": "646"
     },
     "SA": {
       "continent_code": "AS",
@@ -1744,15 +1096,6 @@
       "country_name": "Solomon Islands",
       "country_name_full": "Solomon Islands",
       "iso3": "090"
-    },
-    "SC": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "SC",
-      "country_code3": "SYC",
-      "country_name": "Seychelles",
-      "country_name_full": "Republic of Seychelles",
-      "iso3": "690"
     },
     "SD": {
       "continent_code": "AF",
@@ -1781,15 +1124,6 @@
       "country_name_full": "Republic of Singapore",
       "iso3": "702"
     },
-    "SH": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "SH",
-      "country_code3": "SHN",
-      "country_name": "Saint Helena, Ascension and Tristan da Cunha",
-      "country_name_full": "Saint Helena, Ascension and Tristan da Cunha",
-      "iso3": "654"
-    },
     "SI": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -1798,15 +1132,6 @@
       "country_name": "Slovenia",
       "country_name_full": "Republic of Slovenia",
       "iso3": "705"
-    },
-    "SJ": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "SJ",
-      "country_code3": "SJM",
-      "country_name": "Svalbard & Jan Mayen Islands",
-      "country_name_full": "Svalbard & Jan Mayen Islands",
-      "iso3": "744"
     },
     "SK": {
       "continent_code": "EU",
@@ -1871,15 +1196,6 @@
       "country_name_full": "Republic of South Sudan",
       "iso3": "728"
     },
-    "ST": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "ST",
-      "country_code3": "STP",
-      "country_name": "Sao Tome and Principe",
-      "country_name_full": "Democratic Republic of Sao Tome and Principe",
-      "iso3": "678"
-    },
     "SV": {
       "continent_code": "NA",
       "continent_name": "North America",
@@ -1889,24 +1205,6 @@
       "country_name_full": "Republic of El Salvador",
       "iso3": "222"
     },
-    "SX": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "SX",
-      "country_code3": "SXM",
-      "country_name": "Sint Maarten (Dutch part)",
-      "country_name_full": "Sint Maarten (Dutch part)",
-      "iso3": "534"
-    },
-    "SY": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "SY",
-      "country_code3": "SYR",
-      "country_name": "Syrian Arab Republic",
-      "country_name_full": "Syrian Arab Republic",
-      "iso3": "760"
-    },
     "SZ": {
       "continent_code": "AF",
       "continent_name": "Africa",
@@ -1915,33 +1213,6 @@
       "country_name": "Swaziland",
       "country_name_full": "Kingdom of Swaziland",
       "iso3": "748"
-    },
-    "TC": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "TC",
-      "country_code3": "TCA",
-      "country_name": "Turks and Caicos Islands",
-      "country_name_full": "Turks and Caicos Islands",
-      "iso3": "796"
-    },
-    "TD": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "TD",
-      "country_code3": "TCD",
-      "country_name": "Chad",
-      "country_name_full": "Republic of Chad",
-      "iso3": "148"
-    },
-    "TF": {
-      "continent_code": "AN",
-      "continent_name": "Antarctica",
-      "country_code2": "TF",
-      "country_code3": "ATF",
-      "country_name": "French Southern Territories",
-      "country_name_full": "French Southern Territories",
-      "iso3": "260"
     },
     "TG": {
       "continent_code": "AF",
@@ -1970,15 +1241,6 @@
       "country_name_full": "Republic of Tajikistan",
       "iso3": "762"
     },
-    "TK": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "TK",
-      "country_code3": "TKL",
-      "country_name": "Tokelau",
-      "country_name_full": "Tokelau",
-      "iso3": "772"
-    },
     "TL": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -1987,15 +1249,6 @@
       "country_name": "Timor-Leste",
       "country_name_full": "Democratic Republic of Timor-Leste",
       "iso3": "626"
-    },
-    "TM": {
-      "continent_code": "AS",
-      "continent_name": "Asia",
-      "country_code2": "TM",
-      "country_code3": "TKM",
-      "country_name": "Turkmenistan",
-      "country_name_full": "Turkmenistan",
-      "iso3": "795"
     },
     "TN": {
       "continent_code": "AF",
@@ -2024,24 +1277,6 @@
       "country_name_full": "Republic of Turkey",
       "iso3": "792"
     },
-    "TT": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "TT",
-      "country_code3": "TTO",
-      "country_name": "Trinidad and Tobago",
-      "country_name_full": "Republic of Trinidad and Tobago",
-      "iso3": "780"
-    },
-    "TV": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "TV",
-      "country_code3": "TUV",
-      "country_name": "Tuvalu",
-      "country_name_full": "Tuvalu",
-      "iso3": "798"
-    },
     "TW": {
       "continent_code": "AS",
       "continent_name": "Asia",
@@ -2051,15 +1286,6 @@
       "country_name_full": "Taiwan, Province of China",
       "iso3": "158"
     },
-    "TZ": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "TZ",
-      "country_code3": "TZA",
-      "country_name": "Tanzania",
-      "country_name_full": "United Republic of Tanzania",
-      "iso3": "834"
-    },
     "UA": {
       "continent_code": "EU",
       "continent_name": "Europe",
@@ -2068,24 +1294,6 @@
       "country_name": "Ukraine",
       "country_name_full": "Ukraine",
       "iso3": "804"
-    },
-    "UG": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "UG",
-      "country_code3": "UGA",
-      "country_name": "Uganda",
-      "country_name_full": "Republic of Uganda",
-      "iso3": "800"
-    },
-    "UM": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "UM",
-      "country_code3": "UMI",
-      "country_name": "United States Minor Outlying Islands",
-      "country_name_full": "United States Minor Outlying Islands",
-      "iso3": "581"
     },
     "US": {
       "continent_code": "NA",
@@ -2114,24 +1322,6 @@
       "country_name_full": "Republic of Uzbekistan",
       "iso3": "860"
     },
-    "VA": {
-      "continent_code": "EU",
-      "continent_name": "Europe",
-      "country_code2": "VA",
-      "country_code3": "VAT",
-      "country_name": "Holy See (Vatican City State)",
-      "country_name_full": "Holy See (Vatican City State)",
-      "iso3": "336"
-    },
-    "VC": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "VC",
-      "country_code3": "VCT",
-      "country_name": "Saint Vincent and the Grenadines",
-      "country_name_full": "Saint Vincent and the Grenadines",
-      "iso3": "670"
-    },
     "VE": {
       "continent_code": "SA",
       "continent_name": "South America",
@@ -2149,15 +1339,6 @@
       "country_name": "British Virgin Islands",
       "country_name_full": "British Virgin Islands",
       "iso3": "092"
-    },
-    "VI": {
-      "continent_code": "NA",
-      "continent_name": "North America",
-      "country_code2": "VI",
-      "country_code3": "VIR",
-      "country_name": "United States Virgin Islands",
-      "country_name_full": "United States Virgin Islands",
-      "iso3": "850"
     },
     "VN": {
       "continent_code": "AS",
@@ -2177,15 +1358,6 @@
       "country_name_full": "Republic of Vanuatu",
       "iso3": "548"
     },
-    "WF": {
-      "continent_code": "OC",
-      "continent_name": "Oceania",
-      "country_code2": "WF",
-      "country_code3": "WLF",
-      "country_name": "Wallis and Futuna",
-      "country_name_full": "Wallis and Futuna",
-      "iso3": "876"
-    },
     "WS": {
       "continent_code": "OC",
       "continent_name": "Oceania",
@@ -2203,15 +1375,6 @@
       "country_name": "Yemen",
       "country_name_full": "Yemen",
       "iso3": "887"
-    },
-    "YT": {
-      "continent_code": "AF",
-      "continent_name": "Africa",
-      "country_code2": "YT",
-      "country_code3": "MYT",
-      "country_name": "Mayotte",
-      "country_name_full": "Mayotte",
-      "iso3": "175"
     },
     "ZA": {
       "continent_code": "AF",

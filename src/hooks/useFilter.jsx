@@ -6,6 +6,7 @@ import useNote from './useNote'
 
 import submission_date_dict from './../data/submission_date_dict.txt?raw'
 import moment from 'moment'
+import countries from './../data/countries.json'
 const useFilter = () => {
   const { state, dispatch } = useAppContext()
   const { optionsSelected } = useSearch()
@@ -145,8 +146,33 @@ const filterConferences =  (listConferences, keywordSelected) => {
 
           switch (key) {
             case 'location': {
-              isMatch = conference.organizations?.some(org => org.location?.toLowerCase().includes(keyword));
+              const isLocationInCountry = (location, country) => {
+                const countryLower = country.country_name.toLowerCase();
+                return location.toLowerCase().includes(countryLower) || countryLower.includes(location.toLowerCase());
+              };
+
+              const filtered = conferences.filter(conference => {
+                const { location } = conference;
+                const locationLower = location.toLowerCase();
+
+                let isCountryMatch = false;
+
+                Object.values(countries).forEach(country => {
+                  if (isLocationInCountry(location, country)) {
+                    isCountryMatch = true;
+                  }
+                });
+
+                return isCountryMatch;
+              });
+
+              if (filtered.length === 0) {
+                isCategoryMatch = false; // No conferences match the location filter
+              } else {
+                isCategoryMatch = true;
+              }
               break;
+              
             }
 
             case 'rank': {
@@ -278,7 +304,7 @@ const filterConferences =  (listConferences, keywordSelected) => {
 
 
 const sortConferencesByPriorityKeyword = (conferences, prioritySelectedKeywords) => {
-  console.log({conferences, prioritySelectedKeywords})
+  
   // Sắp xếp hội nghị dựa trên priorityKeywords
   return conferences.sort((a, b) => {
     const priorityKeys = Object.keys(prioritySelectedKeywords);

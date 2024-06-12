@@ -11,18 +11,17 @@ import { baseURL } from './api/baseApi';
 const useNotification = () => {
 
   const [isConnected, setIsConnected] = useState(false);
-  const {user} = useLocalStorage()
   const {token} = useToken()
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
-  const { getCurrentUser, setIsExpired } = useAuth()
+  const { user, getCurrentUser, setIsExpired } = useAuth()
   let socketRef = useRef(null);
 
   useEffect(() => {
+
     const getIDUser = async () =>{
       await getCurrentUser()
     }
-
     const user_id = JSON.parse(sessionStorage.getItem('user-id'))
     getIDUser()
     const socket = io(`https://conference-searching.onrender.com`, {

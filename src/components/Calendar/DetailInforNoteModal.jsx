@@ -202,7 +202,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                                 <span>Note:</span>
                                 <Form.Control
                                     type="text"
-                                    placeholder={note.note !== '' && note.note !== 'default' ? note.note : `Your notes go here...`}
+                                    placeholder={note.note !== '' && note.note !== 'default' ? note.note : `Your note goes here...`}
                                     onClick={handleChooseUpdate}
                                     className='border-0 border-bottom ms-3 p-1'
                                 />

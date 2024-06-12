@@ -6,7 +6,7 @@ import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
 
 import data from './options.json'
-
+import countries from './../../data/countries.json'
 const customStyles = {
     menuPortal: (provided) => ({
         ...provided,
@@ -77,6 +77,34 @@ const Options = ({ label }) => {
     const { optionsSelected, filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
     const [options, setOptions] = useState([])
     const [selectedOptions, setSelectedOptions] = useState([])
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const staticValue = ["location", "type", "category"]
+        if (staticValue.includes(label)) {
+
+            setOptions(data[label])
+            getOptionsFilter(label, data[label])
+        }
+        else if (label === 'location'){
+            const transformedOptions = Object.keys(countries).map(countryCode => ({
+                value: countryCode,
+                label: countries[countryCode].country_name
+            }));
+            setOptions(transformedOptions)
+        }
+        else {
+            let transformedOptions = []
+            if (filterOptions[label]) {
+                transformedOptions = filterOptions[label].map((item) => ({
+                    value: item,
+                    label: item,
+                }));
+            }
+            setOptions(transformedOptions)
+        }
+    }, []);
+
 
     const handleOptionChange = async (items) => {
         setSelectedOptions(items)
@@ -91,25 +119,38 @@ const Options = ({ label }) => {
         }
     
     }
+    const filterOption = (option, searchInput) => {
+        const filteredOptions = filterOptionsBySearchTerm(searchInput);
+        return filteredOptions.some(filteredOption => filteredOption.value === option.value);
+    };
+    
 
-    useEffect(() => {
-        const staticValue = ["location", "type", "category"]
-        if (staticValue.includes(label)) {
+    const filterOptionsBySearchTerm = (searchInput) => {
+        const searchTermLower = searchInput.toLowerCase();
 
-            setOptions(data[label])
-            getOptionsFilter(label, data[label])
-        }
-        else {
-            let transformedOptions = []
-            if (filterOptions[label]) {
-                transformedOptions = filterOptions[label].map((item) => ({
-                    value: item,
-                    label: item,
-                }));
-            }
-            setOptions(transformedOptions)
-        }
-    }, []);
+        const keyMatch = Object.fromEntries(
+            Object.entries(countries).filter(([key, value]) => {
+                return key.toLowerCase().includes(searchTermLower) || searchTermLower.includes(key.toLowerCase());
+            })
+        );
+        const valueMatch = Object.entries(keyMatch).filter(([key, value]) => {
+            return Object.values(value).some(val => {
+                if (typeof val === 'string') {
+                    return val.toLowerCase().includes(searchTermLower);
+                }
+                return false;
+            });
+        }).map(([key, value]) => ({
+            value: key,
+            label: `${value.country_name}`,
+        }));
+
+        return valueMatch
+    };
+    // Hàm xử lý thay đổi khi người dùng nhập vào ô tìm kiếm
+    const handleInputChange = (newValue) => {
+        setSearchTerm(newValue);    
+    }
 
     return (
         <div>
@@ -121,6 +162,8 @@ const Options = ({ label }) => {
                 isClearable={false}
                 components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} /> , MultiValue }}
                 onChange={handleOptionChange}
+                onInputChange={handleInputChange}
+                filterOption={filterOption}
                 closeMenuOnSelect={true}
                 styles={customStyles}
                 placeholder="All"

@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Container, ButtonGroup, Button, Image, Row, Col } from 'react-bootstrap'
+import { Container, ButtonGroup, Button,  Row, Col } from 'react-bootstrap'
 
 import InputSearch from '../../components/admin/InputSearch'
-import Filter from '../../components/admin/Filter'
 import useConference from '../../hooks/useConferences'
 import { sortConferences } from '../../utils/sortConferences'
-import { DropdownSort } from '../../components/DropdownSort'
 import Loading from '../../components/Loading'
 import TableRender from '../../components/admin/TableRender'
-import { capitalizeFirstLetter } from '../../utils/formatWord'
-import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightFromSquare, faEdit, faFilter, faTrash, faUserCheck, faUserXmark } from '@fortawesome/free-solid-svg-icons'
-import usePost from '../../hooks/usePost'
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import useSearch from '../../hooks/useSearch'
 import { checkExistValue } from '../../utils/checkFetchedResults'
 import useFilter from '../../hooks/useFilter'
@@ -20,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
 const Users = () => {
   const navigate = useNavigate()
-  const { optionsSelected, getOptionsFilter} = useSearch()
+  const { optionsSelected} = useSearch()
   const {
     priorityKeywords, 
     filterConferences, 
@@ -85,6 +80,9 @@ const Users = () => {
             </Button>
         </div>
         ),
+        id: 'index',
+        width: 50,
+        disableResizing: true
       },
       {
         Header: "Name",

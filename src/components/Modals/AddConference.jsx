@@ -36,7 +36,6 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
         acronym: '',
         callForPaper: '',
         link: '',
-        rank: '',
         fieldsOfResearch: [],
         organizations: [{
             name: '',
@@ -127,7 +126,15 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
         });
 
     };
-
+    const handleTextAreaKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setFormData((prevData) => ({
+                ...prevData,
+                callForPaper: prevData.callForPaper + '\n',
+            }));
+        }
+    }; 
     const handleLocationChange = (orgIndex, location) => {
         setFormData(prevFormData => {
             const updatedOrgs = [...prevFormData.organizations];
@@ -156,19 +163,42 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
         handleClearForm()
         setPage(0)
     }
+
+
+    //remove function
+    const removeEmptyOrganizations = (organizations) => {
+        return organizations.filter(org => 
+            org.name || org.type || org.location || org.start_date || org.end_date
+        );
+    };
+    
+    const addEmptyOrganizationIfNecessary = (organizations) => {
+        return organizations.length > 0 ? organizations : [{
+            name: '',
+            type: '',
+            location: '',
+            start_date: '',
+            end_date: ''
+        }];
+    };
+    
+    const removeEmptyImportantDates = (importantDates) => {
+        return importantDates.filter(date => 
+            date.date_type || date.date_value
+        );
+    };
+    
+    const addEmptyImportantDateIfNecessary = (importantDates) => {
+        return importantDates.length > 0 ? importantDates : [{
+            date_type: '',
+            date_value: ''
+        }];
+    };
+    ////
+
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
-        // Kiểm tra và loại bỏ các phần tử rỗng trong mảng organizations
-        const updatedOrganizations = formData.organizations.filter(org => {
-            return !Object.values(org).every(value => value === "" || value === null);
-        });
-
-        // Cập nhật formData với mảng organizations sau khi loại bỏ các phần tử rỗng
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            organizations: updatedOrganizations
-        }));
 
         const newInvalidDates = formData.importantDates.reduce((acc, date, index) => {
             if ((date.date_value === '' && date.date_type !== '') || (date.date_value !== '' && date.date_type === '')) {
@@ -205,28 +235,19 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 requiredFields[field] = true
             }
         }
+            // Loại bỏ các organizations và importantDates rỗng ban đầu
+    const cleanedOrganizations = removeEmptyOrganizations(formData.organizations);
+    const cleanedImportantDates = removeEmptyImportantDates(formData.importantDates);
+    
+    // Kiểm tra các điều kiện submits
+    const updatedFormData = {
+        ...formData,
+        organizations: cleanedOrganizations,
+        importantDates: cleanedImportantDates
+    };
         if (allValid) {
             setIsPosted(true)
-            const tempOrganizations = [...formData.organizations];
-            const tempImportantDates = [...formData.importantDates];
-
-            // Loại bỏ các object rỗng từ mảng organizations
-            const filteredOrganizations = formData.organizations.filter(org => (
-                org.name !== '' || org.type !== '' || org.location !== '' || org.start_date !== '' || org.end_date !== ''
-            ));
-
-            // Loại bỏ các object rỗng từ mảng importantDates
-            const filteredImportantDates = formData.importantDates.filter(date => (
-                date.date_type !== '' || date.date_value !== ''
-            ));
-
-            // Cập nhật formData với mảng organizations và importantDates đã lọc
-            const updatedFormData = {
-                ...formData,
-                organizations: filteredOrganizations,
-                importantDates: filteredImportantDates
-            };
-
+          
             const result = await postConference(updatedFormData)
             setMesage(result.message)
             setStatus(result.status)
@@ -239,16 +260,31 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 handleCloseForm()
             }
             else {
+                // Kiểm tra nếu tất cả các organizations và importantDates đều rỗng thì thêm một object với các giá trị trống
+                const finalOrganizations = addEmptyOrganizationIfNecessary(cleanedOrganizations);
+                const finalImportantDates = addEmptyImportantDateIfNecessary(cleanedImportantDates);
+                
                 setFormData({
                     ...formData,
-                    organizations: tempOrganizations,
-                    importantDates: tempImportantDates
-                  });
-            }
+                    organizations: finalOrganizations,
+                    importantDates: finalImportantDates
+                });
+
+                    }
 
         }
 
         else {
+            // Kiểm tra nếu tất cả các organizations và importantDates đều rỗng thì thêm một object với các giá trị trống
+            const finalOrganizations = addEmptyOrganizationIfNecessary(cleanedOrganizations);
+            const finalImportantDates = addEmptyImportantDateIfNecessary(cleanedImportantDates);
+            
+            setFormData({
+                ...formData,
+                organizations: finalOrganizations,
+                importantDates: finalImportantDates
+            });
+            
             setRequiredFields(requiredFields)
             setPage(0)
         }
@@ -328,25 +364,6 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                 requiredFields={requiredFields}
                                             />
                                         </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3">
-                                            Rank:
-                                        </Form.Label>
-                                        <Form.Select
-                                            name="rank"
-                                            value={formData.rank || ''}
-                                            onChange={handleInputChange}
-                                            className='border-blue-normal'
-                                        >
-                                            {/* Option placeholder */}
-                                            <option value="" disabled hidden>Select rank...</option>
-                                            {/* Options từ data.rank */}
-                                            {(filterOptions.rank || data.rank).map((option, index) => (
-                                                <option value={option.value || option} key={index}>{option.label || option}</option>
-                                            ))}
-                                        </Form.Select>
-
                                     </Form.Group>
 
                                 </Carousel.Item>
@@ -449,6 +466,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             name="callForPaper"
                                             value={formData.callForPaper}
                                             onChange={handleInputChange}
+                                            onKeyDown={handleTextAreaKeyDown}
                                             placeholder="Enter callForPaper..."
                                             className={requiredFields.callForPaper ? 'border-blue-normal' : 'border border-danger '}
                                         />
@@ -473,16 +491,16 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                         {
                             page < 3
                                 ?
-                                <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 mx-3 text-black'>
+                                <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 py-1 mx-3 text-black'>
                                     Next
                                 </Button>
                                 :
                                 <>
-                                    <Button onClick={handleFormSubmit} className='bg-blue-normal px-4 mx-3 rounded'>
+                                    <Button onClick={handleFormSubmit} className='bg-blue-normal px-4 py-1 mx-3 rounded'>
                                         {
                                             loading
                                                 ?
-                                                <Loading />
+                                                <Loading size={'sm'}/>
                                                 :
                                                 <div>
                                                     <Image width={20} height={20} className='me-2' src={AddButtonIcon} />

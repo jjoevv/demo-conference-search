@@ -103,7 +103,7 @@ const DetailedInformationPage = () => {
                     :
                     <>
                         {
-                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]' ?
+                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]' && conference?.information?.status ?
                             <>
                                 <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 80 ? 'vh-75' : 'vh-100'}`}>
                                     <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>
@@ -165,7 +165,7 @@ const DetailedInformationPage = () => {
                                             <InformationPage conference={conference} />
                                         </Col>
                                         <Col sm={6} xs={6} className="p-0" >
-                                            <ImportantDatePage />
+                                            <ImportantDatePage conference={conference} />
                                         </Col>
                                     </Row>
                                 </div>
@@ -191,7 +191,7 @@ const DetailedInformationPage = () => {
                             :
                            <>
                             <Container fluid className='d-flex flex-column justify-content-center align-items-center p-0 vh-100 bg-blur'>
-                       <h1>No conference avalable</h1>
+                       <h1>No conference available</h1>
 
                     </Container>
                            </>
