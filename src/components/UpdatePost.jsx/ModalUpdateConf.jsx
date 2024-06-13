@@ -239,7 +239,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
 
           <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
 
-            <Tab eventKey={`1`} title="Information" className='mx-4 pt-5'>
+            <Tab eventKey={`1`} title="Information" className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
               <Form.Group as={Row} className='my-3'>
                 <Form.Label column sm="3">Conference name: </Form.Label>
                 <Col>
@@ -289,7 +289,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
               </Form.Group>
             </Tab>
 
-            <Tab eventKey={`2`} title="Organization" className='mx-4'>
+            <Tab eventKey={`2`} title="Organization" className='mx-4' tabClassName= 'custom-tab-update'>
 
               {formData.organizations.map((org, index) => (
 
@@ -340,7 +340,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
               ))}
               {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
-            <Tab eventKey={`3`} title="Important dates" className='mx-4'>
+            <Tab eventKey={`3`} title="Important dates" className='mx-4' tabClassName= 'custom-tab-update'>
               <div className='w-100 d-flex justify-content-end'>
                 <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>Add important dates</Button>
               </div>
@@ -365,7 +365,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
               ))}
               {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
             </Tab>
-            <Tab eventKey={`4`} title="Call For Paper" className='mx-4'>
+            <Tab eventKey={`4`} title="Call For Paper" className='mx-4' tabClassName= 'custom-tab-update'>
               <Form.Group as={Row} className='my-3'>
                 <Form.Label column sm="3">Call for paper: </Form.Label>
                 <Col>

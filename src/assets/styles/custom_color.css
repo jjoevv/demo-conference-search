@@ -182,24 +182,26 @@ button.bg-darkcyan-normal:hover {
     background-image: linear-gradient(to bottom, #bcedd8 , #f8fdfb);
   }
 
-.nav-link{
+.nav-link.custom-tab-update{
     color: #054142;
-    border-bottom: 2px solid #054142;
     transition: color 0.3s ease;
+    border-top: 1px;
 }
 
-.nav-link:hover{
-    color: #043435;
+.nav-link.custom-tab-update:hover{
+    color: #00999f;
     border: none;
-    margin: 0px;
+    
 }
-.nav-link.active{
-    background-color: #bcedd8;
+.nav-link.custom-tab-update.active{
     color: #00999f !important;
     font-weight: 600;
-    border: 2px solid #024546;
+    border: 2px solid #CBEDE8;
+    border-bottom: none;
 }
-
+.nav-link.custom-tab-update.active:hover{
+    color: #00999f;
+}
 .nav-item.custom-tab {
     color:  #619eab !important;
   }

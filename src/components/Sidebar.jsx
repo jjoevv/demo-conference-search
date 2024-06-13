@@ -14,7 +14,7 @@ const sidebar = [
   { path: `/user/account`, title: 'Account', icon: test },
   { path: '/user/followed', title: 'Followed Conferences', icon: test },
   { path: '/user/yourconferences', title: 'Your conferences', icon: test },
-  { path: '/user/schedule', title: 'Note', icon: test },
+  { path: '/user/note', title: 'Note', icon: test },
   { path: '/user/notifications', title: 'Notifications', icon: test },
   { path: '/user/setting', title: 'Setting', icon: test },
 ]

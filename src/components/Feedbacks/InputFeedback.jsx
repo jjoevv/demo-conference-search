@@ -5,7 +5,6 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 
 import AvatarIcon from '../../assets/imgs/avatar.png'
 import Loading from '../Loading';
-import { useParams } from 'react-router-dom';
 const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList }) => {
     const { user } = useLocalStorage()
     const [feedback, setFeedback] = useState(defaultValue? defaultValue.content:'')
@@ -13,7 +12,6 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
     const [error, setError] = useState(false)
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
-    const confid = useParams()
     const handleSubmit = async () => {
         setLoading(true)
         if (user || localStorage.getItem('user')) {

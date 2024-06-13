@@ -103,7 +103,7 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
   const searchInObject = (obj, keyword) => {
     keyword = keyword.toLowerCase();
     if (typeof obj === 'string') {
-      return obj.toLowerCase().includes(keyword) || keyword.toLowerCase().includes(obj);
+      return obj.toLowerCase().includes(keyword);
     }
 
     if (Array.isArray(obj)) {

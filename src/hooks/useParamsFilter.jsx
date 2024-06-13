@@ -33,6 +33,7 @@ useEffect(() => {
   const setPage = (page) => {
     dispatch({type: "SET_PARAMS", payload: page})
   }
+
   const addtoParams = useCallback((optionsSelected, pagenumber) => {
     const paramsFilter = {};
       // Thêm các key và giá trị từ optionsSelected vào paramsFilter
@@ -45,14 +46,14 @@ useEffect(() => {
       const search = location.search;
       const queryLocation = queryString.parse(search);
        // Tạo URL mới
-       const newPageNumber = queryLocation['page'] ? queryLocation['page']: pagenumber
+       
        const queryFilter = new URLSearchParams(paramsFilter).toString()
        const newUrl = `?page=${pagenumber + 1}&${queryFilter}`;
        
        window.history.pushState({}, '', newUrl);
 
     // Chuyển hướng đến URL 
-}, [])
+}, [optionsSelected])
 
   return { 
     paramsFilter: state.paramsFilter,

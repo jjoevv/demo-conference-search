@@ -182,12 +182,12 @@ const Dashboard = () => {
               activeKey={key}
               onSelect={(k) => setKey(k)}
             >
-              <Tab eventKey="allconf" title="All conferences" className='pt-2'>
+              <Tab eventKey="allconf" title="All conferences" className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
                   <AllConferences conferences={displayConferences} />
                 </div>
               </Tab>
-              <Tab eventKey="userowner" title="Pending" className='pt-2'>
+              <Tab eventKey="userowner" title="Pending" className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef}>
                   <PendingCFPs conferences={displayConferences} />
                 </div>

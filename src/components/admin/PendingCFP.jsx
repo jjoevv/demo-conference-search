@@ -1,21 +1,22 @@
 import React, { useRef, useState } from 'react'
 import TableRender from './TableRender'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightFromSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpRightFromSquare, faBan, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap'
 import moment from 'moment'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import DeleteModal from '../Modals/DeleteModal'
 import { useNavigate } from 'react-router-dom'
 import usePost from '../../hooks/usePost'
+import useAdmin from '../../hooks/useAdmin'
 
 const PendingCFPs = ({conferences}) => {
     const scrollPositions = useRef({});
     const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const { loading, deletePost, getPostedConferences } = usePost()
-  
+  const { loading, deletePost,  getPostedConferences } = usePost()
+  const {deactivePost} = useAdmin()
   const [countdown, setCountdown] = useState(3);
   const [isConfirm, setIsConfirm] = useState(false)
   const [confDel, setConfDel] = useState(null)
@@ -28,7 +29,7 @@ const PendingCFPs = ({conferences}) => {
   const handleDeletePost = async (e) => {
     e.preventDefault();    
     setIsConfirm(true)
-    const result = await deletePost(confDel.id);
+    const result = await deactivePost(confDel.id);
     setStatus(result.status);
     setMessage(result.message);
     if (result.status) {
@@ -151,7 +152,7 @@ const PendingCFPs = ({conferences}) => {
 
             <Button className='bg-transparent border-0 p-0  my-0 action-btn tb-icon-delete ' 
             onClick={() => handleChooseDelete(row.original)}>
-              <FontAwesomeIcon icon={faTrash} className='text-danger action-icon' />
+              <FontAwesomeIcon icon={faBan} className='text-danger action-icon' />
             </Button>
 
 

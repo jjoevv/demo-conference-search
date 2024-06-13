@@ -28,7 +28,7 @@ const authPage = [
   { path: 'user/account', element: <Account /> },
   { path: 'user/followed', element: <Followed /> },
   { path: 'user/yourconferences', element: <YourConf /> },
-  { path: 'user/schedule', element: <Timestamp /> },
+  { path: 'user/note', element: <Timestamp /> },
   { path: 'user/notifications', element: <Notifications /> },
   { path: 'user/setting', element: <Setting /> },
 ]
