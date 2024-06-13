@@ -25,7 +25,7 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                 // Reset ô nhập feedback sau khi gửi
                 if (res.status) {
                     setFeedback('');
-                    onReloadList(confid.id)
+                    onReloadList()
                     if(onCheck){
                         onCheck()
                     }

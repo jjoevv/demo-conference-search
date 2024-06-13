@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import useFeedback from '../../hooks/useFeedbacks'
+import useConferences from '../../hooks/useConferences'
 import { SortFeedbacks } from './SortFeedbacks'
 import { Button, Image, Spinner } from 'react-bootstrap'
 
@@ -14,6 +15,7 @@ import { useParams } from 'react-router-dom'
 import moment from 'moment'
 
 const AllFeedbackOfConf = () => {
+  const {handleGetOne} = useConferences()
   const { loading, feedbacks, addFeedback, getAllFeedbacks, updateFeedback, deleteFeedback, sortFeedback, checkEditFeedback } = useFeedback()
   const [idEdit, setIdEdit] = useState(null)
   const [selectedOption, setSelectedOption] = useState(null);
@@ -49,6 +51,7 @@ const AllFeedbackOfConf = () => {
     setDeleteNote(tid)
     await deleteFeedback(tid)
     await getAllFeedbacks(id.id)
+    await handleGetOne(id.id)
     setLoadingDel(false)
   }
   useEffect(() => {
@@ -64,9 +67,15 @@ const AllFeedbackOfConf = () => {
 
     return displayName
   }
+
+  const handleReloadPage = async () => {    
+    console.log({id})
+    await getAllFeedbacks(id.id)
+    await handleGetOne(id.id)
+  }
   return (
     <div className=''>
-      <InputFeedback onClick={addFeedback} id={id.id} onReloadList={getAllFeedbacks} />
+      <InputFeedback onClick={addFeedback} id={id.id} onReloadList={handleReloadPage} />
       <div className="d-flex align-items-center justify-content-between mt-4 ms-5 border-bottom pb-2 mb-5">
         <p className="fw-bold">{displayFeedback.length} feedback</p>
         <SortFeedbacks options={options} onSelect={handleSelectOption} />
@@ -112,7 +121,7 @@ const AllFeedbackOfConf = () => {
                             onCheck={() => setIdEdit(false)}
                             id={idEdit}
                             cfpid={id.id}
-                            onReloadList={getAllFeedbacks}
+                            onReloadList={handleReloadPage}
                             loading={loading}
                           />
                         ) : (
@@ -122,7 +131,7 @@ const AllFeedbackOfConf = () => {
 
                               {
                                 isDeleteNote === feedback.tid && loadingDel ?
-                                <Spinner sm='sm'/>
+                                <Spinner sm={'sm'}/>
                                 :
                                 <Button className='bg-transparent border-0'>
                                 <Image src={DeleteIcon} className='mx-1' width={20} onClick={() => handleDeleteFeedback(feedback.tid)} />
