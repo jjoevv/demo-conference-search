@@ -36,7 +36,6 @@ const Dashboard = () => {
   const [conferencesList, setConferenceList] = useState([]) 
 
   useEffect(() => {
-    console.log({ key, conferences })
     if (conferences.length === 0 || !conferences) {
       getAllConferences()
     }
@@ -47,7 +46,6 @@ const Dashboard = () => {
   }, [conferences])
 
   useEffect(() => {
-    console.log({ key, pendingConferences })
     if (pendingConferences.length === 0 || !pendingConferences) {
       getAllPendingConferences()
     }
@@ -58,7 +56,6 @@ const Dashboard = () => {
   }, [pendingConferences])
 
   useEffect(() => {
-    console.log({ key, conferences })
     if (key === 'allconf') {
       setConferenceList(conferences)
       setDisplayedConferences(conferences)
@@ -121,7 +118,6 @@ const Dashboard = () => {
     };
   }, []);
 
-  console.log({displayConferences})
   return (
     <Container
       className='pt-5 mt-5 bg-light overflow-y-auto' style={{ paddingLeft: "300px" }}>

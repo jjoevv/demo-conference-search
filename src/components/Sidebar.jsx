@@ -28,9 +28,9 @@ const Sidebar = () => {
 
   useEffect(()=>{
     if(user){
-      setProfile(user)
+      setProfile(account)
     }
-  },[user, account])
+  },[account])
 
   return (
     <Container fluid className="my-sidebar">

@@ -67,8 +67,8 @@ const useSearch = () => {
               console.error(`Error fetching data for ${param}:`, error);
             }
           }
-          else if (param === 'source') {
-            dispatch(getoptionsSelected({ [param]: ['Core2023'] }));
+          else if (param === 'rank') {
+            dispatch(getoptionsSelected({ [param]: ['A*', 'A', 'B', 'C'] }));
           }
           else {
 

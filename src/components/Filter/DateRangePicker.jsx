@@ -59,7 +59,7 @@ const DateRangePicker = ({ label }) => {
     handleToggleClick()
   };
   return (
-    <Dropdown ref={dropdownRef} className="w-100" show={showDropdown} onHide={() => setShowDropdown(false)}>
+    <Dropdown ref={dropdownRef} className="w-100" show={showDropdown} autoClose="false">
       <Dropdown.Toggle 
         onClick={handleToggleClick}
         className="w-100 d-flex justify-content-between align-items-center bg-white border-1 text-color-medium border-primary-normal" 
@@ -72,7 +72,7 @@ const DateRangePicker = ({ label }) => {
       <Dropdown.Menu className='px-2'>
         <div className="w-100 px-2 container">
           <Row>
-            <Col xs={6}>
+            <Col xs={6}  style={{ zIndex: 1050 }}>
               <DatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
@@ -84,9 +84,10 @@ const DateRangePicker = ({ label }) => {
                 scrollableYearDropdown
                 className='w-100'
                 shouldCloseOnSelect
+                s
               />
             </Col>
-            <Col xs={6}>
+            <Col xs={6}  style={{ zIndex: 1050 }}>
               <DatePicker
                 selected={endDate}
                 onChange={handleEndDateChange}

@@ -3,7 +3,6 @@ import { Container, Card, Button, Stack, Row, Col, Image, Spinner } from 'react-
 import ReactPaginate from 'react-paginate'
 
 import useFollow from '../../hooks/useFollow'
-import { isObjectInList } from '../../utils/checkExistInList'
 
 import useSearch from '../../hooks/useSearch'
 import { DropdownSort } from '../DropdownSort'
@@ -243,6 +242,15 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                             Upcoming
                                                                         </div>
                                                                     }
+                                                                </>
+                                                            }
+
+{
+                                                                conf.information.source === 'ConfHub' &&
+                                                                <>
+                                                                       <div className='bg-skyblue-dark text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                            CONFHUB
+                                                                        </div>
                                                                 </>
                                                             }
                                                             <span className='fw-bold fs-5 text-justify text-color-darker'>{conf.information.name}</span>

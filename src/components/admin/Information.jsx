@@ -6,7 +6,6 @@ import ImportantDatePage from '../InformationPage/ImportantDatePage'
 
 const Information = ({ conference }) => {
   const { getConferenceDate } = useConference()
-  console.log({conference})
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (fieldOfResearch.length === 0) {
       return null    }

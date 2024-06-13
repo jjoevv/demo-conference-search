@@ -103,7 +103,7 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
   const searchInObject = (obj, keyword) => {
     keyword = keyword.toLowerCase();
     if (typeof obj === 'string') {
-      return obj.toLowerCase().includes(keyword);
+      return obj.toLowerCase().includes(keyword) || keyword.toLowerCase().includes(obj);
     }
 
     if (Array.isArray(obj)) {
@@ -126,6 +126,65 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
     return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
 }
 
+
+const isLocationMatch = (location, keyword, countries) => {
+  const locationLower = location ? location.toLowerCase().trim() : '';
+  const keywordLower = keyword.toLowerCase().trim();
+
+  // Nếu location không tồn tại hoặc rỗng, trả về false
+  if (!location || location === '') {
+    return false;
+  }
+
+  // Lấy phần từ sau dấu phẩy để so sánh với country code
+  const locationParts = locationLower.split(',').map(part => part.trim());
+  const locationAfterComma = locationParts.length > 1 ? locationParts[locationParts.length - 1] : locationParts[0];
+
+  // Loại bỏ các dấu chấm và dấu ngoặc trong locationAfterComma
+  const cleanedLocationAfterComma = locationAfterComma.replace(/[.()]/g, '').trim();
+
+  // Kiểm tra nếu location chứa keyword hoặc keyword chứa location
+  if (cleanedLocationAfterComma.includes(keywordLower) || keywordLower.includes(cleanedLocationAfterComma)) {
+    return true;
+  }
+
+  // Kiểm tra nếu locationAfterComma khớp với bất kỳ giá trị nào trong countries
+  const isMatch = Object.values(countries).some(country => {
+    const countryLower2 = country.country_code2.toLowerCase();
+    const countryLower3 = country.country_code3.toLowerCase();
+    const countryNameLower = country.country_name.toLowerCase();
+    const countryNameFullLower = country.country_name_full.toLowerCase();
+
+    // Kiểm tra locationAfterComma có chứa country code ở phần từ sau dấu phẩy không
+    const locationContainsCountryCode = (
+      (cleanedLocationAfterComma.endsWith(countryLower2) && cleanedLocationAfterComma.length <= countryLower2.length + 2) ||
+      (cleanedLocationAfterComma.endsWith(countryLower3) && cleanedLocationAfterComma.length <= countryLower3.length + 2)
+    );
+
+    // Kiểm tra location và keyword có khớp với bất kỳ giá trị country name nào không
+    const locationMatches = (
+      cleanedLocationAfterComma.includes(countryNameLower) ||
+      cleanedLocationAfterComma.includes(countryNameFullLower) ||
+      countryNameLower.includes(locationLower) ||
+      countryNameFullLower.includes(locationLower)
+    );
+
+    const keywordMatches = (
+      keywordLower.includes(countryNameLower) ||
+      keywordLower.includes(countryNameFullLower) ||
+      countryNameLower.includes(keywordLower) ||
+      countryNameFullLower.includes(keywordLower)
+    );
+
+    return (locationContainsCountryCode || locationMatches) && keywordMatches;
+  });
+
+  return isMatch;
+};
+
+
+
+
 const filterConferences =  (listConferences, keywordSelected) => {
   setLoading(true);
   let results = [];
@@ -146,34 +205,16 @@ const filterConferences =  (listConferences, keywordSelected) => {
 
           switch (key) {
             case 'location': {
-              const isLocationInCountry = (location, country) => {
-                const countryLower = country.country_name.toLowerCase();
-                return location.toLowerCase().includes(countryLower) || countryLower.includes(location.toLowerCase());
-              };
-
-              const filtered = conferences.filter(conference => {
-                const { location } = conference;
-                const locationLower = location.toLowerCase();
-
-                let isCountryMatch = false;
-
-                Object.values(countries).forEach(country => {
-                  if (isLocationInCountry(location, country)) {
-                    isCountryMatch = true;
-                  }
-                });
-
-                return isCountryMatch;
+            
+              isMatch = conference.organizations.some(org => {
+                if (org.status === "new") {
+                  return isLocationMatch(org.location, keyword, countries);
+                }
               });
-
-              if (filtered.length === 0) {
-                isCategoryMatch = false; // No conferences match the location filter
-              } else {
-                isCategoryMatch = true;
-              }
+            
               break;
-              
             }
+            
 
             case 'rank': {
               isMatch = conference.information?.rank?.toLowerCase() === keyword.toLowerCase();

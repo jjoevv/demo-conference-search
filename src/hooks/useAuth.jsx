@@ -176,33 +176,31 @@ const useAuth = () => {
   const getCurrentUser = async () => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
-    try {
-      const response = await fetch(`${baseURL}/user/infomation`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenHeader}`
-        },
-      });
-
-      if (!response.ok) {
-        if(response.status === 401){
-          setIsExpired(true)
+    if(user || localStorage.getItem('user')){
+      try {
+        const response = await fetch(`${baseURL}/user/infomation`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenHeader}`
+          },
+        });
+  
+        if (!response.ok) {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
+          setError(response.status)         
         }
-        setError(response.status)        
-        throw new Error(response.message);
+        else {
+          const data = await response.json()
+          
+          dispatch({type: "LOGIN_SUCCESS", payload: data.data})
+          sessionStorage.setItem('user-id', JSON.stringify(data.data.id))
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-      else {
-        const data = await response.json()
-        
-        dispatch({type: "LOGIN_SUCCESS", payload: data.data})
-        const user_id = data.data.id
-        sessionStorage.setItem('user-id', JSON.stringify(user_id))
-        setUserId(user_id)
-      }
-    } catch (error) {
-      console.error('Error:', error);
-
     }
   }
 

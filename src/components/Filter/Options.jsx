@@ -80,29 +80,30 @@ const Options = ({ label }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        const staticValue = ["location", "type", "category"]
-        if (staticValue.includes(label)) {
+        const staticValue = ["type", "category"];
 
-            setOptions(data[label])
-            getOptionsFilter(label, data[label])
-        }
-        else if (label === 'location'){
+    if (staticValue.includes(label)) {
+        setOptions(data[label]);
+        getOptionsFilter(label, data[label]);
+    } else {
+        let transformedOptions = [];
+
+        if (label === 'location') {
             const transformedOptions = Object.keys(countries).map(countryCode => ({
                 value: countryCode,
                 label: countries[countryCode].country_name
             }));
-            setOptions(transformedOptions)
-        }
-        else {
-            let transformedOptions = []
+            setOptions(transformedOptions);
+        } else {
             if (filterOptions[label]) {
                 transformedOptions = filterOptions[label].map((item) => ({
                     value: item,
                     label: item,
                 }));
             }
-            setOptions(transformedOptions)
+            setOptions(transformedOptions);
         }
+    }
     }, []);
 
 
@@ -133,7 +134,7 @@ const Options = ({ label }) => {
                 return key.toLowerCase().includes(searchTermLower) || searchTermLower.includes(key.toLowerCase());
             })
         );
-        const valueMatch = Object.entries(keyMatch).filter(([key, value]) => {
+        const valueMatch = Object.entries(countries).filter(([key, value]) => {
             return Object.values(value).some(val => {
                 if (typeof val === 'string') {
                     return val.toLowerCase().includes(searchTermLower);
@@ -154,22 +155,22 @@ const Options = ({ label }) => {
 
     return (
         <div>
-            <Select
-                isMulti={true}
-                options={options}
-                value={optionsSelected[label].map(value => ({ value, label: value }))}
-                hideSelectedOptions={false}
-                isClearable={false}
-                components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} /> , MultiValue }}
-                onChange={handleOptionChange}
-                onInputChange={handleInputChange}
-                filterOption={filterOption}
-                closeMenuOnSelect={true}
-                styles={customStyles}
-                placeholder="All"
-                menuPortalTarget={document.body}
-                menuPosition="fixed"
-            />
+             <Select
+            isMulti={true}
+            options={options}
+            value={optionsSelected[label].map(value => ({ value, label: value }))}
+            hideSelectedOptions={false}
+            isClearable={false}
+            components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} />, MultiValue }}
+            onChange={handleOptionChange}
+            onInputChange={label === 'location' ? handleInputChange : null}
+            filterOption={label === 'location' ? filterOption : null}
+            closeMenuOnSelect={true}
+            styles={customStyles}
+            placeholder="All"
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
+        />
         </div>
 
     )

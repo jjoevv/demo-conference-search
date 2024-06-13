@@ -1115,6 +1115,15 @@
       "country_name_full": "Kingdom of Sweden",
       "iso3": "752"
     },
+    "GB": {
+      "continent_code": "EU",
+      "continent_name": "Europe",
+      "country_code2": "UK",
+      "country_code3": "GB",
+      "country_name": "United Kingdom",
+      "country_name_full": "United Kingdom of Great Britain & Northern Ireland",
+      "iso3": "752"
+    },
     "SG": {
       "continent_code": "AS",
       "continent_name": "Asia",

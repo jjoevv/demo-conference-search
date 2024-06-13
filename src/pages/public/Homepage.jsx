@@ -60,6 +60,7 @@ const Homepage = () => {
           try {
             const filterResult =  filterConferences(conferences, optionsSelected);
             const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords);
+         
             setDisplayedConferences(sortConferences);
           } catch (error) {
             console.error("Error applying filter:", error);
