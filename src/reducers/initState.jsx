@@ -83,5 +83,10 @@ export const initialState = {
   userAccount: null,
 
   settings: {},
+
+  dataUpload: {
+    data: [],
+    headers: []
+  },
 };
 

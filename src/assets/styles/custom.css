@@ -674,3 +674,12 @@ a {
     color: #1E4540;
   }
   
+
+  .modal-90w{
+    min-width: 90%;
+  }
+
+  .modal-90h{
+    min-height: 90vh;
+    height: 90vh;
+  }

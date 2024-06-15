@@ -20,6 +20,7 @@ import AllConferences from '../../components/admin/AllConferences'
 import PendingCFPs from '../../components/admin/PendingCFP'
 import './../../components/admin/custom_tab.css'
 import useAdmin from '../../hooks/useAdmin'
+import ImportButton from '../../components/admin/ImportButton'
 
 const Dashboard = () => {
   const { optionsSelected, getOptionsFilter } = useSearch()
@@ -35,6 +36,9 @@ const Dashboard = () => {
   const [displayConferences, setDisplayedConferences] = useState([])
   const [conferencesList, setConferenceList] = useState([]) 
 
+  useEffect(()=>{
+    getAllConferences()
+  }, [])
   useEffect(() => {
     if (conferences.length === 0 || !conferences) {
       getAllConferences()
@@ -52,7 +56,7 @@ const Dashboard = () => {
     getOptionsFilter("", [])
     if (key === 'userowner') {
       setDisplayedConferences(pendingConferences)
-    }
+    } else setDisplayedConferences(conferences)
   }, [pendingConferences])
 
   useEffect(() => {
@@ -117,7 +121,7 @@ const Dashboard = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
+  console.log({displayConferences, key})
   return (
     <Container
       className='pt-5 mt-5 bg-light overflow-y-auto' style={{ paddingLeft: "300px" }}>
@@ -125,6 +129,7 @@ const Dashboard = () => {
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Dashboard</h4>
         <ButtonGroup>
+          <ImportButton/>
           <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
             <FontAwesomeIcon icon={faDownload} className='me-2' />
             Export file

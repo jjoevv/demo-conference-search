@@ -145,7 +145,7 @@ const appReducer = (state, action) => {
         case actionTypes.GET_ALL_CONFERENCES:
             return {
                 ...state,
-                conferences: [...state.conferences, ...action.payload],
+                conferences: action.payload,
             };
         case actionTypes.GET_ONE_CONFERENCE:
             return {
@@ -205,10 +205,18 @@ const appReducer = (state, action) => {
                 ...state,
                 feedbacks: action.payload,
             };
-            case actionTypes.GET_ALL_PENDING_CONFERENCES:         
+        case actionTypes.GET_ALL_PENDING_CONFERENCES:         
             return {
                 ...state,
                 pendingConferences: action.payload,
+            };
+        case actionTypes.SET_DATA_UPLOAD:         
+            return {
+                ...state,
+                dataUpload: {
+                  data: action.payload.data,
+                  headers: action.payload.headers,
+                },
             };
         default:
             return state;
