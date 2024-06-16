@@ -61,7 +61,7 @@ const Users = () => {
 
   const handleChooseUser = async (id) => {
     await getUserById(id)
-    navigate(`/admin/usersmanagement/userdetail/${id}`)
+    navigate(`/admin/users_management/userdetail/${id}`)
   }
 
 
@@ -110,8 +110,8 @@ const Users = () => {
 );
   return (
     <Container
-      fluid
-      className='py-5 mt-5 bg-light overflow-y-auto' style={{ paddingLeft: "350px" }}>
+    fluid  className='pt-5 mt-5 px-5 ms-5  bg-light overflow-y-auto my-sidebar-content'>
+
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4>Users management</h4>

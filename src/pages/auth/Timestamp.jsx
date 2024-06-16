@@ -12,9 +12,7 @@ const Timestamp = () => {
   const { loading, notes, getAllNotes} = useNote()  
   
   return (
-    <Container
-      fluid
-      className='py-5 overflow-hidden' style={{marginLeft: "360px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
       <div className='d-flex justify-content-between align-items-center'>
         <h4 className='mb-3'>Schedule</h4>
       {

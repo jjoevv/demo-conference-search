@@ -7,7 +7,7 @@ import { faCircleXmark, faEdit, faXmark } from '@fortawesome/free-solid-svg-icon
 import useSearch from '../../hooks/useSearch';
 import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
-import data from './../Filter/options.json'
+import data from '../Filter/options.json'
 import { capitalizeFirstLetter } from '../../utils/formatWord';
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick }) => {

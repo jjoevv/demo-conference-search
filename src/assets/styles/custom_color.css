@@ -2,11 +2,11 @@
     background-color: #f1fcf8;
 }
 
-.btn.bg-beige-light:hover {
+.button.bg-beige-light:hover {
     background-color: #f5fcf9;
 }
 
-.btn.bg-beige-light:active {
+.button.bg-beige-light:active {
     background-color: #eaf9f3;
 }
 
@@ -18,7 +18,7 @@ button.bg-beige-normal:hover {
     background-color: #a9d5c2;
 }
 
-.bg-beige-normal:active {
+button.bg-beige-normal:active {
     background-color: #96bead;
 }
 
@@ -63,8 +63,11 @@ button.bg-teal-light:active {
     background-color: #021e1f;
 }
 
-.border-teal-normal {
+.border-teal-light {
     border-color: #b2cbcb !important;
+}
+.border-teal-normal {
+    border-color: #065758 !important;
 }
 
 .bg-skyblue-light {
@@ -126,6 +129,10 @@ button.bg-darkcyan-normal:hover {
     background-color: #007a7f;
 }
 
+.border-darkcyan-normal{
+    border-color: #00999f !important;
+}
+
 .bg-yellow-light {
     background-color: #fffdeb;
 }
@@ -153,6 +160,8 @@ button.bg-darkcyan-normal:hover {
 .bg-yellow-darker {
     background-color: #595314;
 }
+
+
 
 
 .text-yellow {

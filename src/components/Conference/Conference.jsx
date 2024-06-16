@@ -9,7 +9,7 @@ import { DropdownSort } from '../DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
 import { getSubDate } from '../../utils/formatDate'
-import ButtonGroupUpdate from '../PostConference/ButtonGroupUpdate'
+import ButtonGroupUpdate from '../Postconference/ButtonGroupUpdate'
 import { useNavigate } from 'react-router-dom'
 import useConference from '../../hooks/useConferences'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -225,7 +225,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                         id={conf.id}
                                         key={conf.id}>
                                         <Stack className='p-0 w-100 align-items-start' direction='horizontal'>
-                                            <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center text-center acronym-container border border-teal-normal'>
+                                            <div className='bg-white rounded-4 fw-bolder d-flex align-items-center justify-content-center text-center acronym-container border border-teal-light'>
                                                 <span className={`fw-bold ${getLengthString(conf.information.acronym) > 6 ? 'fs-6' : 'fs-4'}`}>{conf.information.acronym}</span>
                                             </div>
 

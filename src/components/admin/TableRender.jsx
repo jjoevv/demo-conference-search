@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
-import { Resizable, ResizableBox } from 'react-resizable';
+import { useEffect, useState } from 'react';
 import 'react-resizable/css/styles.css';
 import './custom_table.css';
-import ReactPaginate from 'react-paginate';
 import { useFlexLayout, usePagination, useResizeColumns, useSortBy, useTable } from 'react-table';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
-import { capitalizeFirstLetter } from '../../utils/formatWord';
+import useAdmin from '../../hooks/useAdmin';
+
 
 
 const TableRender = ({ data, columns }) => {
+    const {handleGetHeadersExport} = useAdmin()
     const [pageInput, setPage]= useState(null)
 
     const handlePageInput = (event) => {
@@ -37,11 +33,17 @@ const TableRender = ({ data, columns }) => {
         previousPage,
         pageCount,
         gotoPage,
+        allColumns,
         state: { pageIndex },
     } = useTable({ columns, data, initialState: { pageIndex: 0 } },
         useResizeColumns,
         useSortBy,
         usePagination, useFlexLayout);
+
+      // Lưu allColumns vào context khi nó thay đổi
+      useEffect(() => {
+        handleGetHeadersExport(allColumns);
+      }, [allColumns]);
 
         const renderPageNumbers = () => {
             const visiblePageNumbers = [];

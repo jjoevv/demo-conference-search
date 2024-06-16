@@ -48,9 +48,7 @@ const Setting = () => {
   const order = ["AUTO_ADD_EVENT_TO_SCHEDULE", "CHANGE_AND_UPDATE", "YOUR_UPCOMING_EVENT", "DATA_UPDATE_CYCLE", "CANCELLED_EVENT"];
 
   return (
-    <Container
-      fluid
-      className='pt-5 overflow-hidden' style={{ marginLeft: "350px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
       <h4 className=''>Setting</h4>
       <h6 className='text-color-darker mb-2'>How would you like to recieve notifications?</h6>
 

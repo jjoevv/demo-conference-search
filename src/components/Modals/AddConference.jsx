@@ -1,11 +1,11 @@
 import  { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Modal, Carousel, CarouselItem, Row, ButtonGroup } from 'react-bootstrap'
 import AddButtonIcon from './../../assets/imgs/edit.png'
-import ChooseFORs from '../PostConference/ChooseFORs';
+import ChooseFORs from '../Postconference/ChooseFORs';
 import usePost from '../../hooks/usePost';
-import data from '../../components/Filter/options.json'
+import data from '../Filter/options.json'
 import SuccessfulModal from './SuccessModal';
-import LocationInput from '../PostConference/LocationInput';
+import LocationInput from '../Postconference/LocationInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';

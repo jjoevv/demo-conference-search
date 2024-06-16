@@ -68,7 +68,7 @@ const ImportantDatePage = ({conference}) => {
                   displayDates.map((date, index) => (
                     <Row key={index} 
                     className={`${index % 2 === 0 ? 'bg-beige-light' : ''} 
-                    align-items-center justify-content-center m-2 px-1 py-2 position-relative  border-teal-normal border-5 border-start overflow-hidden`}>
+                    align-items-center justify-content-center m-2 px-1 py-2 position-relative  border-teal-light border-5 border-start overflow-hidden`}>
                      
                         <span className=' fw-bold text-color-black d-flex align-items-center fs-large' >
                           {capitalizeFirstLetter(date.date_type)}

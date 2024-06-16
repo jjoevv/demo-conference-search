@@ -16,7 +16,6 @@ import useSessionStorage from '../../hooks/useSessionStorage'
 const Followed = () => {
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
   const { getOptionsFilter, optionsSelected } = useSearch()
-  const {getDataListInStorage} = useSessionStorage()
   const { user } = useLocalStorage()
 
   const { filterConferences } = useFilter()
@@ -65,9 +64,7 @@ const Followed = () => {
   }, [optionsSelected, listFollowed])
 
   return (
-    <Container
-      fluid
-      className='py-5 ' style={{ marginLeft: "350px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
       <h4 className=''>Followed Conference</h4>
       <h6>{`Review the list of events you previously saved. Pay attention to the time so you don't miss it.`}</h6>
 

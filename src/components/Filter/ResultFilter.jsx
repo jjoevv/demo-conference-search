@@ -12,11 +12,11 @@ import useFollow from '../../hooks/useFollow'
 import { isObjectInList } from '../../utils/checkExistInList'
 
 import useSearch from '../../hooks/useSearch'
-import { DropdownSort } from './../DropdownSort'
+import { DropdownSort } from '../DropdownSort'
 import { isUpcoming, sortByFollow, sortConferences } from '../../utils/sortConferences'
 
 import ArrowIcon from './../../assets/imgs/arrow.png'
-import Loading from './../Loading'
+import Loading from '../Loading'
 import { getDateValue } from '../../utils/formatDate'
 import useLocalStorage from '../../hooks/useLocalStorage'
 

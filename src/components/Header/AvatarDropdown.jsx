@@ -1,5 +1,4 @@
-import React from 'react'
-import { Button, Dropdown, Image } from 'react-bootstrap'
+import { Dropdown, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import avatarIcon from '../../assets/imgs/avatar.png'
 import settingIcon from '../../assets/imgs/setting.png'

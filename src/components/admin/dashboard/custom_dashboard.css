@@ -1,0 +1,13 @@
+.overview-tab{    
+    min-width: 220px;
+}
+
+.chart-container {
+    min-height: 400px;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-wrapper {
+    flex: 1;
+}

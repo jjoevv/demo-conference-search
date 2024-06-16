@@ -72,14 +72,12 @@ const Account = () => {
     setIsUpdated(false)
   };
   return (
-    <Container
-      fluid
-      className='pt-5' style={{ marginLeft: "350px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
       {
         user
         &&
         <>
-          <div className='d-flex justify-content-between align-items-center pe-5'>
+          <div className='d-flex justify-content-between align-items-center'>
             <h4 className='mb-4'>Account</h4>
             {
               user.role === "admin" &&

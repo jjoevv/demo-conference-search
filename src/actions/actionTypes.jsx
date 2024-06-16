@@ -49,3 +49,8 @@ export const ADMIN_GET_USERS = 'ADMIN_GET_USERS'
 export const ADMIN_GET_USER = 'ADMIN_GET_USER'
 
 export const SET_DATA_UPLOAD = 'SET_DATA_UPLOAD'
+export const SET_HEADERS_EXPORT = 'SET_HEADERS_EXPORT'
+
+export const SET_USER_LOG = 'SET_USER_LOG'
+export const SET_ETL_LOG = 'SET_ETL_LOG'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'

@@ -503,30 +503,6 @@ a {
 }
 
 
-/*Sidebar*/
-.my-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 300px;
-    /* Điều chỉnh chiều rộng của sidebar tùy thuộc vào yêu cầu */
-    background-color: #419489;
-    /* Màu nền của sidebar */
-    border-right: 1px solid #dee2e6;
-    z-index: 1050 !important;
-}
-
-.my-sidebar-navlink {
-    color: white;
-    font-size: 20px;
-}
-
-.my-sidebar-navlink:hover {
-    background-color: #469E92;
-    color: white;
-}
-
 
 .main-container {
     align-items: start;

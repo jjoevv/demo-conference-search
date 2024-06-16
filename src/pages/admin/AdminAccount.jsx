@@ -149,6 +149,9 @@ const AdminAccount = () => {
               <FontAwesomeIcon icon={faEdit} className='me-2' />
               Update changes
             </Button>
+           <div className='border-5 border-start'>
+             <h4>all conference</h4>
+           </div>
           </Form>
 
         </>

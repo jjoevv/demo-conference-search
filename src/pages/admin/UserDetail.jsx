@@ -46,7 +46,7 @@ const UserDetail = () => {
           </div>
           :
           <>
-          <Button className='bg-teal-normal' onClick={()=>navigate('/admin/usersmanagement')}>
+          <Button className='bg-teal-normal' onClick={()=>navigate('/admin/users_management')}>
             <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180'/>
             Back to Users Management
           </Button>

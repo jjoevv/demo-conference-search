@@ -3,12 +3,13 @@ import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import useNote from '../../hooks/useNote';
-import useFollow from '../../hooks/useFollow';
-import './customcalendar.css'
 import ListNotesInModal from './ListNotesInModal';
 import { formatDate } from '../../utils/formatDate';
 import DetailInforNoteModal from './DetailInforNoteModal';
 import useLocalStorage from '../../hooks/useLocalStorage';
+
+import './customcalendar.css'
+
 
 moment.updateLocale('en', {
     week: {

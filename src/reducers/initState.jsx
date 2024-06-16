@@ -88,5 +88,10 @@ export const initialState = {
     data: [],
     headers: []
   },
+  headersExport: [],
+
+  userLog: [],
+  etlLog: [],
+  currentUsers: [],
 };
 

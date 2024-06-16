@@ -2,7 +2,7 @@ import { Col, Row } from 'react-bootstrap'
 import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import RedirectButton from '../RedirectButton'
-import ImportantDatePage from '../InformationPage/ImportantDatePage'
+import ImportantDatePage from '../Informationpage/ImportantDatePage'
 
 const Information = ({ conference }) => {
   const { getConferenceDate } = useConference()

@@ -50,9 +50,7 @@ const Notifications = () => {
     navigate(`/detailed-information/${id}`)
   }
   return (
-    <Container
-      fluid
-      className='pt-5  px-5' style={{ marginLeft: "350px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
       <h4 className='mb-4'>Notification</h4>
       <h5>All notifications here</h5>
 

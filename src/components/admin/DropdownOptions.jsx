@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useSearch from '../../hooks/useSearch'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
-import data from './../Filter/options.json'
+import data from '../Filter/options.json'
 const owner = ["Crawler", "User"]
 const customStyles = {
     menuPortal: (provided) => ({

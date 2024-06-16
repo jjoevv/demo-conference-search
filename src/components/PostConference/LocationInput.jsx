@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Col } from 'react-bootstrap';
-import data from './../Filter/options.json'
+import data from '../Filter/options.json'
 const LocationInput = ({ onLocationChange, orgIndex }) => {
     
     const [formData, setFormData] = useState({

@@ -69,7 +69,6 @@ const AllFeedbackOfConf = () => {
   }
 
   const handleReloadPage = async () => {    
-    console.log({id})
     await getAllFeedbacks(id.id)
     await handleGetOne(id.id)
   }

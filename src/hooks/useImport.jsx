@@ -20,7 +20,6 @@ const useImport = () => {
         setLoading(true)
         const file = acceptedFiles[0];
         const reader = new FileReader();
-        console.log({ acceptedFiles }, file.type)
         const  handleFileLoad = (fileContents) => {
             let jsonData = [];
             if (file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.type === "application/vnd.ms-excel") {

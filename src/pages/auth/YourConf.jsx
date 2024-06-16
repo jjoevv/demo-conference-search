@@ -86,9 +86,7 @@ const YourConf = () => {
   const handleShow = () => setShowAddForm(true);
 
   return (
-    <Container
-      fluid
-      className='py-5 ' style={{ marginLeft: "350px", marginTop: "60px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>  
 
       <div className='d-flex align-items-center justify-content-between pe-5 mb-4'>
         <h4 className='mb-2'>Your conferences</h4>

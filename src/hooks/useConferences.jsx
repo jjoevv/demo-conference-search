@@ -21,7 +21,6 @@ const useConference = () => {
   const [displaySortList, setDisplaySortConf] = useState([])
 
 
-
   useEffect(() => {
     setDisplaySortConf(state.conferences)
   }, [selectOptionSort])
@@ -53,6 +52,9 @@ const useConference = () => {
       setError(error);
     }
   }
+
+
+  
   const handleGetOne = async (id) => {
     try {
       const response = await fetch(`${baseURL}/conference/${id}`);

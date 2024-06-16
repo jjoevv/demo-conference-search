@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Navbar, Container, Nav, Button, Dropdown, NavDropdown} from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import AvatarDropdown from './AvatarDropdown'
+
 import useLocalStorage from '../../hooks/useLocalStorage'
 import usePageNavigation from '../../hooks/usePageNavigation'
-import HeaderNoti from '../Notification/HeaderNoti'
+import HeaderNoti from '../Notifications/HeaderNoti'
 
 import LoginExpiredModal from '../Modals/LoginExpiredModal'
 import useAuth from '../../hooks/useAuth'
+import AvatarDropdown from './AvatarDropdown'
 
 const Header = () => {
   const { isExpiredLogin, isLogin, getCurrentUser } = useAuth()
@@ -19,7 +20,7 @@ const Header = () => {
   const location = useLocation()
   const [activeKey, setActiveKey] = useState(null);
   useEffect(() => {
-    getCurrentUser()
+    //getCurrentUser()
     if (user === null) {
       navigate('/')
     }
@@ -52,7 +53,7 @@ const Header = () => {
       <LoginExpiredModal show={isLogin ? isExpiredLogin : false} />
       <Container fluid className='d-flex justify-content-between shadow-sm px-5'>
         <Navbar.Brand className='my-header-brand'>
-          <Link to='/' className='mx-4 text-teal-dark fs-4 fw-bold' title='Homepage'>
+          <Link to='/' className='mx-5 text-teal-dark fs-4 fw-bold' title='Homepage'>
             ConfHub
           </Link>
         </Navbar.Brand>

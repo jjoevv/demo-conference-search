@@ -6,7 +6,7 @@ import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
 
 import data from './options.json'
-import countries from './../../data/countries.json'
+import countries from '../../data/countries.json'
 const customStyles = {
     menuPortal: (provided) => ({
         ...provided,

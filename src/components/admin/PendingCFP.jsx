@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import TableRender from './TableRender'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightFromSquare, faBan, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { Button } from 'react-bootstrap'
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import moment from 'moment'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import DeleteModal from '../Modals/DeleteModal'
@@ -16,7 +16,7 @@ const PendingCFPs = ({conferences}) => {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
   const { loading, deletePost,  getPostedConferences } = usePost()
-  const {deactivePost} = useAdmin()
+  const {deactivePost, handleGetHeadersExport} = useAdmin()
   const [countdown, setCountdown] = useState(3);
   const [isConfirm, setIsConfirm] = useState(false)
   const [confDel, setConfDel] = useState(null)
@@ -29,7 +29,7 @@ const PendingCFPs = ({conferences}) => {
   const handleDeletePost = async (e) => {
     e.preventDefault();    
     setIsConfirm(true)
-    const result = await deactivePost(confDel.id);
+    const result = await deletePost(confDel.id);
     setStatus(result.status);
     setMessage(result.message);
     if (result.status) {
@@ -60,7 +60,7 @@ const PendingCFPs = ({conferences}) => {
     const newUrl = new URL(window.location);
     window.history.pushState({}, '', newUrl);
 
-    navigate(`/admin/dashboard/cfp/${conf.id}`)
+    navigate(`/admin/users_management/cfp/${conf.id}`)
   }
 
 
@@ -68,9 +68,7 @@ const PendingCFPs = ({conferences}) => {
     () => [
       {
         Header: '#',
-        Cell: ({ row }) => (
-          <div className='position-sticky'>{row.index + 1}</div>
-        ),
+        accessor: (row, index) => index + 1,
         id: 'index',
         width: 40,
         disableResizing: true
@@ -100,12 +98,45 @@ const PendingCFPs = ({conferences}) => {
       },
       {
         Header: 'Field of Research',
-        accessor: 'information.fieldOfResearch[0]',
-        width: 200
+        accessor: (row) => {
+          const remainingItems = row.information?.fieldOfResearch.slice(1).map((item, index) => (
+            <div key={index}>{item}</div>
+          ));
+          return (
+            <div>
+              {row.information?.fieldOfResearch[0]}
+              {
+                row.information?.fieldOfResearch.length > 1
+                &&
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-for`}>
+                      {
+                        remainingItems
+                      }
+                    </Tooltip>
+                  }
+                >
+                  <span className='text-decoration-underline mx-1' style={{ cursor: 'pointer' }}>
+                    +{row.information?.fieldOfResearch.length - 1} field
+                  </span>
+                </OverlayTrigger>
+              }
+            </div>
+          );
+        },
       },
       {
         Header: 'Location',
-        accessor: 'organizations[0].location',
+        accessor: (row) => {
+          const newOrganizations = row.organizations.filter(org => org.status === 'new');
+          if (newOrganizations.length > 0) {
+            return capitalizeFirstLetter(newOrganizations[0].location);
+          } else {
+            return ''; // Hoặc giá trị mặc định khác nếu không có tổ chức nào có status là "new"
+          }
+        },
         width: 200
       },
       {

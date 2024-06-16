@@ -200,23 +200,43 @@ const appReducer = (state, action) => {
                 ...state,
                 settings: action.payload,
             };
-        case actionTypes.GET_FEEDBACKS:         
+        case actionTypes.GET_FEEDBACKS:
             return {
                 ...state,
                 feedbacks: action.payload,
             };
-        case actionTypes.GET_ALL_PENDING_CONFERENCES:         
+        case actionTypes.GET_ALL_PENDING_CONFERENCES:
             return {
                 ...state,
                 pendingConferences: action.payload,
             };
-        case actionTypes.SET_DATA_UPLOAD:         
+        case actionTypes.SET_DATA_UPLOAD:
             return {
                 ...state,
                 dataUpload: {
-                  data: action.payload.data,
-                  headers: action.payload.headers,
+                    data: action.payload.data,
+                    headers: action.payload.headers,
                 },
+            };
+        case actionTypes.SET_HEADERS_EXPORT:
+            return {
+                ...state,
+                headersExport: action.payload,
+            };
+        case actionTypes.SET_USER_LOG:
+            return {
+                ...state,
+                userLog: action.payload,
+            };
+        case actionTypes.SET_ETL_LOG:
+            return {
+                ...state,
+                etlLog: action.payload,
+            };
+        case actionTypes.SET_CURRENT_USER:
+            return {
+                ...state,
+                currentUsers: action.payload,
             };
         default:
             return state;
