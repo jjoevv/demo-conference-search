@@ -65,8 +65,7 @@ const CallforPapers = () => {
     }).filter(element => element !== null);
   };
   return (
-    <Container
-      className='pt-5 mt-5' style={{ paddingLeft: "300px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
 
       {
         loadingConf ?

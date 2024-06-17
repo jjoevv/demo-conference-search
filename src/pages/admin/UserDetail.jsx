@@ -31,9 +31,7 @@ const UserDetail = () => {
   }, [id, userAccount])
 
   return (
-    <Container
-      fluid
-      className='pt-5 bg-light main-container' style={{ paddingLeft: "350px" }}>
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
 
       <div className="d-flex justify-content-between align-items-center mb-3 content">
         <h4>User information</h4>
