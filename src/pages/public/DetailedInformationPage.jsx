@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import useFollow from '../../hooks/useFollow'
 import useAuth from '../../hooks/useAuth'
 import ScrollToTopButton from '../../components/ScrollToTopButton'
+import SuggestedCarousel from '../../components/SuggestList/SuggestedCarousel'
 const DetailedInformationPage = () => {
     const { user } = useAuth()
     const { conference, handleGetOne, getConferenceDate } = useConference()
@@ -187,6 +188,9 @@ const DetailedInformationPage = () => {
                                 <Row className='px-5 mx-5'>
                                     <Feedbacks />
                                 </Row>
+                                <div>
+                                    <SuggestedCarousel/>
+                                </div>
                             </>
                             :
                            <>
