@@ -69,9 +69,7 @@ const useConference = () => {
 
   const crawlNow = async (id) => {
     try {
-        const response = await fetch(`https://conference-crawler-v2.onrender.com/api/scrape/conference/${id}`, {
-            timeout: 60000, // Thiết lập thời gian chờ là 1 phút (60 giây)
-        });
+        const response = await fetch(`${baseURL}/conference/${id}/updateNow`);
 //console.log(response.status)
         if (!response.ok) {
             throw new Error('Request failed with status ' + response.status);
@@ -86,10 +84,16 @@ const useConference = () => {
     } 
 };
 
+const checkUrl = async (url) => {
+  if(url !== ' ' && url !== ''){
+    return true
+  }
+  else return false
+};
 
 
   const getConferenceDate = (organizations) => {
-    if (organizations.length > 0) {
+    if (organizations?.length > 0) {
 
       // Khởi tạo biến để lưu trữ ngày bắt đầu và kết thúc
       let startDate = null;
@@ -190,7 +194,8 @@ const useConference = () => {
     getStartEndDate,
     getLocation,
     handleSelectOptionSort,
-    crawlNow
+    crawlNow,
+    checkUrl
   }
 }
 

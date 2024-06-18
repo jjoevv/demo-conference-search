@@ -1,17 +1,17 @@
 import { Button, Modal } from 'react-bootstrap'
 
-import useImport from '../../hooks/useImport';
-import ImportedDataTable from '../admin/ImportedDataTable';
-const ImportModal = ({show, onHide}) => {
+import useImport from '../../../hooks/useImport';
+import ImportedDataTable from '../ImportedDataTable';
+const ImportModalFile = ({show, onHide}) => {
     const {getRootProps, getInputProps, isDragActive, fileUploaded} = useImport()
   return (
-    <Modal show={show}  onHide={onHide}  dialogClassName="modal-90w modal-90h">
+    <Modal show={show}  onHide={onHide}  dialogClassName="modal-90w modal-90h custom-modal" className="custom-modal">
     <Modal.Header closeButton>
       <Modal.Title>
         {fileUploaded ? 'Columns' : 'Upload data'}
       </Modal.Title>
     </Modal.Header>
-    <Modal.Body className='py-5'>
+    <Modal.Body className='py-5 h-100 d-inline-block'>
         <div className={`w-100 d-flex justify-content-center ${fileUploaded ? '' : 'my-5'}`}> 
             {
                 !fileUploaded ?
@@ -35,4 +35,4 @@ const ImportModal = ({show, onHide}) => {
   )
 }
 
-export default ImportModal
+export default ImportModalFile

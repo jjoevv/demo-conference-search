@@ -1,7 +1,6 @@
-import { faArrowAltCircleRight, faArrowRight, faFileContract, faSpider, faSquareUpRight, faUserClock, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faFileContract, faSpider, faSquareUpRight, faUserClock, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
-import useAuth from '../../hooks/useAuth'
+import { useEffect, useState } from 'react'
 import useDashboard from '../../hooks/useDashboard'
 import useConference from '../../hooks/useConferences'
 import useAdmin from '../../hooks/useAdmin'
@@ -116,7 +115,7 @@ const Dashboard = () => {
                   <div className='p-1 rounded shadow-sm d-inline'>
                     <FontAwesomeIcon icon={faSpider} className='text-warning' />
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">Latest date ETL</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">Latest date crawl</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {latesDateETL?.totalCrawls}</h3>
                     <span className='mx-1 text-light-emphasis'>{`run${latesDateETL?.totalCrawls > 1 ? 's' : ''}`}</span>

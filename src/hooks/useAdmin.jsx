@@ -5,11 +5,13 @@ import useToken from './useToken'
 import useLocalStorage from './useLocalStorage'
 import { useState } from 'react'
 import * as XLSX from 'xlsx'
+import useAuth from './useAuth'
 const useAdmin = () => {
   const { state, dispatch } = useAppContext()
   const { user } = useLocalStorage()
   const { token } = useToken()
   const [loading, setLoading] = useState(false)
+  const {setIsExpired} = useAuth()
 
   const getAllPendingConferences = async () => {
     setLoading(true);
@@ -122,6 +124,35 @@ const useAdmin = () => {
       }
     }
   }
+
+  const deletePost = async (id) => {
+    setLoading(true)
+    if(user || localStorage.getItem('user')){
+      try {
+        const response = await fetch(`${baseURL}/conference/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        const data = await response.json()        
+        const message = data.message || data.data
+        if (response.ok) {
+          setLoading(false)
+          return {status: true, message}
+        }
+        else {
+          if(response.status === 401){
+            setIsExpired(true)
+          }
+          return {status: false, message}
+        }
+      } catch (error) {
+        throw new Error('Network response was not ok');
+      }
+    }
+  }
   const handleGetHeadersExport = (headers) => {
     dispatch({ type: 'SET_HEADERS_EXPORT', payload: headers })
   }
@@ -178,6 +209,7 @@ const useAdmin = () => {
     getAllUsers,
     getUserById,
     deactivePost,
+    deletePost,
     exportToExcel,
     activePost,
     allColumns: state.headersExport,

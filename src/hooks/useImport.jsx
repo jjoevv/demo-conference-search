@@ -38,8 +38,8 @@ const useImport = () => {
             }
             const maxColumns = Math.max(...jsonData.map(row => row.length));
             const headers = new Array(maxColumns).fill('');
-            setData(jsonData.slice(1));
-            dispatch({type: "SET_DATA_UPLOAD", payload: {data: jsonData.slice(1), headers: headers}})
+            setData(jsonData);
+            dispatch({type: "SET_DATA_UPLOAD", payload: {data: jsonData, headers: headers}})
             setFileUploaded(true); // Cập nhật trạng thái khi tệp đã được tải lên
         };
 
@@ -70,7 +70,7 @@ const useImport = () => {
 
 
     const [showImportModal, setShowImportModal] = useState(false)
-
+    const [showOptionImportModal, setOptionShowImportModal] = useState(false)
     const handleImport = async (data, headers) => {
         setLoading(true);
     
@@ -113,9 +113,9 @@ const useImport = () => {
                 }
             });
     
+          //  console.log("Post result:", conference);
             try {
                 const result = await postConference(conference);
-        //        console.log("Post result:", result);
                 if (!result.status) {
                     console.error("Post conference failed:", result.message);
                     return result; // Trả về false nếu postConference thất bại
@@ -132,6 +132,7 @@ const useImport = () => {
     
     return {
         showImportModal, setShowImportModal,
+        showOptionImportModal, setOptionShowImportModal,
         getRootProps, getInputProps, isDragActive, onDrop,
         fileUploaded,
         dataUpload: state.dataUpload,

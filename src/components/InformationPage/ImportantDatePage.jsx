@@ -11,7 +11,7 @@ const ImportantDatePage = ({conference}) => {
   
   useEffect(() => {
     if (conference) {
-      const processedDates = conference.importantDates.reduce((acc, date) => {
+      const processedDates = conference.importantDates?.reduce((acc, date) => {
         if (date.status !== "new") {
           // Bỏ qua các ngày có status khác new
           return acc;
@@ -62,7 +62,7 @@ const ImportantDatePage = ({conference}) => {
           <>
 
             {
-              conference.importantDates && conference.importantDates.length > 0 ?
+              conference?.importantDates && conference?.importantDates?.length > 0 ?
               <>
                 {
                   displayDates.map((date, index) => (
@@ -71,24 +71,24 @@ const ImportantDatePage = ({conference}) => {
                     align-items-center justify-content-center m-2 px-1 py-2 position-relative  border-teal-light border-5 border-start overflow-hidden`}>
                      
                         <span className=' fw-bold text-color-black d-flex align-items-center fs-large' >
-                          {capitalizeFirstLetter(date.date_type)}
+                          {capitalizeFirstLetter(date?.date_type)}
                         </span>
                         <span className='fs-large fw-medium text-color-black m-0'>
                           {
                             date.date_value_old && date.date_value !== date.date_value_old ?
                               <>
                                 <span className='text-danger text-decoration-line-through'>
-                                {moment(date.date_value_old).format('ddd, YYYY/MM/DD')}
+                                {moment(date?.date_value_old).format('ddd, YYYY/MM/DD')}
                                 </span>
                                 <Image src={ArrowIcon} width={20} className='mx-2' />
-                                {moment(date.date_value).format('ddd, YYYY/MM/DD')}
-                               
+                                {moment(date?.date_value).format('ddd, YYYY/MM/DD')}
+                                {checkDate(date?.date_value) && <span className='text-secondary'> (Time expired)</span>}
 
                               </>
                               :
                               <>
-                                {moment(date.date_value).format('dddd, YYYY/MM/DD')}
-                                {checkDate(date.date_value) && <span className='text-secondary'> (Time expired)</span>}
+                                {moment(date?.date_value).format('dddd, YYYY/MM/DD')}
+                                {checkDate(date?.date_value) && <span className='text-secondary'> (Time expired)</span>}
 
                               </>
 

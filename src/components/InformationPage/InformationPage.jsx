@@ -2,8 +2,17 @@ import { Col, Row } from 'react-bootstrap'
 import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import RedirectButton from '../RedirectButton'
+import { useEffect, useState } from 'react'
 const InformationPage = ({ conference }) => {
-  const { getConferenceDate } = useConference()
+  const { getConferenceDate, checkUrl } = useConference()
+    const [isValidUrl, setIsValidUrl] = useState(null);
+    useEffect(() => {
+        if (conference?.information?.link) {
+          checkUrl(conference?.information?.link).then(isValid => {
+            setIsValidUrl(isValid);
+          });
+        }
+      }, [conference]);
   const renderFieldOfResearch = (fieldOfResearch) => {
     if (fieldOfResearch.length === 0) {
       return null    }
@@ -98,7 +107,9 @@ const InformationPage = ({ conference }) => {
     <div className='p-5 m-0' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
         <span className='text-teal-normal'>Conference information</span>
-        <RedirectButton conference={conference} />
+        {
+          isValidUrl && <RedirectButton conference={conference} />
+        }
       </div>
       {conference && conference !== null ?
         <>

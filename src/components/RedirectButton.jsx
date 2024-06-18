@@ -45,7 +45,7 @@ const RedirectButton = (conference) => {
                 className='bg-transparent border border-2 d-flex align-items-center justify-content-between text-color-black'
                 onClick={handleRedirect}
             >
-                View More 
+                View more 
                 <Image src={ViewMoreIcon} width={18} className='ms-2'/>
             </Button>
         </OverlayTrigger>

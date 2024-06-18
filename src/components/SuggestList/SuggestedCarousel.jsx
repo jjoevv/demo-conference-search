@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 import useConference from '../../hooks/useConferences'
 import useSuggest from '../../hooks/useSuggest'
 import { Button, Carousel } from 'react-bootstrap'
@@ -104,21 +104,24 @@ const SuggestedCarousel = () => {
               >
                 <div className="card-body-suggest">
                   <p className="card-title-suggest fw-bold text-teal-dark">{conf.information.name}</p>
+                 {
+                  conf.organizations.length > 0 &&
                   <div className="text-primary-dark fw-bold fs-medium d-flex align-items-center">
-                    <FontAwesomeIcon icon={faClock} className='me-2 text-light-emphasis'/>
-                    {activeOrganizations.map((org, orgIdx) => (
-                      <div key={orgIdx} className='text-light-emphasis'>
-                        <span>{moment(org.start_date).format('MMM DD, YYYY')}</span>
-                        {org.end_date && <span>{` - ${moment(org.end_date).format('MMM DD, YYYY')}`}</span>}
-                      </div>
-                    ))}
-                  
-                  </div>
+                  <FontAwesomeIcon icon={faClock} className='me-2 text-light-emphasis'/>
+                  {activeOrganizations.map((org, orgIdx) => (
+                    <div key={orgIdx} className='text-light-emphasis'>
+                      <span>{moment(org.start_date).format('MMM DD, YYYY')}</span>
+                      {org.end_date && <span>{` - ${moment(org.end_date).format('MMM DD, YYYY')}`}</span>}
+                    </div>
+                  ))}
+                
+                </div>
+                 }
                   <div className="mb-2">
-                        <span className="p-1 rounded-pill bg-light text-light-emphasis">Rank: {conf.similar?.rank}</span>
+                        <span className="p-1 rounded-pill bg-light text-light-emphasis">{`Rank: ${conf.similar?.rank} ${conf.similar?.source ? `- Source: ${conf.similar?.source}` : ''}`}</span>
                     
                     </div>
-                    {conf.similar.fieldOfResearch?.length > 0 && conf.similar.fieldOfResearch?.map((field, index) => (
+                    {conf.similar?.fieldOfResearch?.length > 0 && conf.similar?.fieldOfResearch?.map((field, index) => (
                           <span key={index} className="p-1 rounded-pill bg-light text-light-emphasis overflow-hidden text-truncate">FOR: {field}</span>
                         ))}
                 </div>

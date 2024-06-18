@@ -1,15 +1,22 @@
 import { useAppContext } from '../context/authContext'
+import useFilter from './useFilter';
 const useSuggest = () => {
-
+const {filterConferences} = useFilter()
     const findSimilarConferences = (conferencesData, conference) => {
-        const similarConferences = [];
-      
+        const similarConferences = filterConferences(conferencesData, {'search': [conference.information.name]})
+        if(similarConferences.length > 0){
+          similarConferences[0].similar = {
+            source: similarConferences[0].information.source
+          }
+        }
         for (let i = 0; i < conferencesData.length; i++) {
           const conf = conferencesData[i];
       
           // Check if ranks match and at least one fieldOfResearch matches
-          if ((conf.information.rank === conference.information.rank && conf.information.source === conference.information.source) ||
-              conf.information.fieldOfResearch.some(field => conference.information.fieldOfResearch.includes(field)) &&
+          if (((conf.information.rank === conference.information.rank && conf.information.source === conference.information.source) ||
+              conf.information.fieldOfResearch.some(field => conference.information.fieldOfResearch.includes(field)) ||
+              conf.information.name === conference.information.name && conf.information.acronym === conference.information.acronym && conf.information.source !== conference.information.source
+            ) &&
               conf.id !== conference.id &&
               conf.organizations.some(org => org.status === 'new' && new Date(org.start_date) > new Date())
             ) {

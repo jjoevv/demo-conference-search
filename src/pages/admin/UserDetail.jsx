@@ -5,12 +5,14 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import useAdmin from '../../hooks/useAdmin'
 import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../components/Loading'
+import usePageNavigation from '../../hooks/usePageNavigation'
 
 
 
 const UserDetail = () => {
   const { loading: loadingUsers, userAccount, users, getAllUsers, getUserById } = useAdmin()
   const navigate = useNavigate()
+  const {previousPath} = usePageNavigation()
   const id = useParams()
   useEffect(() => {
     if(users.length === 0 || !users){
@@ -44,10 +46,21 @@ const UserDetail = () => {
           </div>
           :
           <>
-          <Button className='bg-teal-normal' onClick={()=>navigate('/admin/users_management')}>
-            <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180'/>
-            Back to Users Management
-          </Button>
+            <div className="d-flex justify-content-end">
+            {
+                  (previousPath && previousPath.includes('dashboard')) ?
+<                 Button className='bg-teal-normal align-item' onClick={() => navigate('/admin/dashboard')}>
+                  <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
+                  Back to Dashboard
+                </Button>
+                :
+                <Button className='bg-teal-normal' onClick={()=>navigate('/admin/users_management')}>
+                <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180'/>
+                Back to Users Management
+                </Button>
+                }
+          
+          </div>
             {
               userAccount
               &&
@@ -97,13 +110,19 @@ const UserDetail = () => {
             }
           </>
       }
-
-      <footer className='fixed-bottom mt-4 w-100 bg-primary-light py-3' style={{ paddingLeft: "10px" }}>
+{
+  /**
+   * 
+   * 
+   * <footer className='fixed-bottom mt-4 w-100 bg-primary-light py-3' style={{ paddingLeft: "10px" }}>
         <Button style={{ marginLeft: "320px" }} className=' bg-blue-dark'>
           <FontAwesomeIcon icon={faUserXmark} className='me-2 ' />
           Block user
         </Button>
       </footer>
+   */
+}
+      
     </Container>
   )
 }

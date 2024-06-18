@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { baseURL } from './api/baseApi';
 import useLocalStorage from './useLocalStorage';
 import useToken from './useToken';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import usePageNavigation from './usePageNavigation';
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
   const { token, savetokenToLocalStorage } = useToken()
-  const { user, saveUserToLocalStorage, deleteUserFromLocalStorage, updateUserInStorage } = useLocalStorage()
+  const { user, saveUserToLocalStorage, deleteUserFromLocalStorage } = useLocalStorage()
   const [error, setError] = useState('')
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
@@ -42,7 +42,15 @@ const useAuth = () => {
           dispatch(loginSuccess(userData));
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-          navigate(`${previousPath}`)
+          if(previousPath && userData.role !== 'admin'){
+            navigate(`${previousPath}`)
+          }
+          else {
+            if(userData.role === 'admin'){
+              navigate('/admin/dashboard')
+            }
+          }
+          
 
           return { status: true, message: responseData.message }
         } else {

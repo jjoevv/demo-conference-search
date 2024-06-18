@@ -130,7 +130,7 @@ const ETLChart = ({ startDate, endDate }) => {
         <div className='rounded mx-3 border border-light shadow-sm p-2 overview-tab'>
             <div className='border-5 border-warning border-start py-0  my-3 ms-3 d-flex justify-content-between'>
                 <div>
-                    <h5 className="text-yellow ms-2 my-0">ETL Log</h5>
+                    <h5 className="text-yellow ms-2 my-0">Crawl log</h5>
                 </div>
             </div>
             <div>

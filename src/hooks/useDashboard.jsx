@@ -131,7 +131,7 @@ const  getTwoWeekRange = async () => {
   }
 }
 
-const filterAndSortLogs = async (start, end) => {
+const filterAndSortLogs = async () => {
   const logs = await getTwoWeekRange();
   
   // Lọc logs trong khoảng 2 tuần trở lại từ hôm nay
@@ -152,13 +152,16 @@ const filterAndSortLogs = async (start, end) => {
 
 
 const calculateRatio = async () => {
-  const startOfLastWeek = moment().subtract(2, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
-  const endOfLastWeek = moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DD');
-  const startOfThisWeek = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
-  const endOfThisWeek = moment().subtract(1, 'day').format('YYYY-MM-DD');
+  // Lấy ngày hôm qua
+  const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
+  // Lấy ngày bắt đầu và kết thúc của tuần hiện tại và tuần trước đó
+  const startOfThisWeek = moment(yesterday).startOf('isoWeek').format('YYYY-MM-DD');
+  const endOfThisWeek = moment(yesterday).endOf('isoWeek').format('YYYY-MM-DD');
+  const startOfLastWeek = moment(startOfThisWeek).subtract(1, 'weeks').format('YYYY-MM-DD');
+  const endOfLastWeek = moment(startOfThisWeek).subtract(1, 'days').format('YYYY-MM-DD');
   const logs = await filterAndSortLogs(startOfLastWeek, endOfThisWeek);
-
+  
   // Tạo các tập hợp để kiểm tra và bổ sung ngày thiếu
   const daysThisWeek = new Set();
   const daysLastWeek = new Set();
@@ -169,7 +172,7 @@ const calculateRatio = async () => {
   // Lọc và xử lý dữ liệu logs
   logs.forEach(log => {
     const logDate = log.time;
-    const visitors = log.total_visitors;
+    const visitors = log.total_visiters;
 
     if (moment(logDate).isBetween(startOfThisWeek, endOfThisWeek, null, '[]')) {
       if (!filteredLogs[logDate] || filteredLogs[logDate].total_visitors < visitors) {
@@ -213,6 +216,7 @@ const calculateRatio = async () => {
       totalVisitorsLastWeek += visitors;
     }
   });
+  
   // Tính tỷ lệ tăng/giảm so với tuần trước
   let percentageChange = 0;
   if (totalVisitorsLastWeek !== 0) {

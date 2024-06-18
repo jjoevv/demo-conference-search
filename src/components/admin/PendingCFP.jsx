@@ -15,12 +15,12 @@ const PendingCFPs = ({conferences}) => {
     const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const { loading, deletePost,  getPostedConferences } = usePost()
-  const {deactivePost, handleGetHeadersExport} = useAdmin()
-  const [countdown, setCountdown] = useState(3);
+  const {loading, deletePost, getAllPendingConferences} = useAdmin()
+  const [countdown, setCountdown] = useState(2);
   const [isConfirm, setIsConfirm] = useState(false)
   const [confDel, setConfDel] = useState(null)
   const navigate = useNavigate()
+  
   const handleChooseDelete = (conf) => {
     setConfDel(conf)
     setShowDelete(true)
@@ -33,7 +33,7 @@ const PendingCFPs = ({conferences}) => {
     setStatus(result.status);
     setMessage(result.message);
     if (result.status) {
-      getPostedConferences()
+      getAllPendingConferences()
       const countdownInterval = setInterval(() => {
         setCountdown((prevCountdown) => {
           if (prevCountdown === 0) {
@@ -60,7 +60,7 @@ const PendingCFPs = ({conferences}) => {
     const newUrl = new URL(window.location);
     window.history.pushState({}, '', newUrl);
 
-    navigate(`/admin/users_management/cfp/${conf.id}`)
+    navigate(`/admin/conferences_management/cfp/${conf.id}`)
   }
 
 
@@ -183,7 +183,7 @@ const PendingCFPs = ({conferences}) => {
 
             <Button className='bg-transparent border-0 p-0  my-0 action-btn tb-icon-delete ' 
             onClick={() => handleChooseDelete(row.original)}>
-              <FontAwesomeIcon icon={faBan} className='text-danger action-icon' />
+              <FontAwesomeIcon icon={faTrash} className='text-danger action-icon' />
             </Button>
 
 

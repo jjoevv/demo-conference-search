@@ -656,6 +656,15 @@ a {
   }
 
   .modal-90h{
-    min-height: 90vh;
-    height: 90vh;
+    height: 90vh !important;
+    max-height: 90vh;
+  }
+  .custom-modal .modal-content {
+    height: 100%; /* Chiều cao của modal content là 100% của modal */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .custom-modal .modal-body {
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
   }

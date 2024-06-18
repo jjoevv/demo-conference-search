@@ -7,15 +7,16 @@ import moment from 'moment'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import DeleteModal from '../Modals/DeleteModal'
 import { useNavigate } from 'react-router-dom'
-import usePost from '../../hooks/usePost'
+import useAdmin from '../../hooks/useAdmin'
+import useConference from '../../hooks/useConferences'
 
 const AllConferences = ({ conferences }) => {
   const scrollPositions = useRef({});
   const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const { loading, deletePost, getPostedConferences } = usePost()
-
+  const {deletePost} = useAdmin()
+  const {getAllConferences} = useConference()
   const [countdown, setCountdown] = useState(3);
   const [isConfirm, setIsConfirm] = useState(false)
   const [confDel, setConfDel] = useState(null)
@@ -33,7 +34,7 @@ const AllConferences = ({ conferences }) => {
     setStatus(result.status);
     setMessage(result.message);
     if (result.status) {
-      getPostedConferences()
+      getAllConferences()
       const countdownInterval = setInterval(() => {
         setCountdown((prevCountdown) => {
           if (prevCountdown === 0) {

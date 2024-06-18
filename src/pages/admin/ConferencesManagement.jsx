@@ -20,7 +20,7 @@ import AllConferences from '../../components/admin/AllConferences'
 import PendingCFPs from '../../components/admin/PendingCFP'
 import './../../components/admin/custom_tab.css'
 import useAdmin from '../../hooks/useAdmin'
-import ImportButton from '../../components/admin/ImportButton'
+import ImportButton from '../../components/admin/ImportButton/ImportButton'
 import ExportButton from '../../components/admin/ExportButton'
 
 const ConferencesManagement = () => {
@@ -40,6 +40,7 @@ const ConferencesManagement = () => {
   useEffect(()=>{
     getAllConferences()
   }, [])
+
   useEffect(() => {
     if (conferences.length === 0 || !conferences) {
       getAllConferences()
@@ -55,6 +56,7 @@ const ConferencesManagement = () => {
       getAllPendingConferences()
     }
     getOptionsFilter("", [])
+    console.log({pendingConferences, key})
     if (key === 'userowner') {
       setDisplayedConferences(pendingConferences)
     } else setDisplayedConferences(conferences)
@@ -69,7 +71,7 @@ const ConferencesManagement = () => {
       setConferenceList(pendingConferences)
       setDisplayedConferences(pendingConferences)
     }
-  }, [key])
+  }, [key, conferences, pendingConferences])
 
   useEffect(() => {
     const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
@@ -158,7 +160,7 @@ const ConferencesManagement = () => {
               className={`rounded-1 border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
               onClick={() => setShowFilter(!showFilter)}
             >
-              <FontAwesomeIcon icon={faFilter} />
+              <FontAwesomeIcon icon={faFilter} className='mx-1'/>
               Filter
             </Button>
           </Col>
@@ -186,12 +188,12 @@ const ConferencesManagement = () => {
             >
               <Tab eventKey="allconf" title="All conferences" className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
-                  <AllConferences conferences={displayConferences} />
+                  <AllConferences conferences={displayConferences.length>0 ? displayConferences : conferences} />
                 </div>
               </Tab>
               <Tab eventKey="userowner" title="Pending" className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef}>
-                  <PendingCFPs conferences={displayConferences} />
+                  <PendingCFPs conferences={displayConferences}/>
                 </div>
               </Tab>
             </Tabs>

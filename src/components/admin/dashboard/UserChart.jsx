@@ -29,8 +29,9 @@ const UserChart = ({ startDate, endDate }) => {
 
     useEffect(() => {
         const getRatio = async () => {
-            const ratio = await calculateRatio()
-            setRatioVisitors(ratio)
+          //  const ratio = await calculateRatio()
+           // console.log({ratio})
+           // setRatioVisitors(ratio)
         }
         getRatio()
     }, [])

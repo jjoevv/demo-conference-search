@@ -11,7 +11,7 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
     <Modal show={show} onHide={onClose} centered>
       <Modal.Body onClick={(e) => e.stopPropagation()}>
       <div className="d-flex justify-content-between align-items-center py-2 mb-3">
-          <Modal.Title className='text-center w-100 text-danger ps-5'>Update conference</Modal.Title>
+          <Modal.Title className='text-center w-100 text-danger ps-5'>Delete conference</Modal.Title>
           <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
             <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
           </Button>
@@ -27,7 +27,7 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
             {status && (
               <div className = {status ? 'text-success' : 'text-danger'}>
                 {status && <div>
-                <span className='text-success'>{message}</span>. Closing in {countdown} seconds...</div>}
+                <span className='text-success'>{message}</span> Closing in {countdown} seconds...</div>}
               </div>
         )}
             </>

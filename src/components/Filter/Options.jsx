@@ -81,30 +81,35 @@ const Options = ({ label }) => {
 
     useEffect(() => {
         const staticValue = ["type", "category"];
-
-    if (staticValue.includes(label)) {
-        setOptions(data[label]);
-        getOptionsFilter(label, data[label]);
-    } else {
-        let transformedOptions = [];
-
-        if (label === 'location') {
-            const transformedOptions = Object.keys(countries).map(countryCode => ({
-                value: countryCode,
-                label: countries[countryCode].country_name
-            }));
-            setOptions(transformedOptions);
+    
+        if (staticValue.includes(label)) {
+            setOptions(data[label]);
+            getOptionsFilter(label, data[label]);
         } else {
-            if (filterOptions[label]) {
-                transformedOptions = filterOptions[label].map((item) => ({
-                    value: item,
-                    label: item,
-                }));
+            let transformedOptions = [];
+    
+            if (label === 'location') {
+                transformedOptions = Object.keys(countries)
+                    .filter(countryCode => !countries[countryCode].country_name.includes(';'))
+                    .map(countryCode => ({
+                        value: countryCode,
+                        label: countries[countryCode].country_name
+                    }));
+                setOptions(transformedOptions);
+            } else {
+                if (filterOptions[label]) {
+                    transformedOptions = filterOptions[label]
+                        .filter(item => !item.includes(';'))
+                        .map((item) => ({
+                            value: item,
+                            label: item,
+                        }));
+                }
+                setOptions(transformedOptions);
             }
-            setOptions(transformedOptions);
         }
-    }
     }, []);
+    
 
 
     const handleOptionChange = async (items) => {
@@ -129,11 +134,7 @@ const Options = ({ label }) => {
     const filterOptionsBySearchTerm = (searchInput) => {
         const searchTermLower = searchInput.toLowerCase();
 
-        const keyMatch = Object.fromEntries(
-            Object.entries(countries).filter(([key, value]) => {
-                return key.toLowerCase().includes(searchTermLower) || searchTermLower.includes(key.toLowerCase());
-            })
-        );
+       
         const valueMatch = Object.entries(countries).filter(([key, value]) => {
             return Object.values(value).some(val => {
                 if (typeof val === 'string') {
