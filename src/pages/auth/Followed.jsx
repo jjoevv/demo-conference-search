@@ -12,6 +12,7 @@ import useFilter from '../../hooks/useFilter'
 import Filter from '../../components/Filter/Filter'
 import { checkExistValue } from '../../utils/checkFetchedResults'
 import useSessionStorage from '../../hooks/useSessionStorage'
+import UpcomingFollowed from '../../components/UpcomingConfFollowed/UpcomingFollowed'
 
 const Followed = () => {
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
@@ -65,7 +66,9 @@ const Followed = () => {
 
   return (
     <Container className=' m-5 pt-5  overflow-x-hidden'>
-      <h4 className=''>Followed Conference</h4>
+      <div className='d-flex justify-content-between align-items-center'>
+        <h4 className=''>Followed Conference</h4>
+      </div>
       <h6>{`Review the list of events you previously saved. Pay attention to the time so you don't miss it.`}</h6>
 
       {

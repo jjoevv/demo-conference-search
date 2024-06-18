@@ -51,8 +51,7 @@ const Sidebar = () => {
             sidebar.map(link => (
               <NavLink
                 key={link.title}
-                to={link.path}
-                activeClassName="active"
+                to={link.path}\
                 className={
                   location.pathname === link.path
                     ? 'my-sidebar-navlink ps-2 py-3 bg-primary-normal text-color-darker rounded-2'

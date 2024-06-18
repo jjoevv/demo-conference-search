@@ -3,6 +3,7 @@ import { Button, OverlayTrigger, Tooltip, Image } from 'react-bootstrap';
 
 import ViewMoreIcon from './../assets/imgs/view_page.png'
 const RedirectButton = (conference) => {
+   
     const aFunc = () => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -31,7 +32,6 @@ const RedirectButton = (conference) => {
             });
         });
     };
-
     return (
         <OverlayTrigger
             placement="bottom"

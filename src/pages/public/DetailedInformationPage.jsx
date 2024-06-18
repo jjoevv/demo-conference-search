@@ -104,7 +104,7 @@ const DetailedInformationPage = () => {
                     :
                     <>
                         {
-                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]' && conference?.information?.status ?
+                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]' ?
                             <>
                                 <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 80 ? 'vh-75' : 'vh-100'}`}>
                                     <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>
@@ -145,10 +145,10 @@ const DetailedInformationPage = () => {
                                                         </Col>
                                                     </p>
 
-                                                    <ButtonGroup className='mt-5'>
+                                                    <div className='mt-5 d-flex justify-content-center align-items-center mx-auto'>
                                                         <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences} />
                                                         <UpdateNowButton />
-                                                    </ButtonGroup>
+                                                    </div>
                                                 </>
                                                 : `Not found`
                                         }

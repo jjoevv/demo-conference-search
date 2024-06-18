@@ -60,16 +60,14 @@
   }
   
   .popup {
-    position: fixed;
-   
+    position: fixed;   
     top: 80px;
     right: 0px;
-    color: #34766D;
+    color:red;
     transform: translateY(-10px);
     background-color: #ffffff;
     border: 1px solid #34766D;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px; 
     border-radius: 4px;
     z-index: 9999; /* Đảm bảo popup luôn nằm trên cùng */
     display: inline-block; /* Đảm bảo popup bao quanh đoạn text */
@@ -196,4 +194,61 @@
   width: 100%;
   border: none !important;
   font-weight: bolder;
+}
+
+
+.btn-wave-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 1.3px;
+  background: linear-gradient(90deg, #008a8f 0%, #00999f 100%);
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 5px 5px 5px rgba(79,209,197,.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  }
+
+.btn-wave-wrap::before {
+content: '';
+display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-radius: 1000px;
+  border: 2px solid #00999f;
+  box-shadow: 0 0 10px #00999f;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all .3s ease-in-out 0s;
+}
+
+.btn-wave-wrap:hover, 
+.btn-wave-wrap:focus {
+  transform: translateY(-6px);
+}
+
+.btn-wave-wrap:hover::before, 
+.btn-wave-wrap:focus::before {
+  opacity: 1;
+  flex: 1;
+}
+
+.btn-wave-wrap::after {
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 100%;
+  border: 2px solid #00999f;
+  position: absolute;
+  z-index: -4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
 }

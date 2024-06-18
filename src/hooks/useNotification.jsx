@@ -55,7 +55,10 @@ const useNotification = () => {
       });
 
       socket.on('notification', (message) => {
-        console.log({ message });
+       // console.log({ message });
+        if (message.id) {
+          dispatch({ type: 'SET_NOTI_MESSAGE_CRAWL', payload: message });
+        }
         dispatch(getAllNotifications());
       });
 

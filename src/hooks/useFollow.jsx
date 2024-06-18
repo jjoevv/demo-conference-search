@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import useSessionStorage from './useSessionStorage'
 import useAuth from './useAuth'
+import moment from 'moment'
 const useFollow = () => {
   const { state, dispatch } = useAppContext()
   const { token } = useToken()
@@ -41,7 +42,7 @@ const useFollow = () => {
   const fetchPage = async (page) => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
-    const response = await fetch(`${baseURL}/follow?page=${page}&size=7`, {
+    const response = await fetch(`${baseURL}/follow?page=${page}&size=50`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${tokenHeader}`
@@ -148,13 +149,35 @@ const useFollow = () => {
       console.error('Error:', error);
     }
   }
-
+  const getUpcomingConferences = async (listConferences) => {
+    const now = moment();
+    const oneMonthFromNow = now.clone().add(1, 'month');
+    const backupDataConferences = listConferences.map(conference => ({ ...conference }));
+    return await backupDataConferences.filter(conference => {
+      // Kiểm tra ngày bắt đầu của tổ chức có status "new"
+      const hasUpcomingStartDate = conference.organizations.some(org => {
+        if (org.status !== 'new') return false;
+        const startDate = moment(org.start_date);
+        return startDate.isAfter(now) && startDate.isBefore(oneMonthFromNow);
+      });
+  
+      // Kiểm tra các ngày quan trọng có status "new"
+      const hasUpcomingImportantDate = conference.importantDates.some(date => {
+        if (date.status !== 'new') return false;
+        const importantDate = moment(date.date_value);
+        return importantDate.isAfter(now) && importantDate.isBefore(oneMonthFromNow);
+      });
+  
+      return hasUpcomingStartDate || hasUpcomingImportantDate;
+    });
+  };
   return {
     loading,
     listFollowed: state.listFollowed,
     getListFollowedConferences,
     followConference,
     unfollowConference,
+    getUpcomingConferences
   }
 }
 

@@ -8,7 +8,12 @@ export const initialState = {
   conference: null,
   pendingConferences: [],
   pendingConf: null,
+
+
   notifications: [],
+  message: null,
+
+
   isFollow: false,//????
 
   popularConf: [], //conference có nhiều follow

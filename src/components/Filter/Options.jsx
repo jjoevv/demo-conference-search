@@ -134,20 +134,30 @@ const Options = ({ label }) => {
     const filterOptionsBySearchTerm = (searchInput) => {
         const searchTermLower = searchInput.toLowerCase();
 
-       
-        const valueMatch = Object.entries(countries).filter(([key, value]) => {
-            return Object.values(value).some(val => {
-                if (typeof val === 'string') {
-                    return val.toLowerCase().includes(searchTermLower);
-                }
-                return false;
-            });
-        }).map(([key, value]) => ({
-            value: key,
-            label: `${value.country_name}`,
-        }));
-
-        return valueMatch
+        if(label === location){
+            const valueMatch = Object.entries(countries).filter(([key, value]) => {
+                return Object.values(value).some(val => {
+                    if (typeof val === 'string') {
+                        return val.toLowerCase().includes(searchTermLower);
+                    }
+                    return false;
+                });
+            }).map(([key, value]) => ({
+                value: key,
+                label: `${value.country_name}`,
+            }));
+    
+            return valueMatch
+        }else{
+            const filteredItems = filterOptions[label].filter(option =>
+                option.toLowerCase().includes(searchTermLower)
+            ).map(option => ({
+                value: option,
+                label: option
+            }));
+            return filteredItems
+        }
+        
     };
     // Hàm xử lý thay đổi khi người dùng nhập vào ô tìm kiếm
     const handleInputChange = (newValue) => {
@@ -164,8 +174,8 @@ const Options = ({ label }) => {
             isClearable={false}
             components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} />, MultiValue }}
             onChange={handleOptionChange}
-            onInputChange={label === 'location' ? handleInputChange : null}
-            filterOption={label === 'location' ? filterOption : null}
+            onInputChange={handleInputChange}
+            filterOption={filterOption}
             closeMenuOnSelect={true}
             styles={customStyles}
             placeholder="All"

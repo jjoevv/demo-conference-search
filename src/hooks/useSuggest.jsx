@@ -1,7 +1,9 @@
-import { useAppContext } from '../context/authContext'
+
+import { baseURL } from './api/baseApi';
 import useFilter from './useFilter';
 const useSuggest = () => {
 const {filterConferences} = useFilter()
+
     const findSimilarConferences = (conferencesData, conference) => {
         const similarConferences = filterConferences(conferencesData, {'search': [conference.information.name]})
         if(similarConferences.length > 0){
@@ -41,10 +43,23 @@ const {filterConferences} = useFilter()
         // Return up to 10 conferences (or less if there are fewer matches)
         return similarConferences.slice(0, 12);
       };
-      
+      const getTopViewList = async () => {
+        try {
+          const response = await fetch(`${baseURL}/conference/top/view?amount=12`,{
+            method: 'GET'
+          });
+          const data = await response.json();
+          //Gửi action để cập nhật state
+          return data.topViewArr
+        } catch (error) {
+    
+          console.error('Error fetching data:', error);
+        }
+      }
       
   return {
-    findSimilarConferences
+    findSimilarConferences,
+    getTopViewList
   }
 }
 

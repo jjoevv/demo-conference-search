@@ -22,12 +22,6 @@ const HeaderNoti = () => {
   }, [])
 
   useEffect(() => {
-    if (!notifications) {
-      getAllNotifications()
-    }
-  }, [user])
-
-  useEffect(() => {
     const hasUnreadNotifications = notifications.some(notification => !notification.read_status);
     setHasNewNotification(hasUnreadNotifications)
 

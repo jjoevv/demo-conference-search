@@ -195,6 +195,11 @@ const appReducer = (state, action) => {
                 ...state,
                 notifications: action.payload,
             };
+        case actionTypes.SET_NOTI_MESSAGE_CRAWL:
+            return {
+                ...state,
+                message: action.payload,
+            };
         case actionTypes.GET_SETTINGS:
             return {
                 ...state,

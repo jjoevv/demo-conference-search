@@ -1,3 +1,4 @@
+import moment from 'moment';
 import submission_date_dict from './../data/submission_date_dict.txt?raw'
 
 export function formatDate(inputString) {
@@ -81,7 +82,8 @@ export const  getSubDate = (listImportantDates) => {
     const dateTypeWords = date.date_type.trim().toLowerCase().split();
     for (const word of dateTypeWords) {
       if (keywords.has(word) && date.status === 'new') {
-        return date.date_value;
+        const formatDate = moment(date.date_value).format('YYYY/MM/DD')
+        return formatDate
       }
     }
   }

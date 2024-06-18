@@ -42,13 +42,14 @@ const useAuth = () => {
           dispatch(loginSuccess(userData));
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-          if(previousPath && userData.role !== 'admin'){
+          if(previousPath && userData.role !== 'admin' && !previousPath.includes('login')){
             navigate(`${previousPath}`)
           }
           else {
             if(userData.role === 'admin'){
               navigate('/admin/dashboard')
             }
+            else navigate('/')
           }
           
 

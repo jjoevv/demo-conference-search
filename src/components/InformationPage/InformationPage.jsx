@@ -3,6 +3,8 @@ import useConference from '../../hooks/useConferences'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import RedirectButton from '../RedirectButton'
 import { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 const InformationPage = ({ conference }) => {
   const { getConferenceDate, checkUrl } = useConference()
     const [isValidUrl, setIsValidUrl] = useState(null);
@@ -106,7 +108,9 @@ const InformationPage = ({ conference }) => {
   return (
     <div className='p-5 m-0' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
-        <span className='text-teal-normal'>Conference information</span>
+        <span className='fs-3 fw-bold text-teal-normal'>
+        <FontAwesomeIcon icon={faCircleInfo} className='me-1'/> Conference information
+        </span>
         {
           isValidUrl && <RedirectButton conference={conference} />
         }

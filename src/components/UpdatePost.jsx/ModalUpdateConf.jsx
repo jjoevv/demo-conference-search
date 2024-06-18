@@ -223,158 +223,142 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
   return (
     <Modal show={show} onHide={onClose} size="lg" centered scrollable >
       
-      <Modal.Body onClick={(e) => e.stopPropagation()} style={{ minHeight: "520px", maxHeight: "700px" }} className='pt-3'>
-        <div className="d-flex justify-content-between align-items-center py-2 mb-3">
-          <Modal.Title className='text-center w-100 text-skyblue-dark ps-5'>Update conference</Modal.Title>
-          <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
-            <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
-          </Button>
-        </div>
-
-        <div className="w-100 py-2">
-
-
-        </div>
-        <Form>
-
-          <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
-
-            <Tab eventKey={`1`} title="Information" className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Conference name: </Form.Label>
-                <Col>
-                  <Form.Control type="text" value={conference.information.name} disabled />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Acronym: </Form.Label>
-                <Col>
-                  <Form.Control type="text" value={conference.information.acronym} disabled />
-                </Col>
-              </Form.Group>
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Reference link: </Form.Label>
-                <Col>
-                  <Form.Control type="text" value={formData.link} onChange={(e) => handleInformationChange('link', e.target.value)} />
-                </Col>
-              </Form.Group>
-
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Rank: </Form.Label>
-                <Col>
-                  <Form.Select
-                    className='d-block'
-                    value={formData.rank}
-                    onChange={(e) => setFormData({ ...formData, rank: e.target.value })}>
-                    {(filterOptions.rank || data.rank).map((option, index) => (
-                      <option value={option.value || option} key={index}>{option.label || option}</option>
-                    ))}
-                  </Form.Select>
-
-                </Col>
-              </Form.Group>
-
-
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Field of research: </Form.Label>
-                <Col>
-                  <Select
-                    options={options}
-                    value={selectedOptions}
-                    isMulti
-                    onChange={handleChangeFieldOfResearch}
-                    menuPosition="fixed"
-                  />
-                </Col>
-              </Form.Group>
-            </Tab>
-
-            <Tab eventKey={`2`} title="Organization" className='mx-4' tabClassName= 'custom-tab-update'>
-
-              {formData.organizations.map((org, index) => (
-
-                <div key={index} className='mt-5'>
-
-                  <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">Organization name: </Form.Label>
-                    <Col>
-                      <div className='d-flex align-items-center'>
-                        <Form.Control type="text" placeholder='Organization name' value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
-
-                        {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
-
-                      </div>
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">Type: </Form.Label>
-                    <Col>
-                      <Form.Select value={org.type} onChange={(e) => handleOrganizationChange(index, 'type', e.target.value)}>
-                        <option value="">Select type...</option>
-                        <option value="online">Online</option>
-                        <option value="offline">Offline</option>
-                        <option value="hybrid">Hybrid</option>
-                      </Form.Select>
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">Location: </Form.Label>
-                    <Col>
-                      <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">Start Date: {`${isOrgDateValid}`}</Form.Label>
-                    <Col>
-                      <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} className='my-3'>
-                    <Form.Label column sm="3">End Date: </Form.Label>
-                    <Col>
-                      <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
-                    </Col>
-                  </Form.Group>
-                </div>
-
-              ))}
-              {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
-            </Tab>
-            <Tab eventKey={`3`} title="Important dates" className='mx-4' tabClassName= 'custom-tab-update'>
-              <div className='w-100 d-flex justify-content-end'>
-                <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>Add important dates</Button>
-              </div>
-              {formData.importantDates.map((date, index) => (
-                <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
-
-                  <Col sm='6'>
-                    <Form.Label>Date type:</Form.Label>
-                    <Form.Control type="text" value={date.date_type} onChange={(e) => handleDateChange(index, 'date_type', e.target.value)} placeholder='Submission date, Notification date...' />
-                  </Col>
-                  <Col >
-
-                    <Form.Label>Date:</Form.Label>
-                    <Form.Control type="date" value={date.date_value} onChange={(e) => handleDateChange(index, 'date_value', e.target.value)} />
-                  </Col>
-                  <Col sm="1" className='d-flex align-items-end'>
-                    <Button variant="danger" onClick={() => removeDate(index)} className='bg-transparent border-0' title='Delete this date'>
-                      <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
-                    </Button>
+      <Modal.Body onClick={(e) => e.stopPropagation()}style={{ maxHeight: "80vh", overflowY: "auto" }}className='pt-3'>
+        <div style={{minHeight: "500px"}}>
+          <div className="d-flex justify-content-between align-items-center py-2 mb-3">
+            <Modal.Title className='text-center w-100 text-skyblue-dark ps-5'>Update conference</Modal.Title>
+            <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
+              <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
+            </Button>
+          </div>
+          <div className="w-100 py-2">
+          </div>
+          <Form >
+            <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
+              <Tab eventKey={`1`} title="Information" className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Conference name: </Form.Label>
+                  <Col>
+                    <Form.Control type="text" value={conference.information.name} disabled />
                   </Col>
                 </Form.Group>
-              ))}
-              {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
-            </Tab>
-            <Tab eventKey={`4`} title="Call For Paper" className='mx-4' tabClassName= 'custom-tab-update'>
-              <Form.Group as={Row} className='my-3'>
-                <Form.Label column sm="3">Call for paper: </Form.Label>
-                <Col>
-                  <Form.Control type="text" as="textarea" rows={14} value={formData.callForPaper} onChange={(e) => handleInformationChange('callForPaper', e.target.value)} />
-                </Col>
-              </Form.Group>
-            </Tab>
-          </Tabs>
-        </Form>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Acronym: </Form.Label>
+                  <Col>
+                    <Form.Control type="text" value={conference.information.acronym} disabled />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Reference link: </Form.Label>
+                  <Col>
+                    <Form.Control type="text" value={formData.link} onChange={(e) => handleInformationChange('link', e.target.value)} />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Rank: </Form.Label>
+                  <Col>
+                    <Form.Select
+                      className='d-block'
+                      value={formData.rank}
+                      onChange={(e) => setFormData({ ...formData, rank: e.target.value })}>
+                      {(filterOptions.rank || data.rank).map((option, index) => (
+                        <option value={option.value || option} key={index}>{option.label || option}</option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Field of research: </Form.Label>
+                  <Col>
+                    <Select
+                      options={options}
+                      value={selectedOptions}
+                      isMulti
+                      onChange={handleChangeFieldOfResearch}
+                      menuPosition="fixed"
+                    />
+                  </Col>
+                </Form.Group>
+              </Tab>
+              <Tab eventKey={`2`} title="Organization" className='mx-4' tabClassName= 'custom-tab-update'>
+                {formData.organizations.map((org, index) => (
+                  <div key={index} className='mt-5'>
+                    <Form.Group as={Row} className='my-3'>
+                      <Form.Label column sm="3">Organization name: </Form.Label>
+                      <Col>
+                        <div className='d-flex align-items-center'>
+                          <Form.Control type="text" placeholder='Organization name' value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
+                          {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
+                        </div>
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className='my-3'>
+                      <Form.Label column sm="3">Type: </Form.Label>
+                      <Col>
+                        <Form.Select value={org.type} onChange={(e) => handleOrganizationChange(index, 'type', e.target.value)}>
+                          <option value="">Select type...</option>
+                          <option value="online">Online</option>
+                          <option value="offline">Offline</option>
+                          <option value="hybrid">Hybrid</option>
+                        </Form.Select>
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className='my-3'>
+                      <Form.Label column sm="3">Location: </Form.Label>
+                      <Col>
+                        <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className='my-3'>
+                      <Form.Label column sm="3">Start Date: {`${isOrgDateValid}`}</Form.Label>
+                      <Col>
+                        <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className='my-3'>
+                      <Form.Label column sm="3">End Date: </Form.Label>
+                      <Col>
+                        <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
+                      </Col>
+                    </Form.Group>
+                  </div>
+                ))}
+                {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
+              </Tab>
+              <Tab eventKey={`3`} title="Important dates" className='mx-4' tabClassName= 'custom-tab-update'>
+                <div className='w-100 d-flex justify-content-end'>
+                  <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>Add important dates</Button>
+                </div>
+                {formData.importantDates.map((date, index) => (
+                  <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
+                    <Col sm='6'>
+                      <Form.Label>Date type:</Form.Label>
+                      <Form.Control type="text" value={date.date_type} onChange={(e) => handleDateChange(index, 'date_type', e.target.value)} placeholder='Submission date, Notification date...' />
+                    </Col>
+                    <Col >
+                      <Form.Label>Date:</Form.Label>
+                      <Form.Control type="date" value={date.date_value} onChange={(e) => handleDateChange(index, 'date_value', e.target.value)} />
+                    </Col>
+                    <Col sm="1" className='d-flex align-items-end'>
+                      <Button variant="danger" onClick={() => removeDate(index)} className='bg-transparent border-0' title='Delete this date'>
+                        <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
+                      </Button>
+                    </Col>
+                  </Form.Group>
+                ))}
+                {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
+              </Tab>
+              <Tab eventKey={`4`} title="Call For Paper" className='mx-4' tabClassName= 'custom-tab-update'>
+                <Form.Group as={Row} className='my-3'>
+                  <Form.Label column sm="3">Call for paper: </Form.Label>
+                  <Col>
+                    <Form.Control type="text" as="textarea" rows={14} value={formData.callForPaper} onChange={(e) => handleInformationChange('callForPaper', e.target.value)} />
+                  </Col>
+                </Form.Group>
+              </Tab>
+            </Tabs>
+          </Form>
+        </div>
       </Modal.Body>
       {
         isupdateForm && !status && message !== '' && <p className="text-danger text-center">{message}</p>

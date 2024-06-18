@@ -108,7 +108,6 @@ const Notifications = () => {
               pageLinkClassName="page-link"
               breakClassName="page-item"
               breakLinkClassName="page-link"
-              activeClassName="active"
               disabledClassName="disabled"
               breakLabel="..."
               nextLabel=">"

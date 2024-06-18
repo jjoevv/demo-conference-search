@@ -108,7 +108,7 @@ const Dashboard = () => {
                   <div className="text-light-emphasis fw-bold mt-3 me-5">User logging</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {currentUsers.length}</h3>
-                    <span className='text-light-emphasis'>{`  user${currentUsers.length > 1 ? 's' : ''}  (*Updated every 5mins)`}</span>
+                    <span className='text-light-emphasis'>{`  user${currentUsers.length > 1 ? 's' : ''}  (*Updated every 5m)`}</span>
                   </div>
                 </Col>
                 <Col className="rounded mx-2 border border-light shadow-sm p-2 overview-tab">

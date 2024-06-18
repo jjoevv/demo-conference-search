@@ -27,7 +27,12 @@ input[type=password]::-ms-clear
 {
     display: none;
 }
-
+.modal-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    z-index: 1000; /* Đảm bảo footer luôn hiển thị trên cùng */
+  }
 /*can deu*/
 .text-justify {
     text-align: justify;

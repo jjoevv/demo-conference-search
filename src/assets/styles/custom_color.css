@@ -2,12 +2,14 @@
     background-color: #f1fcf8;
 }
 
-.button.bg-beige-light:hover {
+button.bg-beige-light:hover {
     background-color: #f5fcf9;
+    color: #00999f;
 }
 
-.button.bg-beige-light:active {
+button.bg-beige-light:active {
     background-color: #eaf9f3;
+    color: #00999f;
 }
 
 .bg-beige-normal {

@@ -24,11 +24,11 @@ const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      
+      border: '1px solid #155D68',
       borderRadius: '4px', // Điều chỉnh độ cong của góc
       boxShadow: state.isFocused ? '0 0 0 0.1rem rgba(76, 139, 245, 0.25)' : null, // Hiệu ứng boxShadow khi focus
       '&:hover': {
-        border: '2px solid #4c8bf5', // Điều chỉnh màu và độ dày của border khi hover
+        border: '1px solid #155D68', // Điều chỉnh màu và độ dày của border khi hover
       },
     }),
     menuPortal: provided => ({ 
@@ -89,7 +89,7 @@ const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
         maxMenuHeight={200}
       />
 
-        <FloatingLabel controlId="floatingInput" label="+ Add new" className='text-center d-flex justify-content-center'>
+        <FloatingLabel controlId="floatingInput" label="+ Add new" className='text-center d-flex justify-content-center mt-1'>
           <Form.Control
             type="text"
             placeholder="Enter something"

@@ -56,7 +56,7 @@ const ConferencesManagement = () => {
       getAllPendingConferences()
     }
     getOptionsFilter("", [])
-    console.log({pendingConferences, key})
+   // console.log({pendingConferences, key})
     if (key === 'userowner') {
       setDisplayedConferences(pendingConferences)
     } else setDisplayedConferences(conferences)
@@ -133,10 +133,7 @@ const ConferencesManagement = () => {
         <ButtonGroup>
           <ImportButton/>
           <ExportButton data={displayConferences} headers={allcolumns}/>
-          <Button className='bg-white text-color-black fw-medium d-flex align-items-center border border-0'>
-            <FontAwesomeIcon icon={faGear} className='me-2' />
-            Setting
-          </Button>
+        
         </ButtonGroup>
       </div>
 

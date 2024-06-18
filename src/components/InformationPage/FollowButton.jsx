@@ -66,42 +66,44 @@ const FollowButton = () => {
                         }
                     >
 
-                        <Button
-                            className='bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
-                            onClick={handleUnfollow}
-                            title='Click to unfollow conference'
-                        >
-                            {
-                                loading
-                                    ?
-                                    <Loading />
-                                    :
-                                    `Followed`
-                            }
-                        </Button>
+                        <div>
+                            <Button
+                                className='d-flex justify-content-center align-items-center rounded-5 m-2 px-5 py-3 fw-semibold btn-wave-wrap'
+                                onClick={handleUnfollow}
+                                title='Click to unfollow conference'
+                            >
+                                {
+                                    loading
+                                        ?
+                                        <Loading size={'sm'}/>
+                                        :
+                                        `FOLLOWED`
+                                }
+                            </Button>
+                        </div>
                     </OverlayTrigger>
                     :
                     <OverlayTrigger
                         placement="bottom"
                         overlay={
                             <Tooltip id={'tooltip-bottom'}>
-                                Click to follow conference
+                                Click to follow conference and receive notifications about events
                             </Tooltip>
                         }
                     >
 
 
-                        <div className='wrap'>
+                        <div className=''>
                             <Button
-                                className=' bg-darkcyan-normal rounded-5 mt-2 px-5 fw-semibold mx-2'
+                                className='d-flex justify-content-center align-items-center rounded-5 m-2 px-5 py-3 fw-semibold btn-wave-wrap'
                                 onClick={handleFollow}
                             >
                                 {
                                     loading
                                         ?
-                                        <Loading />
+                                        <Loading size={'sm'}/>
                                         :
-                                        `Follow`
+                                        `FOLLOW`
                                 }
                             </Button>
                         </div>

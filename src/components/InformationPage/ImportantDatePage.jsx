@@ -5,6 +5,8 @@ import { isUpcoming } from '../../utils/sortConferences'
 import ArrowIcon from './../../assets/imgs/arrow.png'
 import { useEffect, useState } from 'react'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCalendar } from '@fortawesome/free-solid-svg-icons'
 
 const ImportantDatePage = ({conference}) => {
   const [displayDates, setDisplayDates] = useState([])
@@ -55,7 +57,10 @@ const ImportantDatePage = ({conference}) => {
 
   return (
     <div className='m-5'>
-      <span className='fs-4 fw-bold text-teal-normal'>Important dates</span>
+      <span className='fs-3 fw-bold text-teal-normal'> 
+        <FontAwesomeIcon icon={faCalendar} className='me-2'/>
+        Important dates
+        </span>
       <div className='mt-2' style={{maxHeight: "600px", overflowY: "auto"}} >
 
         {conference ?

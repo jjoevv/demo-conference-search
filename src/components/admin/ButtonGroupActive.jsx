@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import useAdmin from '../../hooks/useAdmin'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import DeleteModal from '../Modals/DeleteModal'
 
 const ButtonGroupActive = ({ conference }) => {
@@ -18,10 +18,10 @@ const ButtonGroupActive = ({ conference }) => {
     const [countdown, setCountdown] = useState(2);
     const [isConfirm, setIsConfirm] = useState(false)
     const navigate = useNavigate()
-
+    const id = useParams()
     useEffect(() => {
         const fetchData = async () => {
-            await getPendingConfById(conference.id)
+            await getPendingConfById(id.id)
             setLoadingConf(false)
         }
         if (!conference) {

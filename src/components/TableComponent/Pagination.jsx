@@ -20,7 +20,6 @@ const TablePagination = ({ data, itemsPerPage }) => {
         marginPagesDisplayed={2} // Số lượng trang hiển thị ở đầu và cuối
         onPageChange={handlePageClick}
         containerClassName={'pagination'}
-        activeClassName={'active'}
         nextLabel={'>'}
         previousLabel={'<'}
       />

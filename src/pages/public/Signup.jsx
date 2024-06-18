@@ -14,7 +14,6 @@ const Signup = () => {
         email: "",
         password: "",
         confirm: "",
-        phone: ""
     })
     const [showpassword, setShowPassword] = useState(false)
     const [showpConfirmassword, setShowConfirmPassword] = useState(false)
@@ -114,18 +113,7 @@ const Signup = () => {
                                 className="border-0 shadow-sm rounded-2 px-3 py-2"
                             />
                         </Form.Group>
-                        <Form.Group className="my-3 text-start">
-                            <Form.Label htmlFor="inputPassword5" className='text-color-black'>Phone number</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="phone"
-                                value={account.phone}
-                                placeholder="e.g 000 000 000"
-                                onChange={handleInputChange}
-                                required
-                                className="border-0 shadow-sm rounded-2 px-3 py-2"
-                            />
-                        </Form.Group>
+                       
                         <Form.Group className="my-3 text-start">
                             <Form.Label htmlFor="inputPassword5" className='text-color-black'>Password</Form.Label>
                             <InputGroup>

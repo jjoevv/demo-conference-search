@@ -298,17 +298,16 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 show={show}
                 onHide={handleCloseForm}
                 size="lg"
-                scrollable
+                scrollable={true}
 
             >
 
                 <Modal.Header closeButton className='fixed'>
                     <Modal.Title className='text-center w-100 text-skyblue-dark'>Conference Information</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="modal-scrollable-content m-0"
-                    style={{ minHeight: "520px", maxHeight: "500px" }}>
+                <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>
 
-                    <Form className='px-5'>
+                    <Form className='px-5'  style={{minHeight: "470px"}}>
                         <div className="modal-scrollable-body">
                             <Carousel activeIndex={page} onSelect={handleSelect} controls={false} interval={null} indicators={false}>
                                 <Carousel.Item className='mt-5'>
@@ -371,21 +370,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                     {
                                         formData.organizations.map((organization, index) => (
                                             <div key={index}>
-                                                <Form.Group as={Row} className='my-3'>
-                                                    <Form.Label column sm="3">Organization name: </Form.Label>
-                                                    <Col>
-                                                        <div className='d-flex align-items-center'>
-                                                            <Form.Control
-                                                                type="text"
-                                                                value={organization.name}
-                                                                onChange={(e) => handleOrgChange(index, e)}
-                                                                name='name'
-                                                                placeholder='Organization name...'
-                                                            />
-
-                                                        </div>
-                                                    </Col>
-                                                </Form.Group>
+                                            
                                                 <Form.Group as={Row} className='my-3'>
                                                     <Form.Label column sm="3">Type: </Form.Label>
                                                     <Col>
@@ -459,7 +444,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                 </Carousel.Item>
                                 <CarouselItem>
                                     <Form.Group as={Col} className="mb-3 d-flex align-items-start">
-                                        <Form.Label column sm="3">Call for paper:</Form.Label>
+
+                                        <Form.Label column sm="3"> <span className='text-danger'>* </span>Call for paper:</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             rows={18}
@@ -479,19 +465,18 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 {!status && isPosted && <p className="text-danger text-center">{message}</p>}
                 {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                 </Modal.Body>
-              
-                <Modal.Footer className="d-flex align-items-center justify-content-center text-white mb-4">
+                <Modal.Footer className="d-flex align-items-center justify-content-center text-white">
                     <ButtonGroup>
                         <Button
                             onClick={() => setPage((prevIndex) => prevIndex - 1)}
                             disabled={page === 0}
-                            className='border-blue-normal text-blue-normal bg-transparent text-black  px-5 mx-3 rounded'>
+                            className='border-blue-normal text-blue-normal bg-beige-light px-5 mx-3 rounded'>
                             Back
                         </Button>
                         {
                             page < 3
                                 ?
-                                <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 py-1 mx-3 text-black'>
+                                <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 py-1 mx-3 '>
                                     Next
                                 </Button>
                                 :

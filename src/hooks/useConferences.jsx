@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { useAppContext } from "../context/authContext"
 
@@ -9,13 +9,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import useSessionStorage from "./useSessionStorage"
 import { sortByFollow } from "../utils/sortConferences"
+import useAuth from "./useAuth"
+import useLocalStorage from "./useLocalStorage"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
+  const { user } = useAuth()
   const { getDataListInStorage } = useSessionStorage()
   const [quantity] = useState(0)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const {token} = useLocalStorage()
 
   const [selectOptionSort, setSelectOptionSort] = useState('Random') //Random: sort by follow
   const [displaySortList, setDisplaySortConf] = useState([])
@@ -44,7 +48,7 @@ const useConference = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      
+
       dispatch(getAllConf(data.data));
       setLoading(false);
       return data
@@ -54,10 +58,17 @@ const useConference = () => {
   }
 
 
-  
+
   const handleGetOne = async (id) => {
     try {
-      const response = await fetch(`${baseURL}/conference/${id}`);
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
+      const response = await fetch(`${baseURL}/conference/${id}`,{
+        method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${tokenHeader}`
+    }
+      });
       const data = await response.json();
       //Gửi action để cập nhật state
       dispatch(getOneConf(data.data));
@@ -69,27 +80,62 @@ const useConference = () => {
 
   const crawlNow = async (id) => {
     try {
-        const response = await fetch(`${baseURL}/conference/${id}/updateNow`);
-//console.log(response.status)
-        if (!response.ok) {
-            throw new Error('Request failed with status ' + response.status);
+    //  console.log({ user })
+
+      let confIDs = sessionStorage.getItem('confIDs');
+      if (confIDs) {
+        // Nếu đã có danh sách confIDs trong localStorage, chuyển đổi thành mảng
+        confIDs = JSON.parse(confIDs);
+        // Kiểm tra xem id đã tồn tại trong danh sách chưa
+        if (!confIDs.includes(id)) {
+          // Nếu chưa tồn tại, thêm vào danh sách
+          confIDs.push(id);
+          sessionStorage.setItem('confIDs', JSON.stringify(confIDs));
         }
+      }
+      confIDs = [id];
+      sessionStorage.setItem('confIDs', JSON.stringify(confIDs));
 
-        const data = await response.json();
-        
-        return { status: true, data: data };
+      // Thiết lập đếm ngược 10 phút để xóa ID
+      setTimeout(() => {
+        removeIDFromSessionStorage(id);
+      }, 10 * 60 * 1000); // 10 phút
+
+      const response = await fetch(`${baseURL}/conference/${id}/updateNow`, {
+        method: 'PUT'
+      });
+      //console.log(response)
+      if (!response.ok) {
+        throw new Error('Request failed with status ' + response.status);
+      }
+
+      const data = await response.json();
+
+      return { status: true, message: data.message };
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return { status: false, message: error.message };
-    } 
-};
+      console.error('Error fetching data:', error);
+      return { status: false, message: error.message };
+    }
+  };
+  // Hàm xóa ID khỏi sessionStorage
+  const removeIDFromSessionStorage = (idToRemove) => {
+    let confIDs = sessionStorage.getItem('confIDs');
+    if (confIDs) {
+      confIDs = JSON.parse(confIDs);
+      const updatedConfIDs = confIDs.filter((id) => id !== idToRemove);
+      sessionStorage.setItem('confIDs', JSON.stringify(updatedConfIDs));
+   //   console.log(`Removed ID ${idToRemove} from sessionStorage`);
+    } else {
+      console.log('No IDs found in sessionStorage');
+    }
+  };
 
-const checkUrl = async (url) => {
-  if(url !== ' ' && url !== ''){
-    return true
-  }
-  else return false
-};
+  const checkUrl = async (url) => {
+    if (url !== ' ' && url !== '') {
+      return true
+    }
+    else return false
+  };
 
 
   const getConferenceDate = (organizations) => {

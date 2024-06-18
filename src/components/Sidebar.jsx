@@ -53,7 +53,6 @@ const Sidebar = () => {
               <NavLink
                 key={link.title}
                 to={link.path}
-                activeClassName="active"
                 className={
                   location.pathname === link.path
                     ? 'my-sidebar-navlink ps-2 py-3 fs-6 bg-primary-normal text-color-darker rounded-2'

@@ -23,7 +23,7 @@ const CallforpaperPage = ({conference}) => {
   return (
     <div className='p-4 m-0'>
       <div className="bg-white p-5 m-5">
-        <h3 className='ms-3 fs-4 fw-bold text-teal-normal'>Call for paper</h3>
+        <h3 className='ms-3 fs-3 fw-bold text-teal-normal'>Call for paper</h3>
         {
           conference
             ?

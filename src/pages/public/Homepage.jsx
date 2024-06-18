@@ -13,10 +13,12 @@ import usePost from '../../hooks/usePost'
 import Filter from '../../components/Filter/Filter'
 import { useLocation, useParams } from 'react-router-dom'
 import LoadingConferences from '../../components/Conference/LoadingConferences'
-import { Container } from 'react-bootstrap'
+import { Container, Stack } from 'react-bootstrap'
 import useParamsFilter from '../../hooks/useParamsFilter'
+import SlideShow from '../../components/SlideShow'
 
 const Homepage = () => {
+    const [showSlideShow, setShowSlideShow] = useState(true)
     const { optionsSelected, getOptionsFilter} = useSearch()
     const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()
@@ -80,13 +82,11 @@ const Homepage = () => {
   
   return (
     <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        
-        {/*showSlideShow &&
-        <Container>
-          <Stack direction='horizontal' className='w-100'>
-            <SlideConferences showSlideShow={showSlideShow} setShowSlideShow={setShowSlideShow}/>
-            <SlideShow showSlideShow={showSlideShow} setShowSlideShow={setShowSlideShow}/>
-          </Stack>
-  </Container>*/}
+        <div className='mb-5'>
+              <SlideShow />
+          
+        </div>
+        
          <Filter />
         {
           loadingAll ?

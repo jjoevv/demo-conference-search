@@ -167,7 +167,6 @@ const DataDisplayFilter = ({loading, conferencesProp, total, width }) => {
                 pageLinkClassName="page-link"
                 breakClassName="page-item"
                 breakLinkClassName="page-link"
-                activeClassName="active"
                 disabledClassName="disabled"
             />
     </div>

@@ -8,7 +8,7 @@ import Conference from '../../components/Conference/Conference'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 import SuccessfulModal from '../../components/Modals/SuccessModal'
-import { checkExistValue, mergeConferencesByKeyword } from '../../utils/checkFetchedResults'
+import { checkExistValue } from '../../utils/checkFetchedResults'
 
 import useSearch from '../../hooks/useSearch'
 import useFilter from '../../hooks/useFilter'
@@ -41,6 +41,10 @@ const YourConf = () => {
       getPostedConferences()      
     }
   }, [user])
+
+  useEffect(()=>{
+    setDisplayConferences(postedConferences)
+  },[postedConferences])
 
   useEffect(()=>{
     const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);

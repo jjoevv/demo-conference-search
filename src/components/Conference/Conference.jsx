@@ -173,44 +173,44 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }
     return (
         <Container id='conferences-render' className='d-flex flex-column align-items-center p-0'>
-              <ScrollToTopButton />
+            <ScrollToTopButton />
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
                 <div className="h5 fw-bold ms-4 mt-2">
-                    {`${conferencesProp.length} conferences`} 
+                    {`${conferencesProp.length} conferences`}
                 </div>
             </div>
             <Row className='w-100'>
                 {
                     selected ?
-                    <>
-                    <Col sm={2} className='d-flex align-items-start justify-content-end p-0'>
-                         Display priority by:
-                    </Col>
-                    <Col sm={8} className='d-flex align-items-start p-0'>
-                         <PriorityOptions/>
-                    </Col>
-                    <Col className='p-0'>
-                    <DropdownSort
-                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
-                    onSelect={handleDropdownSelect}
-                />
-                    </Col>
-                    </>
-                    :
-                    <>
-                    <Col sm={9}></Col>
-                    <Col>
-                    <DropdownSort
-                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
-                    onSelect={handleDropdownSelect}
-                />
-                    </Col>
-                    </>
-                    
+                        <>
+                            <Col sm={2} className='d-flex align-items-start justify-content-end p-0'>
+                                Display priority by:
+                            </Col>
+                            <Col sm={8} className='d-flex align-items-start p-0'>
+                                <PriorityOptions />
+                            </Col>
+                            <Col className='p-0'>
+                                <DropdownSort
+                                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
+                                    onSelect={handleDropdownSelect}
+                                />
+                            </Col>
+                        </>
+                        :
+                        <>
+                            <Col sm={9}></Col>
+                            <Col>
+                                <DropdownSort
+                                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
+                                    onSelect={handleDropdownSelect}
+                                />
+                            </Col>
+                        </>
+
                 }
 
             </Row>
-           
+
             <ExpiredModal onClose={() => setShowPopupFollow(false)} isOpen={showPopupFollow} />
             {
                 conferencesProp && !loading
@@ -245,14 +245,22 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 </>
                                                             }
 
-{
+                                                            {
                                                                 conf.information.source === 'ConfHub' &&
                                                                 <>
-                                                                       <div className='bg-skyblue-dark text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
-                                                                            CONFHUB
-                                                                        </div>
+                                                                    <div className='bg-skyblue-dark text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                        CONFHUB
+                                                                    </div>
                                                                 </>
                                                             }
+
+                                                            {
+                                                                conf.information.source !== 'ConfHub' &&
+                                                                <div className='bg-blue-dark text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                    {conf?.information?.source}
+                                                                </div>
+                                                            }
+
                                                             <span className='fw-bold fs-5 text-justify text-color-darker'>{conf.information.name}</span>
                                                         </div>
 
