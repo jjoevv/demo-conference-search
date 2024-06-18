@@ -14,7 +14,7 @@ export const AuthLayout = () => {
     { path: '/user/setting', title: 'Setting', icon: <FontAwesomeIcon icon={faGear}className="me-2"/> },
   ]
   return (
-    <Container className="d-flex w-100 h-100 mw-100">
+    <Container className="d-flex w-100 h-100 mw-100 p-0">
       <Sidebar sidebar={sidebar}/>
       <Outlet/>
     </Container>
