@@ -36,9 +36,15 @@ const ConferencesManagement = () => {
   const [key, setKey] = useState('allconf');
   const [displayConferences, setDisplayedConferences] = useState([])
   const [conferencesList, setConferenceList] = useState([]) 
-
+  const [loading, setLoading] = useState(false)
   useEffect(()=>{
-    getAllConferences()
+    setLoading(true)
+    const fetchData = async () => {
+      await  getAllConferences()
+      setLoading(false)
+    }
+    fetchData()
+   
   }, [])
 
   useEffect(() => {
@@ -173,7 +179,7 @@ const ConferencesManagement = () => {
 
         <FilterSelected />
         {
-          loadingConf ?
+          loadingConf && loading ?
             <div className="my-4">
               <Loading />
             </div>
@@ -185,7 +191,7 @@ const ConferencesManagement = () => {
             >
               <Tab eventKey="allconf" title="All conferences" className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
-                  <AllConferences conferences={displayConferences.length>0 ? displayConferences : conferences} />
+                  <AllConferences conferences={displayConferences} />
                 </div>
               </Tab>
               <Tab eventKey="userowner" title="Pending" className='pt-2' tabClassName= 'custom-tab-update'>

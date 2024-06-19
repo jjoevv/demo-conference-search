@@ -1,32 +1,30 @@
 import { useEffect, useState } from 'react'
-import { Container, InputGroup, Button, Form, Col, Spinner } from 'react-bootstrap'
+import { Container, Button, Form, Col, Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 import ChangePasswordModal from '../../components/Modals/ChangePasswordModal'
-import useLocalStorage from '../../hooks/useLocalStorage'
+
 import useToken from '../../hooks/useToken'
 import SuccessfulModal from '../../components/Modals/SuccessModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiamondTurnRight, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 const Account = () => {
-  const { loading, updateProfile, getCurrentUser } = useAuth()
+  const { loading,user, updateProfile, getCurrentUser } = useAuth()
   const [profile, setProfile] = useState([])
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const { user } = useLocalStorage()
   const { token } = useToken()
   useEffect(() => {
     if (user) {
       setProfile([
         { title: "Name", infor: user.name, val: 'name', placeholder: 'username' },
-        { title: "Phone", infor: user.phone, val: 'phone', placeholder: 'phone number' },
         { title: "Address", infor: user.address, val: 'address', placeholder: 'your address' },
         { title: "Nationality", infor: user.nationality, val: 'nationality', placeholder: 'your nationality' },
       ])
     }
-  }, [user, token,])
+  }, [user, token])
   //profile 
   const [isUpdated, setIsUpdated] = useState(false)
 

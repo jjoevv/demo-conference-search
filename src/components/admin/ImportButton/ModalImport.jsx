@@ -42,15 +42,15 @@ const ModalImport = ({show, onHide}) => {
         onClick={handleShowPost}
          className='text-center p-5 rounded border-teal-light shadow-sm bg-skyblue-light mx-3'
             style={{minWidth: "160px", minHeight: "200px"}}>
-            <FontAwesomeIcon icon={faFile} className='h1 text-skyblue-normal'/>
-            <div className='text-skyblue-normal'>Post a conference</div>
+            <FontAwesomeIcon icon={faFile} className='h1 text-skyblue-dark'/>
+            <div className='text-skyblue-dark'>Post a conference</div>
         </Button>
         <Button
         onClick={()=>setShowImportModal(true)}
          className='text-center p-5 rounded border-teal-light shadow-sm bg-skyblue-light mx-3'
         style={{minWidth: "160px", minHeight: "200px", maxHeight: '200px'}}>
-            <FontAwesomeIcon icon={faFileArrowUp} className='h1 text-skyblue-normal'/>
-            <div className='text-skyblue-normal'>Import a file of conferences</div>
+            <FontAwesomeIcon icon={faFileArrowUp} className='h1 text-skyblue-dark'/>
+            <div className='text-skyblue-dark'>Import a file of conferences</div>
         </Button>
       </div>
 

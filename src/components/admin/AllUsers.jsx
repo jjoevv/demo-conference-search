@@ -49,10 +49,6 @@ const AllUsers = ({ conferences }) => {
         accessor: "name",
       },
       {
-        Header: "Phone",
-        accessor: "phone",
-      },
-      {
         Header: "Email",
         accessor: "email",
       },

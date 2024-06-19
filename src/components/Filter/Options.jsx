@@ -134,7 +134,7 @@ const Options = ({ label }) => {
     const filterOptionsBySearchTerm = (searchInput) => {
         const searchTermLower = searchInput.toLowerCase();
 
-        if(label === location){
+        if(label === 'location'){
             const valueMatch = Object.entries(countries).filter(([key, value]) => {
                 return Object.values(value).some(val => {
                     if (typeof val === 'string') {

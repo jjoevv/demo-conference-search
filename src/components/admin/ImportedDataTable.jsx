@@ -3,6 +3,7 @@ import useImport from '../../hooks/useImport'
 import { Button, Carousel, Form, Spinner, Table } from 'react-bootstrap'
 import forcode from './../../data/forcode.json'
 import useAdmin from '../../hooks/useAdmin'
+import ReactPaginate from 'react-paginate'
 const ImportedDataTable = ({ onHide }) => {
     const { getAllPendingConferences } = useAdmin()
     const { dataUpload, setShowImportModal, handleImport } = useImport()
@@ -15,88 +16,111 @@ const ImportedDataTable = ({ onHide }) => {
     const [isImported, setIsimported] = useState(false)
     const [formatedData, setFormatedData] = useState([])
     const [formatedHeaders, setFormatedHeaders] = useState([])
+    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPageFormatted, setCurrentPageFormatted] = useState(0);
+    const [displayedData, setDisplayedData] = useState(dataUpload.data);
+
+    const handlePageClick = (event) => {
+        setCurrentPage(event.selected);
+    };
+
+    const handlePageClickFormatted = (event) => {
+        setCurrentPageFormatted(event.selected);
+    };
+    const ITEMS_PER_PAGE = 6
+
+
     useEffect(() => {
         setActivePage(0); // Reset active page when data changes
     }, [dataUpload]);
 
     const handleNext = () => {
+        let isFailed = false;
+        let newWarningMessage = '';
+    
         // Kiểm tra xem selectedHeaders có chứa tất cả các header bắt buộc không
         const requiredHeaders = ['Name', 'Acronym', 'Source', 'Rank', 'Field of Research'];
         const isMissingHeader = requiredHeaders.some(headerName => {
             return !selectedHeaders.some(header => header !== undefined && header.name === headerName);
         });
+    
         if (selectedHeaders.length !== 0 && !isMissingHeader) {
-            // Filter out selected columns with a valid name (not 'None')
             const selectedCol = selectedHeaders.filter(header => header !== undefined && header.name !== 'None');
-
-
-            // Process data when at least one column is selected
             const newData = dataUpload.data.map(row => {
                 let newRow = [];
-
                 selectedHeaders.forEach(header => {
                     if (header && header.name === 'Field of Research') {
-                        // Lọc ra các giá trị số tương ứng với cột 'Field of Research'
                         const fieldOfResearchCodes = row.filter((value, index) => selectedHeaders.some(h => h && h.order === index && h.name === 'Field of Research'));
-
-                        // Kiểm tra các giá trị số có trong danh sách codeMappings không
                         const fieldOfResearchNames = fieldOfResearchCodes.map(code => {
                             if (code !== '') {
                                 const mapping = forcode.find(mapping => mapping.code === code);
                                 if (mapping) {
-                                    return mapping.for;
+                                    return mapping.code;
                                 } else {
-                                    setWarningMessage(`Please check the selected column has '${code}'`);
-                                    return ''; // hoặc giá trị khác khi không tìm thấy mapping
+                                    newWarningMessage = `Please check the selected FOR column has code '${code}'. Code is not utilized in research fields.`;
+                                    isFailed = true;
+                                    return ''; // or another value when mapping not found
                                 }
                             }
-
                         });
-                        //  console.log({ fieldOfResearchCodes, fieldOfResearchNames })
-                        newRow.push(fieldOfResearchNames.join('; ')); // Gộp các tên thành một chuỗi và thêm vào mảng mới
+                        newRow.push(fieldOfResearchNames.join('; '));
                     } else {
-                        // Lưu giá trị của các cột không phải 'Field of Research' và không ảnh hưởng đến các cột khác
-                        //     console.log({header})
                         if (header && header.name !== 'None') {
                             newRow.push(row[header.order]);
                         }
                     }
                 });
-
+    
+                // Validate 'Source' column
+                const sourceIndex = selectedHeaders.findIndex(header => header && header?.name === 'Source');
+                if (sourceIndex !== -1 && !/CORE20/.test(row[sourceIndex])) {
+                    newWarningMessage = 'The Source column is wrong';
+                    isFailed = true;
+                }
+    
+                // Validate 'Acronym' column
+                const acronymIndex = selectedHeaders.findIndex(header => header && header.name === 'Acronym');
+                if (acronymIndex !== -1 && row[acronymIndex].length >= 20) {
+                    newWarningMessage = 'The Acronym column is wrong';
+                    isFailed = true;
+                }
+    
                 return newRow;
             });
-
+    
             const uniqueColumnNames = [...new Set(selectedCol.map(header => header.name))];
-            //   console.log({newData, selectedCol})
-            // Sử dụng Set để loại bỏ các hàng trùng lặp
-            // Xử lý danh sách các danh sách chuỗi để loại bỏ các chuỗi trùng lặp trong từng danh sách con
             const uniqueData = newData.map(list => {
                 const uniqueSet = new Set();
                 list.forEach(item => {
-                    const trimmedItem = item.trim(); // Loại bỏ khoảng trắng không cần thiết
+                    const trimmedItem = item.trim();
                     if (trimmedItem !== "" && !uniqueSet.has(trimmedItem)) {
                         uniqueSet.add(trimmedItem);
                     }
                 });
                 return Array.from(uniqueSet);
             });
-            // Update state with formatted headers and data
+    
             setFormatedHeaders(Array.from(uniqueColumnNames));
             setFormatedData(uniqueData);
-            // Proceed to the next page or action if needed
-            if (warningMessage === '') {
+    
+            if (!isFailed && warningMessage === '') {
                 setActivePage(activePage + 1);
+            } else {
+                setWarningMessage(newWarningMessage);
+                setTimeout(() => {
+                    setWarningMessage('');
+                }, 5000);
             }
-
         } else {
-            // Display warning if no columns are selected
-            setWarningMessage('You should select column for Name, Acronym, Source, Field of research');
+            setWarningMessage('You should select columns for Name, Acronym, Source, Rank, Field of Research');
             setTimeout(() => {
                 setWarningMessage('');
             }, 5000);
         }
-
     };
+    
+
+
     const handleSelectHeader = (selectedHeader, index) => {
         const newSelectedColumns = [...selectedHeaders];
         newSelectedColumns[index] = { order: index, name: selectedHeader };
@@ -120,6 +144,14 @@ const ImportedDataTable = ({ onHide }) => {
             setWarningMessage('');
         }, 3000);
     }
+
+
+    const convertCodesToNames = (codes) => {
+        return codes.split(';').map(code => {
+            const mapping = forcode.find(forMap => forMap.code.toString().trim() === code.trim());
+            return mapping ? mapping.for : code;
+        }).join('; ');
+    };
     const renderTableHeader = (headersName, isSelect) => {
         return (
             <tr>
@@ -160,14 +192,11 @@ const ImportedDataTable = ({ onHide }) => {
             return nonEmptyCountB - nonEmptyCountA;
         });
 
-        // Lấy 10 hàng đầu tiên sau khi sắp xếp
-        const displayedTableData = sortedTableData.slice(0, 10);
-
         // Tìm số cột tối đa trong dữ liệu
-        const maxColumns = Math.max(...displayedTableData.map(row => row.length));
+        const maxColumns = Math.max(...sortedTableData.map(row => row.length));
 
         // Render các hàng
-        return displayedTableData.map((row, rowIndex) => {
+        return sortedTableData.map((row, rowIndex) => {
             // Tạo hàng mới với các giá trị tương ứng với thứ tự các cột đã chọn
             const renderRow = [...row];
 
@@ -180,8 +209,8 @@ const ImportedDataTable = ({ onHide }) => {
             return (
                 <tr key={rowIndex}>
                     {renderRow.map((cell, cellIndex) => (
-                        <td key={`${rowIndex}-${cellIndex}`} className='text-truncate text-nowrap overflow-hidden' style={activePage === 0 ? { maxWidth: "200px" } : {}}>
-                            {cell}
+                        <td key={`${rowIndex}-${cellIndex}`} className=''>
+                            {typeof cell === 'string' && cell.includes(';') ? convertCodesToNames(cell) : cell}
                         </td>
                     ))}
                 </tr>
@@ -195,24 +224,55 @@ const ImportedDataTable = ({ onHide }) => {
             <Carousel activeIndex={activePage} onSelect={() => { }} controls={false} interval={null} indicators={false}>
 
                 <Carousel.Item key={1}>
-                    <Table striped bordered hover responsive>
+                <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(dataUpload.headers, true)}
                         </thead>
                         <tbody>
-                            {renderTableBody(dataUpload.data)}
+                            {renderTableBody(displayedData, currentPage)}
                         </tbody>
                     </Table>
+                    <ReactPaginate
+                         nextLabel=">"
+                        previousLabel="<"
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={Math.ceil(displayedData.length / ITEMS_PER_PAGE)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                    />
+                        
                 </Carousel.Item>
                 <Carousel.Item key={2}>
-                    <Table striped bordered hover responsive>
+                <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(formatedHeaders, false)}
                         </thead>
                         <tbody>
-                            {renderTableBody(formatedData)}
+                            {renderTableBody(formatedData, currentPageFormatted)}
                         </tbody>
                     </Table>
+                    <ReactPaginate
+                         nextLabel=">"
+                        previousLabel="<"
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={Math.ceil(formatedData.length / ITEMS_PER_PAGE)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClickFormatted}
+                        containerClassName={'pagination'}
+                        activeClassName={'active'}
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        breakLinkClassName="page-link"
+                    />
                 </Carousel.Item>
 
             </Carousel>

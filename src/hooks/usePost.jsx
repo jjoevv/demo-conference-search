@@ -16,7 +16,7 @@ const usePost = () => {
   const fetchPage = async (page) => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
-    const response = await fetch(`${baseURL}/post?page=${page}&size=7`, {
+    const response = await fetch(`${baseURL}/post?page=${page}&size=50`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${tokenHeader}`

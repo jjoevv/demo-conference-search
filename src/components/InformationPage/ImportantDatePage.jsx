@@ -70,7 +70,7 @@ const ImportantDatePage = ({conference}) => {
               conference?.importantDates && conference?.importantDates?.length > 0 ?
               <>
                 {
-                  displayDates.map((date, index) => (
+                  displayDates?.map((date, index) => (
                     <Row key={index} 
                     className={`${index % 2 === 0 ? 'bg-beige-light' : ''} 
                     align-items-center justify-content-center m-2 px-1 py-2 position-relative  border-teal-light border-5 border-start overflow-hidden`}>

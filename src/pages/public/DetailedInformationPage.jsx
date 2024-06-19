@@ -104,7 +104,7 @@ const DetailedInformationPage = () => {
                     :
                     <>
                         {
-                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]' ?
+                            conference && !loading && Object.prototype.toString.call(conference) === '[object Object]'? 
                             <>
                                 <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 80 ? 'vh-75' : 'vh-100'}`}>
                                     <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>

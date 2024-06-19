@@ -24,38 +24,43 @@ const YourConf = () => {
   const [showSuccess, setShowSuccess] = useState(false)
   const [message, setMessage] = useState('')
   const { user } = useLocalStorage()
-  const {getDataListInStorage} = useSessionStorage()
-    
-  
+  const { getDataListInStorage } = useSessionStorage()
+  const [loading, setLoading] = useState(false)
+
   const [displayConferences, setDisplayConferences] = useState(postedConferences)
   const [totalConferences, setTotalConferences] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
-    
-    getOptionsFilter("", [])
-    getPostedConferences()
+    setLoading(true)
+    const fetchData = async () => {
+      await getOptionsFilter("", [])
+      await getPostedConferences()
+      setLoading(false)
+    }
+    fetchData()
+    setDisplayConferences(postedConferences)
   }, [])
 
   useEffect(() => {
     if (!postedConferences) {
-      getPostedConferences()      
+      getPostedConferences()
     }
   }, [user])
 
-  useEffect(()=>{
+  useEffect(() => {
     setDisplayConferences(postedConferences)
-  },[postedConferences])
+  }, [postedConferences])
 
-  useEffect(()=>{
+  useEffect(() => {
     const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-    
-    if(isApliedFilter){
+
+    if (isApliedFilter) {
 
       const filterResult = filterConferences(postedConferences, optionsSelected)
       setDisplayConferences(filterResult)
       setTotalConferences(filterResult.length)
       setTotalPages(Math.ceil(filterResult.length / 7))
-      
+
     }
     else {
       const totalConfLS = getDataListInStorage('totalConfPost')
@@ -65,16 +70,16 @@ const YourConf = () => {
       setDisplayConferences(postedConferences)
     }
     // Tạo query string 
-    const queryString  = Object.entries(optionsSelected)
-    .filter(([, values]) => values.length > 0)
-    .map(([key, values]) => `${key}=${values.join(',')}`)
-    .join('&');
-     // Lấy phần hash của URL nếu có
-     const { hash, pathname } = window.location;
-     const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
-     
-     // Cập nhật URL
-     window.history.pushState({}, '', newUrl);
+    const queryString = Object.entries(optionsSelected)
+      .filter(([, values]) => values.length > 0)
+      .map(([key, values]) => `${key}=${values.join(',')}`)
+      .join('&');
+    // Lấy phần hash của URL nếu có
+    const { hash, pathname } = window.location;
+    const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
+
+    // Cập nhật URL
+    window.history.pushState({}, '', newUrl);
   }, [optionsSelected, postedConferences])
 
   const handleCheckStatus = (status, messageSuccess) => {
@@ -90,7 +95,7 @@ const YourConf = () => {
   const handleShow = () => setShowAddForm(true);
 
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>  
+    <Container className=' m-5 pt-5  overflow-x-hidden'>
 
       <div className='d-flex align-items-center justify-content-between pe-5 mb-4'>
         <h4 className='mb-2'>Your conferences</h4>
@@ -103,40 +108,29 @@ const YourConf = () => {
       </div>
       <AddConference show={showAddForm} handleClose={handleClose} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
       {showSuccess && <SuccessfulModal message={message} show={showSuccess} handleClose={() => setShowSuccess(false)} />}
-      
       {
-        !loadingPost ?
+        loading && loadingPost ?
+          <div className='mt-5'>
+            <Loading onReload={getPostedConferences} />
+          </div>
+          :
           <>
             {
-              postedConferences && postedConferences.length > 0
-                ?
+              postedConferences && postedConferences.length > 0 && !loadingPost ?
                 <>
-                  {
-                    loadingPost
-                      ?
-                      <div className='mt-5'>
-                        <Loading onReload={getPostedConferences} />
-                      </div>
-                      :
-                      <>
-                        <Filter/>
-                        <Conference 
-                          conferencesProp={displayConferences} 
-                          onReloadPage={getPostedConferences} 
-                          totalPages={totalPages} 
-                          totalConferences={totalConferences} 
-                          loading={loadingPost} 
-                          isPost={true} 
-                        />
-                      </>
-                  }
+                  <Filter />
+                  <Conference
+                    conferencesProp={displayConferences}
+                    onReloadPage={getPostedConferences}
+                    totalPages={totalPages}
+                    totalConferences={totalConferences}
+                    loading={loadingPost}
+                    isPost={true}
+                  />
                 </>
-                :
-                <p>No conferences available.</p>
+                : <p>No conferences available.</p>
             }
           </>
-          :
-          <Loading onReload={getPostedConferences} />
       }
 
     </Container>

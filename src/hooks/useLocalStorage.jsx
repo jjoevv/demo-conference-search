@@ -16,7 +16,7 @@ const useLocalStorage = () => {
       setUser(JSON.parse(storedUser));
       if (JSON.parse(storedUser).accessToken) {
         savetokenToLocalStorage(JSON.parse(storedUser).accessToken)
-        dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
+       // dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
       }
     }
     else dispatch({type: 'LOGOUT_USER'})
@@ -25,7 +25,7 @@ const useLocalStorage = () => {
   // Hàm để lưu thông tin người dùng vào localStorage
   const saveUserToLocalStorage = (userData, callback) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    dispatch({type: 'LOGIN_SUCCESS', payload: userData})
+   // dispatch({type: 'LOGIN_SUCCESS', payload: userData})
     setUser(userData);
     callback && callback(userData); // Call the callback if provided
     return userData;
@@ -53,7 +53,7 @@ const useLocalStorage = () => {
     };
     // Lưu object mới vào localStorage
     setUser(updatedUser)
-    dispatch({type: 'LOGIN_SUCCESS', payload: updatedUser})
+  //  dispatch({type: 'LOGIN_SUCCESS', payload: updatedUser})
     localStorage.setItem('user', JSON.stringify(updatedUser));
   }
 

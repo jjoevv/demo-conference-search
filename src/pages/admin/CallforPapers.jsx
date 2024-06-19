@@ -1,12 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
-import useConference from "../../hooks/useConferences"
 import React, { useEffect, useRef, useState } from "react"
 import Loading from "../../components/Loading"
-import { Button, Container, Tab, Tabs } from "react-bootstrap"
-import InformationPage from "../../components/Informationpage/InformationPage"
-import ImportantDatePage from "../../components/Informationpage/ImportantDatePage"
+import { Button, Container } from "react-bootstrap"
 import useAdmin from "../../hooks/useAdmin"
-import useAuth from "../../hooks/useAuth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons"
 
@@ -31,7 +27,9 @@ const CallforPapers = () => {
   }, [conf_id])
 
   useEffect(()=>{
-    setDisplayConf(pendingConf)
+    if(pendingConf?.id === conf_id.id){
+      setDisplayConf(pendingConf)
+    }
   },[pendingConf])
 
 
@@ -120,9 +118,26 @@ const CallforPapers = () => {
               </div>
             </>
           ) : (
-            <div className="pb-5">
+            <div className="d-flex justify-content-between">
+               <div className="">
+              
               No call for paper available
             </div>
+                {
+                  (previousPath && previousPath.includes('dashboard')) ?
+<                 Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/dashboard')}>
+                  <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
+                  Back to Dashboard
+                </Button>
+                :
+                <Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/conferences_management')}>
+                  <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
+                  Back to Conferences Management
+                </Button>
+                }
+                
+              </div>
+           
           )
         )
       }

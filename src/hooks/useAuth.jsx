@@ -42,7 +42,7 @@ const useAuth = () => {
           dispatch(loginSuccess(userData));
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-          if(previousPath && userData.role !== 'admin' && !previousPath.includes('login')){
+          if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
             navigate(`${previousPath}`)
           }
           else {
@@ -203,7 +203,6 @@ const useAuth = () => {
         }
         else {
           const data = await response.json()
-          
           dispatch({type: "LOGIN_SUCCESS", payload: data.data})
           sessionStorage.setItem('user-id', JSON.stringify(data.data.id))
         }

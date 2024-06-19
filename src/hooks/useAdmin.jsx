@@ -65,10 +65,21 @@ const useAdmin = () => {
 
   const getPendingConfById = async (id) => {
     try {
-      const response = await fetch(`${baseURL}/conference/${id}`);
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
+      const response = await fetch(`${baseURL}/conference/${id}`,{
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenHeader}`
+        }
+      });
       const data = await response.json();
+      if(response.ok){
+
       //Gửi action để cập nhật state
       dispatch({ type: 'GET_PENDING_CONFERENCE', payload: data.data })
+      }
+      else dispatch({ type: 'GET_PENDING_CONFERENCE', payload: null })
     } catch (error) {
 
       console.error('Error fetching data:', error);
@@ -176,7 +187,7 @@ const useAdmin = () => {
             if (typeof column.accessor === 'function') {
               value = column.accessor(row);
 
-              if (column.accessor(row).props?.children?.length > 0) {
+              if (column.accessor(row)?.props?.children?.length > 0) {
                 value = row.information.fieldOfResearch.join('; ');
               }
             } else {

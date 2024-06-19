@@ -25,7 +25,7 @@ import useParamsFilter from '../../hooks/useParamsFilter'
 import ScrollToTopButton from '../ScrollToTopButton'
 import { checkExistValue } from '../../utils/checkFetchedResults'
 
-const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost, isFilter }) => {
+const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost, isFilters }) => {
     const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
     const { listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
@@ -234,9 +234,17 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                     <Card.Title className=''>
                                                         <div className='fw-bold d-flex align-items-center justify-content-start'>
                                                             {
+                                                                conf.information.source === 'ConfHub' &&  isPost &&
+                                                                <>
+                                                                    <div className={` p-2 rounded-2 me-2 fs-6 fw-bold ${conf.information.status ? 'bg-skyblue-normal': 'bg-secondary text-light'}`}>
+                                                                        {conf.information.status ? 'Active': 'Inactive'}
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                            {
                                                                 conf.organizations.length > 0 &&
                                                                 <>
-                                                                    {isUpcoming(conf.organizations[0].start_date)
+                                                                    {isUpcoming(conf.organizations[0].start_date) && conf.information.status 
                                                                         &&
                                                                         <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
                                                                             Upcoming

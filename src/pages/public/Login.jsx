@@ -71,16 +71,7 @@ const Login = () => {
 
                     <Form className='w-75 p-5 bg'>
                         <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>Log In</h1>
-                        <Button className='border-0 w-100 p-2 rounded-3' style={{ backgroundColor: "#E8F1F3", color: "#434343" }}>
-                            <Image src={googleIcon} width={20} className="me-2" />
-                            You can join with your Google account</Button>
-                        <div className='d-flex flex-row align-items-center'>
-                            <div style={{ flex: 1, height: '1px', backgroundColor: 'black' }} />
-
-                            <div><p className='pt-3 mx-3'>or log in with your account</p></div>
-
-                            <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
-                        </div>
+                     
                         <Form.Group className="mb-3 text-start">
                             <Form.Label htmlFor="inputPassword5" style={{ fontSize: "20px", color: "#434343" }}>Email</Form.Label>
                             <Form.Control

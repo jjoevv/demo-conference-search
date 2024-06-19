@@ -15,7 +15,7 @@ const AllConferences = ({ conferences }) => {
   const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const {deletePost} = useAdmin()
+  const {loading, deletePost} = useAdmin()
   const {getAllConferences} = useConference()
   const [countdown, setCountdown] = useState(3);
   const [isConfirm, setIsConfirm] = useState(false)
@@ -69,9 +69,7 @@ const AllConferences = ({ conferences }) => {
     () => [
       {
         Header: '#',
-        Cell: ({ row }) => (
-          <div className='position-sticky'>{row.index + 1}</div>
-        ),
+        accessor: (row, index) => index + 1,
         id: 'index',
         width: 40,
         disableResizing: true

@@ -94,13 +94,7 @@ const Signup = () => {
                              */
                         }
                     
-                        <div className='d-flex flex-row align-items-center'>
-                            <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
-
-                            <div><p className='pt-3 mx-3 text-color-black'>or create  your account here</p></div>
-
-                            <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
-                        </div>
+                        
                         <Form.Group className="mb-3 text-start">
                             <Form.Label htmlFor="inputPassword5" className='text-color-black'>Email</Form.Label>
                             <Form.Control

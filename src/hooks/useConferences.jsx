@@ -61,17 +61,30 @@ const useConference = () => {
 
   const handleGetOne = async (id) => {
     try {
-      let storedToken = JSON.parse(localStorage.getItem('token'));
-      const tokenHeader = token ? token : storedToken
-      const response = await fetch(`${baseURL}/conference/${id}`,{
-        method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${tokenHeader}`
-    }
-      });
-      const data = await response.json();
-      //Gửi action để cập nhật state
-      dispatch(getOneConf(data.data));
+      if(user || localStorage.getItem('user')){
+        
+        let storedToken = JSON.parse(localStorage.getItem('token'));
+        const tokenHeader = token ? token : storedToken
+        const response = await fetch(`${baseURL}/conference/${id}`,{
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${tokenHeader}`
+          }
+        });
+        const data = await response.json();
+        //Gửi action để cập nhật state
+        dispatch(getOneConf(data.data));
+      }
+      else {
+        const response = await fetch(`${baseURL}/conference/${id}`,{
+          method: 'GET',
+          
+        });
+        const data = await response.json();
+        //Gửi action để cập nhật state
+        dispatch(getOneConf(data.data));
+      }
+
     } catch (error) {
 
       console.error('Error fetching data:', error);

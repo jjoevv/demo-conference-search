@@ -95,7 +95,7 @@ const Dashboard = () => {
                     <FontAwesomeIcon icon={faUsers} className='text-info' />
 
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">Total users</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">Total user accounts</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {users.length}</h3>
                     <span className='text-light-emphasis'>{`user${users.length > 1 ? 's' : ''}`}</span>
@@ -132,8 +132,8 @@ const Dashboard = () => {
                 {
                   startDate && endDate &&
                   <>
-                    {moment(startDate).format('Do, MMMM, YYYY')}
-                    {` - ${moment(endDate).format('Do, MMMM, YYYY')}`}
+                    {moment(startDate).format('Do MMMM, YYYY')}
+                    {` - ${moment(endDate).format('Do MMMM, YYYY')}`}
                   </>
                 }
               </div>

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 import usePost from './usePost'
+import useAuth from './useAuth'
 const useImport = () => {
     const { state, dispatch } = useAppContext()
     const {postConference} = usePost()
@@ -14,7 +15,8 @@ const useImport = () => {
     const [data, setData] = useState([]);
     const [fileUploaded, setFileUploaded] = useState(false);
     const [selectedHeaders, setSelectedHeaders] = useState([]);
-
+    const {user, setIsExpired} = useAuth()
+    const {token} = useToken()
 
     const onDrop = (acceptedFiles) => {
         setLoading(true)
@@ -76,14 +78,11 @@ const useImport = () => {
     
         for (let row of data) {
             let conference = {
-                conf_name: "", // Tên hội nghị
-                acronym: "", // Viết tắt
-                callForPaper: "Not found", // Mặc định khi không có dữ liệu
-                link: " ", // Liên kết
-                rank: "N/I", // Mặc định cho rank
-                fieldsOfResearch: [], // Mảng các lĩnh vực nghiên cứu
-                organizations: [], // Mảng các tổ chức
-                importantDates: [] // Mảng các ngày quan trọng
+                title: "",
+                acronym: "",
+                source: "",
+                rank: "",
+                PrimaryFoR: []
             };
     
             // Duyệt qua các tên cột và giá trị tương ứng của từng dòng
@@ -91,7 +90,7 @@ const useImport = () => {
                 if (header) {
                     switch (header) {
                         case 'Name':
-                            conference.conf_name = row[index];
+                            conference.title = row[index];
                             break;
                         case 'Acronym':
                             conference.acronym = row[index];
@@ -104,7 +103,7 @@ const useImport = () => {
                             break;
                         case 'Field of Research':
                             if (row[index]) {
-                                conference.fieldsOfResearch = row[index].split(';').map(item => item.trim());
+                                conference.PrimaryFoR = row[index].split(';').map(item => parseInt(item.trim(), 10));
                             }
                             break;
                         default:
@@ -114,16 +113,36 @@ const useImport = () => {
             });
     
           //  console.log("Post result:", conference);
-            try {
-                const result = await postConference(conference);
-                if (!result.status) {
-                    console.error("Post conference failed:", result.message);
-                    return result; // Trả về false nếu postConference thất bại
+            if(user || localStorage.getItem('user')){
+                let storedToken = JSON.parse(localStorage.getItem('token'));
+                const tokenHeader = token ? token : storedToken
+                if(storedToken){
+                try {
+                  const response = await fetch(`${baseURL}/conference/file/import`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${tokenHeader}`
+                    },
+                    body: JSON.stringify( conference ),
+                  });
+                  const data = await response.json()        
+                  const message = data.message || data.data
+                  setLoading(false)
+                  if (!response.ok) {
+                    return {status: false, message}
+                  }
+                  else {
+                    if(response.status === 401){
+                      setIsExpired(true)
+                    }
+                  }
+                } catch (error) {
+                  throw new Error('Network response was not ok');
                 }
-            } catch (error) {
-                console.error("Error posting conference:", error);
-                return {status: false, message: 'Error posting conference'}; // Trả về false nếu có lỗi trong quá trình gọi postConference
-            }
+                }
+                else return {status: false, message: "Please log in again!"}
+              }
         }
     
         setLoading(false);
