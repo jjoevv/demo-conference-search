@@ -8,7 +8,7 @@ const ImportedDataTable = ({ onHide }) => {
     const { getAllPendingConferences } = useAdmin()
     const { dataUpload, setShowImportModal, handleImport } = useImport()
     const [selectedHeaders, setSelectedHeaders] = useState([]);
-    const headersNames = ['None', 'Name', 'Acronym', 'Source', 'Rank', 'Field of Research', 'Location', 'Type'];
+    const headersNames = ['None', 'Name', 'Acronym', 'Source', 'Rank', 'Field of Research'];
     const [activePage, setActivePage] = useState(0);
     const [warningMessage, setWarningMessage] = useState('')
     const [loading, setLoading] = useState(false)

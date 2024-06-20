@@ -11,20 +11,23 @@ import LoginExpiredModal from '../Modals/LoginExpiredModal'
 import useAuth from '../../hooks/useAuth'
 import AvatarDropdown from './AvatarDropdown'
 import useNotification from '../../hooks/useNotification'
+import { getNotifications } from '../../actions/notiAction'
 
 const Header = () => {
   const { isExpiredLogin, isLogin, getCurrentUser } = useAuth()
-  const { message } = useNotification()
   const { user } = useLocalStorage();
   const navigate = useNavigate()
   const { goToPreviousPage } = usePageNavigation()
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation()
   const [activeKey, setActiveKey] = useState(null);
-
+  
   const [showPopupCrawl, setShowPopupCrawl] = useState(false)
+  const {socketRef, notifications, message, getAllNotifications, getNoticationById} = useNotification()
+
   useEffect(() => {
     //getCurrentUser()
+    getNotifications()
     if (user === null) {
       navigate('/')
     }
@@ -36,29 +39,37 @@ const Header = () => {
     goToPreviousPage(event);
   }, [])
 
+  useEffect(()=>{
+    console.log(notifications)
+  },[notifications])
+ 
+
   useEffect(() => {
-   // console.log({message})
-    if(message !== ''){
+    console.log({ message })
+    if (message !== '') {
       setShowPopupCrawl(true);
       const timer = setTimeout(() => {
         setShowPopupCrawl(false);
         let ids = sessionStorage.getItem('confIDs');
+        const test = false
+        if (test) {
+          if (ids) {
+            // Chuyển đổi danh sách IDs thành mảng
+            ids = JSON.parse(ids);
   
-  if (ids) {
-    // Chuyển đổi danh sách IDs thành mảng
-    ids = JSON.parse(ids);
-    
-    // Xóa ID cần xóa khỏi danh sách
-    const index = ids.indexOf(message.id);
-    if (index !== -1) {
-      ids.splice(index, 1);
-    }
-    
-    // Cập nhật lại danh sách vào sessionStorage
-    sessionStorage.setItem('ids', JSON.stringify(ids));
-  }
+            // Xóa ID cần xóa khỏi danh sách
+            const index = ids.indexOf(message?.id);
+            if (index !== -1) {
+              ids.splice(index, 1);
+            }
+  
+            // Cập nhật lại danh sách vào sessionStorage
+            sessionStorage.setItem('ids', JSON.stringify(ids));
+          }
+        }
+        
       }, 5000);
-    
+
       // Clear timeout khi component unmount hoặc stateToWatch thay đổi
       return () => clearTimeout(timer);
     }
@@ -81,12 +92,7 @@ const Header = () => {
       className="bg-body-tertiary d-flex justify-content-between my-header w-100 fixed-top"
 
     >
-      {
-        showPopupCrawl && message &&
-        <div className="popup">
-          <span>{message?.name}</span>
-        </div>
-      }
+     
       <LoginExpiredModal show={isLogin ? isExpiredLogin : false} />
       <Container fluid className='d-flex justify-content-between shadow-sm px-5'>
         <Navbar.Brand className='my-header-brand'>
@@ -94,7 +100,6 @@ const Header = () => {
             ConfHub
           </Link>
         </Navbar.Brand>
-
         <Nav activeKey={activeKey} onSelect={handleSelect} className="ms-auto d-flex align-items-center">
 
           <Nav.Link
@@ -131,7 +136,7 @@ const Header = () => {
             Note
           </Nav.Link>
           <Nav.Item>
-            <HeaderNoti />
+            <HeaderNoti notifications={notifications} onReadStatus={getNoticationById} onReloadlist={getAllNotifications}/>
           </Nav.Item>
           <Nav.Item>
             {user ?
@@ -142,7 +147,12 @@ const Header = () => {
           </Nav.Item>
         </Nav>
       </Container>
-
+      {
+          showPopupCrawl && message &&
+          <div className="popup">
+            <span>{message?.name}</span>
+          </div>
+        }
     </Navbar>
   )
 }

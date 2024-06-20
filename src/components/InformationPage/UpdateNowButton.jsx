@@ -28,7 +28,7 @@ const UpdateNowButton = () => {
         if (storedCrawling) {
             const crawlingIDs = JSON.parse(storedCrawling);
             if (crawlingIDs.includes(id.id)) {
-            //    console.log(storedCrawling); // Kiểm tra xem đối tượng đã được lưu chưa
+                console.log(storedCrawling); // Kiểm tra xem đối tượng đã được lưu chưa
                 setIsCrawling(true)
             }
             // Bây giờ bạn có thể sử dụng crawlingObject.confID và crawlingObject.userID như bạn cần
@@ -41,12 +41,13 @@ const UpdateNowButton = () => {
         setShowCrawling(true)
         setIsIsClicked(true);
         const test = true
-        if(!test){
+        if(test){
             try {
                 // Thực hiện công việc cần làm ở đây
                 const res = await crawlNow(conference.id);
                 setStatus(res.status);
                 setMessage(res.message);
+                console.log({res})
                 if (res.status) {
                     //  await handleGetOne(id.id);
                     setIsIsClicked(true);
@@ -61,10 +62,12 @@ const UpdateNowButton = () => {
             } catch (error) {
                 console.error('Error:', error);
                 setMessage('Something went wrong.');
+                setShowCrawling(false)
             } finally {
                 // Dừng hiển thị loading sau 5 giây
                 setTimeout(() => {
                     setLoading(false);
+                    setShowCrawling(false)
                 }, 20000);
             }
         } else {
@@ -87,7 +90,7 @@ const UpdateNowButton = () => {
         >
            
             <Button
-                className={`rounded-5 mt-2 px-5 py-3 fw-semibold border-0 mx-2 bg-danger-subtle text-danger-emphasis ${!status ? 'bg-danger-subtle' : 'bg-danger border-2 border-warning'}`}
+                className={`rounded-5 mt-2 px-5 py-3 fw-semibold border-0 mx-2 bg-danger text-white ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'}`}
                 onClick={handleClick}
                 disabled={loading || isCrawling} // Không cho phép nhấn nút khi đang tải
             >
@@ -112,8 +115,8 @@ const UpdateNowButton = () => {
                  {showNoti &&    
             <div>
                                 <div className="popup">
-                                { /*<span>This page will be updated soon. Please waiting for next notification.</span>*/}
-                                <span>This feature is in development. Please check back soon.</span>
+                                    <span>This page will be updated soon. Please waiting for next notification.</span>
+                        
                                 </div>
                             </div>
                             }

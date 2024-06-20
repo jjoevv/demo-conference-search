@@ -9,7 +9,6 @@ import useToken from './useToken';
 import { baseURL } from './api/baseApi';
 
 const useNotification = () => {
-
   const [isConnected, setIsConnected] = useState(false);
   const { token } = useToken()
   const [loading, setLoading] = useState(false)
@@ -17,13 +16,16 @@ const useNotification = () => {
   const { user, userId, isLogin, getCurrentUser, setIsExpired } = useAuth()
   const [id, setId] = useState(null);
   let socketRef = useRef(null);
+
+
+
   useEffect(() => {
+    const userID = JSON.parse(sessionStorage.getItem('user-id'))
     const fetchUserId = async () => {
       try {
         await getCurrentUser()
-        if (sessionStorage.getItem('user-id')) {
-          const userID = JSON.parse(sessionStorage.getItem('user-id'))
-          setId(userID)
+        if (userID) {
+           setId(userID)       
         }
         else {
           const generatedID = generateRandomUserId()
@@ -34,57 +36,68 @@ const useNotification = () => {
         console.error('Error fetching user ID:', error);
       }
     };
-    fetchUserId()
-  }, []);
+  //  console.log({user, userID, id, idStored})
+    if(!user){
+      fetchUserId()
+    }
+  }, [user]);
 
   useEffect(() => {
-    if (id) {
-      socketRef.current = io(`https://conference-searching.onrender.com`, {
-        query: {
-          "user-id": id
-        },
-        path: '/socket.io',
-        transports: ["websocket", 'polling']
-      });
+    console.log({ id, socketRef, isConnected });
 
-      const socket = socketRef.current;
+    if (id && !socketRef.current) {
+      try {
+        socketRef.current = io(`https://conference-searching.onrender.com`, {
+          query: {
+            "user-id": id
+          },
+          path: '/socket.io',
+          transports: ["websocket", 'polling']
+        });
 
-      socket.on('connect', () => {
-        console.log('Connected to socket.io server');
-        setIsConnected(true);
-      });
+        const socket = socketRef.current;
 
-      socket.on('notification', (message) => {
-       // console.log({ message });
-        if (message.id) {
-          dispatch({ type: 'SET_NOTI_MESSAGE_CRAWL', payload: message });
-        }
-        dispatch(getAllNotifications());
-      });
+        socket.on('connect', () => {
+          console.log('Connected to socket.io server');
+          setIsConnected(true);
+        });
 
-      socket.on("connect_error", (err) => {
-        console.log('Connect error:', err.message);
-        console.log('Description:', err.description);
-        console.log('Context:', err.context);
-      });
+        socket.on('notification', (message) => {
+          console.log('Received notification:', message);
+          if (message.id) {
+            dispatch({ type: 'SET_NOTI_MESSAGE_CRAWL', payload: message });
+          }
+          dispatch(getAllNotifications());
+        });
 
-      socket.on('error', (error) => {
-        console.error('Socket error:', error);
-      });
+        socket.on("connect_error", (err) => {
+          console.error('Connect error:', err.message);
+          console.error('Description:', err.description);
+          console.error('Context:', err.context);
+        });
 
-      socket.on('disconnect', () => {
-        console.log('Disconnected from socket server');
-        setIsConnected(false);
-      });
+        socket.on('error', (error) => {
+          console.error('Socket error:', error);
+        });
 
-
+        socket.on('disconnect', () => {
+          console.log('Disconnected from socket server');
+          setIsConnected(false);
+        });
+      } catch (error) {
+        console.error('Socket initialization error:', error);
+      }
+      
       return () => {
+        alert('out')
         if (socketRef.current) {
           socketRef.current.disconnect();
+          socketRef.current = null;
         }
-      }
+      };
     }
-  }, [id]);
+
+  }, [id, dispatch]);
 
 
   function generateRandomUserId() {
@@ -149,8 +162,9 @@ const useNotification = () => {
     }
   }
   return {
-    socket: socketRef,
+    socketRef: socketRef,
     notifications: state.notifications,
+    message: state.message,
     isConnected: isConnected,
     loading,
     getNoticationById,

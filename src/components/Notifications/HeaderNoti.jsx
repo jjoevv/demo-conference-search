@@ -1,43 +1,41 @@
 // HeaderNoti.js
 import { useEffect, useState } from 'react';
-import useNotification from '../../hooks/useNotification';
 import { Button, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import useConference from '../../hooks/useConferences';
+import useAuth from '../../hooks/useAuth';
 
 
-const HeaderNoti = () => {
+const HeaderNoti = ({notifications, onReloadlist, onReadStatus}) => {
   const { handleGetOne } = useConference()
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user } = useLocalStorage()
-  const { notifications, getNoticationById, getAllNotifications } = useNotification()
+  const { user } = useAuth()
   const [hasNewNotification, setHasNewNotification] = useState(false);
+
   const navigate = useNavigate()
 
   useEffect(() => {
-    getAllNotifications()
+    onReloadlist()
   }, [])
 
   useEffect(() => {
     const hasUnreadNotifications = notifications.some(notification => !notification.read_status);
     setHasNewNotification(hasUnreadNotifications)
-
   }, [notifications]);
-
 
   const handleClickMessage = async (noti) => {
     if (!user) {
       alert('Please login before continue!')
-      setDropdownOpen(false); 
+      setDropdownOpen(false);
       navigate('/login')
     }
     else {
       await handleGetOne(noti.Follow.CallForPaperCfpId)
-      await getNoticationById([noti])
-      setDropdownOpen(false); 
+      await onReadStatus([noti])
+      setDropdownOpen(false);
       navigate(user ? '/user/notifications' : 'login')
     }
   }
@@ -45,7 +43,7 @@ const HeaderNoti = () => {
     setDropdownOpen(!dropdownOpen);
     const unreadNotifications = notifications.filter(notification => !notification.read_status);
 
-    await getNoticationById(unreadNotifications)
+    await onReadStatus(unreadNotifications)
     navigate(user ? '/user/notifications' : 'login')
   }
   const splitNotificationMessage = (message) => {
@@ -61,14 +59,14 @@ const HeaderNoti = () => {
         className='noti rounded-pill p-1 my-header-bg-icon mx-2 border-0 text-center d-flex align-items-center'
         title='Notification'
       >
-
+    
         <FontAwesomeIcon icon={faBell} className='text-primary-normal fs-4' />
         {hasNewNotification && <FontAwesomeIcon icon={faCircle} className='text-danger mt-3' style={{ height: "10px", textAlign: "end" }} />}
       </Dropdown.Toggle>
 
       <Dropdown.Menu className='shadow' style={{ right: 0, left: 'auto' }}>
         <div style={{ width: "300px", maxHeight: "400px" }} className='overflow-auto'>
-         
+
           {
             notifications ?
               <>
