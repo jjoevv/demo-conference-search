@@ -39,9 +39,11 @@ const useAuth = () => {
         const responseData = await response.json()
         if (response.ok) {
           const userData = responseData.data
-          dispatch(loginSuccess(userData));
+          
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
+         // dispatch({type: "LOGIN_SUCCESS", payload: {userData: userData}})
+         await getCurrentUser()
           if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
             navigate(`${previousPath}`)
           }
@@ -113,9 +115,12 @@ const useAuth = () => {
 
   const handleLogout = async () => {
     dispatch(logoutUser());
-    await deleteUserFromLocalStorage()
-    navigate('/')
-    window.location.reload()
+    dispatch({type: "LOGIN_SUCCESS", payload: null})
+    sessionStorage.removeItem('user-id')
+    deleteUserFromLocalStorage()
+    navigate(`${previousPath}`)
+    
+//   window.location.reload()
   };
 
 
@@ -205,6 +210,8 @@ const useAuth = () => {
           const data = await response.json()
           dispatch({type: "LOGIN_SUCCESS", payload: data.data})
           sessionStorage.setItem('user-id', JSON.stringify(data.data.id))
+          localStorage.setItem('user', JSON.stringify(data.data));
+          
         }
       } catch (error) {
         console.error('Error:', error);

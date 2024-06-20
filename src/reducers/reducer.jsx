@@ -243,6 +243,11 @@ const appReducer = (state, action) => {
                 ...state,
                 currentUsers: action.payload,
             };
+        case actionTypes.SET_SOCKET_ID:
+            return {
+                ...state,
+                socketID: action.payload,
+            };
         default:
             return state;
     }

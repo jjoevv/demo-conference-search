@@ -23,7 +23,6 @@ const Homepage = () => {
     const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
-    const location = useLocation()
     const [loadingFilter, setLoadingFilter] = useState(false)
     const [selected, setSelected] = useState(false)
     const {
@@ -37,6 +36,7 @@ const Homepage = () => {
     useEffect(()=>{
       getListFollowedConferences()
       getPostedConferences()
+     // getOptionsFilter("", [])
     },[])
 
 

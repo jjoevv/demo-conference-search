@@ -61,12 +61,12 @@
   
   .popup {
     position: fixed;   
-    top: 80px;
+    top: 70px;
     right: 0px;
     color:red;
     transform: translateY(-10px);
     background-color: #ffffff;
-    border: 1px solid #34766D;
+    border: 1px solid firebrick;
     padding: 10px 20px; 
     border-radius: 4px;
     z-index: 9999; /* Đảm bảo popup luôn nằm trên cùng */

@@ -10,7 +10,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 const UpdateNowButton = () => {
     const id = useParams()
     const { user } = useAuth()
-    const { conference, handleGetOne, crawlNow } = useConference()
+    const { message: messageNoti, conference, handleGetOne, crawlNow } = useConference()
     const { postedConferences, getPostedConferences } = usePost()
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
@@ -24,30 +24,36 @@ const UpdateNowButton = () => {
 
     useEffect(() => {
         const storedCrawling = sessionStorage.getItem('confIDs');
-      
         if (storedCrawling) {
             const crawlingIDs = JSON.parse(storedCrawling);
             if (crawlingIDs.includes(id.id)) {
-                console.log(storedCrawling); // Kiểm tra xem đối tượng đã được lưu chưa
+              console.log(storedCrawling); // Kiểm tra xem đối tượng đã được lưu chưa
                 setIsCrawling(true)
             }
+            else {
+                setShowCrawling(false)
+                setIsCrawling(false)
+            }
+            
+
             // Bây giờ bạn có thể sử dụng crawlingObject.confID và crawlingObject.userID như bạn cần
         }
-    }, [postedConferences, loading])
+    }, [postedConferences, loading, messageNoti])
 
     const handleClick = async () => {
         setLoading(true);
         setIsCrawling(true)
         setShowCrawling(true)
         setIsIsClicked(true);
-        const test = true
-        if(test){
+        let ids = sessionStorage.getItem('confIDs');
+        const test = ids && ids?.includes(id?.id)
+        if(!test){
             try {
-                // Thực hiện công việc cần làm ở đây
+                
                 const res = await crawlNow(conference.id);
                 setStatus(res.status);
                 setMessage(res.message);
-                console.log({res})
+          //      console.log({res})
                 if (res.status) {
                     //  await handleGetOne(id.id);
                     setIsIsClicked(true);
@@ -55,7 +61,7 @@ const UpdateNowButton = () => {
                     setLoading(false);
                     setTimeout(() => {
                         setShowCrawling(false)
-                    }, 18000);
+                    }, 8000);
                 } else {
                     setMessage(res.message);
                 }
@@ -68,7 +74,7 @@ const UpdateNowButton = () => {
                 setTimeout(() => {
                     setLoading(false);
                     setShowCrawling(false)
-                }, 20000);
+                }, 10000);
             }
         } else {
             setShowCrawling(true)

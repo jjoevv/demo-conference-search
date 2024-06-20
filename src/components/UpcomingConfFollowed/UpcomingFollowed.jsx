@@ -12,7 +12,6 @@ const UpcomingFollowed = () => {
     useEffect(() => {
       const getData = async () => {
           const data = await getUpcomingConferences(listFollowed)
-            console.log({data, listFollowed})
             setDisplayConferences(data)
 
       }

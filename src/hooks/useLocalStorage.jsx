@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
-import useToken from './useToken';
 import { useAppContext } from '../context/authContext';
 
 const useLocalStorage = () => {
   const {state, dispatch} = useAppContext()
-  const { savetokenToLocalStorage } = useToken()
-
   // Kiểm tra xem có dữ liệu người dùng trong localStorage không
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+
     // Kiểm tra xem có thông tin người dùng trong localStorage không
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      if (JSON.parse(storedUser).accessToken) {
-        savetokenToLocalStorage(JSON.parse(storedUser).accessToken)
-       // dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
-      }
+      const parsedData = JSON.parse(storedUser)
+//console.log({parsedData})
+        setUser(parsedData)
+        saveUserToLocalStorage(parsedData )
+      dispatch({type: 'LOGIN_SUCCESS', payload: JSON.parse(storedUser)})
+  
     }
-    else dispatch({type: 'LOGOUT_USER'})
+    
   }, []);
 
   // Hàm để lưu thông tin người dùng vào localStorage

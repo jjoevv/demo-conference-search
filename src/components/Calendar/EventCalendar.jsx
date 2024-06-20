@@ -9,6 +9,7 @@ import DetailInforNoteModal from './DetailInforNoteModal';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import './customcalendar.css'
+import useAuth from '../../hooks/useAuth';
 
 
 moment.updateLocale('en', {
@@ -20,7 +21,7 @@ moment.updateLocale('en', {
 const localizer = momentLocalizer(moment);
 
 function EventCalendar() {
-    const {user} = useLocalStorage()
+    const {user} = useAuth()
     const { notes, getAllNotes, updateNote, deleteNote } = useNote()
 
     const [showListModal, setShowListModal] = useState(false)

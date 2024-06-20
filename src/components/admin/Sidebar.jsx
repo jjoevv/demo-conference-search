@@ -8,6 +8,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBorderAll, faCircleUser, faFileLines, faTableColumns, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
+import useAuth from '../../hooks/useAuth'
 
 
 const sidebar = [
@@ -19,7 +20,7 @@ const sidebar = [
 ]
 
 const Sidebar = () => {
-  const { user } = useLocalStorage()
+  const { user } = useAuth()
   const location = useLocation()
   const [profile, setProfile] = useState(null)
   const [isCollapsed, setIsCollapsed] = useState(false);

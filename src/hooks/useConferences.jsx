@@ -11,6 +11,7 @@ import useSessionStorage from "./useSessionStorage"
 import { sortByFollow } from "../utils/sortConferences"
 import useAuth from "./useAuth"
 import useLocalStorage from "./useLocalStorage"
+import useNotification from "./useNotification"
 
 const useConference = () => {
   const { state, dispatch } = useAppContext()
@@ -20,10 +21,9 @@ const useConference = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const {token} = useLocalStorage()
-
   const [selectOptionSort, setSelectOptionSort] = useState('Random') //Random: sort by follow
   const [displaySortList, setDisplaySortConf] = useState([])
-
+  const [isCrawling, setIsCrawling] = useState(false)
 
   useEffect(() => {
     setDisplaySortConf(state.conferences)
@@ -32,7 +32,6 @@ const useConference = () => {
   const handleSelectOptionSort = (option) => {
     setSelectOptionSort(option)
   }
-
 
   const getAllConferences = async () => {
     setLoading(true);
@@ -113,10 +112,21 @@ const useConference = () => {
       setTimeout(() => {
         removeIDFromSessionStorage(id);
       }, 10 * 60 * 1000); // 10 phút
+    
+      // Tạo headers cho request
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+    
 
-      const response = await fetch(`${baseURL}/conference/${id}/updateNow`, {
-        method: 'PUT'
-      });
+      const socket_id = JSON.parse(sessionStorage.getItem('socket-id'))
+      
+      console.log({socket_id})
+        const response = await fetch(`${baseURL}/conference/${id}/updateNow`, {
+          method: 'PUT',    
+          headers: headers,     
+          body: JSON.stringify({socketID: socket_id})
+        });
       //console.log(response)
       if (!response.ok) {
         throw new Error('Request failed with status ' + response.status);
@@ -130,6 +140,7 @@ const useConference = () => {
       return { status: false, message: error.message };
     }
   };
+
   // Hàm xóa ID khỏi sessionStorage
   const removeIDFromSessionStorage = (idToRemove) => {
     let confIDs = sessionStorage.getItem('confIDs');
@@ -247,6 +258,7 @@ const useConference = () => {
     error: error,
     selectOptionSort,
     displaySortList,
+    message: state.message,
     getAllConferences,
     handleGetOne,
     getConferenceDate,

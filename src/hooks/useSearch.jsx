@@ -70,6 +70,9 @@ const useSearch = () => {
           else if (param === 'rank') {
             dispatch(getoptionsSelected({ [param]: ['A*', 'A', 'B', 'C'] }));
           }
+          else if (param === 'source') {
+            dispatch(getoptionsSelected({ [param]: ['CONFHUB', 'CORE2021', 'CORE2023'] }));
+          }
           else {
 
             try {

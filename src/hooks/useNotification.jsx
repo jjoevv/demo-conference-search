@@ -16,9 +16,8 @@ const useNotification = () => {
   const { user, userId, isLogin, getCurrentUser, setIsExpired } = useAuth()
   const [id, setId] = useState(null);
   let socketRef = useRef(null);
-
-
-
+  
+  
   useEffect(() => {
     const userID = JSON.parse(sessionStorage.getItem('user-id'))
     const fetchUserId = async () => {
@@ -36,15 +35,18 @@ const useNotification = () => {
         console.error('Error fetching user ID:', error);
       }
     };
-  //  console.log({user, userID, id, idStored})
     if(!user){
       fetchUserId()
+    } else {
+      if(userID){
+
+        setId(userID)
+      }
     }
+
   }, [user]);
 
   useEffect(() => {
-    console.log({ id, socketRef, isConnected });
-
     if (id && !socketRef.current) {
       try {
         socketRef.current = io(`https://conference-searching.onrender.com`, {
@@ -56,10 +58,14 @@ const useNotification = () => {
         });
 
         const socket = socketRef.current;
-
         socket.on('connect', () => {
           console.log('Connected to socket.io server');
           setIsConnected(true);
+          
+        console.log('socket:',  socket.id)
+        const socket_id = socket.id
+        //dispatch({ type: 'SET_SOCKET_ID', payload:  socket.id });
+        sessionStorage.setItem('socket-id', JSON.stringify(socket_id))
         });
 
         socket.on('notification', (message) => {
@@ -89,7 +95,7 @@ const useNotification = () => {
       }
       
       return () => {
-        alert('out')
+     
         if (socketRef.current) {
           socketRef.current.disconnect();
           socketRef.current = null;
@@ -107,6 +113,9 @@ const useNotification = () => {
   }
 
 
+  const setMessageNoti = () => {
+    dispatch({ type: 'SET_NOTI_MESSAGE_CRAWL', payload: null });
+  }
 
 
   const getAllNotifications = async () => {
@@ -163,12 +172,14 @@ const useNotification = () => {
   }
   return {
     socketRef: socketRef,
+    socketID: state.socketID,
     notifications: state.notifications,
     message: state.message,
     isConnected: isConnected,
     loading,
     getNoticationById,
-    getAllNotifications
+    getAllNotifications,
+    setMessageNoti
   };
 };
 

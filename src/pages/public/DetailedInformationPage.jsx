@@ -136,14 +136,14 @@ const DetailedInformationPage = () => {
                                                     )
                                                     }
 
-                                                    <p className='fs-4  my-2'>
+                                                    <div className='fs-4  my-2'>
                                                         <Col xs={1} className=''>
 
                                                         </Col>
                                                         <Col xs={3} className='text-start'>
 
                                                         </Col>
-                                                    </p>
+                                                    </div>
 
                                                     <div className='mt-5 d-flex justify-content-center align-items-center mx-auto'>
                                                         <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences} />

@@ -13,16 +13,13 @@ import { formatLabel } from '../../utils/formatWord';
 import moment from 'moment';
 const DateRangePicker = ({ label }) => {
   
-  
-  const today = moment().toDate();
-  const endOfYear = moment().endOf('year')
+
   
   const { addKeywords } = useSearch()
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -43,7 +40,7 @@ const DateRangePicker = ({ label }) => {
   
   const handleApplyFilter = async () => {    
     let formatStart = moment().endOf('day').toDate()
-    let formatEnd = moment().endOf('year').toDate()
+    let formatEnd = moment().add(1, 'year').endOf('year').toDate();
     if(startDate){
       formatStart = startDate
     }
@@ -52,7 +49,7 @@ const DateRangePicker = ({ label }) => {
     }
     
     const keywordFormat = `${formatLabel(label)}: from ${moment(formatStart).format("yyyy/MM/DD")} to ${moment(formatEnd).format("yyyy/MM/DD")}`         
-    
+   // console.log({keywordFormat, startDate, endDate, formatStart, formatEnd})
     addKeywords(label, [keywordFormat])
     setStartDate(null)
     setEndDate(null)
@@ -84,7 +81,6 @@ const DateRangePicker = ({ label }) => {
                 scrollableYearDropdown
                 className='w-100'
                 shouldCloseOnSelect
-                s
               />
             </Col>
             <Col xs={6}  style={{ zIndex: 1050 }}>

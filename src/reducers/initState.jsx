@@ -9,6 +9,7 @@ export const initialState = {
   pendingConferences: [],
   pendingConf: null,
 
+  updatingConferences: [],
 
   notifications: [],
   message: null,
@@ -99,5 +100,6 @@ export const initialState = {
   etlLog: [],
   currentUsers: [],
 
+  socketID: null,
 };
 
