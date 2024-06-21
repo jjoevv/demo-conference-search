@@ -79,8 +79,8 @@ const Account = () => {
             <h4 className='mb-4'>Account</h4>
             {
               user.role === "admin" &&
-              <Link to="/admin/dashboard" className='p-1 border border-primary-normal rounded text-primary-normal'>
-                <span>{`Go to Dashboard`}</span> <FontAwesomeIcon icon={faDiamondTurnRight} />
+              <Link to="/admin/dashboard" className='p-1 shadow-sm bg-beige-light border border-darkcyan-normal rounded text-darkcyan-normal d-flex align-items-center justify-content-center'>
+                <span>{`Go to Dashboard `}</span> <FontAwesomeIcon icon={faDiamondTurnRight} className='mx-1' />
               </Link>
             }
           </div>

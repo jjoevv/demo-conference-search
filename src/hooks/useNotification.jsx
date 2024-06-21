@@ -14,6 +14,7 @@ const useNotification = () => {
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
   const { user, userId, isLogin, getCurrentUser, setIsExpired } = useAuth()
+  
   const [id, setId] = useState(null);
   let socketRef = useRef(null);
   
@@ -71,7 +72,15 @@ const useNotification = () => {
         socket.on('notification', (message) => {
           console.log('Received notification:', message);
           if (message.id) {
-            dispatch({ type: 'SET_NOTI_MESSAGE_CRAWL', payload: message });
+            dispatch({type: "REMOVE_ID_CRAWLING", payload: message.id});
+            dispatch({ type: 'ADD_MESSAGE', payload: message });
+            setTimeout(() => {
+              dispatch({
+                type: 'REMOVE_MESSAGE',
+                payload: message.id,
+              });
+            }, 10000);
+        
           }
           dispatch(getAllNotifications());
         });
@@ -174,7 +183,7 @@ const useNotification = () => {
     socketRef: socketRef,
     socketID: state.socketID,
     notifications: state.notifications,
-    message: state.message,
+    messages: state.messages,
     isConnected: isConnected,
     loading,
     getNoticationById,

@@ -12,8 +12,8 @@ export const initialState = {
   updatingConferences: [],
 
   notifications: [],
-  message: null,
-
+  messages: [],
+  isCrawlingConfs: [],
 
   isFollow: false,//????
 

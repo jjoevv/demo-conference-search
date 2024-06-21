@@ -17,7 +17,7 @@ import ScrollToTopButton from '../../components/ScrollToTopButton'
 import SuggestedCarousel from '../../components/SuggestList/SuggestedCarousel'
 const DetailedInformationPage = () => {
     const { user } = useAuth()
-    const { conference, handleGetOne, getConferenceDate } = useConference()
+    const {conference, isCrawlingConfs, messages, removeIDfromCrawlings, handleGetOne, getConferenceDate} = useConference()
     const { listFollowed, getListFollowedConferences } = useFollow()
     const [loading, setLoading] = useState(false)
     const conf_id = useParams()
@@ -26,6 +26,8 @@ const DetailedInformationPage = () => {
     const contentRefs = useRef({});
     const [visibleSections, setVisibleSections] = useState([]);
     const [loadingConf, setLoadingConf] = useState(true)
+    const [isCrawling, setIsCrawling] = useState(false)
+    const [heightHeader, setHeightHeader] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +37,23 @@ const DetailedInformationPage = () => {
         fetchData()
     }, [conf_id])
 
+    useEffect(()=>{
+        const header = document.getElementById('header');
+        setHeightHeader(header?.offsetHeight)
+        const crawlingStatus = isCrawlingConfs.find(conf => conf.id === conf_id?.id);
+    
+        if (crawlingStatus) {
+          const currentTime = new Date().getTime();
+          const elapsedTime = currentTime - crawlingStatus.timestamp;
+    
+          // Nếu thời gian đã vượt quá 10 phút, xóa đối tượng khỏi danh sách
+          if (elapsedTime > 10 * 60 * 1000) {
+            removeIDfromCrawlings(conf_id?.id)
+          } else {
+            setIsCrawling(true)
+          }
+        } else setIsCrawling(false) 
+      }, [isCrawlingConfs, conf_id])
 
     useEffect(() => {
 
@@ -95,6 +114,13 @@ const DetailedInformationPage = () => {
     }
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
+                      {
+                        isCrawling &&
+                        <div className="fixed-top p-3 text-center fw-bold fs-large bg-info text-white opacity-75" style={heightHeader ? {top: `${heightHeader}px`, zIndex: '1'}: {}}>
+                        <span>This page will be updated soon. Please waiting for next notification.</span>
+
+                    </div>
+                      }
             {
                 loadingConf || loading
                     ?
@@ -106,12 +132,14 @@ const DetailedInformationPage = () => {
                         {
                             conference && !loading && Object.prototype.toString.call(conference) === '[object Object]'? 
                             <>
-                                <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 80 ? 'vh-75' : 'vh-100'}`}>
+                                <Stack className={`bg-blur p-5 w-100 d-inline-block text-center text-color-black  ${getLengthString(conference.information.name) > 90 ? 'vh-75' : 'vh-100'}`}>
                                     <div className={`p-5 h-100 ${zoom ? 'zoom-in' : ''}`}>
                                         {
                                             conference.information ?
                                                 <>
-                                                    <p className={`text-teal-normal px-5 fs-larger fw-bold mt-5 pt-5 `} dangerouslySetInnerHTML={{ __html: renderName(conference.information.name) }}/>
+                                                    <div className='px-5'>
+                                                        <p className={`text-teal-normal  fs-larger fw-bold mt-5 pt-5 `} dangerouslySetInnerHTML={{ __html: renderName(conference.information.name) }}/>
+                                                    </div>
                                                      
 
                                                     <h3 className='mb-4'>{`(${conference.information.acronym})`}</h3>
@@ -149,6 +177,7 @@ const DetailedInformationPage = () => {
                                                         <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences} />
                                                         <UpdateNowButton />
                                                     </div>
+                                                    
                                                 </>
                                                 : `Not found`
                                         }

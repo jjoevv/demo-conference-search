@@ -2,14 +2,13 @@
 import { useLocation, Outlet } from 'react-router-dom'
 import usePageNavigation from '../hooks/usePageNavigation'
 import Header from '../components/Header/Header'
-import Footer from '../components/Footer/Footer'
-import useLocalStorage from '../hooks/useLocalStorage'
+
 
 const MainLayout = () => {
     const location = useLocation()
     usePageNavigation()
   return (
-    <div className='overflow-x-hidden'>
+    <div>
         {
             location.pathname === '/login' || location.pathname === '/signup'
             ?

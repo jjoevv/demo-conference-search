@@ -195,11 +195,7 @@ const appReducer = (state, action) => {
                 ...state,
                 notifications: action.payload,
             };
-        case actionTypes.SET_NOTI_MESSAGE_CRAWL:
-            return {
-                ...state,
-                message: action.payload,
-            };
+      
         case actionTypes.GET_SETTINGS:
             return {
                 ...state,
@@ -248,6 +244,38 @@ const appReducer = (state, action) => {
                 ...state,
                 socketID: action.payload,
             };
+        case 'ADD_ID_CRAWLING':
+            return {
+                ...state,
+                isCrawlingConfs: [...state.isCrawlingConfs, action.payload],
+            };
+        case 'REMOVE_ID_CRAWLING':
+            return {
+                ...state,
+                isCrawlingConfs: state.isCrawlingConfs.filter(
+                    conf => conf.id !== action.payload
+                ),
+            };
+        case 'UPDATE_ID_STATUS':
+            return {
+                ...state,
+                isCrawlingConfs: state.isCrawlingConfs.map(conf =>
+                    conf.id === action.payload.confId
+                        ? { ...conf, status: action.payload.newStatus }
+                        : conf
+                ),
+            };
+            case 'ADD_MESSAGE':
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+      };
+      case 'REMOVE_MESSAGE':
+        return {
+          ...state,
+          messages: state.messages.filter(message => message.id !== action.payload),
+        };
+  
         default:
             return state;
     }

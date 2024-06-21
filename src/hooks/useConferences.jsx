@@ -23,7 +23,7 @@ const useConference = () => {
   const {token} = useLocalStorage()
   const [selectOptionSort, setSelectOptionSort] = useState('Random') //Random: sort by follow
   const [displaySortList, setDisplaySortConf] = useState([])
-  const [isCrawling, setIsCrawling] = useState(false)
+  const [showNoti, setShowNoti] = useState(false)
 
   useEffect(() => {
     setDisplaySortConf(state.conferences)
@@ -93,25 +93,7 @@ const useConference = () => {
   const crawlNow = async (id) => {
     try {
     //  console.log({ user })
-
-      let confIDs = sessionStorage.getItem('confIDs');
-      if (confIDs) {
-        // Nếu đã có danh sách confIDs trong localStorage, chuyển đổi thành mảng
-        confIDs = JSON.parse(confIDs);
-        // Kiểm tra xem id đã tồn tại trong danh sách chưa
-        if (!confIDs.includes(id)) {
-          // Nếu chưa tồn tại, thêm vào danh sách
-          confIDs.push(id);
-          sessionStorage.setItem('confIDs', JSON.stringify(confIDs));
-        }
-      }
-      confIDs = [id];
-      sessionStorage.setItem('confIDs', JSON.stringify(confIDs));
-
-      // Thiết lập đếm ngược 10 phút để xóa ID
-      setTimeout(() => {
-        removeIDFromSessionStorage(id);
-      }, 10 * 60 * 1000); // 10 phút
+      addIDCrawling(id)
     
       // Tạo headers cho request
       const headers = {
@@ -141,18 +123,19 @@ const useConference = () => {
     }
   };
 
-  // Hàm xóa ID khỏi sessionStorage
-  const removeIDFromSessionStorage = (idToRemove) => {
-    let confIDs = sessionStorage.getItem('confIDs');
-    if (confIDs) {
-      confIDs = JSON.parse(confIDs);
-      const updatedConfIDs = confIDs.filter((id) => id !== idToRemove);
-      sessionStorage.setItem('confIDs', JSON.stringify(updatedConfIDs));
-   //   console.log(`Removed ID ${idToRemove} from sessionStorage`);
-    } else {
-      console.log('No IDs found in sessionStorage');
-    }
+  const addIDCrawling = (id) => {
+    const currentTime = new Date().getTime();
+    const conf = {
+      id: id,
+      status: true, // hoặc false tùy thuộc vào logic của bạn
+      timestamp: currentTime,
+    };
+    dispatch({type: "ADD_ID_CRAWLING", payload: conf});
   };
+
+  const removeIDfromCrawlings = (id) => {
+    dispatch({type: "REMOVE_ID_CRAWLING", payload: id});
+  }
 
   const checkUrl = async (url) => {
     if (url !== ' ' && url !== '') {
@@ -258,7 +241,7 @@ const useConference = () => {
     error: error,
     selectOptionSort,
     displaySortList,
-    message: state.message,
+    messages: state.messages,
     getAllConferences,
     handleGetOne,
     getConferenceDate,
@@ -266,7 +249,11 @@ const useConference = () => {
     getLocation,
     handleSelectOptionSort,
     crawlNow,
-    checkUrl
+    checkUrl,
+    showNoti, setShowNoti,
+    isCrawlingConfs: state.isCrawlingConfs,
+    addIDCrawling,
+    removeIDfromCrawlings
   }
 }
 

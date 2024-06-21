@@ -1,24 +1,27 @@
 .message-popup{
     position: absolute;
-    top: 100%; /* Hiển thị bên dưới header */
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    background-color:red; /* Màu nền ví dụ */
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 2050; /* Đảm bảo nó hiển thị trên các nội dung khác */
-    display: flex;
-    justify-content: center;
     opacity: 80%;
+    border: 2px solid white;
+    font-size: large;
 }
 
+.message-popup.message-popup-success {
+    background-color:rgb(23, 96, 190)
+}
+
+.message-popup.message-popup-failed {
+    background-color: red;
+}
 .message-name{
-    max-width: 60vw;
+    
     text-overflow: ellipsis;
     text-wrap: nowrap;
     overflow: hidden;
 }
-

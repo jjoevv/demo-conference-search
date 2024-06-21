@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import useSearch from '../../hooks/useSearch';
 
 import dateIcon from '../../assets/imgs/conf_date_light.png'
-import { formatDate } from '../../utils/formatDate';
 import { formatLabel } from '../../utils/formatWord';
 import moment from 'moment';
 const DateRangePicker = ({ label }) => {
@@ -20,6 +19,7 @@ const DateRangePicker = ({ label }) => {
   const [endDate, setEndDate] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const years = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - i);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -38,6 +38,21 @@ const DateRangePicker = ({ label }) => {
   const handleStartDateChange = (date) => setStartDate(date);
   const handleEndDateChange = (date) => setEndDate(date);
   
+  const handleOptionChange = (option) => {
+    const tomorrow = moment().add(1, 'days').toDate();
+    let endDate;
+    if (option === '1month') {
+      endDate = moment(tomorrow).add(1, 'months').toDate();
+    } else if (option === '3months') {
+      endDate = moment(tomorrow).add(3, 'months').toDate();
+    } else if (option === '6months') {
+      endDate = moment(tomorrow).add(6, 'months').toDate();
+    }
+    setStartDate(tomorrow);
+    setEndDate(endDate);
+  };
+
+
   const handleApplyFilter = async () => {    
     let formatStart = moment().endOf('day').toDate()
     let formatEnd = moment().add(1, 'year').endOf('year').toDate();
@@ -66,10 +81,12 @@ const DateRangePicker = ({ label }) => {
           <span className="f5">yyyy/mm/dd</span>
         </div>
       </Dropdown.Toggle>
-      <Dropdown.Menu className='px-2'>
-        <div className="w-100 px-2 container">
-          <Row>
-            <Col xs={6}  style={{ zIndex: 1050 }}>
+      <Dropdown.Menu className='px-2 shadow'>
+         
+        <Dropdown.Item className='bg-transparent '>
+
+        <Row>
+            <Col style={{ zIndex: 1050 }} className='m-1 w-100 p-0'>
               <DatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
@@ -79,11 +96,59 @@ const DateRangePicker = ({ label }) => {
                 showMonthDropdown
                 showYearDropdown
                 scrollableYearDropdown
-                className='w-100'
                 shouldCloseOnSelect
+                className='w-100'
+                renderCustomHeader={({
+                  date,
+                  changeYear,
+                  changeMonth,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => (
+                  <div className='p-2 d-flex justify-content-center'>
+                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} className='p-2 rounded-start border-secondary'>
+                      {"<"}
+                    </button>
+                    <select 
+                      className='p-2 fs-medium  text-success-emphasis'
+                      value={moment(date).year()}
+                      onChange={({ target: { value } }) => {
+                        changeYear(value);
+                        setStartDate(moment(date).year(value).toDate());
+                      }}
+                    >
+                      {years.map((option) => (
+                        <option key={option} value={option} className='fs-medium p-2'>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+  
+                    <select
+                     className='p-2 fs-medium text-success-emphasis'
+                      value={moment(date).month()}
+                      onChange={({ target: { value } }) => {
+                        changeMonth(value);
+                        setStartDate(moment(date).month(value).toDate());
+                      }}
+                    >
+                      {moment.months().map((option, index) => (
+                        <option key={option} value={index} className='fs-medium p-2'>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+  
+                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}  className='p-2 rounded-end  border-secondary'>
+                      {">"}
+                    </button>
+                  </div>
+                )}
               />
             </Col>
-            <Col xs={6}  style={{ zIndex: 1050 }}>
+            <Col style={{ zIndex: 1050 }} className='m-1 w-100 p-0'>
               <DatePicker
                 selected={endDate}
                 onChange={handleEndDateChange}
@@ -95,21 +160,83 @@ const DateRangePicker = ({ label }) => {
                 scrollableYearDropdown
                 shouldCloseOnSelect
                 className='w-100'
+                renderCustomHeader={({
+                  date,
+                  changeYear,
+                  changeMonth,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => (
+                  <div className='p-2 d-flex justify-content-center'>
+                    <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} className='p-2 rounded-start border-secondary'>
+                      {"<"}
+                    </button>
+                    <select 
+                      className='p-2 fs-medium  text-success-emphasis'
+                      value={moment(date).year()}
+                      onChange={({ target: { value } }) => {
+                        changeYear(value);
+                        setEndDate(moment(date).year(value).toDate());
+                      }}
+                    >
+                      {years.map((option) => (
+                        <option key={option} value={option} className='fs-medium p-2'>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+  
+                    <select
+                     className='p-2 fs-medium text-success-emphasis'
+                      value={moment(date).month()}
+                      onChange={({ target: { value } }) => {
+                        changeMonth(value);
+                        setEndDate(moment(date).month(value).toDate());
+                      }}
+                    >
+                      {moment.months().map((option, index) => (
+                        <option key={option} value={index} className='fs-medium p-2'>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+  
+                    <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}  className='p-2 rounded-end border-secondary'>
+                      {">"}
+                    </button>
+                  </div>
+                )}
               />
             </Col>
           </Row>
-        </div>
+          <Row>
+          <Col className='my-1 w-100 p-0 mt-3'>
+          <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('1month')}>
+              1 next month
+            </Button>
+            <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('3months')}>
+              3 next months
+            </Button>
+            <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('6months')}>
+              6 next months
+            </Button>
+           
+            </Col>
+          </Row>
         <Dropdown.Divider />
-        <ButtonGroup className='top-100 w-100 bg-white px-2 pb-2 m-2'>
+        <ButtonGroup className='top-100 bg-white m-2 d-flex justify-content-center '>
           <Button
             onClick={() => setShowDropdown(false)}
-            className='w-50 me-2 rounded-2 border-0 bg-secondary'>
+            className=' mx-1 rounded-2 border-0 bg-secondary'>
             Cancel
           </Button>
-          <Button className='w-50 rounded-2 border-0 bg-primary-normal' onClick={handleApplyFilter}>
+          <Button className=' mx-1 rounded-2 border-0 bg-primary-normal' onClick={handleApplyFilter}>
             Apply
           </Button>
         </ButtonGroup>
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
 

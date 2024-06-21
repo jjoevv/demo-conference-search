@@ -139,7 +139,7 @@ const Login = () => {
                 </Col>
                 <Col sm={4} className='d-flex flex-column align-items-center justify-content-center rounded-end-4 text-light' style={{ backgroundColor: "#419489" }}>
                     <span className='h1 mb-2'>Welcome Back!</span>
-                    <span className='mt-3'>Enter your personal account and keep following conferences/magazines!</span>
+                    <span className='mt-3'>Enter your account and keep following conferences!</span>
 
                     <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
                         <Link to='/' className='fs-6 text-light'>  {"<  "}Back to Homepage</Link>

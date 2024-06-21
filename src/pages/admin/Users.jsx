@@ -109,14 +109,14 @@ const Users = () => {
     fluid  className='pt-5 mt-5 px-5 ms-5  bg-light overflow-y-auto my-sidebar-content'>
 
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex justify-content-between align-items-center mb-3 ">
         <h4>Users management</h4>
         <ButtonGroup>
           
         </ButtonGroup>
       </div>
 
-      <div className='p-3 bg-white rounded'>
+      <div className='p-3 bg-white rounded overflow-x-hidden'>
         <span className='fw-semibold text-color-medium'>Common</span>
         <div className="pb-3 border-bottom border-primary-light">
 
