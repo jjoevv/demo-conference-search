@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Navbar, Container, Nav, Button, Dropdown, NavDropdown } from 'react-bootstrap'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Navbar, Container, Nav, Button, Dropdown } from 'react-bootstrap'
+import { Link, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 import useLocalStorage from '../../hooks/useLocalStorage'
@@ -13,25 +13,23 @@ import AvatarDropdown from './AvatarDropdown'
 import useNotification from '../../hooks/useNotification'
 import { getNotifications } from '../../actions/notiAction'
 
-import './custom_header.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLanguage } from '@fortawesome/free-solid-svg-icons'
-import useConference from '../../hooks/useConferences'
 import MessagesUpdateNow from './MessagesUpdateNow'
+import TranslationButton from '../TranslationButton/TranslationButton'
+
+import './custom_header.css'
+import { useTranslation } from 'react-i18next'
+
 const Header = () => {
-  
-  const { isExpiredLogin, isLogin, getCurrentUser } = useAuth()
+  const { t} = useTranslation()
+  const { isExpiredLogin, isLogin } = useAuth()
   const { user } = useLocalStorage();
   const navigate = useNavigate()
-  const { previousPath ,goToPreviousPage } = usePageNavigation()
+  const { goToPreviousPage } = usePageNavigation()
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation()
   const [activeKey, setActiveKey] = useState(null);
   
-  const [showPopupCrawl, setShowPopupCrawl] = useState(false)
-  const {socketRef, notifications, message,setMessageNoti, getAllNotifications, getNoticationById} = useNotification()
-  const [showDislayMessage, setShowDisplayMessage] = useState(null)
-  const conf_id = useParams()
+  const {notifications, getAllNotifications, getNoticationById} = useNotification()
   
   useEffect(() => {
    // getCurrentUser()
@@ -46,8 +44,6 @@ const Header = () => {
 
     goToPreviousPage(event);
   }, [])
-
-
 
 
   const handleSelect = (eventKey) => {
@@ -71,9 +67,9 @@ const Header = () => {
           as={Link}
           to="/"
           title="Homepage"
-          className={`mx-2 mx-md-4 text-color-black fs-medium fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
+          className={`mx-2 mx-md-4 text-nowrap text-color-black fs-medium fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
         >
-          Home
+          {t('home')}
         </Nav.Link>
         <Dropdown
           onMouseLeave={() => setShowDropdown(false)}
@@ -84,26 +80,24 @@ const Header = () => {
             className={`mx-2 mx-md-4 text-color-black fs-medium fw-bold header-title bg-transparent border-0 ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'border-3 border-bottom border-secondary' : ''}`}
             id="dropdown-basic"
           >
-            Conference
+            {t('conference')}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item className="fs-6" onClick={() => navigate('/user/followed')}>Followed Conferences</Dropdown.Item>
-            <Dropdown.Item className="fs-6" onClick={() => navigate('/user/yourconferences')}>Your Conferences</Dropdown.Item>
+            <Dropdown.Item className="fs-6" onClick={() => navigate('/user/followed')}>{t('followed_conference')}</Dropdown.Item>
+            <Dropdown.Item className="fs-6" onClick={() => navigate('/user/yourconferences')}>{t('your_conferences')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Nav.Link
           as={Link}
           to={user ? '/user/note' : '/login'}
           title="Timestamp"
-          className={`mx-2 mx-md-4 text-color-black fs-medium fw-bold header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
+          className={`mx-2 mx-md-4 text-nowrap text-color-black fs-medium fw-bold header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
         >
-          Note
+         {t('note')}
         </Nav.Link>
         
         <Nav.Item className="d-flex align-items-center mx-2">
-          <Button className='bg-transparent border-0 p-0'>
-            <FontAwesomeIcon icon={faLanguage} className='text-primary-normal fs-medium'/>
-          </Button>
+          <TranslationButton/>
         </Nav.Item>
         <Nav.Item className="d-flex align-items-center">
           <HeaderNoti notifications={notifications} onReadStatus={getNoticationById} onReloadlist={getAllNotifications} />

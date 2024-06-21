@@ -31,7 +31,7 @@ const MessagesUpdateNow = () => {
                 messages?.map((message, index) => (
                     <div key={message?.id} id="message-popup"
                         className={`message-popup 
-                            ${message?.status !== "completed" ? 'message-popup-success' : 'message-popup-failed'}`}
+                            ${message?.status === "completed" ? 'message-popup-success' : 'message-popup-failed'}`}
                         style={popupheight ? { top: `${popupheight * (index + 1)}px` } : {}}
                     >
                         <div className='message-name overflow-hidden fw-bold px-3'>

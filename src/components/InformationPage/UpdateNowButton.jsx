@@ -1,15 +1,13 @@
 
 import { Button, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
-import useAuth from '../../hooks/useAuth';
-import usePost from '../../hooks/usePost';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useConference from '../../hooks/useConferences';
+import { useTranslation } from 'react-i18next';
 const UpdateNowButton = () => {
+    const {t} = useTranslation()
     const id = useParams()
-    const { user } = useAuth()
-    const { message: messageNoti, conference, handleGetOne, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
-    const { postedConferences, getPostedConferences } = usePost()
+    const { message: messageNoti, conference, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
     const [isClicked, setIsIsClicked] = useState(false)
@@ -68,46 +66,40 @@ const UpdateNowButton = () => {
 
     return (
         <OverlayTrigger
-            placement="bottom"
-            overlay={
-                <Tooltip id={'tooltip-bottom'}>
-                    {`To get the latest information, click "Update Now"`}
-                </Tooltip>
-            }
-        >
-            <Button
-                className={`rounded-5 mt-2 px-5 py-3 fw-semibold border-0 mx-2 bg-danger text-white ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'}`}
-                onClick={handleClick}
-                disabled={loading || isCrawling} // Không cho phép nhấn nút khi đang tải
-            >
-                {loading ? (
-                    <>
-                        <Spinner size='sm' title='Wait for crawling....' />
-
-                    </>
-                ) : (
-                    <>
-                        {isCrawling ? (
-                            <>
-                                <Spinner as="span"
-                                    animation="grow"
-                                    size="sm"
-                                    role="status" 
-                                    className='me-1'
-                                    title='Please wait for crawling'
-                                    />
-                                Crawling...
-
-                            </>
-
-                        ) : (
-                            'Update now'
-                        )}
-                    </>
-                )}
-              
-            </Button>
-        </OverlayTrigger>
+      placement="bottom"
+      overlay={
+        <Tooltip id={'tooltip-bottom'}>
+          {t('updateTooltip')}
+        </Tooltip>
+      }
+    >
+      <Button
+        className={`rounded-5 mt-2 px-5 py-3 fw-semibold border-0 mx-2 bg-danger text-white ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'}`}
+        onClick={handleClick}
+        disabled={loading || isCrawling}
+      >
+        {loading ? (
+          <Spinner size='sm' title={t('waitMessage')} />
+        ) : (
+          <>
+            {isCrawling ? (
+              <>
+                <Spinner as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  className='me-1'
+                  title={t('waitMessage')}
+                />
+                {t('waitMessage')}
+              </>
+            ) : (
+              t('updateButton')
+            )}
+          </>
+        )}
+      </Button>
+    </OverlayTrigger>
 
     );
 };

@@ -1,5 +1,5 @@
-import Reac, { useEffect, useState } from 'react'
-import { Dropdown, InputGroup, Form, ButtonGroup, Button, Image } from 'react-bootstrap'
+import  { useEffect, useState } from 'react'
+import {Image } from 'react-bootstrap'
 
 import useSearch from '../../hooks/useSearch'
 
@@ -7,6 +7,7 @@ import starIcon from '../../assets/imgs/star.png'
 import unstarIcon from '../../assets/imgs/unstar.png'
 
 import Select from 'react-select'
+import { useTranslation } from 'react-i18next'
 const rating = [1, 2, 3, 4, 5]
 const customStyles = {
   menuPortal: (provided) => ({
@@ -64,6 +65,7 @@ const CustomOption = ({ innerProps, label, isSelected }) => {
 const StarDropdown = ({ label, onApply }) => {
   const { filterOptions, addKeywords, sendFilter, getQuantity } = useSearch()
   const [tranformOptions, setTranformOptions] = useState([])
+  const {t} = useTranslation()
 
   useEffect(() => {
     let transformedState = []
@@ -79,7 +81,7 @@ const StarDropdown = ({ label, onApply }) => {
   const handleOptionChange = async (item) => {
 
     const rating = item[0].value
-    const formatKeyword = `Rating from ${rating}*`
+    const formatKeyword = `${t('rating_from')} ${rating}*`
     addKeywords(label,[formatKeyword] )
   };
   return (
@@ -92,7 +94,7 @@ const StarDropdown = ({ label, onApply }) => {
         components={{ Option: CustomOption }}
         onChange={handleOptionChange}
         closeMenuOnSelect={true}
-        placeholder="All"
+        placeholder={t('all')}
         menuPortalTarget={document.body}
         menuPosition='fixed'
       />

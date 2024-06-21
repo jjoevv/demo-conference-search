@@ -103,7 +103,6 @@ const useConference = () => {
 
       const socket_id = JSON.parse(sessionStorage.getItem('socket-id'))
       
-      console.log({socket_id})
         const response = await fetch(`${baseURL}/conference/${id}/updateNow`, {
           method: 'PUT',    
           headers: headers,     

@@ -11,14 +11,12 @@ import useFollow from '../../hooks/useFollow'
 import useFilter from '../../hooks/useFilter'
 import usePost from '../../hooks/usePost'
 import Filter from '../../components/Filter/Filter'
-import { useLocation, useParams } from 'react-router-dom'
 import LoadingConferences from '../../components/Conference/LoadingConferences'
-import { Container, Stack } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import useParamsFilter from '../../hooks/useParamsFilter'
 import SlideShow from '../../components/SlideShow'
 
 const Homepage = () => {
-    const [showSlideShow, setShowSlideShow] = useState(true)
     const { optionsSelected, getOptionsFilter} = useSearch()
     const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()

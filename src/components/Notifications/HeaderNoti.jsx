@@ -4,17 +4,16 @@ import { Button, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import useLocalStorage from '../../hooks/useLocalStorage';
 import useConference from '../../hooks/useConferences';
 import useAuth from '../../hooks/useAuth';
-
+import { useTranslation } from 'react-i18next';
 
 const HeaderNoti = ({notifications, onReloadlist, onReadStatus}) => {
   const { handleGetOne } = useConference()
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useAuth()
   const [hasNewNotification, setHasNewNotification] = useState(false);
-
+  const {t} = useTranslation()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -57,7 +56,7 @@ const HeaderNoti = ({notifications, onReloadlist, onReadStatus}) => {
     <Dropdown>
       <Dropdown.Toggle
         className='noti rounded-pill p-1 my-header-bg-icon mx-2 border-0 text-center d-flex align-items-center'
-        title='Notification'
+        title={t('notifications')}
       >
     
         <FontAwesomeIcon icon={faBell} className='text-primary-normal fs-4' />
@@ -97,12 +96,12 @@ const HeaderNoti = ({notifications, onReloadlist, onReadStatus}) => {
                 }
               </>
               :
-              <><p>No notifications </p></>
+              <><p>{t('no_notifications')} </p></>
           }
         </div>
 
         <Dropdown.Divider />
-        <Button onClick={handleViewAll} className='fs-6 fw-normal text-center w-100 text-color-darker bg-transparent border-0'>View all notifications {"  >"}</Button>
+        <Button onClick={handleViewAll} className='fs-6 fw-normal text-center w-100 text-color-darker bg-transparent border-0'> {t('view_all_notifications')} {"  >"}</Button>
       </Dropdown.Menu>
     </Dropdown>
   );

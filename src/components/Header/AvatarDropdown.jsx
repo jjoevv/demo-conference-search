@@ -4,11 +4,13 @@ import avatarIcon from '../../assets/imgs/avatar.png'
 import settingIcon from '../../assets/imgs/setting.png'
 import logoutIcon from '../../assets/imgs/logout.png'
 import useAuth from '../../hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 const menu = [
-    {path: 'user/account', title: 'Account', icon: avatarIcon},
-    {path: 'user/setting', title: 'Setting', icon: settingIcon},
+    {path: 'user/account', title: 'Account', icon: avatarIcon, trans: 'account'},
+    {path: 'user/setting', title: 'Setting', icon: settingIcon, trans: 'setting'},
 ]
 const AvatarDropdown = () => {
+    const {t} = useTranslation()
     const {handleLogout} = useAuth()
   return (
     <Dropdown>
@@ -20,13 +22,13 @@ const AvatarDropdown = () => {
                 <Dropdown.Item key={item.path}>
                     <Link to={item.path} className='text-color-black'>
                         <Image width={20} className='me-2' src={item.icon}/>
-                    {item.title}
+                    {t(`${item.trans}`)}
                     </Link>
                 </Dropdown.Item>
             ))}
             <Dropdown.Item onClick={handleLogout}>
                 <Image width={20} className='me-2' src={logoutIcon}/>
-                Logout
+                {t('logout')}
             </Dropdown.Item>
         </Dropdown.Menu>
     </Dropdown>

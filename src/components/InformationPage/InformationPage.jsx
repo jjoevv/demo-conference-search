@@ -5,7 +5,9 @@ import RedirectButton from '../RedirectButton'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from 'react-i18next'
 const InformationPage = ({ conference }) => {
+  const {t} = useTranslation()
   const { getConferenceDate, checkUrl } = useConference()
     const [isValidUrl, setIsValidUrl] = useState(null);
     useEffect(() => {
@@ -42,23 +44,23 @@ const InformationPage = ({ conference }) => {
   const rows = [
     conference.information.acronym && (
       <Row key="acronym" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Acronym:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('acronym')}:</Col>
         <Col className='fw-bold fs-large'>{conference.information.acronym}</Col>
       </Row>
     ),
     <Row key="category" className='py-3 ps-4'>
-      <Col xs={4} className='d-flex align-items-center'>Category:</Col>
-      <Col className='fw-bold fs-large'>Conference</Col>
+      <Col xs={4} className='d-flex align-items-center'>{t('category')}:</Col>
+      <Col className='fw-bold fs-large'>{t('conference')}</Col>
     </Row>,
     conference.information.source && (
       <Row key="source" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Source:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('source')}:</Col>
         <Col className='fw-bold fs-large'>{conference.information.source}</Col>
       </Row>
     ),
     renderType(conference.organizations) && (
       <Row key="type" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Type:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('type')}:</Col>
         <Col className='fw-bold fs-large'>
           {capitalizeFirstLetter(renderType(conference.organizations))}
         </Col>
@@ -66,7 +68,7 @@ const InformationPage = ({ conference }) => {
     ),
     renderLocation(conference.organizations) && (
       <Row key="location" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Location:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('location')}:</Col>
         <Col className='fw-bold fs-large'>
           {renderLocation(conference.organizations)}
         </Col>
@@ -74,7 +76,7 @@ const InformationPage = ({ conference }) => {
     ),
     getConferenceDate(conference.organizations) && (
       <Row key="conference-date" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Conference date:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('conference_date')}:</Col>
         <Col className='fw-bold fs-large'>
           {getConferenceDate(conference.organizations)}
         </Col>
@@ -82,21 +84,22 @@ const InformationPage = ({ conference }) => {
     ),
     conference.information.rank && (
       <Row key="rank" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Rank:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('rank')}:</Col>
         <Col className='fw-bold fs-large'>{conference.information.rank}</Col>
       </Row>
     ),
     conference.information.rating && (
       <Row key="rating" className='py-3 ps-4'>
-        <Col xs={4} className='d-flex align-items-center'>Rating:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('rating')}:</Col>
         <Col className='fw-bold fs-large'>
-          {parseFloat(conference.information.rating.toFixed(2))}
+          {parseFloat(conference.information.rating.toFixed(2))} *
+          
         </Col>
       </Row>
     ),
     renderFieldOfResearch(conference.information.fieldOfResearch) && (
       <Row key="field-of-research" className={`py-3 ps-4 pe-1`}>
-        <Col xs={4} className='d-flex align-items-center'>Field of research:</Col>
+        <Col xs={4} className='d-flex align-items-center'>{t('field_of_research')}:</Col>
         <Col className='fw-bold fs-large'>
           {renderFieldOfResearch(conference.information.fieldOfResearch)}
         </Col>
@@ -109,7 +112,7 @@ const InformationPage = ({ conference }) => {
     <div className='p-5 m-0' >
       <div className='fs-4 fw-bold d-flex justify-content-between '>
         <span className='fs-3 fw-bold text-teal-normal'>
-        <FontAwesomeIcon icon={faCircleInfo} className='me-1'/> Conference information
+        <FontAwesomeIcon icon={faCircleInfo} className='me-1'/> {t('conference_info')}
         </span>
         {
           isValidUrl && <RedirectButton conference={conference} />
@@ -129,7 +132,7 @@ const InformationPage = ({ conference }) => {
           </div>
         </>
         :
-        <span>Currently no information available on this page.</span>}
+        <span>{t('no_conferences')}</span>}
 
     </div>
   )

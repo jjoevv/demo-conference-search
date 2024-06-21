@@ -10,11 +10,12 @@ import unstarIcon from '../../assets/imgs/unstar.png'
 import EditIcon from '../../assets/imgs/edit_green.png'
 import DeleteIcon from '../../assets/imgs/delete_bin.png'
 import InputFeedback from './InputFeedback'
-import { formatTime } from '../../utils/formatDate'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 
 const AllFeedbackOfConf = () => {
+  const {t} = useTranslation()
   const {handleGetOne} = useConferences()
   const { loading, feedbacks, addFeedback, getAllFeedbacks, updateFeedback, deleteFeedback, sortFeedback, checkEditFeedback } = useFeedback()
   const [idEdit, setIdEdit] = useState(null)
@@ -33,10 +34,10 @@ const AllFeedbackOfConf = () => {
   }, [feedbacks]);
 
   const options = [
-    { value: 'ratingAscending', label: 'Rating Ascending' },
-    { value: 'ratingDescending', label: 'Rating Descending' },
-    { value: 'mostRecent', label: 'Most Recent' },
-    { value: 'oldest', label: 'Oldest' },
+    { value: 'ratingAscending', label: t('rating_ascending') },
+    { value: 'ratingDescending', label: t('rating_descending') },
+    { value: 'mostRecent', label: t('most_recent') },
+    { value: 'oldest', label: t('oldest') },
   ];
   // Hàm xử lý khi người dùng chọn một tùy chọn từ dropdown
   const handleSelectOption = (option) => {
@@ -76,7 +77,7 @@ const AllFeedbackOfConf = () => {
     <div className=''>
       <InputFeedback onClick={addFeedback} id={id.id} onReloadList={handleReloadPage} />
       <div className="d-flex align-items-center justify-content-between mt-4 ms-5 border-bottom pb-2 mb-5">
-        <p className="fw-bold">{displayFeedback.length} feedback</p>
+        <p className="fw-bold">{displayFeedback.length} {t('feedback')}</p>
         <SortFeedbacks options={options} onSelect={handleSelectOption} />
       </div>
 
@@ -91,7 +92,7 @@ const AllFeedbackOfConf = () => {
                     <div className="d-flex justify-content-between align-items-center bg-primary-light p-2 rounded">
                       <span className="fw-bold m-0">{
                         renderUser(feedback.User)} wrote:</span>
-                      <span>at <span className='fw-semibold'>{moment(feedback.time).format('YYYY/MM/DD hh:mm')}</span></span>
+                       <span className='fw-semibold'>{moment(feedback.time).format('YYYY/MM/DD hh:mm')}</span>
                     </div>
                     <div key={index}>
                       {[...Array(5)].map((_, starIndex) => (
@@ -148,7 +149,7 @@ const AllFeedbackOfConf = () => {
 
             </>
             :
-            <><p>There are no feedbacks</p></>
+            <><p></p></>
         }
         </div>
       </div>

@@ -8,6 +8,7 @@ import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SlideShow = () => {
     const { getTopViewList } = useSuggest()
@@ -15,7 +16,7 @@ const SlideShow = () => {
     const carouselRef = useRef(null); // Ref cho Carousel
     const scrollPositions = useRef({});
     const navigate = useNavigate()
-
+    const {t} = useTranslation()
     useEffect(() => {
         const fetchData = async () => {
             const data = await getTopViewList()
@@ -56,7 +57,7 @@ const SlideShow = () => {
                             <Col key={conference.id} className=' fw-bold border mx-2 p-2 rounded bg-beige-light'>
                                 <Button onClick={(e) => chooseConf(e, conference.id)} className='bg-transparent border-0 text-start'>
                                     <div className="text-body-secondary fs-6 fw-bold">
-                                        {`${conference.information.source} - Rank: ${conference.information.rank}`}
+                                        {`${conference.information.source} - ${t('rank')}: ${conference.information.rank}`}
                                     </div>
                                     <div className='card-title-suggest fw-bold text-teal-dark'>{conference.information.name}</div>
                                     <div></div>
@@ -74,7 +75,7 @@ const SlideShow = () => {
                                     }
                                       {
                                         conference.organizations.length > 0 &&
-                                        <div className="text-primary-normal fw-bold fs-medium d-flex align-items-center">
+                                        <div className="text-primary-normal fw-bold fs-medium d-flex align-items-start">
                                             <FontAwesomeIcon icon={faLocationPin} className='me-2 text-success-emphasis' />
                                             {conference.organizations.filter(org => org.status === 'new').map((org, orgIdx) => (
                                                 <div key={orgIdx} className='text-light-emphasis'>
@@ -96,7 +97,7 @@ const SlideShow = () => {
     return (
         <Container className='bg-light p-2 text-dark bg-opacity-25 p-2'>
           <div className="d-flex justify-content-between align-items-center w-100 my-2">
-            <span className='h5 text-darkcyan-normal fw-bold'>Highest views</span>
+            <span className='h5 text-darkcyan-normal fw-bold'>{t('highest_views')}</span>
           <div>
           <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-2" onClick={handlePrev}>
                 <FontAwesomeIcon icon={faChevronLeft} className='fs-5'/>

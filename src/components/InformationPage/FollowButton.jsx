@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import { useEffect, useState } from 'react';
 import useSessionStorage from '../../hooks/useSessionStorage';
+import { useTranslation } from 'react-i18next';
 
 
 const FollowButton = () => {
+    const {t} = useTranslation()
     const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
     const {getDataListInStorage} = useSessionStorage()
     const [isClick, setIsClick] = useState(false)
@@ -61,7 +63,7 @@ const FollowButton = () => {
                         placement="bottom"
                         overlay={
                             <Tooltip id={'tooltip-bottom'}>
-                                Click to unfollow conference
+                               {t('followed')}
                             </Tooltip>
                         }
                     >
@@ -70,14 +72,13 @@ const FollowButton = () => {
                             <Button
                                 className='d-flex justify-content-center align-items-center rounded-5 m-2 px-5 py-3 fw-semibold btn-wave-wrap'
                                 onClick={handleUnfollow}
-                                title='Click to unfollow conference'
                             >
                                 {
                                     loading
                                         ?
                                         <Loading size={'sm'}/>
                                         :
-                                        `FOLLOWED`
+                                        `${t('followed')}`
                                 }
                             </Button>
                         </div>
@@ -87,7 +88,7 @@ const FollowButton = () => {
                         placement="bottom"
                         overlay={
                             <Tooltip id={'tooltip-bottom'}>
-                                Click to follow conference and receive notifications about events
+                                {t('title_follow')}
                             </Tooltip>
                         }
                     >
@@ -103,7 +104,7 @@ const FollowButton = () => {
                                         ?
                                         <Loading size={'sm'}/>
                                         :
-                                        `FOLLOW`
+                                        `${t('follow')}`
                                 }
                             </Button>
                         </div>

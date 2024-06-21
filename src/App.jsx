@@ -3,7 +3,8 @@ import './assets/styles/custom.css'
 import './assets/styles/custom_color.css'
 import './assets/styles/custom_animation.css'
 import './assets/styles/responsive.css'
-import { BrowserRouter as Router, Routes, Route, HashRouter} from 'react-router-dom'
+import './i18n'; // Import cấu hình i18n
+import { HashRouter} from 'react-router-dom'
 
 import MainLayout from './layout/MainLayout.jsx'
 import { AppContextProvider } from './context/authContext.jsx'

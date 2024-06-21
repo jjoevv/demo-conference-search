@@ -5,7 +5,9 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 
 import AvatarIcon from '../../assets/imgs/avatar.png'
 import Loading from '../Loading';
+import { useTranslation } from 'react-i18next';
 const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList }) => {
+    const {t} = useTranslation()
     const { user } = useLocalStorage()
     const [feedback, setFeedback] = useState(defaultValue? defaultValue.content:'')
     const [rating, setRating] = useState(defaultValue? defaultValue.rating: 5)
@@ -68,7 +70,7 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
             </div>
 
             <div className='w-100 my-1'>
-                <span className=' fw-semibold'>{user && user.name ? user.name : 'Undefined user'}</span>
+                <span className=' fw-semibold'>{user && user.name && user.name !== ' ' ? user.name : user.email}</span>
                 <Form className='my-1'>
                     <Form.Group className=' border rounded'>
                         <Form.Control
@@ -76,24 +78,24 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                             rows={5}
                             value={feedback}
                             onChange={e => handleInputChange(e)}
-                            placeholder="Your feedback goes here..."
+                            placeholder={t('feedbackPlaceholder')}
                             required={true}
                             className={error ? 'border-danger' : 'border-0'}
                         />
-                        {error && <p className='text-danger'>Please input your feedback before posting.</p>}
+                        {error && <p className='text-danger'>{t('input_feedback')}</p>}
                         <div className="text-end m-2 mx-3 d-flex justify-content-between align-items-center">
 
                             <RateConference rating={rating} setRating={setRating} />
                             <div>
                                 {error && message !== '' && <p className='text-danger'>{message}</p>}
                                 {
-                                    onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck} title='Post your feedback'>
-                                        Cancel
+                                    onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck}>
+                                        {t('cancel')}
                                     </Button>
                                 }
                                 <Button className='bg-primary-dark border-light  px-4' onClick={handleSubmit} title='Post your feedback'>
                                     {
-                                        loading ? <Loading size={'sm'}/> : 'Post'
+                                        loading ? <Loading size={'sm'}/> : <>{t('post')}</>
                                     }
                                 </Button>
                             </div>

@@ -7,8 +7,10 @@ import { useEffect, useState } from 'react'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from 'react-i18next'
 
 const ImportantDatePage = ({conference}) => {
+  const {t} = useTranslation()
   const [displayDates, setDisplayDates] = useState([])
   
   useEffect(() => {
@@ -59,7 +61,7 @@ const ImportantDatePage = ({conference}) => {
     <div className='m-5'>
       <span className='fs-3 fw-bold text-teal-normal'> 
         <FontAwesomeIcon icon={faCalendar} className='me-2'/>
-        Important dates
+        {t('important_dates')}
         </span>
       <div className='mt-2' style={{maxHeight: "600px", overflowY: "auto"}} >
 
@@ -87,13 +89,13 @@ const ImportantDatePage = ({conference}) => {
                                 </span>
                                 <Image src={ArrowIcon} width={20} className='mx-2' />
                                 {moment(date?.date_value).format('ddd, YYYY/MM/DD')}
-                                {checkDate(date?.date_value) && <span className='text-secondary'> (Time expired)</span>}
+                                {checkDate(date?.date_value) && <span className='text-secondary'> ({t('time_expired')})</span>}
 
                               </>
                               :
                               <>
                                 {moment(date?.date_value).format('dddd, YYYY/MM/DD')}
-                                {checkDate(date?.date_value) && <span className='text-secondary'> (Time expired)</span>}
+                                {checkDate(date?.date_value) && <span className='text-secondary'> ({t('time_expired')})</span>}
 
                               </>
 
@@ -101,7 +103,7 @@ const ImportantDatePage = ({conference}) => {
                         </span>
                         
                       {isUpcoming(date.date_value) &&
-                                  <span className="ribbon">Upcoming</span>
+                                  <span className="ribbon">{t('upcoming')}</span>
                                 }
                     </Row>
                   ))
@@ -109,12 +111,12 @@ const ImportantDatePage = ({conference}) => {
               </>
               :
               <>
-              <p className="my-2">No organization dates available</p>
+              <p className="my-2">{t('no_important_dates')}</p>
               </>
             }
           </>
           :
-          <span>Currently no information available on this page.</span>}
+          <span>{t('no_conferences')}</span>}
       </div>
     </div>
   )

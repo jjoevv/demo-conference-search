@@ -2,8 +2,9 @@
 import { Button, OverlayTrigger, Tooltip, Image } from 'react-bootstrap';
 
 import ViewMoreIcon from './../assets/imgs/view_page.png'
-const RedirectButton = (conference) => {
-   
+import { useTranslation } from 'react-i18next';
+const RedirectButton =  (conference) => {
+   const {t} = useTranslation()
     const aFunc = () => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -33,22 +34,14 @@ const RedirectButton = (conference) => {
         });
     };
     return (
-        <OverlayTrigger
-            placement="bottom"
-            overlay={
-                <Tooltip id={'tooltip-bottom'}>
-                    Click here to visit the main conference page
-                </Tooltip>
-            }
-        >
-            <Button
-                className='bg-transparent border border-2 d-flex align-items-center justify-content-between text-color-black'
-                onClick={handleRedirect}
-            >
-                View more 
-                <Image src={ViewMoreIcon} width={18} className='ms-2'/>
-            </Button>
-        </OverlayTrigger>
+        <Button
+        className='bg-transparent border border-2 d-flex align-items-center justify-content-between text-color-black'
+        onClick={handleRedirect}
+        title={t('view_more_title')}
+    >
+        {t('view_more')}
+        <Image src={ViewMoreIcon} width={18} className='ms-2'/>
+    </Button>
 
     );
 };

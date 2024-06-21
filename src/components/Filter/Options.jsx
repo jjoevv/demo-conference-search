@@ -7,6 +7,7 @@ import Select from 'react-select'
 
 import data from './options.json'
 import countries from '../../data/countries.json'
+import { useTranslation } from 'react-i18next'
 const customStyles = {
     menuPortal: (provided) => ({
         ...provided,
@@ -63,13 +64,14 @@ const CustomOption = (props) => {
     );
 };
 const MultiValue = ({ index, getValue, ...props }) => {
+    const {t, i18n} = useTranslation()
     const maxToShow = 1;
     const overflow = getValue()
       .slice(0, -maxToShow)
       .map((x) => x.label);
   
     return index === getValue().length - maxToShow ? (
-        `+ ${overflow.length+1} option${overflow.length !== 0 ? "s" : ""}   `
+        `+ ${overflow.length+1} ${t('option')}${overflow.length !== 0 && i18n.language === 'en' ? "s" : ""}   `
     ) : null;
   };
 
@@ -78,7 +80,7 @@ const Options = ({ label }) => {
     const [options, setOptions] = useState([])
     const [selectedOptions, setSelectedOptions] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
-
+    const {t} = useTranslation()
     useEffect(() => {
         const staticValue = ["type", "category"];
     
@@ -178,7 +180,7 @@ const Options = ({ label }) => {
             filterOption={filterOption}
             closeMenuOnSelect={true}
             styles={customStyles}
-            placeholder="All"
+            placeholder={t('all')}
             menuPortalTarget={document.body}
             menuPosition="fixed"
         />

@@ -58,21 +58,6 @@ const TopViewCarousel = () => {
         navigate(`/detailed-information/${id}`)
         window.location.reload()
     }
-      const handleSelect = (selectedIndex, e) => {
-        setIndex(selectedIndex);
-        setDirection(e.direction);
-      };
-    
-      const handlePrevious = () => {
-        setIndex(index - 1);
-        setDirection('prev');
-      };
-    
-      const handleNext = () => {
-        setIndex(index + 1);
-        setDirection('next');
-      };
-    
   return (
     <div className='mx-5 px-5'>
         {

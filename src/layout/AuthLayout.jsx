@@ -27,9 +27,6 @@ export const AuthLayout = () => {
     '/user/setting',
   ];
 
-  useEffect(()=>{
-    console.log({user})
-  }, [user])
   
   return (
     <Container className="d-flex w-100 h-100 mw-100 p-0">

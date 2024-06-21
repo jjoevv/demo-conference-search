@@ -24,8 +24,10 @@ import ExpiredModal from '../Modals/ExpiredModal'
 import useParamsFilter from '../../hooks/useParamsFilter'
 import ScrollToTopButton from '../ScrollToTopButton'
 import { checkExistValue } from '../../utils/checkFetchedResults'
+import { useTranslation } from 'react-i18next'
 
 const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost, isFilters }) => {
+    const {t} = useTranslation()
     const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
     const { listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
@@ -176,7 +178,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
             <ScrollToTopButton />
             <div className="mb-3 px-4 d-flex align-items-center justify-content-between w-100">
                 <div className="h5 fw-bold ms-4 mt-2">
-                    {`${conferencesProp.length} conferences`}
+                    {`${conferencesProp.length} ${t('conferences')}`}
                 </div>
             </div>
             <Row className='w-100'>
@@ -237,7 +239,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 conf.information.source === 'ConfHub' &&  isPost &&
                                                                 <>
                                                                     <div className={` p-2 rounded-2 me-2 fs-6 fw-bold ${conf.information.status ? 'bg-skyblue-normal': 'bg-secondary text-light'}`}>
-                                                                        {conf.information.status ? 'Active': 'Inactive'}
+                                                                        {conf.information.status ?` ${t('active')}`: ` ${t('deactive')}`}
                                                                     </div>
                                                                 </>
                                                             }
@@ -247,7 +249,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                     {isUpcoming(conf.organizations[0].start_date) && conf.information.status 
                                                                         &&
                                                                         <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
-                                                                            Upcoming
+                                                                            {t('upcoming')}
                                                                         </div>
                                                                     }
                                                                 </>
@@ -278,7 +280,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             getSubDate(conf.importantDates) &&
                                                             <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
                                                                 <FontAwesomeIcon icon={faClock} className='me-2' />
-                                                                <label className='conf-data-label'>Submission Date: </label>
+                                                                <label className='conf-data-label'>{t('submission_date')}: </label>
                                                                 <span className='conf-data'>
                                                                     {getSubDate(conf.importantDates)}
                                                                 </span>
@@ -290,7 +292,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             &&
                                                             <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
                                                                 <FontAwesomeIcon icon={faClock} className='me-2' />
-                                                                <label className='conf-data-label'>Conference Date: </label>
+                                                                <label className='conf-data-label'>{t('conference_date')}: </label>
                                                                 <span className='conf-data'>
 
                                                                     <>
@@ -307,7 +309,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             &&
                                                             <>
                                                                 <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                    <label className='conf-data-label'>Rank: </label>
+                                                                    <label className='conf-data-label'>{t('rank')}: </label>
                                                                     <span className='conf-data'>
                                                                         <>
                                                                             {conf.information.rank}
@@ -315,7 +317,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                     </span>
                                                                 </Card.Text>
                                                                 <Card.Text className='d-flex align-items-center mb-1 text-color-black'>
-                                                                    <label className='conf-data-label'>Source: </label>
+                                                                    <label className='conf-data-label'>{t('source')}: </label>
                                                                     <span className='conf-data'>
                                                                         <>
                                                                             {conf.information.source}
@@ -356,19 +358,19 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                 <Button
                                                                                     className='icon-follow border border-primary-light'
                                                                                     onClick={(event) => handleUnfollow(event, conf.id)}
-                                                                                    title='Unfollow'
+                                                                                    title={t('unfollow')}
                                                                                     disabled={loadingMap[conf.id]}>
                                                                                     {
                                                                                         loadingMap[conf.id] ? <Spinner size={'sm'} /> :
                                                                                             <>
                                                                                                 <Image src={FollowIcon} width={18} />
-                                                                                                <span>Unfollow</span>
+                                                                                                <span>{t('followed')}</span>
                                                                                             </>
                                                                                     }
                                                                                 </Button>
                                                                                 :
                                                                                 <Button
-                                                                                    title='Follow conference'
+                                                                                    title={t('follow')}
                                                                                     className='icon-follow border border-primary-light'
                                                                                     onClick={(event) => handleFollow(event, conf.id)}
                                                                                     disabled={loadingMap[conf.id]}
@@ -377,7 +379,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                         loadingMap[conf.id] ? <Spinner size={'sm'} /> :
                                                                                             <>
                                                                                                 <Image src={UnFollowIcon} width={18} />
-                                                                                                <span>Follow</span>
+                                                                                                <span>{t('follow')}</span>
                                                                                             </>
                                                                                     }
 

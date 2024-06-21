@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useConference from '../../hooks/useConferences'
 import useSuggest from '../../hooks/useSuggest'
 import { Button, Carousel, Col, Container, Row } from 'react-bootstrap'
 import './custom_suggest.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight, faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faClock } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const SuggestedCarousel = () => {
   const { conference, conferences, getAllConferences } = useConference()
@@ -14,6 +15,7 @@ const SuggestedCarousel = () => {
   const [displayConferences, setDisplayConferences] = useState([])
   const carouselRef = useRef(null); // Ref cho Carousel
   const navigate = useNavigate();
+  const {t} = useTranslation()
 
   useEffect(() => {
     const getData = async () => {
@@ -76,7 +78,7 @@ const SuggestedCarousel = () => {
                       </div>
                     }
                     <div className="mb-2">
-                      <span className="p-1 rounded-pill bg-light text-light-emphasis">{`Rank: ${conf.similar?.rank} ${conf.similar?.source ? `- Source: ${conf.similar?.source}` : ''}`}</span>
+                      <span className="p-1 rounded-pill bg-light text-light-emphasis">{`${t('rank')}: ${conf.similar?.rank} ${conf.similar?.source ? `- Source: ${conf.similar?.source}` : ''}`}</span>
 
                     </div>
                     {conf.similar?.fieldOfResearch?.length > 0 && conf.similar?.fieldOfResearch?.map((field, index) => (
@@ -95,7 +97,7 @@ const SuggestedCarousel = () => {
   return (
     <Container className='bg-light p-2 text-dark bg-opacity-25'>
       <div className="d-flex justify-content-between align-items-center w-100 my-2">
-        <span className='h5 text-darkcyan-normal fw-bold'>Highest views</span>
+        <span className='h5 text-darkcyan-normal fw-bold'>{t('interestedIn')}</span>
         <div>
           <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-2" onClick={handlePrev}>
             <FontAwesomeIcon icon={faChevronLeft} className='fs-5' />
