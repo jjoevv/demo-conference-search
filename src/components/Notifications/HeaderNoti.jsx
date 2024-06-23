@@ -32,7 +32,6 @@ const HeaderNoti = ({notifications, onReloadlist, onReadStatus}) => {
       navigate('/login')
     }
     else {
-      await handleGetOne(noti.Follow.CallForPaperCfpId)
       await onReadStatus([noti])
       setDropdownOpen(false);
       navigate(user ? '/user/notifications' : 'login')

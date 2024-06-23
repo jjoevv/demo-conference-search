@@ -13,7 +13,9 @@ import { checkExistValue } from '../../utils/checkFetchedResults'
 import useFilter from '../../hooks/useFilter'
 import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
+import { useTranslation } from 'react-i18next'
 const Users = () => {
+  const {t, i18n} = useTranslation()
   const navigate = useNavigate()
   const { optionsSelected} = useSearch()
   const {
@@ -85,7 +87,7 @@ const Users = () => {
         disableResizing: true
       },
       {
-        Header: "Name",
+        Header: t('name'),
         accessor: "name",
       },
       {
@@ -93,16 +95,16 @@ const Users = () => {
         accessor: "email",
       },
       {
-        Header: "Address",
+        Header: t('address'),
         accessor: "address",
       },
       {
-        Header: "Nationality",
+        Header: t('nationality'),
         accessor: "nationality",
       },
        
     ],
-    []
+    [i18n]
 );
   return (
     <Container
@@ -110,19 +112,18 @@ const Users = () => {
 
 
       <div className="d-flex justify-content-between align-items-center mb-3 ">
-        <h4>Users management</h4>
+        <h4>{t('Users')}</h4>
         <ButtonGroup>
           
         </ButtonGroup>
       </div>
 
       <div className='p-3 bg-white rounded overflow-x-hidden'>
-        <span className='fw-semibold text-color-medium'>Common</span>
         <div className="pb-3 border-bottom border-primary-light">
 
           <Row>
             <Col>
-              <label className='me-2'>Total users:</label>
+              <label className='me-2'>{t('total_user_accounts')}:</label>
               <span className='me-2 fw-semibold'>{users.length}</span>
             </Col>
         

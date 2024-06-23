@@ -4,15 +4,17 @@ import useDashboard from '../../../hooks/useDashboard';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './custom_dashboard.css'
+import { useTranslation } from 'react-i18next';
 Chart.register(...registerables);
 
 const ETLChart = ({ startDate, endDate }) => {
+    const {t, i18n} = useTranslation()
     const { etlLog } = useDashboard()
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [
             {
-                label: 'ETL Processes',
+                label: 'Crawl Processes',
                 data: [],
                 duration: [],
                 fill: false,
@@ -26,7 +28,7 @@ const ETLChart = ({ startDate, endDate }) => {
 
     useEffect(() => {
         filterData(startDate, endDate)
-    }, [etlLog, startDate, endDate])
+    }, [etlLog, startDate, endDate, i18n.language])
 
 
     const filterData = async (start, end) => {
@@ -101,7 +103,7 @@ const ETLChart = ({ startDate, endDate }) => {
             labels: labels,
             datasets: [
                 {
-                    label: 'ETL Processes' + ` (${sum} times)`,
+                    label: `${t('crawl_processes')} (${sum} ${t('run')}${i18n.language === 'en' ? 's' :''})`,
                     data: data,
                     duration: durations,
                     fill: false,
@@ -117,12 +119,12 @@ const ETLChart = ({ startDate, endDate }) => {
     const customTooltip = {
         callbacks: {
             label: function (tooltipItem) {
-                return 'ETL Processes: ' + tooltipItem.raw + ' runs';
+                return `${t('crawl_processes')} (${tooltipItem.raw} ${t('run')}${i18n.language === 'en' ? 's' :''})`
             },
             afterLabel: function (tooltipItem) {
                 const index = tooltipItem.dataIndex;
                 const duration = tooltipItem.dataset.duration[index];
-                return 'Duration: ' + duration + ' ms';
+                return `${t('duration')}: ` + duration + ' ms';
             },
         }
     };
@@ -130,7 +132,7 @@ const ETLChart = ({ startDate, endDate }) => {
         <div className='rounded mx-3 border border-light shadow-sm p-2 overview-tab'>
             <div className='border-5 border-warning border-start py-0  my-3 ms-3 d-flex justify-content-between'>
                 <div>
-                    <h5 className="text-yellow ms-2 my-0">Crawl log</h5>
+                    <h5 className="text-yellow ms-2 my-0">{t('crawl_log')}</h5>
                 </div>
             </div>
             <div>

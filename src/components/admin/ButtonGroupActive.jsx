@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import useAdmin from '../../hooks/useAdmin'
 import { useNavigate, useParams } from 'react-router-dom'
 import DeleteModal from '../Modals/DeleteModal'
+import { useTranslation } from 'react-i18next'
 
 const ButtonGroupActive = ({ conference }) => {
+    const {t} = useTranslation()
     const { loading, activePost, deactivePost, deletePost, getPendingConfById, getAllPendingConferences } = useAdmin()
     const [loadingActive, setLoadingActive] = useState(false);
     const [loadingDeactive, setLoadingDeactive] = useState(false);
@@ -134,7 +136,7 @@ const ButtonGroupActive = ({ conference }) => {
                                         <Spinner size='sm' />
                                     ) : (
                                         <>
-                                            Deactive
+                                           {t('deactive')}
                                         </>
                                     )}
                                 </Button>
@@ -148,7 +150,7 @@ const ButtonGroupActive = ({ conference }) => {
                                         <Spinner size='sm' />
                                     ) : (
                                         <>
-                                            Active
+                                             {t('active')}
                                         </>
                                     )}
                                 </Button>
@@ -164,7 +166,7 @@ const ButtonGroupActive = ({ conference }) => {
                                 <Spinner size='sm' />
                             ) : (
                                 <>
-                                    Delete
+                                     {t('delete')}
                                 </>
                             )}
                         </Button>

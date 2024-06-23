@@ -1,21 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import TableRender from './TableRender'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightFromSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import moment from 'moment'
-import { capitalizeFirstLetter } from '../../utils/formatWord'
-import DeleteModal from '../Modals/DeleteModal'
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { Button} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import usePost from '../../hooks/usePost'
 import useAdmin from '../../hooks/useAdmin'
+import { useTranslation } from 'react-i18next'
 
 const AllUsers = ({ conferences }) => {
-  const scrollPositions = useRef({});
-  const [showDeleteConf, setShowDelete] = useState(false)
-  const [message, setMessage] = useState('')
-  const [status, setStatus] = useState(false)
-  const { loading, deletePost, getPostedConferences } = usePost()
+  const {t, i18n} = useTranslation()
   const {users, getUserById} = useAdmin()
   const navigate = useNavigate()
 
@@ -45,7 +38,7 @@ const AllUsers = ({ conferences }) => {
         disableResizing: true
       },
       {
-        Header: "Name",
+        Header: t('name'),
         accessor: "name",
       },
       {
@@ -53,16 +46,16 @@ const AllUsers = ({ conferences }) => {
         accessor: "email",
       },
       {
-        Header: "Address",
+        Header: t('address'),
         accessor: "address",
       },
       {
-        Header: "Nationality",
+        Header: t('nationality'),
         accessor: "nationality",
       },
        
     ],
-    []
+    [i18n.language]
 );
   return (
     <div>

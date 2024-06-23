@@ -22,8 +22,10 @@ import './../../components/admin/custom_tab.css'
 import useAdmin from '../../hooks/useAdmin'
 import ImportButton from '../../components/admin/ImportButton/ImportButton'
 import ExportButton from '../../components/admin/ExportButton'
+import { useTranslation } from 'react-i18next'
 
 const ConferencesManagement = () => {
+  const {t} = useTranslation()
   const { optionsSelected, getOptionsFilter } = useSearch()
   const {
     priorityKeywords,
@@ -135,7 +137,7 @@ const ConferencesManagement = () => {
     fluid  className='pt-5 mt-5 px-5 ms-5  bg-light overflow-y-auto my-sidebar-content'>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>Conferences Management</h4>
+        <h4>{t('conference_management')}</h4>
         <ButtonGroup>
           <ImportButton/>
           <ExportButton data={displayConferences} headers={allcolumns}/>
@@ -144,12 +146,11 @@ const ConferencesManagement = () => {
       </div>
 
       <div className='p-3 bg-white rounded'>
-        <span className='fw-semibold text-color-medium'>Common</span>
         <div className="pb-3 border-bottom border-primary-light">
 
           <Row>
             <Col>
-              <label className='me-2'>Total conferences:</label>
+              <label className='me-2'>{t('total_conferences')}:</label>
               <span className='me-2 fw-semibold'>{displayConferences.length}</span>
             </Col>
           </Row>
@@ -164,7 +165,7 @@ const ConferencesManagement = () => {
               onClick={() => setShowFilter(!showFilter)}
             >
               <FontAwesomeIcon icon={faFilter} className='mx-1'/>
-              Filter
+              {t('filter')}
             </Button>
           </Col>
           <Col md='auto'>
@@ -189,12 +190,12 @@ const ConferencesManagement = () => {
               activeKey={key}
               onSelect={(k) => setKey(k)}
             >
-              <Tab eventKey="allconf" title="All conferences" className='pt-2' tabClassName= 'custom-tab-update'>
+              <Tab eventKey="allconf" title={`${t('all')} ${t('conferences')}`} className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
                   <AllConferences conferences={displayConferences} />
                 </div>
               </Tab>
-              <Tab eventKey="userowner" title="Pending" className='pt-2' tabClassName= 'custom-tab-update'>
+              <Tab eventKey="userowner" title={t('pending')} className='pt-2' tabClassName= 'custom-tab-update'>
                 <div ref={tabContentRef}>
                   <PendingCFPs conferences={displayConferences}/>
                 </div>

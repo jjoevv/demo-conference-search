@@ -3,14 +3,16 @@ import useSearch from "../../hooks/useSearch"
 import { capitalizeFirstLetter } from "../../utils/formatWord"
 import useFilter from "../../hooks/useFilter"
 import { Button, Col, Row } from "react-bootstrap"
+import { useTranslation } from "react-i18next"
 
 
 const PriorityOptions = () => {
+  const {t} = useTranslation()
     const { optionsSelected } = useSearch()
     const { resultFilter, priorityKeywords, selectedKeywords, handleKeywordSelection, countMatchingConferences, getCountForSelectedKeyword } = useFilter()
     const [selected, setSelected] = useState([])
     const [keywordsCount, setKeywordsCount] = useState([])
-    
+
     useEffect(() => {
         const values = Object.values(priorityKeywords);
         setSelected(values);
@@ -39,12 +41,12 @@ const PriorityOptions = () => {
               <Col sm={2}  className="text-end p-0 fw-bold">
               {
                 key === 'conferenceDate' ? 
-                'Conference:'
+                `${t('conference_date')}:`
                 :
                 key === 'submissionDate' ?
-                'Submission:'
+                 `${t('submission_date')}:`
                 :
-                `${capitalizeFirstLetter(key)}:`
+                `${t(key)}: `
               }
               </Col>
               <Col className="">

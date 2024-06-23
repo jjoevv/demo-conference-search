@@ -5,10 +5,12 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowAltCircleRight, faArrowCircleLeft, faBorderAll, faCircleUser, faFileLines, faTableColumns, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleRight, faArrowCircleLeft} from '@fortawesome/free-solid-svg-icons'
 import './custom_sidebar.css'
+import { useTranslation } from 'react-i18next'
 
 const Sidebar = ({sidebar}) => {
+  const {t} = useTranslation()
   const { user } = useLocalStorage()
   const location = useLocation()
   const [profile, setProfile] = useState(null)
@@ -48,7 +50,7 @@ const Sidebar = ({sidebar}) => {
               >
 
                 {link.icon}
-                {!isCollapsed && <span>{link.title}</span>}
+                {!isCollapsed && <span>{t(link.title)}</span>}
                 
               </NavLink>
 

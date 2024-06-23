@@ -2,13 +2,13 @@ import useNote from '../../hooks/useNote'
 import { isUpcoming } from '../../utils/sortConferences'
 import { Card, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDay, faClock, faLocationPin } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import useConference from '../../hooks/useConferences';
+import { useTranslation } from 'react-i18next';
 
 const UpcomingNote = () => {
-    const {handleGetOne} = useConference()
+    const { t } = useTranslation()
     const { notes } = useNote()
     const checkRenderEnddate = (start, end) => {
         return end !== null && start !== null && start !== end
@@ -16,12 +16,11 @@ const UpcomingNote = () => {
     const daysUntilTargetDate = (targetDate) => {
         const today = new Date();
         const daysDifference = Math.floor((new Date(targetDate) - today) / (1000 * 60 * 60 * 24));
-        return daysDifference;
+        return daysDifference + 1;
     }
     const navigate = useNavigate()
 
     const handleNavigateUpcomingConference = async (id) => {
-        await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
 
@@ -31,10 +30,12 @@ const UpcomingNote = () => {
         return dateA - dateB;
     });
 
-    
+
     return (
-        <div>
-            <h5 className='text-danger mt-3'>Upcoming event</h5>
+        <div className='w-100'>
+            {notes?.length > 0 &&
+                <h5 className='text-danger mt-3'>{t('upcoming_note')}</h5>}
+
             <div className='d-flex overflow-x-auto overflow-y-hidden'>
 
                 {
@@ -50,10 +51,10 @@ const UpcomingNote = () => {
                                             <Card.Body className='pb-0'>
                                                 <div className='d-flex flex-column'>
                                                     <span className='fw-semibold text-teal-normal fs-6'>{`${note.date_type}`}</span>
-                                                    <span className='text-truncate d-inline-block '>
+                                                    <span className='text-truncate d-inline-block fs-medium'>
                                                         {
-                                                            `${note.subStyle === 'note-event' 
-                                                                ? `Your note: ${note.note}` : `Conference: ${note.acronym}`} `
+                                                            `${note.subStyle === 'note-event'
+                                                                ? `${t('your_note')}: ${note.note}` : `${t('conference')}: ${note.acronym}`} `
                                                         }
                                                     </span>
                                                 </div>
@@ -69,39 +70,38 @@ const UpcomingNote = () => {
 
                                                 </p>
                                                 <div>
-                                                    <p className="text-color-medium m-0">Date event:
-                                                    <p>
-                                                        {checkRenderEnddate(note.start_date, note.end_date) ?
-                                                            <>
-                                                                <div className="">
-                                                                    <span className="text-color-black fw-bold">
-                                                                        {moment(note.start_date).format('ddd, YYYY/MM/DD')}
-                                                                    </span>
-                                                                    <span>{` to `}</span>
-                                                                    <span className="text-color-black fw-bold">
-                                                                        {moment(note.end_date).format('ddd, YYYY/MM/DD')}
-                                                                    </span>
-                                                                </div>
-                                                            </>
-                                                            :
-                                                            <>
-                                                                {
-                                                                    note.start_date !== null
-                                                                    &&
-                                                                    <div className="d-flex flex-column">
-                                                                        <span className="text-color-black fw-bold">
-                                                                            {moment(note.start_date).format('dddd, YYYY/MM/DD')}
-                                                                        </span>
-                                                                    </div>
-                                                                }
-                                                            </>
-                                                        }
-                                                    </p>
-                                                    </p>
-                                                    
+                                                        <div>
+                                                            {checkRenderEnddate(note.start_date, note.end_date) ?
+                                                                <>
+                                                                  <div>
+                                                                      <FontAwesomeIcon icon={faCalendarDay} className='text-teal-normal me-1' />
+                                                                            <span className="text-color-black fw-bold">
+                                                                                {moment(note.start_date).format('ddd, YYYY/MM/DD')}
+                                                                            </span>
+                                                                            <span>{` - `}</span>
+                                                                            <span className="text-color-black fw-bold">
+                                                                                {moment(note.end_date).format('ddd, YYYY/MM/DD')}
+                                                                            </span>
+                                                                  </div>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    {
+                                                                        note.start_date !== null
+                                                                        &&
+                                                                        <div className="d-flex flex-column">
+                                                                            <span className="text-color-black fw-bold">
+                                                                                {moment(note.start_date).format('dddd, YYYY/MM/DD')}
+                                                                            </span>
+                                                                        </div>
+                                                                    }
+                                                                </>
+                                                            }
+                                                        </div>
+
 
                                                 </div>
-                                                
+
 
                                             </Card.Body>
                                             <Card.Footer className=' bg-skyblue-light d-flex justify-content-between align-items-center'>
@@ -109,8 +109,8 @@ const UpcomingNote = () => {
                                                     {
                                                         note.start_date !== null &&
                                                         <p className='text-darkcyan-normal fw-semibold m-0'>
-                                                            <FontAwesomeIcon icon={faClock} />
-                                                            {` ${daysUntilTargetDate(note.start_date)} days left`}
+                                                            <FontAwesomeIcon icon={faClock} className='me-2' />
+                                                            {t('days_left', { count: daysUntilTargetDate(note.start_date) })}
                                                         </p>
                                                     }
                                                 </>
@@ -119,9 +119,9 @@ const UpcomingNote = () => {
                                                     <Button
                                                         onClick={() => handleNavigateUpcomingConference(note.conf_id)}
                                                         className=' bg-transparent border-0 text-decoration-underline text-skyblue-dark p-0 btn-noti-more'
-                                                        title='Click here for more details'
+                                                        title={t('more_details_title')}
                                                     >
-                                                        {`More details >`}
+                                                        {`${t('more_details')} >`}
                                                     </Button>
                                                 }
                                             </Card.Footer>

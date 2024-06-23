@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useConference from '../../hooks/useConferences'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 
 const MessagesUpdateNow = () => {
+    const {t} = useTranslation()
     const {messages} = useConference()
     const [popupheight, setPopupheight] = useState(null)
     const navigate = useNavigate()
@@ -40,16 +42,17 @@ const MessagesUpdateNow = () => {
                         </div>
                         <div className='d-inline-block'>
                             {
-                                message?.status === "completed" ? 'has been updated.'
+                                message?.status === "completed" ? `${t('hasBeenUpdated')}`
                                     :
-                                    `cannot be crawled right now.`
+                                    `${t('cannotBeCrawledRightNow')}`
 
                             }
                             {
                                 message?.status === "completed" &&
                                 <Button
                                     onClick={() => handleNavigate(message?.id)}
-                                    className='text-decoration-underline bg-transparent border-0 p-0 ps-1'>Click to view details
+                                    className='text-decoration-underline bg-transparent border-0 p-0 ps-1'>
+                                        {t('clickToViewDetails')}
                                 </Button>
                             }
                         </div>

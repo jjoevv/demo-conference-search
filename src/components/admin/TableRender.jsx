@@ -3,10 +3,12 @@ import 'react-resizable/css/styles.css';
 import './custom_table.css';
 import { useFlexLayout, usePagination, useResizeColumns, useSortBy, useTable } from 'react-table';
 import useAdmin from '../../hooks/useAdmin';
+import { useTranslation } from 'react-i18next';
 
 
 
 const TableRender = ({ data, columns }) => {
+    const {t} = useTranslation()
     const {handleGetHeadersExport} = useAdmin()
     const [pageInput, setPage]= useState(null)
 
@@ -126,13 +128,19 @@ const TableRender = ({ data, columns }) => {
                               prepareRow(row);
                               return (
                                   <tr {...row.getRowProps()} key={row.id} className={` ${index % 2 === 0 ? 'bg-blue-light' : 'bg-white'}`}>
+                                  
                                       {row.cells.map((cell, index) => {
                                           return (
                                               <td {...cell.getCellProps()} key={cell.column.id}
-                                                  className={` p-1 text-color-black d-flex align-items-center 
+                                                  className={` p-1 px-2 text-color-black d-flex align-items-center 
                                                       ${index === columns.length - 1 && 'fixed-column fixed-right justify-content-center '} 
                                                       ${index === 0 && 'fixed-column fixed-left'} 
-                                                      ${(index === 0 || cell.column.Header === 'Type' || cell.column.Header === 'Rank' || cell.column.Header === 'Acronym') && 'justify-content-center '}`}
+                                                      ${(index === 0 || 
+                                                        cell.column.id === 'type' || 
+                                                        cell.column.id === 'rank'  || 
+                                                        cell.column.id === 'acronym' ||
+                                                        cell.column.id === 'important_dates') 
+                                                        && 'justify-content-center '}`}
                                               >
                                                   {cell.render('Cell')}
                                               </td>
@@ -159,10 +167,10 @@ const TableRender = ({ data, columns }) => {
           {`<`}
         </button>{' '}
             {renderPageNumbers()} 
-            {`| Go to page `} 
+            {`| ${t('go_to_page')} `} 
             <input 
                 type="number"
-                placeholder='page'
+                placeholder={t('page')}
                 value={pageInput}
                 onChange={(e)=>setPage(e.target.value)}
                 onKeyDown={handlePageInput}

@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { Form, Row } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { Modal } from 'react-bootstrap'
 import DeleteModal from '../Modals/DeleteModal'
@@ -9,11 +9,11 @@ import { useEffect } from 'react'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faLink, faLocationPin } from '@fortawesome/free-solid-svg-icons'
-import useConference from '../../hooks/useConferences'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloadList }) => {
-    const { handleGetOne } = useConference()
+    const {t} = useTranslation()
     const [isUpdate, setIsUpdate] = useState(false)
     const [warning, setWarning] = useState('')
     const [inputvalue, setInputValue] = useState('');
@@ -49,7 +49,6 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
     }, [statusUpdate]);
 
     const handleGotoCfp = async (id) => {
-        await handleGetOne(id)
         navigate(`/detailed-information/${id}`)
     }
     const handleChooseUpdate = () => {
@@ -80,7 +79,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                     setInputValue('')
                 }
             }
-            else setWarning('You should input something!')
+            else setWarning(`${t('required_note_input')}`)
 
         } catch (error) {
             console.error('Error:', error);
@@ -126,7 +125,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                     note.subStyle !== 'note-event'
                     &&
                     <div className="my-3 fs-5">
-                        <span className="text-color-medium ">{`Conference: `}</span>
+                        <span className="text-color-medium ">{`${t('conference')}: `}</span>
                         <span className='fw-semibold'> {`${note.acronym}`}</span>
                     </div>
                 }
@@ -179,7 +178,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         <>
                             <Form onSubmit={handleUpdate}>
                                 <Form.Group className='d-flex align-items-start'>
-                                    <Form.Label>Note:</Form.Label>
+                                    <Form.Label className='text-nowrap'>{t('note')}:</Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder={note.note}
@@ -199,10 +198,10 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         :
                         <>
                             <div className='d-flex '>
-                                <span>Note:</span>
+                                <span className='text-nowrap'>{t('note')}:</span>
                                 <Form.Control
                                     type="text"
-                                    placeholder={note.note !== '' && note.note !== 'default' ? note.note : `Your note goes here...`}
+                                    placeholder={note.note !== '' && note.note !== 'default' ? note.note : `${t('enter_your_note')}...`}
                                     onClick={handleChooseUpdate}
                                     className='border-0 border-bottom ms-3 p-1'
                                 />
@@ -217,7 +216,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                     <Button
                         onClick={() => handleGotoCfp(note.conf_id)}
                         className='btn-noti-more text-decoration-underline text-primary border-0 bg-transparent p-0 m-0'>
-                        More details
+                        {t('more_details')}
                     </Button>
                 </p>
                 }
@@ -241,7 +240,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                         isInputUpdate ?
                             <>
                                 <Button className='bg-secondary border-light ms-1 rounded' onClick={handleChooseUpdate}>
-                                    Cancel
+                                    {t('cancel')}
                                 </Button>
 
                                 <Button className='bg-primary-normal border-light ms-1 rounded' onClick={handleUpdate}>
@@ -251,15 +250,20 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                             :
                             <>
                                 <Button className='bg-red-normal border-light me-1 rounded' onClick={() => setShowConfirmDelete(true)}>
-                                    Delete
+                                    {t('delete')}
                                 </Button>
                                 <Button className='bg-skyblue-dark border-light ms-1 rounded' onClick={handleChooseUpdate}>
-                                    Update note
+                                    {t('update')}
                                 </Button>
                             </>
                     }
                 </ButtonGroup>
-                {isUpdate && statusUpdate && <p>Auto closing in {autoClose} seconds</p>}
+                {isUpdate && statusUpdate && (
+  <div className={statusUpdate ? 'text-success' : 'text-danger'}>
+    <span className='text-success'>{t('success')}</span>. {t('closing_countdown', { countdown: countdown })}
+  </div>
+)}
+
             </Modal.Footer>
 
         </Modal>

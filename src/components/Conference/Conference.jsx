@@ -59,8 +59,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [listFollowed]);
 
     useEffect(() => {
+        if(pageParam > pageCount){
+            setPageDisplay(0)
+        }
         setDisplayedConferences(conferencesProp)
-
     }, [conferencesProp, listFollowed])
 
     useEffect(() => {
@@ -69,10 +71,11 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [optionsSelected])
 
     useEffect(() => {
-        if (selectOptionSort === "Random") {
+        //sắp xếp list
+        if (selectOptionSort === "random") {
             setDisplayedConferences(conferencesProp)
         }
-        else if (selectOptionSort === "Followed") {
+        else if (selectOptionSort === "followed") {
 
             if (user) {
                 const sortedByFollow = sortByFollow(conferencesProp, listFollowed)
@@ -154,7 +157,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
 
     const handleDropdownSelect = (value) => {
-        setPage(0)
+        //setPage(0)
         handleSelectOptionSort(value)
     };
 
@@ -181,19 +184,18 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                     {`${conferencesProp.length} ${t('conferences')}`}
                 </div>
             </div>
-            <Row className='w-100'>
+            <Row className='w-100 justify-content-between'>
                 {
                     selected ?
                         <>
-                            <Col sm={2} className='d-flex align-items-start justify-content-end p-0'>
-                                Display priority by:
+                            <Col sm={2} className='d-flex align-items-start justify-content-end p-0 pt-2'>
+                            {t('displayPriorityBy')}:
                             </Col>
-                            <Col sm={8} className='d-flex align-items-start p-0'>
+                            <Col sm={7} className='d-flex align-items-start'>
                                 <PriorityOptions />
                             </Col>
-                            <Col className='p-0'>
+                            <Col className=' d-flex justify-content-end'>
                                 <DropdownSort
-                                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
                                     onSelect={handleDropdownSelect}
                                 />
                             </Col>
@@ -203,7 +205,6 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                             <Col sm={9}></Col>
                             <Col>
                                 <DropdownSort
-                                    options={["Random", "Followed", "Upcoming", "Name A > Z", "Latest"]}
                                     onSelect={handleDropdownSelect}
                                 />
                             </Col>
@@ -238,7 +239,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                             {
                                                                 conf.information.source === 'ConfHub' &&  isPost &&
                                                                 <>
-                                                                    <div className={` p-2 rounded-2 me-2 fs-6 fw-bold ${conf.information.status ? 'bg-skyblue-normal': 'bg-secondary text-light'}`}>
+                                                                    <div className={`text-nowrap p-2 rounded-2 me-2 fs-6 fw-bold ${conf.information.status ? 'bg-skyblue-normal': 'bg-secondary text-light'}`}>
                                                                         {conf.information.status ?` ${t('active')}`: ` ${t('deactive')}`}
                                                                     </div>
                                                                 </>
@@ -248,7 +249,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 <>
                                                                     {isUpcoming(conf.organizations[0].start_date) && conf.information.status 
                                                                         &&
-                                                                        <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold'>
+                                                                        <div className='bg-yellow-normal text-light p-2 rounded-2 me-2 fs-6 fw-bold text-nowrap'>
                                                                             {t('upcoming')}
                                                                         </div>
                                                                     }

@@ -8,8 +8,10 @@ import AddNewNote from './AddNewNote';
 import ArrowIcon from './../../assets/imgs/next.png'
 import moment from 'moment';
 import useConference from '../../hooks/useConferences';
+import { useTranslation } from 'react-i18next';
 
 const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetailNote, notesList, dateClicked, onDelete, onClose, onReloadList }) => {
+  const {t} = useTranslation()
   const { handleGetOne } = useConference()
   const [index, setIndex] = useState(0);
   const navigate = useNavigate()
@@ -39,14 +41,14 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
   return (
     <Modal show={show} onHide={onClose} centered size='lg'>
       <Modal.Header closeButton>
-        <Modal.Title className='text-center w-100'>{`All events in ${moment(dateClicked).format('dddd, YYYY/MM/DD')}`}</Modal.Title>
+        <Modal.Title className='text-center w-100'>{`${t('all_notes_in')} ${moment(dateClicked).format('dddd, YYYY/MM/DD')}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body className=' px-5'>
         <Carousel activeIndex={index} onSelect={handleSelect} indicators={false} controls={false} interval={null}>
 
           <Carousel.Item>
             <div className='d-flex justify-content-between align-items-center my-1 ms-3'>
-              <p className="text-primary-normal">{`${notesList.length} notes`}</p>
+              <p className="text-primary-normal">{`${notesList.length} ${t('note')}`}</p>
               <Button className='rounded-circle border-light bg-primary-normal fw-bold' onClick={handleMove}>+</Button>
             </div>
             {
@@ -62,23 +64,23 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
                           title='More details about this note'
                         >
                           <Row >
-                            <Col xs={2} className='text-color-medium'>{`Date type: `}</Col>
+                            <Col xs={2} className='text-color-medium'>{`${t('date_type')}: `}</Col>
                             <Col>{note.date_type}</Col>
                           </Row>
                           {
                             note.subStyle !== 'note-event' &&
                             <Row>
                               <Col xs={2} className='text-color-medium'>
-                                {`Conference: `}
+                                {`${t('conference')}: `}
                               </Col>
                               <Col>{note.acronym}</Col>
                             </Row>
                           }
                           <Row>
                             <Col xs={2} className='text-color-medium'>
-                              {`Note: `}
+                              {`${t('note')}: `}
                             </Col>
-                            <Col>{note.note}</Col>
+                            <Col>{note.note && note.note !== 'default' ? note.note : ''}</Col>
                           </Row>
                         </Button>
                         {
@@ -98,7 +100,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
 
                 </>
                 :
-                <><p>No notes existed</p></>
+                <><p>{t('no_notes')}</p></>
             }
 
           </Carousel.Item>

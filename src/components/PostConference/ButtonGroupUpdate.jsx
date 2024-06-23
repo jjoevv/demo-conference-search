@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import DeleteModal from '../Modals/DeleteModal'
 
 
 import usePost from '../../hooks/usePost'
 import ModalUpdateConf from '../UpdatePost.jsx/ModalUpdateConf'
+import { useTranslation } from 'react-i18next'
 const ButtonGroupUpdate = ({conference}) => {
+    const {t} = useTranslation()
     const [showUpdateConf, setShowUpdate] = useState(false)
     const [showDeleteConf, setShowDelete] = useState(false)
     const [message, setMessage] = useState('')
@@ -26,7 +28,7 @@ const ButtonGroupUpdate = ({conference}) => {
     const handleDeletePost = async (e) => {
       e.stopPropagation();
         setIsConfirm(true)
-        const result = await deletePost(conference.id);
+        const result = await deletePost(conference?.id);
         setStatus(result.status);
         setMessage(result.message);
         if (result.status) {
@@ -60,7 +62,7 @@ const ButtonGroupUpdate = ({conference}) => {
 
     return (
         <>
-            {showDeleteConf && 
+          
             <DeleteModal 
             show={showDeleteConf} 
             onClose={handleClose}
@@ -71,7 +73,7 @@ const ButtonGroupUpdate = ({conference}) => {
             loading={loading}
             countdown={countdown}
             isConfirm={isConfirm}
-            />}
+            />
 
             {showUpdateConf && 
             <ModalUpdateConf 
@@ -86,12 +88,12 @@ const ButtonGroupUpdate = ({conference}) => {
                 <Button 
                 onClick={handleOpenModalUpdate}
                 className='bg-teal-normal border-0 rounded mx-2 px-3' >
-                    Update
+                   {t('update')}
                 </Button>
                 <Button 
                     onClick={handleOpenModalDelete}
-                    className='bg-danger border-0 rounded mx-2 px-3'>
-                    Delete
+                    className='bg-danger border-0 rounded mx-2 px-3 '>
+                    {t('delete')}
                 </Button>
             </ButtonGroup>
         </>

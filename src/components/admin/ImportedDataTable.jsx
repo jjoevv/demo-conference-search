@@ -4,7 +4,9 @@ import { Button, Carousel, Form, Spinner, Table } from 'react-bootstrap'
 import forcode from './../../data/forcode.json'
 import useAdmin from '../../hooks/useAdmin'
 import ReactPaginate from 'react-paginate'
+import { useTranslation } from 'react-i18next'
 const ImportedDataTable = ({ onHide }) => {
+    const { t } = useTranslation()
     const { getAllPendingConferences } = useAdmin()
     const { dataUpload, setShowImportModal, handleImport } = useImport()
     const [selectedHeaders, setSelectedHeaders] = useState([]);
@@ -37,13 +39,13 @@ const ImportedDataTable = ({ onHide }) => {
     const handleNext = () => {
         let isFailed = false;
         let newWarningMessage = '';
-    
+
         // Kiểm tra xem selectedHeaders có chứa tất cả các header bắt buộc không
         const requiredHeaders = ['Name', 'Acronym', 'Source', 'Rank', 'Field of Research'];
         const isMissingHeader = requiredHeaders.some(headerName => {
             return !selectedHeaders.some(header => header !== undefined && header.name === headerName);
         });
-    
+
         if (selectedHeaders.length !== 0 && !isMissingHeader) {
             const selectedCol = selectedHeaders.filter(header => header !== undefined && header.name !== 'None');
             const newData = dataUpload.data.map(row => {
@@ -57,7 +59,7 @@ const ImportedDataTable = ({ onHide }) => {
                                 if (mapping) {
                                     return mapping.code;
                                 } else {
-                                    newWarningMessage = `Please check the selected FOR column has code '${code}'. Code is not utilized in research fields.`;
+                                    newWarningMessage = t('checkForColumnCode', { code: `${code}` });
                                     isFailed = true;
                                     return ''; // or another value when mapping not found
                                 }
@@ -70,24 +72,24 @@ const ImportedDataTable = ({ onHide }) => {
                         }
                     }
                 });
-    
+
                 // Validate 'Source' column
                 const sourceIndex = selectedHeaders.findIndex(header => header && header?.name === 'Source');
                 if (sourceIndex !== -1 && !/CORE20/.test(row[sourceIndex])) {
-                    newWarningMessage = 'The Source column is wrong';
+                    newWarningMessage = t('sourceColumnWrong')
                     isFailed = true;
                 }
-    
+
                 // Validate 'Acronym' column
                 const acronymIndex = selectedHeaders.findIndex(header => header && header.name === 'Acronym');
                 if (acronymIndex !== -1 && row[acronymIndex].length >= 20) {
-                    newWarningMessage = 'The Acronym column is wrong';
+                    newWarningMessage = t('acronymColumnWrong');
                     isFailed = true;
                 }
-    
+
                 return newRow;
             });
-    
+
             const uniqueColumnNames = [...new Set(selectedCol.map(header => header.name))];
             const uniqueData = newData.map(list => {
                 const uniqueSet = new Set();
@@ -99,10 +101,10 @@ const ImportedDataTable = ({ onHide }) => {
                 });
                 return Array.from(uniqueSet);
             });
-    
+
             setFormatedHeaders(Array.from(uniqueColumnNames));
             setFormatedData(uniqueData);
-    
+
             if (!isFailed && warningMessage === '') {
                 setActivePage(activePage + 1);
             } else {
@@ -112,13 +114,13 @@ const ImportedDataTable = ({ onHide }) => {
                 }, 5000);
             }
         } else {
-            setWarningMessage('You should select columns for Name, Acronym, Source, Rank, Field of Research');
+            setWarningMessage(t('selectColumns'));
             setTimeout(() => {
                 setWarningMessage('');
             }, 5000);
         }
     };
-    
+
 
 
     const handleSelectHeader = (selectedHeader, index) => {
@@ -162,8 +164,9 @@ const ImportedDataTable = ({ onHide }) => {
                                 <Form.Select
                                     value={selectedHeaders[index]?.name || ''}
                                     onChange={(e) => handleSelectHeader(e.target.value, index)}
+                                    className='fw-bold'
                                 >
-                                    <option value="" disabled>Select Header</option>
+                                    <option value="" disabled>{t('selectHeader')}</option>
                                     {headersNames.map((name, i) => (
                                         <option
                                             key={i}
@@ -224,7 +227,7 @@ const ImportedDataTable = ({ onHide }) => {
             <Carousel activeIndex={activePage} onSelect={() => { }} controls={false} interval={null} indicators={false}>
 
                 <Carousel.Item key={1}>
-                <Table striped bordered hover responsive>
+                    <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(dataUpload.headers, true)}
                         </thead>
@@ -233,7 +236,7 @@ const ImportedDataTable = ({ onHide }) => {
                         </tbody>
                     </Table>
                     <ReactPaginate
-                         nextLabel=">"
+                        nextLabel=">"
                         previousLabel="<"
                         breakLabel={'...'}
                         breakClassName={'break-me'}
@@ -244,10 +247,10 @@ const ImportedDataTable = ({ onHide }) => {
                         containerClassName={'pagination'}
                         activeClassName={'active'}
                     />
-                        
+
                 </Carousel.Item>
                 <Carousel.Item key={2}>
-                <Table striped bordered hover responsive>
+                    <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(formatedHeaders, false)}
                         </thead>
@@ -256,7 +259,7 @@ const ImportedDataTable = ({ onHide }) => {
                         </tbody>
                     </Table>
                     <ReactPaginate
-                         nextLabel=">"
+                        nextLabel=">"
                         previousLabel="<"
                         breakLabel={'...'}
                         breakClassName={'break-me'}
@@ -277,9 +280,9 @@ const ImportedDataTable = ({ onHide }) => {
 
             </Carousel>
 
-            <div className="d-flex w-100 justify-content-end align-items-center">
+            <div className="d-flex w-100 justify-content-end align-items-center fs-large">
                 {!isImported && warningMessage !== '' && (
-                    <div className="text-warning">
+                    <div className="text-warning-emphasis">
                         {warningMessage}
                     </div>)
                 }
@@ -301,7 +304,7 @@ const ImportedDataTable = ({ onHide }) => {
                     onClick={() => setActivePage(0)}
                     className='bg-secondary text-white mx-2 px-4 border-light'
                 >
-                    Back
+                    {t('back')}
                 </Button>
                 {
                     activePage === 1 ?
@@ -312,13 +315,13 @@ const ImportedDataTable = ({ onHide }) => {
                                 loading ?
                                     <Spinner size='sm' />
                                     :
-                                    'Import'
+                                    `${t('import_file')}`
                             }
                         </Button>
                         :
                         <Button
                             className='bg-primary-normal text-white mx-2 px-4 border-light'
-                            onClick={handleNext}>Next</Button>
+                            onClick={handleNext}>{t('Next')}</Button>
                 }
             </div>
         </div>

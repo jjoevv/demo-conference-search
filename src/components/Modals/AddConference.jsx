@@ -1,18 +1,19 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Modal, Carousel, CarouselItem, Row, ButtonGroup } from 'react-bootstrap'
 import AddButtonIcon from './../../assets/imgs/edit.png'
 import ChooseFORs from '../Postconference/ChooseFORs';
 import usePost from '../../hooks/usePost';
-import data from '../Filter/options.json'
 import SuccessfulModal from './SuccessModal';
 import LocationInput from '../Postconference/LocationInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
 import Loading from '../Loading';
+import { useTranslation } from 'react-i18next';
 
 const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) => {
-    const { loading, postConference, getPostedConferences } = usePost()
+    const { t } = useTranslation()
+    const { loading, postConference } = usePost()
     const { filterOptions, getOptionsFilter } = useSearch()
 
     const [page, setPage] = useState(0)
@@ -88,7 +89,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
 
     const handleOrgChange = (index, event) => {
         const { name, value } = event.target;
-        
+
         // Kiểm tra nếu end_date được chọn trước start_date
         if (name === 'end_date' && formData.organizations[index].start_date && value < formData.organizations[index].start_date) {
             setIsOrgDateValid(true);
@@ -134,7 +135,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 callForPaper: prevData.callForPaper + '\n',
             }));
         }
-    }; 
+    };
     const handleLocationChange = (orgIndex, location) => {
         setFormData(prevFormData => {
             const updatedOrgs = [...prevFormData.organizations];
@@ -167,11 +168,11 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
 
     //remove function
     const removeEmptyOrganizations = (organizations) => {
-        return organizations.filter(org => 
+        return organizations.filter(org =>
             org.name || org.type || org.location || org.start_date || org.end_date
         );
     };
-    
+
     const addEmptyOrganizationIfNecessary = (organizations) => {
         return organizations.length > 0 ? organizations : [{
             name: '',
@@ -181,13 +182,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             end_date: ''
         }];
     };
-    
+
     const removeEmptyImportantDates = (importantDates) => {
-        return importantDates.filter(date => 
+        return importantDates.filter(date =>
             date.date_type || date.date_value
         );
     };
-    
+
     const addEmptyImportantDateIfNecessary = (importantDates) => {
         return importantDates.length > 0 ? importantDates : [{
             date_type: '',
@@ -235,19 +236,19 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 requiredFields[field] = true
             }
         }
-            // Loại bỏ các organizations và importantDates rỗng ban đầu
-    const cleanedOrganizations = removeEmptyOrganizations(formData.organizations);
-    const cleanedImportantDates = removeEmptyImportantDates(formData.importantDates);
-    
-    // Kiểm tra các điều kiện submits
-    const updatedFormData = {
-        ...formData,
-        organizations: cleanedOrganizations,
-        importantDates: cleanedImportantDates
-    };
+        // Loại bỏ các organizations và importantDates rỗng ban đầu
+        const cleanedOrganizations = removeEmptyOrganizations(formData.organizations);
+        const cleanedImportantDates = removeEmptyImportantDates(formData.importantDates);
+
+        // Kiểm tra các điều kiện submits
+        const updatedFormData = {
+            ...formData,
+            organizations: cleanedOrganizations,
+            importantDates: cleanedImportantDates
+        };
         if (allValid) {
             setIsPosted(true)
-          
+
             const result = await postConference(updatedFormData)
             setMesage(result.message)
             setStatus(result.status)
@@ -256,21 +257,20 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 setIsPosted(false)
 
                 onReloadList()
-                window.location.reload()
                 handleCloseForm()
             }
             else {
                 // Kiểm tra nếu tất cả các organizations và importantDates đều rỗng thì thêm một object với các giá trị trống
                 const finalOrganizations = addEmptyOrganizationIfNecessary(cleanedOrganizations);
                 const finalImportantDates = addEmptyImportantDateIfNecessary(cleanedImportantDates);
-                
+
                 setFormData({
                     ...formData,
                     organizations: finalOrganizations,
                     importantDates: finalImportantDates
                 });
 
-                    }
+            }
 
         }
 
@@ -278,13 +278,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             // Kiểm tra nếu tất cả các organizations và importantDates đều rỗng thì thêm một object với các giá trị trống
             const finalOrganizations = addEmptyOrganizationIfNecessary(cleanedOrganizations);
             const finalImportantDates = addEmptyImportantDateIfNecessary(cleanedImportantDates);
-            
+
             setFormData({
                 ...formData,
                 organizations: finalOrganizations,
                 importantDates: finalImportantDates
             });
-            
+
             setRequiredFields(requiredFields)
             setPage(0)
         }
@@ -303,21 +303,21 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             >
 
                 <Modal.Header closeButton className='fixed'>
-                    <Modal.Title className='text-center w-100 text-skyblue-dark'>Conference Information</Modal.Title>
+                    <Modal.Title className='text-center w-100 text-skyblue-dark'>{t('conference_info')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>
 
-                    <Form className='px-5'  style={{minHeight: "470px"}}>
+                    <Form className='px-5' style={{ minHeight: "470px" }}>
                         <div className="modal-scrollable-body">
                             <Carousel activeIndex={page} onSelect={handleSelect} controls={false} interval={null} indicators={false}>
                                 <Carousel.Item className='mt-5'>
                                     <Form.Group as={Col} className="mb-3 d-flex align-items-center">
                                         <Form.Label column sm="3">
-                                            <span className='text-danger'>* </span>Conference name:
+                                            <span className='text-danger'>* </span>{t('name')}:
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Enter the conference/journal name..."
+                                            placeholder={t('enter_conference_name')}
                                             name="conf_name"
                                             value={formData.conf_name}
                                             onChange={handleInputChange}
@@ -327,11 +327,11 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                     </Form.Group>
                                     <Form.Group as={Col} className="mb-3 d-flex align-items-center">
                                         <Form.Label column sm="3">
-                                            <span className='text-danger'>* </span>Acronym:
+                                            <span className='text-danger'>* </span>{t('acronym')}:
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Enter the acronym"
+                                            placeholder={t('enter_acronym')} 
                                             name="acronym"
                                             value={formData.acronym}
                                             onChange={handleInputChange}
@@ -347,14 +347,14 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             name="link"
                                             value={formData.link}
                                             onChange={handleInputChange}
-                                            placeholder="Enter link..."
+                                            placeholder={t('enter_link')}
                                             className={requiredFields.link ? 'border-blue-normal' : 'border border-danger '}
                                             required
                                         />
                                     </Form.Group>
                                     <Form.Group as={Col} className="mb-3 d-flex align-items-start">
                                         <Form.Label column sm="3">
-                                            <span className='text-danger'>* </span> Field of Research:
+                                            <span className='text-danger'>* </span> {t('field_of_research')}:
                                         </Form.Label>
                                         <Col sm="9">
                                             <ChooseFORs
@@ -370,12 +370,12 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                     {
                                         formData.organizations.map((organization, index) => (
                                             <div key={index}>
-                                            
+
                                                 <Form.Group as={Row} className='my-3'>
-                                                    <Form.Label column sm="3">Type: </Form.Label>
+                                                    <Form.Label column sm="3">{t('type')}: </Form.Label>
                                                     <Col>
                                                         <Form.Select value={organization.type} name='type' onChange={(e) => handleOrgChange(index, e)}>
-                                                            <option value="">Select type...</option>
+                                                            <option value="">{`${t('select')} ${t('type').toLowerCase()}`}...</option>
                                                             <option value="online">Online</option>
                                                             <option value="offline">Offline</option>
                                                             <option value="hybrid">Hybrid</option>
@@ -383,19 +383,19 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                     </Col>
                                                 </Form.Group>
                                                 <Form.Group as={Row} className='my-3'>
-                                                    <Form.Label column sm="3">Location: </Form.Label>
+                                                    <Form.Label column sm="3">{t('location')}: </Form.Label>
                                                     <Col>
-                                                        <LocationInput onLocationChange={handleLocationChange} orgIndex={index}/>
+                                                        <LocationInput onLocationChange={handleLocationChange} orgIndex={index} />
                                                     </Col>
                                                 </Form.Group>
                                                 <Form.Group as={Row} className='mt-1 mb-3 d-flex w-100'>
                                                     <Col>
-                                                        <Form.Label>Start date:</Form.Label>
+                                                        <Form.Label>{t('start_date')}:</Form.Label>
                                                         <Form.Control type="date" value={organization.start_date} name='start_date' onChange={(e) => handleOrgChange(index, e)} className={isOrgDateValid ? 'border-danger' : ''} />
 
                                                     </Col>
                                                     <Col >
-                                                        <Form.Label>End date:</Form.Label>
+                                                        <Form.Label>{t('end_date')}:</Form.Label>
                                                         <Form.Control type="date" value={organization.end_date} name='end_date' onChange={(e) => handleOrgChange(index, e)} className={isOrgDateValid ? 'border-danger' : ''} />
                                                     </Col>
                                                 </Form.Group>
@@ -408,10 +408,10 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                     {formData.importantDates.map((date, index) => (
                                         <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
                                             <Col sm='6'>
-                                                <Form.Label>Date type:</Form.Label>
+                                                <Form.Label>{t('date_type')}:</Form.Label>
                                                 <Form.Control
                                                     type="text"
-                                                    placeholder='Round date, submission date, ...'
+                                                    placeholder={t('enter_date_description')} 
                                                     value={date.date_type}
                                                     onChange={(e) => handleDateChange(e, index, 'date_type')}
                                                     className={invalidDates.includes(index) && date.date_type === '' ? 'border-danger' : ''}
@@ -419,7 +419,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
 
                                             </Col>
                                             <Col >
-                                                <Form.Label>Date value:</Form.Label>
+                                                <Form.Label>{t('date')}:</Form.Label>
                                                 <Form.Control
                                                     type="date"
                                                     value={date.date_value}
@@ -437,7 +437,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
 
                                     <div className='w-100 d-flex justify-content-center'>
                                         <Button variant="primary" onClick={handleAddDate} className='bg-skyblue-dark px-4 py-1 border-light'>
-                                            Add more date
+                                            {t('add_more_date')}
                                         </Button>
                                     </div>
 
@@ -453,7 +453,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             value={formData.callForPaper}
                                             onChange={handleInputChange}
                                             onKeyDown={handleTextAreaKeyDown}
-                                            placeholder="Enter callForPaper..."
+                                            placeholder={t('enter_call_for_paper')} 
                                             className={requiredFields.callForPaper ? 'border-blue-normal' : 'border border-danger '}
                                         />
                                     </Form.Group>
@@ -462,8 +462,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                         </div>
                     </Form>
                     {status && isPosted && showSuccessModal && <SuccessfulModal message={message} show={showSuccessModal} handleClose={handleClose} />}
-                {!status && isPosted && <p className="text-danger text-center">{message}</p>}
-                {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
+                    {!status && isPosted && <p className="text-danger text-center">{message}</p>}
+                    {isPosted && status && <SuccessfulModal handleCloseForm={handleClose} message={message} />}
                 </Modal.Body>
                 <Modal.Footer className="d-flex align-items-center justify-content-center text-white">
                     <ButtonGroup>
@@ -471,13 +471,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                             onClick={() => setPage((prevIndex) => prevIndex - 1)}
                             disabled={page === 0}
                             className='border-blue-normal text-blue-normal bg-beige-light px-5 mx-3 rounded'>
-                            Back
+                            {t('back')}
                         </Button>
                         {
                             page < 3
                                 ?
                                 <Button onClick={() => setPage((prevIndex) => prevIndex + 1)} className='rounded bg-blue-normal px-5 py-1 mx-3 '>
-                                    Next
+                                    {t('next')}
                                 </Button>
                                 :
                                 <>
@@ -485,11 +485,11 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                         {
                                             loading
                                                 ?
-                                                <Loading size={'sm'}/>
+                                                <Loading size={'sm'} />
                                                 :
                                                 <div>
                                                     <Image width={20} height={20} className='me-2' src={AddButtonIcon} />
-                                                    Submit
+                                                    {t('submit')}
                                                 </div>
                                         }
                                     </Button>

@@ -45,7 +45,7 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
         }
         else {
             setLoading(false)
-            alert('Please log in to leave feedback.')
+            alert(`${t('pleaseLogInToLeaveFeedback')}`)
         }
     };
 
@@ -70,7 +70,7 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
             </div>
 
             <div className='w-100 my-1'>
-                <span className=' fw-semibold'>{user && user.name && user.name !== ' ' ? user.name : user.email}</span>
+                <span className=' fw-semibold'>{user && user.name && user.name !== ' ' ? user?.name : user?.email}</span>
                 <Form className='my-1'>
                     <Form.Group className=' border rounded'>
                         <Form.Control

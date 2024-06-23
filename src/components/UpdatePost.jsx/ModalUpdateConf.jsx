@@ -5,17 +5,16 @@ import usePost from '../../hooks/usePost';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faEdit, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
-import SuccessfulModal from '../Modals/SuccessModal';
 import Loading from '../Loading';
 import data from '../Filter/options.json'
 import { capitalizeFirstLetter } from '../../utils/formatWord';
+import { useTranslation } from 'react-i18next';
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick }) => {
-
-  const { loading, updatePost } = usePost()
+  const {t} = useTranslation()
+  const { loading, updatePost } = usePost() 
   const [message, setMesage] = useState('')
   const [status, setStatus] = useState(false)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const { filterOptions, getOptionsFilter } = useSearch()
   const [isupdateForm, setIsUpdateForm] = useState()
@@ -226,7 +225,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
       <Modal.Body onClick={(e) => e.stopPropagation()}style={{ maxHeight: "80vh", overflowY: "auto" }}className='pt-3'>
         <div style={{minHeight: "500px"}}>
           <div className="d-flex justify-content-between align-items-center py-2 mb-3">
-            <Modal.Title className='text-center w-100 text-skyblue-dark ps-5'>Update conference</Modal.Title>
+            <Modal.Title className='text-center w-100 text-skyblue-dark ps-5'>{`${t('update')} ${t('conference').toLowerCase()}`}</Modal.Title>
             <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
               <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
             </Button>
@@ -235,25 +234,27 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
           </div>
           <Form >
             <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
-              <Tab eventKey={`1`} title="Information" className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
+              <Tab eventKey={`1`} title={t('information')} className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
                 <Form.Group as={Row} className='my-3'>
-                  <Form.Label column sm="3">Conference name: </Form.Label>
+                  <Form.Label column sm="3">{t('name')}: </Form.Label>
                   <Col>
                     <Form.Control type="text" value={conference.information.name} disabled />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className='my-3'>
-                  <Form.Label column sm="3">Acronym: </Form.Label>
+                  <Form.Label column sm="3">{t('acronym')}: </Form.Label>
                   <Col>
                     <Form.Control type="text" value={conference.information.acronym} disabled />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className='my-3'>
-                  <Form.Label column sm="3">Reference link: </Form.Label>
+                  <Form.Label column sm="3">Link: </Form.Label>
                   <Col>
                     <Form.Control type="text" value={formData.link} onChange={(e) => handleInformationChange('link', e.target.value)} />
                   </Col>
                 </Form.Group>
+                {/**
+                 * 
                 <Form.Group as={Row} className='my-3'>
                   <Form.Label column sm="3">Rank: </Form.Label>
                   <Col>
@@ -267,8 +268,9 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                     </Form.Select>
                   </Col>
                 </Form.Group>
+                 */}
                 <Form.Group as={Row} className='my-3'>
-                  <Form.Label column sm="3">Field of research: </Form.Label>
+                  <Form.Label column sm="3"> {t('field_of_research')}: </Form.Label>
                   <Col>
                     <Select
                       options={options}
@@ -280,23 +282,15 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                   </Col>
                 </Form.Group>
               </Tab>
-              <Tab eventKey={`2`} title="Organization" className='mx-4' tabClassName= 'custom-tab-update'>
+              <Tab eventKey={`2`} title={t('organization')} className='mx-4' tabClassName= 'custom-tab-update'>
                 {formData.organizations.map((org, index) => (
                   <div key={index} className='mt-5'>
+                  
                     <Form.Group as={Row} className='my-3'>
-                      <Form.Label column sm="3">Organization name: </Form.Label>
-                      <Col>
-                        <div className='d-flex align-items-center'>
-                          <Form.Control type="text" placeholder='Organization name' value={org.name} onChange={(e) => handleOrganizationChange(index, 'name', e.target.value)} />
-                          {/*<FontAwesomeIcon icon={faCircleExclamation} className='ms-2 text-warning' title='Organization name must be unique!' />*/}
-                        </div>
-                      </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} className='my-3'>
-                      <Form.Label column sm="3">Type: </Form.Label>
+                      <Form.Label column sm="3">{t('type')}: </Form.Label>
                       <Col>
                         <Form.Select value={org.type} onChange={(e) => handleOrganizationChange(index, 'type', e.target.value)}>
-                          <option value="">Select type...</option>
+                          <option value="">{`${t('select')} ${t('type').toLowerCase()}`}...</option>
                           <option value="online">Online</option>
                           <option value="offline">Offline</option>
                           <option value="hybrid">Hybrid</option>
@@ -304,19 +298,19 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                       </Col>
                     </Form.Group>
                     <Form.Group as={Row} className='my-3'>
-                      <Form.Label column sm="3">Location: </Form.Label>
+                      <Form.Label column sm="3">{t('location')}: </Form.Label>
                       <Col>
-                        <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder='Address, building, state (optional)' />
+                        <Form.Control type="text" value={org.location} onChange={(e) => handleOrganizationChange(index, 'location', e.target.value)} placeholder={`${t('enter_location_organization')}`} />
                       </Col>
                     </Form.Group>
                     <Form.Group as={Row} className='my-3'>
-                      <Form.Label column sm="3">Start Date: {`${isOrgDateValid}`}</Form.Label>
+                      <Form.Label column sm="3">{t('start_date')}: </Form.Label>
                       <Col>
                         <Form.Control type="date" value={org.start_date} onChange={(e) => handleOrganizationChange(index, 'start_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
                       </Col>
                     </Form.Group>
                     <Form.Group as={Row} className='my-3'>
-                      <Form.Label column sm="3">End Date: </Form.Label>
+                      <Form.Label column sm="3">{t('end_date')}: </Form.Label>
                       <Col>
                         <Form.Control type="date" value={org.end_date} onChange={(e) => handleOrganizationChange(index, 'end_date', e.target.value)} className={isOrgDateValid ? 'border-danger' : ''} />
                       </Col>
@@ -325,18 +319,18 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                 ))}
                 {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
               </Tab>
-              <Tab eventKey={`3`} title="Important dates" className='mx-4' tabClassName= 'custom-tab-update'>
+              <Tab eventKey={`3`} title={t('important_dates')} className='mx-4' tabClassName= 'custom-tab-update'>
                 <div className='w-100 d-flex justify-content-end'>
-                  <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>Add important dates</Button>
+                  <Button variant="secondary" className="mt-3 text-end bg-skyblue-dark border-0" onClick={addDate}>{`${t('add_more_date')}`}</Button>
                 </div>
                 {formData.importantDates.map((date, index) => (
                   <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
                     <Col sm='6'>
-                      <Form.Label>Date type:</Form.Label>
-                      <Form.Control type="text" value={date.date_type} onChange={(e) => handleDateChange(index, 'date_type', e.target.value)} placeholder='Submission date, Notification date...' />
+                      <Form.Label>{t('date_type')}:</Form.Label>
+                      <Form.Control type="text" value={date.date_type} onChange={(e) => handleDateChange(index, 'date_type', e.target.value)} placeholder={t('enter_date_description')} />
                     </Col>
                     <Col >
-                      <Form.Label>Date:</Form.Label>
+                      <Form.Label>{t('date')}:</Form.Label>
                       <Form.Control type="date" value={date.date_value} onChange={(e) => handleDateChange(index, 'date_value', e.target.value)} />
                     </Col>
                     <Col sm="1" className='d-flex align-items-end'>
@@ -367,12 +361,12 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
         {status && message !== '' ? 
                 <div className = {status ? 'text-success' : 'text-danger'}>
                   {status && <div>
-                  <span className='text-success'>Success {message}</span>. Closing in {countdown} seconds...</div>}
+                  <span className='text-success'>{t('success')}</span>. {t('closing_countdown', {countdown: countdown})}</div>}
                 </div>
                 :
                 <ButtonGroup>
                 <Button onClick={onClose} className='bg-secondary border-light px-5 mx-3 rounded text-light'>
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 <Button onClick={handleUpdatePost} className='bg-blue-normal border-light px-4 mx-3 rounded d-flex'>
                   {
@@ -382,7 +376,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                       :
                       <div>
                         <FontAwesomeIcon icon={faEdit} className='me-2' />
-                        Update
+                        {t('update')}
                       </div>
                   }
       

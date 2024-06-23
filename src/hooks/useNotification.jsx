@@ -4,7 +4,6 @@ import { io } from 'socket.io-client';
 import useAuth from './useAuth';
 import { useAppContext } from '../context/authContext';
 import { getNotifications } from '../actions/notiAction';
-import useLocalStorage from './useLocalStorage';
 import useToken from './useToken';
 import { baseURL } from './api/baseApi';
 
@@ -63,14 +62,13 @@ const useNotification = () => {
           console.log('Connected to socket.io server');
           setIsConnected(true);
           
-        console.log('socket:',  socket.id)
         const socket_id = socket.id
         //dispatch({ type: 'SET_SOCKET_ID', payload:  socket.id });
         sessionStorage.setItem('socket-id', JSON.stringify(socket_id))
         });
 
         socket.on('notification', (message) => {
-          console.log('Received notification:', message);
+          //console.log('Received notification:', message);
           if (message.id) {
             dispatch({type: "REMOVE_ID_CRAWLING", payload: message.id});
             dispatch({ type: 'ADD_MESSAGE', payload: message });

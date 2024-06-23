@@ -9,9 +9,11 @@ import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons"
 import Information from "../../components/admin/Information"
 import ButtonGroupActive from "../../components/admin/ButtonGroupActive"
 import usePageNavigation from "../../hooks/usePageNavigation"
+import { useTranslation } from "react-i18next"
 
 
 const CallforPapers = () => {
+  const {t} = useTranslation()
   const { pendingConf, getPendingConfById } = useAdmin()
   const conf_id = useParams()
   const [loadingConf, setLoadingConf] = useState(true)
@@ -88,12 +90,12 @@ const CallforPapers = () => {
                   (previousPath && previousPath.includes('dashboard')) ?
 <                 Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/dashboard')}>
                   <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
-                  Back to Dashboard
+                  {t('back_to_dashboard')}
                 </Button>
                 :
                 <Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/conferences_management')}>
                   <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
-                  Back to Conferences Management
+                  {t('back_to_conf_management')}
                 </Button>
                 }
                 
@@ -101,7 +103,7 @@ const CallforPapers = () => {
               {
                 displayConf?.information?.status && (
                   <div className="mt-4 fs-large text-success">
-                    {`This conference is active now`}
+                    {t('active_note')}
                   </div>
                 )
               }
@@ -121,18 +123,18 @@ const CallforPapers = () => {
             <div className="d-flex justify-content-between">
                <div className="">
               
-              No call for paper available
+               {t('no_conferences')}
             </div>
                 {
                   (previousPath && previousPath.includes('dashboard')) ?
 <                 Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/dashboard')}>
                   <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
-                  Back to Dashboard
+                  {t('back_to_dashboard')}
                 </Button>
                 :
                 <Button className='bg-teal-normal align-item my-1' onClick={() => navigate('/admin/conferences_management')}>
                   <FontAwesomeIcon icon={faArrowRightToBracket} className='mx-1 rotate-180' />
-                  Back to Conferences Management
+                  {t('back_to_conf_management')}
                 </Button>
                 }
                 

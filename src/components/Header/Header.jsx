@@ -77,7 +77,7 @@ const Header = () => {
           show={showDropdown}
         >
           <Dropdown.Toggle
-            className={`mx-2 mx-md-4 text-color-black fs-medium fw-bold header-title bg-transparent border-0 ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'border-3 border-bottom border-secondary' : ''}`}
+            className={`mx-2 mx-md-4 rounded-0 text-center text-color-black fs-medium fw-bold header-title bg-transparent border-0 ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'text-center border-3 border-bottom border-secondary' : ''}`}
             id="dropdown-basic"
           >
             {t('conference')}

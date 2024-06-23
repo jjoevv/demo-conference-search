@@ -9,8 +9,10 @@ import DeleteModal from '../Modals/DeleteModal'
 import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
 import useConference from '../../hooks/useConferences'
+import { useTranslation } from 'react-i18next'
 
 const AllConferences = ({ conferences }) => {
+  const {t, i18n} = useTranslation()
   const scrollPositions = useRef({});
   const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
@@ -75,30 +77,35 @@ const AllConferences = ({ conferences }) => {
         disableResizing: true
       },
       {
-        Header: 'Name',
+        Header: t('name'),
         accessor: 'information.name',
+        id: 'name',
         width: 400
       },
       {
-        Header: 'Acronym',
+        Header:t('acronym'),
         accessor: 'information.acronym',
         width: 100,
+        id: 'acronym',
         disableResizing: true
       },
       {
-        Header: 'Source',
+        Header:t('source'),
         accessor: 'information.source',
+        id: 'source',
         width: 100,
         disableResizing: true
       },
       {
-        Header: 'Rank',
+        Header:t('rank'),
         accessor: 'information.rank',
+        id: 'rank',
         width: 150,
         disableResizing: true
       },
       {
-        Header: 'Field of Research',
+        Header:t('field_of_research'),
+        id: 'for',
         accessor: (row) => {
           const remainingItems = row.information?.fieldOfResearch.slice(1).map((item, index) => (
             <div key={index}>{item}</div>
@@ -129,7 +136,8 @@ const AllConferences = ({ conferences }) => {
         },
       },
       {
-        Header: 'Location',
+        Header:t('location'),
+        id: 'location',
         accessor: (row) => {
           const newOrganizations = row.organizations.filter(org => org.status === 'new');
           if (newOrganizations.length > 0) {
@@ -141,7 +149,8 @@ const AllConferences = ({ conferences }) => {
         width: 200
       },
       {
-        Header: 'Type',
+        Header:t('type'),
+        id: 'type',
         accessor: (row) => {
           const newOrganizations = row.organizations.filter(org => org.status === 'new');
           if (newOrganizations.length > 0) {
@@ -155,7 +164,7 @@ const AllConferences = ({ conferences }) => {
       },
       // Định nghĩa cột "Conference date"
       {
-        Header: 'Conference date',
+        Header:t('conference_date'),
         accessor: (row) => {
           const newOrganizations = row.organizations.filter(org => org.status === 'new');
           if (newOrganizations.length > 0) {
@@ -166,12 +175,47 @@ const AllConferences = ({ conferences }) => {
             return ''; // Hoặc giá trị mặc định khác nếu không có tổ chức nào có status là "new"
           }
         },
-        id: 'conference_date',
+        id: 'imporatant, date',
         width: 200
       },
-
       {
-        Header: 'Action',
+        Header:t('important_dates'),
+        id: 'important_dates',
+        accessor: (row) => {
+          // Lọc và sắp xếp các ngày có status 'new' theo ngày
+  const newDates = row.importantDates.filter(date => date.status === 'new');
+  const sortedDates = newDates.sort((a, b) => {
+    return new Date(a.date_value) - new Date(b.date_value);
+  });
+          return (
+          <div>
+          
+          {sortedDates.length > 1 && (
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-for-${row.id}`} >
+                  <ul className="list-unstyled">
+                    {sortedDates.map(date => (
+                      <li key={date.date_id} className="d-flex align-items-center justify-content-start text-nowrap">
+                        <span className="date-type">{date.date_type} {`(${moment(date.date_value).format('yyyy/MM/DD')})`}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Tooltip>
+              }
+            >
+             <span className='text-decoration-underline mx-1' style={{ cursor: 'pointer' }}>
+            +{newDates.length} {t('date', { count: newDates.length })}
+          </span>
+            </OverlayTrigger>
+          )}
+        </div>)
+        }
+      },
+      {
+        Header:t('action'),
+        id: 'action',
         accessor: 'actions',
         Cell: ({ row }) => (
           <div className='fixed-column p-0 d-flex align-items-center justify-content-center'>
@@ -194,8 +238,9 @@ const AllConferences = ({ conferences }) => {
       },
 
     ],
-    []
+    [i18n.language]
   );
+
   return (
     <div>
       {showDeleteConf &&

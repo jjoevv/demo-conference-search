@@ -3,6 +3,7 @@ import { Container, Form, Row, Col, Spinner } from 'react-bootstrap'
 import useSetting from '../../hooks/useSetting'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Loading from '../../components/Loading'
+import { useTranslation } from 'react-i18next'
 
 const updateCircleOptions = [
   { id: '1', option: "Every 3 days", value: 3 },
@@ -12,6 +13,7 @@ const updateCircleOptions = [
 ];
 
 const Setting = () => {
+  const {t} = useTranslation()
   const { settings, loading, getAllSetting, updateSetting } = useSetting()
   const [displaySetting, setDisplaySetting] = useState([])
   const { user } = useLocalStorage()
@@ -49,8 +51,8 @@ const Setting = () => {
 
   return (
     <Container className=' m-5 pt-5  overflow-x-hidden'>
-      <h4 className=''>Setting</h4>
-      <h6 className='text-color-darker mb-2'>How would you like to recieve notifications?</h6>
+      <h4 className=''>{t('setting')}</h4>
+      <h6 className='text-color-darker mb-2'>{t('how_would_you_like_to_receive_notifications')}</h6>
 
 
      {
@@ -68,8 +70,8 @@ const Setting = () => {
               return (
                 <Form.Group key={setting?.tid} className="w-100 my-2 ps-3 pe-5 d-flex align-items-center justify-content-space">
                   <Form.Label column sm="6" className='pe-5 me-5'>
-                    <div className='fw-bold text-color-black'>{setting?.label}</div>
-                    <div className="text-color-medium">{setting?.describe}</div>
+                    <div className='fw-bold text-color-black'>{t(setting?.label)}</div>
+                    <div className="text-color-medium">{t(setting?.describe)}</div>
                   </Form.Label>
                   <Col sm="2" className='ms-3'>
                     {switchValue === setting?.tid && loading ? (

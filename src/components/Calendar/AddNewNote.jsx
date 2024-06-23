@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import useNote from '../../hooks/useNote';
 import Loading from '../Loading';
+import { useTranslation } from 'react-i18next';
 
 const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
-
+  const {t} = useTranslation()
   const { loading, addNote } = useNote()
   const [warning, setWarning] = useState('')
   const [inputvalue, setInputValue] = useState('');
@@ -73,10 +74,10 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
     <div>
       <Form >
         <Form.Group controlId="inputTextArea">
-          <Form.Label>{`Date: ${dateClicked}`}</Form.Label>
+          <Form.Label>{`${t('date')}: ${dateClicked}`}</Form.Label>
           <Form.Control
             as="textarea"
-            placeholder='Add your note...'
+            placeholder={`${t('add_new')} ${t('note').toLowerCase()}`}
             rows={4}
             value={inputvalue}
             onChange={handleChange}
@@ -90,15 +91,15 @@ const AddNewNote = ({ dateClicked, onClose, onBack, onAdd, onReloadList }) => {
         {error && <p className="text-danger text-center">{message}</p>}
         {!error && isSubmit && <p className="text-success text-center">{message}</p>}
         <ButtonGroup className="w-100 my-1">
-          <Button className='bg-transparent me-2 rounded text-color-black' onClick={handleButtonClick}>Back</Button>
+          <Button className='bg-transparent me-2 rounded text-color-black' onClick={handleButtonClick}>{t('back')}</Button>
           <Button className='bg-primary-normal border-light ms-2 rounded' onClick={handleAddNew}>
             {
-              loading ? <Loading size={'sm'}/> : 'Add'
+              loading ? <Loading size={'sm'}/> : `${t('add_new')}`
             }
           </Button>
         </ButtonGroup>
       </div>
-      {statusUpdate && isSubmit && <p>Auto closing in {autoClose} seconds</p>}
+      {statusUpdate && isSubmit &&  <span className='text-success'>{t('success')}{t('closing_countdown', {countdown: autoClose})}</span>}
     </div>
   )
 }

@@ -7,26 +7,27 @@ import { useState } from 'react'
 
 const labelMap = {
   'DATA_UPDATE_CYCLE': {
-      label: 'Data Update Cycle',
-      describe: 'Select the data update cycle. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+      label: 'label_data_update_cycle',
+      describe: 'describe_data_update_cycle'
   },
   'CHANGE_AND_UPDATE': {
-      label: 'Change and Update',
-      describe: 'Our system will send you email notifications about conferences with extended dates'
+      label: 'label_change_and_update',
+      describe: 'describe_change_and_update'
   },
   'CANCELLED_EVENT': {
-      label: 'Cancelled conference',
-      describe: 'Our system will send you email notifications about cancelled events'
+      label: 'label_cancelled_conference',
+      describe: 'describe_cancelled_event'
   },
   'YOUR_UPCOMING_EVENT': {
-      label: 'Your upcoming event',
-      describe: 'Our system will send you email notifications about your upcoming events in the timestamp'
+      label: 'label_your_upcoming_event',
+      describe: 'describe_your_upcoming_event'
   },
   'AUTO_ADD_EVENT_TO_SCHEDULE': {
-      label: 'Auto add events to schedule',
-      describe: "Important dates from conferences you follow will be automatically added to your schedule."
+      label: 'label_auto_add_event_to_schedule',
+      describe: 'describe_auto_add_event_to_schedule'
   }
 };
+
 const useSetting = () => {
   const {state, dispatch} = useAppContext()
   const { user } = useLocalStorage()

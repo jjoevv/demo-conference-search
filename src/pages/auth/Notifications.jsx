@@ -7,10 +7,14 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 import Loading from '../../components/Loading'
 import ReactPaginate from 'react-paginate'
 import useConference from '../../hooks/useConferences'
+import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle, faDotCircle } from '@fortawesome/free-solid-svg-icons'
 const Notifications = () => {
+  const {t} = useTranslation()
   const { user } = useLocalStorage()
   const {handleGetOne} = useConference()
-  const { loading, notifications, getAllNotifications } = useNotification()
+  const { loading, notifications, getAllNotifications, getNoticationById } = useNotification()
   const [currentPage, setCurrentPage] = useState(0);
   const [notificationsPerPage] = useState(7);
   const navigate = useNavigate()
@@ -43,16 +47,42 @@ const Notifications = () => {
     const secondPartWithBoldDate = secondPart.replace(/"\d+\/\d+\/\d+"/g, makeDateBold); // In đậm ngày
     return { firstPart, secondPart: secondPartWithBoldDate };
   };
+  const processMessage = (message) => {
+    // Tách dữ liệu từ message sử dụng biểu thức chính quy
+    const regex = /"(.*?)"/g;
+    let match;
+    let parts = [];
+    while ((match = regex.exec(message)) !== null) {
+      parts.push(match[1]);
+    }
 
+    // Xử lý từng loại thông báo dựa trên từng phần từ
+    if (message.includes('[UPDATED]')) {
+      const [conferenceName, startDate, endDate, location, type] = parts;
+      return t('updatedConferenceDetails', { conferenceName, startDate, endDate, location, type });
+    } else if (message.includes('[NEW]')) {
+      const [conferenceName, submissionDeadline] = parts;
+      return t('updatedPaperDeadline', { conferenceName, submissionDeadline });
+    } else if (message.includes('[DELETE]')) {
+      const [conferenceName, submissionDeadline] = parts;
+      return t('cancelledSubmissionDeadline', { conferenceName, submissionDeadline });
+    } else if (message.includes('[UPCOMING]')) {
+      const [conferenceName, startDate, endDate] = parts;
+      return t('upcomingConference', { conferenceName, startDate, endDate });
+    }
+    else {
+      return message; // Trả về thông báo không được hỗ trợ nếu không khớp với bất kỳ mẫu nào
+    }
+  };
 
-  const handleViewMore = async (id) => {
-    await handleGetOne(id)
-    navigate(`/detailed-information/${id}`)
+  const handleViewMore = async (noti) => {
+    await getNoticationById([noti])
+    navigate(`/detailed-information/${noti.Follow.CallForPaperCfpId}`)
   }
   return (
     <Container className=' m-5 pt-5  overflow-x-hidden'>
-      <h4 className='mb-4'>Notification</h4>
-      <h5>All notifications here</h5>
+      <h4 className='mb-4'>{t('notifications')}</h4>
+      <p className='fs-medium'>{t('all_notifications_here')}</p>
 
       {
         loading
@@ -66,24 +96,27 @@ const Notifications = () => {
               currentNotifications.map((noti, index) => {
                 const { firstPart, secondPart } = splitNotificationMessage(noti.message);
                 return (
-                  <Row key={index} className='p-4 bg-skyblue-light rounded-2 my-4 me-3 noti-wrapper'>
-                    <span className='fw-semibold text-color-darker fs-5'>{firstPart}</span>
-                    <div className='fs-5 text-yellow' dangerouslySetInnerHTML={{ __html: secondPart }}></div>
+                  <Row key={index} className={`p-4 rounded-2 my-4 me-3 noti-wrapper ${noti.read_status ? ' bg-light' : 'bg-skyblue-light'}`}>
+                    <div className="d-flex align-items-center">
+                      <FontAwesomeIcon icon={faCircle} className={`me-2 ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}/>
+                    <span className={`fw-semibold fs-5  ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}>{firstPart}</span>
+                    </div>
+                    <div className={`${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`} dangerouslySetInnerHTML={{ __html: secondPart }}></div>
 
                     <div className="d-flex justify-content-between align-items-center">
-                      <div className='text-color-medium'>
-                        {`Updated in ${moment(noti.ctime).format('YYYY/MM/DD HH:mm')}`}
+                      <div className='text-color-medium fs-medium'>
+                        {`${t('updated_in')} ${moment(noti.ctime).format('YYYY/MM/DD HH:mm')}`}
                       </div>
                       <Button
                         disabled={noti.Follow.CallForPaperCfpId !== 'null' ? false : true}
-                        onClick={() => handleViewMore(noti.Follow.CallForPaperCfpId)}
-                        className="d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0 btn-noti-more"
+                        onClick={() => handleViewMore(noti)}
+                        className=" d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0 btn-noti-more"
                         title='Go to detailed information page'
                       >
                         {
                           noti.Follow.CallForPaperCfpId !== 'null'
                             ?
-                            `More details >`
+                            `${t('more_details')} >`
                             :
                             `You've unfollowed this conference.`
                         }
@@ -94,7 +127,7 @@ const Notifications = () => {
               })
             }
 
-            <ReactPaginate
+<ReactPaginate
               pageCount={Math.ceil(notifications.length / notificationsPerPage)}
               pageRangeDisplayed={5}
               marginPagesDisplayed={2}

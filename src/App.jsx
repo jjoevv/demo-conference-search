@@ -10,8 +10,25 @@ import MainLayout from './layout/MainLayout.jsx'
 import { AppContextProvider } from './context/authContext.jsx'
 import RoutesApp from './routes/RouteApp.jsx'
 import Footer from './components/Footer/Footer.jsx'
+import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Kiểm tra xem localStorage đã lưu ngôn ngữ hay chưa
+    const storedLanguage = localStorage.getItem('language');
+    if (storedLanguage) {
+      // Nếu đã có, set ngôn ngữ cho i18n từ localStorage
+      i18n.changeLanguage(storedLanguage);
+    } else {
+      // Nếu chưa có, lưu ngôn ngữ mặc định vào localStorage và set cho i18n
+      const defaultLanguage = i18n.language; // Lấy ngôn ngữ mặc định từ i18n
+      localStorage.setItem('language', defaultLanguage);
+      i18n.changeLanguage(defaultLanguage);
+    }
+  }, [i18n]);
   return (
     <AppContextProvider>
       <HashRouter>

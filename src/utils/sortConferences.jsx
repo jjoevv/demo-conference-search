@@ -140,20 +140,19 @@ const sortByFollow =  (conferences, followedConferences) => {
 };
 
 const sortConferences = (sortby, conferences) => {
-
   const hasElementsInList = checkExistValue(conferences)
   const isExist = hasElementsInList.some(value => value === true);
   if (isExist || conferences.length > 0) {
     switch (sortby) {
-      case 'Name A > Z':
+      case 'nameAz':
         // Sắp xếp theo tên
         return sortByName(conferences)
-      case 'Upcoming':
+      case 'upcoming':
         // Sắp xếp theo thời gian
         return sortByUpcoming(conferences)
-      case 'Latest':
+      case 'latest':
         return sortByLatest(conferences)
-      case 'Random':
+      case 'random':
         return sortAndFilterConferences(conferences)
       default:
         // Trường hợp mặc định, không có sắp xếp

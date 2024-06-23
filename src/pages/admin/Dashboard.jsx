@@ -11,8 +11,9 @@ import ETLChart from '../../components/admin/dashboard/ETLChart'
 import AllConferences from '../../components/admin/AllConferences'
 import AllUsers from '../../components/admin/AllUsers'
 import { useNavigate } from 'react-router-dom'
-
+import { useTranslation } from 'react-i18next'
 const Dashboard = () => {
+  const { t, i18n } = useTranslation()
   const { etlLog, currentUsers,
     startDate, endDate, handleEndDateChange, handleStartDateChange, resetDates,
     getCurrentUser, getEtlLog, getUserLog, getLatestAccessInfo } = useDashboard()
@@ -32,9 +33,9 @@ const Dashboard = () => {
       handleStartDateChange(start)
       handleEndDateChange(end)
 
-     await getCurrentUser()
-    await getEtlLog(start, end)
-     await getUserLog(start, end)
+      await getCurrentUser()
+      await getEtlLog(start, end)
+      await getUserLog(start, end)
       await getAllConferences()
       await getAllUsers()
       setLoading(false)
@@ -77,17 +78,17 @@ const Dashboard = () => {
           <>
             <div className="mx-5 my-3 p-5 bg-white border-bottom rounded-1">
               <div className='border-5 border-teal-normal border-start py-0  my-3 ms-3'>
-                <h4 className="text-teal-normal ms-2">Overview</h4>
+                <h4 className="text-teal-normal ms-2">{t('overview')}</h4>
               </div>
               <Row className="d-flex justify-content-start align-items-center">
                 <Col className="rounded mx-2 border border-light shadow-sm p-2">
                   <div className='p-1 rounded shadow-sm d-inline'>
                     <FontAwesomeIcon icon={faFileContract} className='text-teal-normal' />
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">Total conferences</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">{t('total_conferences')}</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {conferences.length}</h3>
-                    <span className='text-light-emphasis'>{`  conference${conferences.length > 1 ? 's' : ''}`}</span>
+                    <span className='text-light-emphasis'>{`  ${t('conference').toLowerCase()}${conferences.length > 1 && i18n.language === 'en' ? 's' : ''}`}</span>
                   </div>
                 </Col>
                 <Col className="rounded mx-2 border border-light shadow-sm p-2 overview-tab">
@@ -95,31 +96,31 @@ const Dashboard = () => {
                     <FontAwesomeIcon icon={faUsers} className='text-info' />
 
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">Total user accounts</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">{t('total_user_accounts')}</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {users.length}</h3>
-                    <span className='text-light-emphasis'>{`user${users.length > 1 ? 's' : ''}`}</span>
+                    <span className='text-light-emphasis'>{`  ${t('user').toLowerCase()}${currentUsers.length > 1 && i18n.language === 'en' ? 's' : ''}`}</span>
                   </div>
                 </Col>
                 <Col className="rounded mx-2 border border-light shadow-sm p-2 overview-tab">
                   <div className='p-1 rounded shadow-sm d-inline'>
                     <FontAwesomeIcon icon={faUserClock} className='text-primary' />
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">User logging</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">{t('user_logging')}</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {currentUsers.length}</h3>
-                    <span className='text-light-emphasis'>{`  user${currentUsers.length > 1 ? 's' : ''}  (*Updated every 5m)`}</span>
+                    <span className='text-light-emphasis'>{`  ${t('visitors').toLowerCase()}${currentUsers.length > 1 && i18n.language === 'en' ? 's' : ''}  (*${t('updated_every_5m')})`}</span>
                   </div>
                 </Col>
                 <Col className="rounded mx-2 border border-light shadow-sm p-2 overview-tab">
                   <div className='p-1 rounded shadow-sm d-inline'>
                     <FontAwesomeIcon icon={faSpider} className='text-warning' />
                   </div>
-                  <div className="text-light-emphasis fw-bold mt-3 me-5">Latest date crawl</div>
+                  <div className="text-light-emphasis fw-bold mt-3 me-5">{t('latest_date_crawl')}</div>
                   <div className='d-flex align-items-center'>
                     <h3 className=" fw-bold me-1"> {latesDateETL?.totalCrawls}</h3>
-                    <span className='mx-1 text-light-emphasis'>{`run${latesDateETL?.totalCrawls > 1 ? 's' : ''}`}</span>
-                    <span className='fw-bold text-light-emphasis'>{` in ${latesDateETL?.date !== '' && moment(latesDateETL.date).format('YYYY/MM/DD')}`}</span>
+                    <span className='mx-1 text-light-emphasis'>{`${t('run')}${latesDateETL?.totalCrawls > 1 && i18n.language === 'en' ? 's' : ''}`}</span>
+                    <span className='fw-bold text-light-emphasis'>{` ${t('in')} ${latesDateETL?.date !== '' && moment(latesDateETL.date).format('YYYY/MM/DD')}`}</span>
                   </div>
 
                 </Col>
@@ -132,7 +133,7 @@ const Dashboard = () => {
                 {
                   startDate && endDate &&
                   <>
-                    {moment(startDate).format('Do MMMM, YYYY')}
+                    {moment(startDate).locale(i18n.language).format('Do MMMM YYYY')}
                     {` - ${moment(endDate).format('Do MMMM, YYYY')}`}
                   </>
                 }
@@ -168,25 +169,25 @@ const Dashboard = () => {
                   onClick={() => handleFilterTypeChange('pickDate')}
                   className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2  ${filterType === 'pickDate' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
                 >
-                  Pick Date
+                  {t('pick_date')}
                 </Button>
                 <Button
                   onClick={() => handleFilterTypeChange('weekly')}
                   className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2 ${filterType === 'weekly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
                 >
-                  Weekly
+                  {t('weekly')}
                 </Button>
                 <Button
                   onClick={() => handleFilterTypeChange('monthly')}
                   className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2 ${filterType === 'monthly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
                 >
-                  Monthly
+                  {t('monthly')}
                 </Button>
               </div>
 
             </div>
-            
-            <div className='mx-5 p-5 pb-0 d-flex  bg-white chart-wrapper'>
+
+            <div className='mx-5 p-5 pb-0 bg-white chart-wrapper'>
               <div className='chart-container'>
                 <ETLChart startDate={startDate} endDate={endDate} />
               </div>
@@ -198,12 +199,12 @@ const Dashboard = () => {
             <div className='mx-5 mb-3 my-3 p-5 bg-white rounded-1'>
               <div className='mb-3 ms-3 d-flex justify-content-between align-items-center'>
                 <div className='border-5 border-teal-normal border-start'>
-                  <h4 className="text-darkcyan-normal ms-2 my-0">All conference</h4>
+                  <h4 className="text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('conferences')}`}</h4>
                 </div>
                 <Button
                   onClick={() => navigate('/admin/conferences_management')}
                   className='d-flex justify-content-center align-items-center bg-teal-normal'>
-                  Show all
+                  {t('showall')}
                   <div className="rounded-2 px-2 bg-teal-normal">
                     <FontAwesomeIcon icon={faSquareUpRight} />
                   </div>
@@ -215,12 +216,12 @@ const Dashboard = () => {
               <div className='mb-3 ms-3 d-flex justify-content-between align-items-center'>
 
                 <div className='border-5 border-darkcyan-normal border-start'>
-                  <h4 className="text-darkcyan-normal ms-2 my-0">All users</h4>
+                  <h4 className="text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('users')}`}</h4>
                 </div>
                 <Button
                   onClick={() => navigate('/admin/users_management')}
                   className='d-flex justify-content-center align-items-center bg-darkcyan-normal'>
-                  Show all
+                  {t('showall')}
                   <div className="rounded-2 px-2 bg-darkcyan-normal">
                     <FontAwesomeIcon icon={faSquareUpRight} />
                   </div>

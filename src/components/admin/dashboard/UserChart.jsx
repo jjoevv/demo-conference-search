@@ -7,9 +7,11 @@ import { Bar, Line } from 'react-chartjs-2';
 import { Chart, Tooltip, registerables } from 'chart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowTrendDown, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 Chart.register(...registerables); // Đăng ký tất cả các thành phần của Chart.js
 const UserChart = ({ startDate, endDate }) => {
+    const {i18n, t} = useTranslation()
     const { userLog, calculateRatio } = useDashboard()
     const [ratioVisitors, setRatioVisitors] = useState(null)
 
@@ -38,7 +40,7 @@ const UserChart = ({ startDate, endDate }) => {
 
     useEffect(() => {
         filterData(startDate, endDate)
-    }, [userLog, startDate, endDate])
+    }, [userLog, startDate, endDate, i18n.language])
 
     const filterData = async (start, end) => {
         // Lọc dữ liệu ETL log theo ngày bắt đầu và ngày kết thúc
@@ -110,7 +112,7 @@ const UserChart = ({ startDate, endDate }) => {
             labels: labels,
             datasets: [
                 {
-                    label: 'Total Visitors' + ` (${sum} visitor${sum > 1 ? 's' : ''})`,
+                    label: `${t('total_visitors')} (${sum} ${t('visitors')}${i18n.language === 'en' ? 's' :''})`,
                     data: data,
                     fill: false,
                     backgroundColor: 'rgb(116,189,205)',
@@ -123,7 +125,7 @@ const UserChart = ({ startDate, endDate }) => {
     const customTooltip = {
         callbacks: {
             label: function (tooltipItem) {
-                return 'Total visitors: ' + tooltipItem.raw;
+                return `${t('total_visitors')} (${tooltipItem.raw} ${t('visitors')}${i18n.language === 'en' ? 's' :''})`
             },
         }
     };
@@ -131,7 +133,7 @@ const UserChart = ({ startDate, endDate }) => {
         <div className='rounded mx-3 border border-light shadow-sm p-2 overview-tab'>
             <div className='my-3 ms-3 d-flex justify-content-between'>
                 <div className='d-flex align-items-center border-5 border-info border-start '>
-                    <h5 className="text-info ms-2 my-0">Total visiters</h5>
+                    <h5 className="text-info ms-2 my-0">{t('total_visitors')}</h5>
                     <div className="mx-2">
                         {
                             ratioVisitors &&

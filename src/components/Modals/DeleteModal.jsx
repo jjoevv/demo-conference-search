@@ -4,52 +4,56 @@ import { Modal } from 'react-bootstrap';
 import Loading from '../Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useRef, useState } from 'react';
 
 const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, loading, isConfirm, countdown, onModalClick }) => {
-  
+  const {t} = useTranslation()
+  const modalRef = useRef(null);
+
   return (
-    <Modal show={show} onHide={onClose} centered>
-      <Modal.Body onClick={(e) => e.stopPropagation()}>
-      <div className="d-flex justify-content-between align-items-center py-2 mb-3">
-          <Modal.Title className='text-center w-100 text-danger ps-5'>Delete conference</Modal.Title>
-          <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
-            <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
-          </Button>
+    <Modal show={show} onHide={(e)=>onClose(e)} centered>
+        <div   ref={modalRef} >
+          <Modal.Body onClick={(e) => e.stopPropagation()}>
+          <div className="d-flex justify-content-between align-items-center py-2 mb-3">
+              <Modal.Title className='text-center w-100 text-danger ps-5'>{`${t('delete')} ${t('conference')}`}</Modal.Title>
+              <Button variant="secondary" onClick={onClose} className='bg-transparent border-0'>
+                <FontAwesomeIcon icon={faXmark} className='text-secondary fs-3' />
+              </Button>
+            </div>
+            <p className="fs-5 fw-bold">{t('confirm_delete')}</p>
+            <p>{t('thisActionIsPermanent')}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            {
+              isConfirm && status
+                ?
+                <>
+                {status && (
+                  <div className = {status ? 'text-success' : 'text-danger'}>
+                    {status && <div>
+                      <span className='text-success'>{t('success')}</span>. {t('closing_countdown', {countdown: countdown})}</div>}
+                  </div>
+            )}
+                </>
+                :
+                <ButtonGroup className='w-100'>
+                  <Button className='bg-secondary border-light me-2 rounded' onClick={onClose}>
+                    {t('cancel')}
+                  </Button>
+                  <Button className='bg-red-normal border-danger ms-2  rounded' onClick={onConfirm}>
+                    {
+                      loading
+                        ?
+                        <Loading />
+                        :
+                        `${t('delete')}`
+                    }
+                  </Button>
+                </ButtonGroup>
+            }
+          </Modal.Footer>
         </div>
-        <p className="fs-5 fw-bold">{`Are you sure want to delete?`}</p>
-        <p>This action is permanent and cannot be undone.</p>
-      </Modal.Body>
-      <Modal.Footer>
-        {
-          isConfirm && status
-            ?
-            <>
-            {status && (
-              <div className = {status ? 'text-success' : 'text-danger'}>
-                {status && <div>
-                <span className='text-success'>{message}</span> Closing in {countdown} seconds...</div>}
-              </div>
-        )}
-            </>
-            :
-            <ButtonGroup className='w-100'>
-              <Button className='bg-secondary border-light me-2 rounded' onClick={onClose}>
-                Cancel
-              </Button>
-              <Button className='bg-red-normal border-danger ms-2  rounded' onClick={onConfirm}>
-                {
-                  loading
-                    ?
-                    <Loading />
-                    :
-                    'Delete'
-                }
-              </Button>
-            </ButtonGroup>
-
-        }
-      </Modal.Footer>
-
     </Modal>
   )
 }

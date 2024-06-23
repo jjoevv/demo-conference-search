@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Select from 'react-select';
-import useConference from '../../hooks/useConferences';
 import useSearch from '../../hooks/useSearch';
 import { FloatingLabel, Form } from "react-bootstrap"
+import { useTranslation } from 'react-i18next';
 
 
 const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
+  const {t} = useTranslation()
   const { filterOptions, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([]);
 
@@ -83,16 +84,16 @@ const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
         styles={customStyles}
         closeMenuOnSelect={false}
         isSearchable={true}
-        placeholder="Select the field of research..."
+        placeholder={t('select_field_of_research')}
         required
         menuPortalTarget={document.body}
         maxMenuHeight={200}
       />
 
-        <FloatingLabel controlId="floatingInput" label="+ Add new" className='text-center d-flex justify-content-center mt-1'>
+        <FloatingLabel controlId="floatingInput" label={`+ ${t('add_new')}`} className='text-center d-flex justify-content-center mt-1'>
           <Form.Control
             type="text"
-            placeholder="Enter something"
+            placeholder={t('enter_something')}
             value={inputValue}
             name='inputValue'
             onChange={handleInputChange}

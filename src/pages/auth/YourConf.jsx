@@ -15,8 +15,10 @@ import useFilter from '../../hooks/useFilter'
 import Loading from '../../components/Loading'
 import Filter from '../../components/Filter/Filter'
 import useSessionStorage from '../../hooks/useSessionStorage'
+import { useTranslation } from 'react-i18next'
 
 const YourConf = () => {
+  const {t} = useTranslation()
   const [showAddForm, setShowAddForm] = useState(false)
   const { optionsSelected, getOptionsFilter } = useSearch()
   const { loading: loadingPost, postedConferences, getPostedConferences } = usePost()
@@ -41,11 +43,6 @@ const YourConf = () => {
     setDisplayConferences(postedConferences)
   }, [])
 
-  useEffect(() => {
-    if (!postedConferences) {
-      getPostedConferences()
-    }
-  }, [user])
 
   useEffect(() => {
     setDisplayConferences(postedConferences)
@@ -98,12 +95,12 @@ const YourConf = () => {
     <Container className=' m-5 pt-5  overflow-x-hidden'>
 
       <div className='d-flex align-items-center justify-content-between pe-5 mb-4'>
-        <h4 className='mb-2'>Your conferences</h4>
+        <h4 className='mb-2'>{t('your_conferences')}</h4>
         <Button
           className='rounded-2 bg-blue-normal border-0 d-flex align-items-center justify-content-between px-3'
           onClick={handleShow}>
           <Image width={20} height={20} className='me-2' src={editIcon} />
-          Add
+          {t('add_new')}
         </Button>
       </div>
       <AddConference show={showAddForm} handleClose={handleClose} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
@@ -118,6 +115,7 @@ const YourConf = () => {
             {
               postedConferences && postedConferences.length > 0 && !loadingPost ?
                 <>
+                <h6>{t('conference_list_description')}</h6>
                   <Filter />
                   <Conference
                     conferencesProp={displayConferences}
@@ -128,7 +126,7 @@ const YourConf = () => {
                     isPost={true}
                   />
                 </>
-                : <p>No conferences available.</p>
+                : <p>{t('no_posted_conferences')}</p>
             }
           </>
       }
