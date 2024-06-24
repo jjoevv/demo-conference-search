@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 const InformationPage = ({ conference }) => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { getConferenceDate, checkUrl } = useConference()
     const [isValidUrl, setIsValidUrl] = useState(null);
     useEffect(() => {

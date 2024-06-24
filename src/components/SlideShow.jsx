@@ -17,6 +17,21 @@ const SlideShow = () => {
     const scrollPositions = useRef({});
     const navigate = useNavigate()
     const {t} = useTranslation()
+
+     // State để lưu trữ kích thước hiện tại của màn hình
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // Sử dụng useEffect để cập nhật state khi kích thước màn hình thay đổi
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             const data = await getTopViewList()
@@ -45,14 +60,18 @@ const SlideShow = () => {
         navigate(`/detailed-information/${id}`)
 
     }
+   
+  // Render phần tử một lần khi màn hình nhỏ hơn 768px
+  const renderOneAtATime = windowWidth <= 768;
     // Hàm render danh sách hội nghị thành các items chứa 4 hội nghị mỗi item
     const renderConferenceItems = () => {
         const items = [];
-        for (let i = 0; i < displayConferences.length; i += 3) {
-            const conferenceSlice = displayConferences.slice(i, i + 3);
+        const step = renderOneAtATime ? 1 : 3;
+        for (let i = 0; i < displayConferences.length; i += step) {
+            const conferenceSlice = displayConferences.slice(i, i + step);
             items.push(
                 <Carousel.Item key={i}>
-                    <Row className='px-1'>
+                    <Row className="d-flex flex-wrap p-1">
                         {conferenceSlice.map(conference => (
                             <Col key={conference.id} className=' fw-bold border mx-2 p-2 rounded bg-beige-light'>
                                 <Button onClick={(e) => chooseConf(e, conference.id)} className='bg-transparent border-0 text-start'>
@@ -97,7 +116,7 @@ const SlideShow = () => {
     return (
         <Container className='bg-light p-2 text-dark bg-opacity-25 p-2'>
           <div className="d-flex justify-content-between align-items-center w-100 my-2">
-            <span className='h5 text-darkcyan-normal fw-bold'>{t('highest_views')}</span>
+            <span className='fs-large text-darkcyan-normal fw-bold'>{t('highest_views')}</span>
           <div>
           <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-2" onClick={handlePrev}>
                 <FontAwesomeIcon icon={faChevronLeft} className='fs-5'/>

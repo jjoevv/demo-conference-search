@@ -8,9 +8,11 @@ import { faChevronLeft, faChevronRight, faClock } from '@fortawesome/free-solid-
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const SuggestedCarousel = () => {
   const { conference, conferences, getAllConferences } = useConference()
+  const {windowWidth} = useScreenSize()
   const { findSimilarConferences } = useSuggest()
   const [displayConferences, setDisplayConferences] = useState([])
   const carouselRef = useRef(null); // Ref cho Carousel
@@ -53,8 +55,9 @@ const SuggestedCarousel = () => {
   // Hàm render danh sách hội nghị thành các items chứa 4 hội nghị mỗi item
   const renderConferenceItems = () => {
     const items = [];
-    for (let i = 0; i < displayConferences.length; i += 4) {
-      const conferenceSlice = displayConferences.slice(i, i + 4);
+    const step = windowWidth <= 768 ? 1 : 3;
+    for (let i = 0; i < displayConferences.length; i += step) {
+      const conferenceSlice = displayConferences.slice(i, i + step);
       items.push(
         <Carousel.Item key={i}>
           <Row className=''>
@@ -63,7 +66,7 @@ const SuggestedCarousel = () => {
                 <Button key={conf.id} className="text-start bg-transparent border-0"
                   onClick={(e) => chooseConf(e, conf.id)}
                 >
-                    <p className="card-title-suggest fw-bold text-teal-dark">{conf.information.name}</p>
+                    <p className={`fw-bold text-teal-dark ${windowWidth > 768 ? 'card-title-suggest' : 'text-nowrap text-truncate p-0 m-0'}`}>{conf.information.name}</p>
                     {
                       conf.organizations.length > 0 &&
                       <div className="text-primary-dark fw-bold fs-medium d-flex align-items-center">
@@ -97,12 +100,12 @@ const SuggestedCarousel = () => {
   return (
     <Container className='bg-light p-2 text-dark bg-opacity-25'>
       <div className="d-flex justify-content-between align-items-center w-100 my-2">
-        <span className='h5 text-darkcyan-normal fw-bold'>{t('interestedIn')}</span>
-        <div>
-          <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-2" onClick={handlePrev}>
+        <span className={`'text-darkcyan-normal fw-bold ${windowWidth > 768 ? 'h5': 'h6'}`}>{t('interestedIn')}</span>
+        <div className='d-flex'>
+          <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-1" onClick={handlePrev}>
             <FontAwesomeIcon icon={faChevronLeft} className='fs-5' />
           </Button>
-          <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-2" onClick={handleNext}>
+          <Button variant="primary" className="rounded-circle bg-primary-normal border-light mx-1" onClick={handleNext}>
             <FontAwesomeIcon icon={faChevronRight} className='fs-5' />
           </Button>
         </div>

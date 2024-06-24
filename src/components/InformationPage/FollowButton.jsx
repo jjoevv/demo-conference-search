@@ -6,10 +6,12 @@ import Loading from '../Loading';
 import { useEffect, useState } from 'react';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../hooks/useScreenSize';
 
 
 const FollowButton = () => {
     const {t} = useTranslation()
+    const {windowWidth} = useScreenSize()
     const { loading, listFollowed, followConference, unfollowConference, getListFollowedConferences } = useFollow()
     const {getDataListInStorage} = useSessionStorage()
     const [isClick, setIsClick] = useState(false)
@@ -70,7 +72,11 @@ const FollowButton = () => {
 
                         <div>
                             <Button
-                                className='d-flex justify-content-center align-items-center rounded-5 m-2 px-5 py-3 fw-semibold btn-wave-wrap'
+                                className={
+                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap
+                                    ${windowWidth > 768 ? 'm-2 px-5 py-3 fw-semibold ' : 'm-2 p-2'}
+                                `
+                                }
                                 onClick={handleUnfollow}
                             >
                                 {
@@ -96,7 +102,11 @@ const FollowButton = () => {
 
                         <div className=''>
                             <Button
-                                className='d-flex justify-content-center align-items-center rounded-5 m-2 px-5 py-3 fw-semibold btn-wave-wrap'
+                                className={
+                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap
+                                        ${windowWidth > 768 ? 'm-2 px-5 py-3   fw-semibold ' : 'm-2 p-2'}
+                                    `
+                                }
                                 onClick={handleFollow}
                             >
                                 {

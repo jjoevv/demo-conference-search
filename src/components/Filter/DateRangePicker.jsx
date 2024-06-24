@@ -10,10 +10,9 @@ import useSearch from '../../hooks/useSearch';
 import dateIcon from '../../assets/imgs/conf_date_light.png'
 import { formatLabel } from '../../utils/formatWord';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 const DateRangePicker = ({ label }) => {
-  
-
-  
+  const {t, i18n} = useTranslation()  
   const { addKeywords } = useSearch()
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -214,13 +213,13 @@ const DateRangePicker = ({ label }) => {
           <Row>
           <Col className='my-1 w-100 p-0 mt-3'>
           <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('1month')}>
-              1 next month
+              1 {` ${t('next_months')}`}
             </Button>
             <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('3months')}>
-              3 next months
+              3 {` ${t('next_months')}${i18n.language === 'en' ? 's' :''}`}
             </Button>
             <Button className="bg-transparent border-secondary mx-1 text-dark-emphasis" onClick={() => handleOptionChange('6months')}>
-              6 next months
+              6 {` ${t('next_months')}${i18n.language === 'en' ? 's' :''}`}
             </Button>
            
             </Col>
@@ -230,10 +229,10 @@ const DateRangePicker = ({ label }) => {
           <Button
             onClick={() => setShowDropdown(false)}
             className=' mx-1 rounded-2 border-0 bg-secondary'>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button className=' mx-1 rounded-2 border-0 bg-primary-normal' onClick={handleApplyFilter}>
-            Apply
+            {t('apply')}
           </Button>
         </ButtonGroup>
         </Dropdown.Item>

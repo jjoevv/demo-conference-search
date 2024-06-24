@@ -18,9 +18,11 @@ import TranslationButton from '../TranslationButton/TranslationButton'
 
 import './custom_header.css'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const Header = () => {
   const { t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { isExpiredLogin, isLogin } = useAuth()
   const { user } = useLocalStorage();
   const navigate = useNavigate()
@@ -51,9 +53,9 @@ const Header = () => {
   };
 
   return (
-    <Navbar expand="md" id="header" className=" vw-100 fixed-top px-5 shadow-sm bg-white">
+    <Navbar expand="md" id="header" className=" fixed-top px-5 shadow-sm bg-white">
     <LoginExpiredModal show={isLogin ? isExpiredLogin : false} />
-    <Container className="d-flex justify-content-between align-items-center w-100 px-5 px-md-5 px-sm-2">
+    <Container className="d-flex justify-content-between align-items-center w-100 px-5 px-md-5 px-sm-2 mt-2">
       <Navbar.Brand className="my-header-brand me-auto me-md-0">
         <Link to="/" className="text-teal-dark fs-4 fw-bold" title="Homepage">
           ConfHub

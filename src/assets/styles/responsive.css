@@ -1,3 +1,14 @@
+.header-conference-container{
+  font-weight: bold;
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  width: 100%;
+  margin-bottom: 2rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
 
 /* Media queries */
 @media screen and (max-width: 600px) {
@@ -8,15 +19,43 @@
 }
 @media screen and (min-width: 600px) {
   .my-conf-card {
-    max-width: 600px; /* For screens wider than 1024px */
-    width: 600px !important;
+   
 
   }
 }
+
+@media screen and (max-width: 768px) {
+  body {
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+  .header-conference-container{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .priority-title{
+    justify-content: start !important;
+  }
+  .conf-name{
+    white-space: nowrap;
+  }
+  .acronym-container{
+    height: 30px;
+    border-radius: 8px !important;
+  }
+  .acronym-container > span {    
+    font-size: small !important;
+  }
+}
+
 @media screen and (min-width: 768px) {
     .my-conf-card {
       width: 768px !important;
-      max-width: 768px; /* For screens wider than 768px */
+      max-width: 768px; /* For screens wider than 768px */  
+    }
+    .render-one-at-a-time {
+      /*slide top view*/
+      display: block; /* Hiển thị từng phần tử một lần */
     }
   }
   

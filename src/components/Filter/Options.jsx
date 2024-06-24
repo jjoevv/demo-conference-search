@@ -81,14 +81,13 @@ const Options = ({ label }) => {
     const [selectedOptions, setSelectedOptions] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
     const {t} = useTranslation()
-    useEffect(() => {
-        const staticValue = ["type", "category"];
+
     
-        if (staticValue.includes(label)) {
-            setOptions(data[label]);
-            getOptionsFilter(label, data[label]);
-        } else {
-            let transformedOptions = [];
+    useEffect(() => {
+        const fetchOption = async () => {
+            await getOptionsFilter(label)
+        }
+        let transformedOptions = [];
     
             if (label === 'location') {
                 transformedOptions = Object.keys(countries)
@@ -99,6 +98,7 @@ const Options = ({ label }) => {
                     }));
                 setOptions(transformedOptions);
             } else {
+                fetchOption()
                 if (filterOptions[label]) {
                     transformedOptions = filterOptions[label]
                         .filter(item => !item.includes(';'))
@@ -109,8 +109,7 @@ const Options = ({ label }) => {
                 }
                 setOptions(transformedOptions);
             }
-        }
-    }, []);
+    }, [label, filterOptions]);
     
 
 
@@ -168,7 +167,7 @@ const Options = ({ label }) => {
 
     return (
         <div>
-             <Select
+            <Select
             isMulti={true}
             options={options}
             value={optionsSelected[label].map(value => ({ value, label: value }))}

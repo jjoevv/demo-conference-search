@@ -124,8 +124,26 @@ const getCountForSelectedKeyword = (countlist, keyword, key) => {
   const getTotalPages = () => {
     const savedTotalPages = localStorage.getItem('totalConf');
     return savedTotalPages ? parseInt(savedTotalPages, 10) : 0;
-}
+} 
 
+  const extractDates = (str) => {
+    const regex = /from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/;
+    const matches = str.match(regex);
+    if (matches && matches.length === 3) {
+      return { startDate: matches[1], endDate: matches[2] };
+    }
+    return { startDate: '', endDate: '' };
+  };
+
+  // Hàm để trích xuất số sao từ chuỗi đánh giá
+  const extractStars = (str) => {
+    const regex = /(\d+)\*/;
+    const matches = str.match(regex);
+    if (matches && matches.length === 2) {
+      return matches[1];
+    }
+    return '';
+  };
 
 const isLocationMatch = (location, keyword, countries) => {
   const locationLower = location ? location.toLowerCase().trim() : '';
@@ -183,6 +201,56 @@ const isLocationMatch = (location, keyword, countries) => {
 };
 
 
+const isLocationAndContinentMatch = (location, keyword) => {
+  const locationLower = location ? location.toLowerCase().trim() : '';
+  const keywordLower = keyword.toLowerCase().trim();
+
+  // Nếu location không tồn tại hoặc rỗng, trả về false
+  if (!location || location === '') {
+    return false;
+  }
+
+  // Tách lấy phần từ sau dấu phẩy cuối cùng trong location
+  const locationParts = locationLower.split(',').map(part => part.trim());
+  const locationAfterComma = locationParts.length > 1 ? locationParts[locationParts.length - 1] : locationParts[0];
+
+  // Loại bỏ các dấu chấm và dấu ngoặc trong locationAfterComma
+  const cleanedLocationAfterComma = locationAfterComma.replace(/[.()]/g, '').trim();
+
+  // Tìm country trong danh sách countries thỏa mãn location
+  const matchingCountry = Object.values(countries).find(country => {
+    const countryLower2 = country.country_code2.toLowerCase();
+    const countryLower3 = country.country_code3.toLowerCase();
+    const countryNameLower = country.country_name.toLowerCase();
+    const countryNameFullLower = country.country_name_full.toLowerCase();
+    
+    // Kiểm tra cleanedLocationAfterComma có chứa country code ở phần từ sau dấu phẩy không
+    const locationContainsCountryCode = (
+      cleanedLocationAfterComma === countryLower2 ||
+      cleanedLocationAfterComma === countryLower3
+    );
+    
+    // Kiểm tra location có khớp với bất kỳ giá trị country name nào không
+    const locationMatches = (
+      cleanedLocationAfterComma === countryNameLower ||
+      cleanedLocationAfterComma === countryNameFullLower
+    );
+    return locationContainsCountryCode || locationMatches;
+  });
+
+  // Nếu không tìm thấy quốc gia phù hợp, trả về false
+  if (!matchingCountry) {
+    return false;
+  }
+
+  // Kiểm tra continent của matchingCountry với keyword
+  const continentLower = matchingCountry.continent_name.toLowerCase();
+  const continentMatches = (
+    continentLower.includes(keywordLower) ||
+    keywordLower.includes(continentLower)
+  );
+  return continentMatches;
+};
 
 
 const filterConferences =  (listConferences, keywordSelected) => {
@@ -202,8 +270,8 @@ const filterConferences =  (listConferences, keywordSelected) => {
 
         lowerKeywords.forEach(keyword => {
           let isMatch = false;
-
           switch (key) {
+            
             case 'location': {
             
               isMatch = conference.organizations.some(org => {
@@ -244,7 +312,31 @@ const filterConferences =  (listConferences, keywordSelected) => {
               isMatch = conference.information?.owner?.toLowerCase().includes(keyword);
               break;
             }
-
+            case 'region': {
+              let continent = ['asia', 'south america', 'europe', 'oceania', 'north america', 'africa']
+              if (keyword === 'local') {
+                isMatch = conference.organizations.some(org => {
+                  if (org.status === "new") {
+                    return isLocationMatch(org.location, 'vietnam', countries);
+                  }
+                });
+              }
+              else if (continent.includes(keyword)){
+                isMatch = conference.organizations.some(org => {
+                  if (org.status === "new") {
+                    return isLocationAndContinentMatch(org.location, keyword);
+                  }
+                });
+              }
+               else {
+                isMatch = !conference.organizations.some(org => {
+                  if (org.status === "new") {
+                    return isLocationMatch(org.location, 'vietnam', countries);
+                  }
+                });
+              }
+              break;
+            }
             case 'conferenceDate': {
               const matchDates = keyword.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/)
               if (matchDates) {
@@ -294,7 +386,8 @@ const filterConferences =  (listConferences, keywordSelected) => {
             case 'rating': {
               const matchRating = keyword.match(/\d+/);
               if (matchRating) {
-                const threshold = parseFloat(matchRating[0]);
+                const threshold = parseFloat(extractStars(keyword))
+               
                 isMatch = conference.information?.rating >= threshold;
               }
               break;
@@ -449,8 +542,9 @@ const countMatchingConferences = (listConferences, keywordSelected) => {
     handleKeywordSelection,
     countMatchingConferences,
     setSelectedKeywords,
-    getCountForSelectedKeyword
-
+    getCountForSelectedKeyword,
+    extractStars,
+    extractDates
   }
 }
 

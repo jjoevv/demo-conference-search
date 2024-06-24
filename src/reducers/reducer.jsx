@@ -195,7 +195,7 @@ const appReducer = (state, action) => {
                 ...state,
                 notifications: action.payload,
             };
-      
+
         case actionTypes.GET_SETTINGS:
             return {
                 ...state,
@@ -265,17 +265,21 @@ const appReducer = (state, action) => {
                         : conf
                 ),
             };
-            case 'ADD_MESSAGE':
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
-      };
-      case 'REMOVE_MESSAGE':
-        return {
-          ...state,
-          messages: state.messages.filter(message => message.id !== action.payload),
-        };
-  
+        case 'ADD_MESSAGE':
+            return {
+                ...state,
+                messages: [...state.messages, action.payload],
+            };
+        case 'REMOVE_MESSAGE':
+            return {
+                ...state,
+                messages: state.messages.filter(message => message.id !== action.payload),
+            };
+        case actionTypes.SET_USER_LOCATION:
+            return {
+                ...state,
+                userLocation: action.payload,
+            };
         default:
             return state;
     }

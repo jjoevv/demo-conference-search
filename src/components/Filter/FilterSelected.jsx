@@ -8,15 +8,16 @@ import useSearch from "../../hooks/useSearch";
 import { findKeyByKeyword, getUniqueConferences,  } from "../../utils/checkFetchedResults";
 
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../utils/formatWord';
+import { useTranslation } from 'react-i18next';
+import useFilter from '../../hooks/useFilter';
 
 const FilterSelected = () => {
-  const { deleteKeyword, clearKeywords, optionsSelected, getKeyword } = useSearch()
-  
+  const {t} = useTranslation()
+  const { deleteKeyword, clearKeywords, optionsSelected } = useSearch()
+  const {extractStars, extractDates} = useFilter()
   const [keywordsSelected, setKeywordsSelected] = useState(null)
   const [total, setTotal] = useState(0)
-  const {pathname} = useLocation()
   useEffect(()=>{
     const uniqueValues = getUniqueConferences(optionsSelected)
     setKeywordsSelected(uniqueValues)
@@ -28,6 +29,22 @@ const FilterSelected = () => {
   }
   const handleClearKeyword = () => {
     clearKeywords()
+  }
+ 
+
+  const handleRenderKeyword = (keyword) => {
+    const { startDate: confStartDate, endDate: confEndDate } = extractDates(keyword);
+    if(keyword.includes('Submission')){
+      return t('submission_date_filter', { startDate: confStartDate, endDate: confEndDate } )
+    }
+    else if (keyword.includes('Conference')){
+      return t('conference_date_filter', { startDate: confStartDate, endDate: confEndDate } )
+    }
+    else if(keyword.includes('Rating')){
+      const rate = extractStars(keyword)
+      return t('rating_filter', { stars: rate })
+    }
+    else return capitalizeFirstLetter(keyword)
   }
   return (
     <>
@@ -41,7 +58,8 @@ const FilterSelected = () => {
                 onClick={() => handleDeletekeyword(keyword)}
                 key={index}
                 className="fs-6 text-color-black py-1 px-2 fw-bold border bg-transparent border-secondary rounded-pill d me-3 mb-3  d-flex align-items-center ">
-                { capitalizeFirstLetter(keyword)}
+
+                { handleRenderKeyword(keyword)}
                  
                   <Image width={20} src={deleteIcon} alt="" className="ms-1" />
               </Button>
@@ -50,7 +68,7 @@ const FilterSelected = () => {
               onClick={()=>handleClearKeyword()}
               className="fs-6 py-1 px-2 fw-bold border border-danger bg-white text-red-normal rounded-pill d me-3 mb-3  d-flex align-items-center">
 
-              Reset All
+              {t('reset_all')}
               <Image width={20} src={RedDeleteIcon} alt="" className="ms-1" />
             </Button>
           </div>

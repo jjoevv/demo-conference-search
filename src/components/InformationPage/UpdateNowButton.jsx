@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useConference from '../../hooks/useConferences';
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../hooks/useScreenSize';
 const UpdateNowButton = () => {
     const {t} = useTranslation()
     const id = useParams()
+    const {windowWidth} = useScreenSize()
     const { message: messageNoti, conference, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
@@ -74,7 +76,9 @@ const UpdateNowButton = () => {
       }
     >
       <Button
-        className={`rounded-5 mt-2 px-5 py-3 fw-semibold border-0 mx-2 bg-danger text-white ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'}`}
+        className={`text-nowrap rounded-5 fw-semibold border-0 bg-danger text-white 
+          ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'} 
+        ${windowWidth > 768 ? ' mt-2 px-5 py-3 mx-2' : 'p-2'} `}
         onClick={handleClick}
         disabled={loading || isCrawling}
       >

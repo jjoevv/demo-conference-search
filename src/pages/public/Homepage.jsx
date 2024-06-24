@@ -39,7 +39,6 @@ const Homepage = () => {
 
 
     useEffect(()=>{
-      getOptionsFilter("", [])
       if(conferences.length === 0 || !conferences){
         getAllConferences()
       }
@@ -54,7 +53,6 @@ const Homepage = () => {
       setLoadingFilter(true);
       const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
       setSelected(isAppliedFilter);
-    
       const applyFilter = async () => {
         if (isAppliedFilter) {
           try {
@@ -76,7 +74,6 @@ const Homepage = () => {
       applyFilter();
     }, [optionsSelected, conferences, priorityKeywords]);
     
-  
   
   return (
     <div style={{marginTop: "100px"}} className='overflow-x-hidden overflow-y-auto'>        

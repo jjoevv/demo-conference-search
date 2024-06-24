@@ -13,9 +13,11 @@ import InputFeedback from './InputFeedback'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const AllFeedbackOfConf = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const {handleGetOne} = useConferences()
   const { loading, feedbacks, addFeedback, getAllFeedbacks, updateFeedback, deleteFeedback, sortFeedback, checkEditFeedback } = useFeedback()
   const [idEdit, setIdEdit] = useState(null)
@@ -76,7 +78,9 @@ const AllFeedbackOfConf = () => {
   return (
     <div className=''>
       <InputFeedback onClick={addFeedback} id={id.id} onReloadList={handleReloadPage} />
-      <div className="d-flex align-items-center justify-content-between mt-4 ms-5 border-bottom pb-2 mb-5">
+      <div className={`d-flex align-items-center justify-content-between border-bottom 
+          ${windowWidth > 768 ? 'mt-4 ms-5 pb-2 mb-5': 'mt-2 m-0 '}
+        `}>
         <p className="fw-bold">{displayFeedback.length} {t('feedback')}</p>
         <SortFeedbacks options={options} onSelect={handleSelectOption} />
       </div>

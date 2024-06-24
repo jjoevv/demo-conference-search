@@ -3,6 +3,7 @@ import './assets/styles/custom.css'
 import './assets/styles/custom_color.css'
 import './assets/styles/custom_animation.css'
 import './assets/styles/responsive.css'
+import './assets/styles/bootstrap_responsive.css'
 import './i18n'; // Import cấu hình i18n
 import { HashRouter} from 'react-router-dom'
 
@@ -12,10 +13,11 @@ import RoutesApp from './routes/RouteApp.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
+import useScreenSize from './hooks/useScreenSize.jsx'
 
 function App() {
   const { i18n } = useTranslation();
-
+  useScreenSize()
   useEffect(() => {
     // Kiểm tra xem localStorage đã lưu ngôn ngữ hay chưa
     const storedLanguage = localStorage.getItem('language');

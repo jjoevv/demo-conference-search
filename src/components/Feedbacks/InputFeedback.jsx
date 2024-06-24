@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Form, Image } from 'react-bootstrap'
+import { Button, Col, Form, Image, Row } from 'react-bootstrap'
 import RateConference from './RateConference';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
@@ -83,10 +83,12 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                             className={error ? 'border-danger' : 'border-0'}
                         />
                         {error && <p className='text-danger'>{t('input_feedback')}</p>}
-                        <div className="text-end m-2 mx-3 d-flex justify-content-between align-items-center">
+                        <Row className="text-end m-2 mx-3 d-flex justify-content-between align-items-center">
 
+                            <Col lg={10}>
                             <RateConference rating={rating} setRating={setRating} />
-                            <div>
+                            </Col>
+                            <Col lg={2}>
                                 {error && message !== '' && <p className='text-danger'>{message}</p>}
                                 {
                                     onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck}>
@@ -98,8 +100,8 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                                         loading ? <Loading size={'sm'}/> : <>{t('post')}</>
                                     }
                                 </Button>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                     </Form.Group>
 
                 </Form>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import starIcon from '../../assets/imgs/filled_star_yellow.png'
 import unstarIcon from '../../assets/imgs/unfill_star_yellow.png'
-import { Image } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 function RateConference({rating, setRating}) {
     const {t} = useTranslation()
@@ -16,10 +16,13 @@ function RateConference({rating, setRating}) {
     };
 
     return (
-        <div className='d-flex align-items-center'>
+        <Row className='d-flex align-items-center'>
             
-            <span className='me-2'>{t('how_would_you_rate_this_conference')} {rating}/5*</span>
-            {[1, 2, 3, 4, 5].map((index) => (
+            <Col xs={12} lg={3} sm={4} className='text-start p-0'>
+            <span className='me-2 text-nowrap'>{t('how_would_you_rate_this_conference')} {rating}/5*</span>
+            </Col>
+           <Col xs={12} lg={8} sm={8} className=' ms-3 text-start p-0'>
+           {[1, 2, 3, 4, 5].map((index) => (
                 <Image
                     key={index}
                     src={index <= (hoverValue || rating) ? starIcon : unstarIcon}
@@ -32,7 +35,8 @@ function RateConference({rating, setRating}) {
                     className='mx-1'
                 />
             ))}
-        </div>
+           </Col>
+        </Row>
     );
 }
 

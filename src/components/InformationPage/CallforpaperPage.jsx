@@ -1,6 +1,8 @@
 import React from "react";
+import useScreenSize from "../../hooks/useScreenSize";
 
 const CallforpaperPage = ({conference}) => {
+  const {windowWidth} = useScreenSize()
   const processText = (text) => {
     // Split text by \n
     const lines = text.split('\n');
@@ -21,8 +23,8 @@ const CallforpaperPage = ({conference}) => {
     }).filter(element => element !== null);
   };
   return (
-    <div className='p-4 m-0'>
-      <div className="bg-white p-5 m-5">
+    <div className={windowWidth > 768 ? 'm-0 p-4': 'px-2 py-4'}>
+      <div className={`bg-white ${windowWidth > 768 ? 'p-5 m-5': 'py-5 px-2 m-2'}`}>
         <h3 className='ms-3 fs-3 fw-bold text-teal-normal'>Call for paper</h3>
         {
           conference

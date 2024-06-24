@@ -81,7 +81,7 @@ const StarDropdown = ({ label, onApply }) => {
   const handleOptionChange = async (item) => {
 
     const rating = item[0].value
-    const formatKeyword = `${t('rating_from')} ${rating}*`
+    const formatKeyword = `Rating from ${rating}*`
     addKeywords(label,[formatKeyword] )
   };
   return (

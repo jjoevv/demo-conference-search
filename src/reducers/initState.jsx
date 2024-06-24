@@ -19,7 +19,6 @@ export const initialState = {
 
   popularConf: [], //conference có nhiều follow
 
-
   //filter
   maxpage: 0,
   amount: 0,
@@ -38,6 +37,7 @@ export const initialState = {
     rating: [],
     category: [],
     owner: [],
+    region: []
   },
   priorityKeywords: {},
 
@@ -54,6 +54,8 @@ export const initialState = {
   resultFilter: [],
   inputFilter: '',
   actionWithKeyword:'alo',
+
+  userLocation: null,
 
 
 
