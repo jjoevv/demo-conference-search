@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Container, Form, Row, Col, Spinner } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { Container, Form, Col, Spinner } from 'react-bootstrap'
 import useSetting from '../../hooks/useSetting'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Loading from '../../components/Loading'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const updateCircleOptions = [
   { id: '1', option: "Every 3 days", value: 3 },
@@ -14,6 +15,7 @@ const updateCircleOptions = [
 
 const Setting = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { settings, loading, getAllSetting, updateSetting } = useSetting()
   const [displaySetting, setDisplaySetting] = useState([])
   const { user } = useLocalStorage()
@@ -50,7 +52,7 @@ const Setting = () => {
   const order = ["AUTO_ADD_EVENT_TO_SCHEDULE", "CHANGE_AND_UPDATE", "YOUR_UPCOMING_EVENT", "DATA_UPDATE_CYCLE", "CANCELLED_EVENT"];
 
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+    <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
       <h4 className=''>{t('setting')}</h4>
       <h6 className='text-color-darker mb-2'>{t('how_would_you_like_to_receive_notifications')}</h6>
 

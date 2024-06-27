@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col, Spinner } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup, Tabs, Tab, Fade, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select'
 import usePost from '../../hooks/usePost';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faEdit, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
 import Loading from '../Loading';
-import data from '../Filter/options.json'
 import { capitalizeFirstLetter } from '../../utils/formatWord';
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../hooks/useScreenSize';
 
 const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick }) => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { loading, updatePost } = usePost() 
   const [message, setMesage] = useState('')
   const [status, setStatus] = useState(false)
@@ -220,7 +221,14 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
   }
 
   return (
-    <Modal show={show} onHide={onClose} size="lg" centered scrollable >
+    <Modal 
+    show={show} 
+    onHide={onClose} 
+    size="lg"
+    centered 
+    scrollable 
+    fullscreen="sm-down"
+    >
       
       <Modal.Body onClick={(e) => e.stopPropagation()}style={{ maxHeight: "80vh", overflowY: "auto" }}className='pt-3'>
         <div style={{minHeight: "500px"}}>
@@ -233,7 +241,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
           <div className="w-100 py-2">
           </div>
           <Form >
-            <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab}>
+            <Tabs activeKey={tab} transition={Fade} fill onSelect={handleSelectTab} className='fs-5 text-nowrap'>
               <Tab eventKey={`1`} title={t('information')} className='mx-4 pt-5' tabClassName= 'custom-tab-update'>
                 <Form.Group as={Row} className='my-3'>
                   <Form.Label column sm="3">{t('name')}: </Form.Label>
@@ -253,22 +261,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                     <Form.Control type="text" value={formData.link} onChange={(e) => handleInformationChange('link', e.target.value)} />
                   </Col>
                 </Form.Group>
-                {/**
-                 * 
-                <Form.Group as={Row} className='my-3'>
-                  <Form.Label column sm="3">Rank: </Form.Label>
-                  <Col>
-                    <Form.Select
-                      className='d-block'
-                      value={formData.rank}
-                      onChange={(e) => setFormData({ ...formData, rank: e.target.value })}>
-                      {(filterOptions.rank || data.rank).map((option, index) => (
-                        <option value={option.value || option} key={index}>{option.label || option}</option>
-                      ))}
-                    </Form.Select>
-                  </Col>
-                </Form.Group>
-                 */}
+               
                 <Form.Group as={Row} className='my-3'>
                   <Form.Label column sm="3"> {t('field_of_research')}: </Form.Label>
                   <Col>
@@ -325,19 +318,32 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                 </div>
                 {formData.importantDates.map((date, index) => (
                   <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
+                   
                     <Col sm='6'>
-                      <Form.Label>{t('date_type')}:</Form.Label>
+                    <div className="d-flex justify-content-between align-items-center">
+                    <Form.Label>{t('date_type')}:</Form.Label>
+                    {
+                                                    windowWidth <= 768 &&
+                                                    <Button variant="danger" onClick={() => removeDate(index)} className='bg-transparent border-0' title='Delete this date'>
+                                                    <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
+                                                  </Button>
+                                                }
+                    </div>
+                     
                       <Form.Control type="text" value={date.date_type} onChange={(e) => handleDateChange(index, 'date_type', e.target.value)} placeholder={t('enter_date_description')} />
                     </Col>
                     <Col >
                       <Form.Label>{t('date')}:</Form.Label>
                       <Form.Control type="date" value={date.date_value} onChange={(e) => handleDateChange(index, 'date_value', e.target.value)} />
                     </Col>
+                  {
+                    windowWidth > 768 &&
                     <Col sm="1" className='d-flex align-items-end'>
-                      <Button variant="danger" onClick={() => removeDate(index)} className='bg-transparent border-0' title='Delete this date'>
-                        <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
-                      </Button>
-                    </Col>
+                    <Button variant="danger" onClick={() => removeDate(index)} className='bg-transparent border-0' title='Delete this date'>
+                      <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
+                    </Button>
+                  </Col>
+                  }
                   </Form.Group>
                 ))}
                 {isupdateForm && errorMessage !== '' && <p className='text-center text-warning'>{errorMessage}</p>}
@@ -346,7 +352,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
                 <Form.Group as={Row} className='my-3'>
                   <Form.Label column sm="3">Call for paper: </Form.Label>
                   <Col>
-                    <Form.Control type="text" as="textarea" rows={14} value={formData.callForPaper} onChange={(e) => handleInformationChange('callForPaper', e.target.value)} />
+                    <Form.Control type="text" as="textarea" rows={windowWidth > 768 ? 14 : 22} value={formData.callForPaper} onChange={(e) => handleInformationChange('callForPaper', e.target.value)} />
                   </Col>
                 </Form.Group>
               </Tab>

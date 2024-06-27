@@ -46,7 +46,9 @@ const MultiValue = ({ index, getValue, ...props }) => {
     .map((x) => x.label);
 
   return index === getValue().length - maxToShow ? (
-    `+ ${overflow.length + 1} ${t('option')}${overflow.length !== 0 && i18n.language === 'en' ? "s" : ""}   `
+    <div className='text-nowrap'>
+      {`+ ${overflow.length + 1} ${t('option')}${overflow.length !== 0 && i18n.language === 'en' ? "s" : ""}`}
+    </div>
   ) : null;
 };
 
@@ -77,7 +79,7 @@ const CustomOption = (props) => {
 
 const AreaFilter = () => {
   const { user } = useLocalStorage()
-  const { checkForCountryInText } = useAreaFilter()
+  const { checkForCountryInText, setUserLocation, handleNavigateAccount, handleNavigateLogin } = useAreaFilter()
   const { filterOptions, optionsSelected, addKeywords, deleteKeyword, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([])
   const { t } = useTranslation()
@@ -103,36 +105,41 @@ const AreaFilter = () => {
 
     setOptions(transformedState);
   }, [filterOptions]);
-
+  
   const handleOptionChange = async (items) => {
     const option = items[0].value
-    if (option === 'Local') {
-      if (user) {
-        const checkAddress = checkForCountryInText(user.address)
-        const checkNationality = checkForCountryInText(user.nationality)
-        const check = checkAddress || checkNationality
-        console.log({ optionsSelected })
-        if (check !== '') {
-          const itemsValues = items.map(item => item.value);
+    const itemsValues = items.map(item => item.value);
           const removedOptions = optionsSelected['region'].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
 
         if (removedOptions.length <= 0) {
-            addKeywords('region', [items[items.length-1].label])
+          const addItem = [items[items.length-1].label]
+          
+          if (addItem[0] === 'Local' || addItem[0] === 'National') {
+            
+            if (user) {
+              const checkAddress = checkForCountryInText(user.address)
+              const checkNationality = checkForCountryInText(user.nationality)
+              const check = checkAddress || checkNationality
+              
+              if (check !== '') {
+                setUserLocation(check)
+                addKeywords('region', addItem)
+              }
+              else {
+                handleNavigateAccount()
+              }
+            }
+            else {
+              handleNavigateLogin()
+            }
+            //addKeywords(label,[formatKeyword] )
+          } else addKeywords('region', addItem)
+            
         } 
         else {
             deleteKeyword('region', removedOptions[0].label)
         }
-     //     addKeywords('region', [option]);
-        }
-        else {
-          alert(t('pls_login_to_use_this_feature'))
-        }
-      }
-      else {
-        console.log('alo', user.address, user.nationality)
-      }
-      //addKeywords(label,[formatKeyword] )
-    } else addKeywords('region', [item.value])
+    
 
   }
     return (
@@ -140,7 +147,7 @@ const AreaFilter = () => {
         <Select
           isMulti
           styles={customStyles}
-          value={optionsSelected['region'].map(value => ({ value, label: value }))}
+          value={optionsSelected['region']?.map(value => ({ value, label: value }))}
           components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected['region']} />, MultiValue }}
           options={options}
           onChange={handleOptionChange}

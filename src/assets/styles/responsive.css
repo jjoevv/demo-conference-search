@@ -10,6 +10,11 @@
   margin-right: 2.5rem;
 }
 
+.form-container{
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 /* Media queries */
 @media screen and (max-width: 600px) {
   .my-conf-card {
@@ -25,9 +30,9 @@
 }
 
 @media screen and (max-width: 768px) {
-  body {
-      padding-left: 1rem;
-      padding-right: 1rem;
+  .conference-container{
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
   .header-conference-container{
     margin-left: 0px;
@@ -46,6 +51,40 @@
   .acronym-container > span {    
     font-size: small !important;
   }
+  .col-half-offset{
+    margin: 2px !important;
+  }
+  .navbar-nav {
+    align-items: start !important;
+    justify-content: start;
+  }
+  .icon-follow img {
+    width: 12px !important;
+  }
+  .btn-wave-wrap{
+    letter-spacing: 1px !important;
+  }
+  .my-sidebar-content{
+    overflow-y: auto !important;
+  }
+  .auth-container{
+    margin-top: 14%;
+    margin-left: 4%;
+  }
+  .form-container{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  .nav-link{
+    padding: 2px !important;
+  }
+  .fixed-column{
+    width: 60px !important;
+  }
+  .custom-active-btn{
+    justify-content: center !important;
+    padding-left: 0 !important; 
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -56,6 +95,9 @@
     .render-one-at-a-time {
       /*slide top view*/
       display: block; /* Hiển thị từng phần tử một lần */
+    }
+    .navbar-expand-md .navbar-nav .dropdown-menu {
+      position: absolute;
     }
   }
   

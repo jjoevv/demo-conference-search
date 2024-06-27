@@ -30,7 +30,7 @@ const ButtonGroupActive = ({ conference }) => {
             fetchData()
         }
         else setLoadingConf(false)
-    }, [])
+    }, [id])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,70 +110,8 @@ const ButtonGroupActive = ({ conference }) => {
     };
 
     return (
-        <div className="d-flex justify-content-start align-items-center" style={{ paddingLeft: "300px" }}>
-            {showDeleteConf &&
-                <DeleteModal
-                    show={showDeleteConf}
-                    onClose={() => setShowDelete(!showDeleteConf)}
-                    onConfirm={handleDelete}
-                    modalTitle={'conference'}
-                    message={message}
-                    status={status}
-                    loading={loading}
-                    countdown={countdown}
-                    isConfirm={isConfirm}
-                />}
-            {
-                (conference || !loadingConf) && (
-                    <>
-                        {
-                            conference?.information?.status ? (
-                                <Button
-                                    onClick={handleDeactive}
-                                    className='ms-5 me-3 px-4 bg-teal-normal'
-                                >
-                                    {loadingDeactive ? (
-                                        <Spinner size='sm' />
-                                    ) : (
-                                        <>
-                                           {t('deactive')}
-                                        </>
-                                    )}
-                                </Button>
-                            ) : (
-                                <Button
-                                    onClick={handleActive}
-                                    className='ms-5 me-3 px-4 bg-darkcyan-normal'
-                                    disabled={!conference}
-                                >
-                                    {loadingActive ? (
-                                        <Spinner size='sm' />
-                                    ) : (
-                                        <>
-                                             {t('active')}
-                                        </>
-                                    )}
-                                </Button>
-                            )
-                        }
-
-                        <Button
-                            disabled={!conference}
-                            className="ms-3 px-4 bg-red-normal border-light"
-                            onClick={handleDelete}
-                        >
-                            {(loading && isConfirm) ? (
-                                <Spinner size='sm' />
-                            ) : (
-                                <>
-                                     {t('delete')}
-                                </>
-                            )}
-                        </Button>
-                    </>
-                )
-            }
-            <div className='ms-5'>
+        <div >
+            <div className='mb-1'>
                 {status && isActived && message !== '' && (
                     <div className="mt-2 mx-2 text-success">
                         {message}
@@ -190,6 +128,71 @@ const ButtonGroupActive = ({ conference }) => {
                     </div>
                 )}
             </div>
+            {showDeleteConf &&
+                <DeleteModal
+                    show={showDeleteConf}
+                    onClose={() => setShowDelete(!showDeleteConf)}
+                    onConfirm={handleDelete}
+                    modalTitle={'conference'}
+                    message={message}
+                    status={status}
+                    loading={loading}
+                    countdown={countdown}
+                    isConfirm={isConfirm}
+                />}
+           <div className="d-flex align-items-center custom-active-btn"> 
+           {
+                (conference || !loadingConf) && (
+                    <>
+                        {
+                            conference?.information?.status ? (
+                                <Button
+                                    onClick={handleDeactive}
+                                    className='mx-3 px-4 bg-teal-normal'
+                                >
+                                    {loadingDeactive ? (
+                                        <Spinner size='sm' />
+                                    ) : (
+                                        <>
+                                           {t('deactive')}
+                                        </>
+                                    )}
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={handleActive}
+                                    className='mx-3 px-4 bg-darkcyan-normal'
+                                    disabled={!conference}
+                                >
+                                    {loadingActive ? (
+                                        <Spinner size='sm' />
+                                    ) : (
+                                        <>
+                                             {t('active')}
+                                        </>
+                                    )}
+                                </Button>
+                            )
+                        }
+
+                        <Button
+                            disabled={!conference}
+                            className="mx-3 px-4 bg-red-normal border-light"
+                            onClick={handleDelete}
+                        >
+                            {(loading && isConfirm) ? (
+                                <Spinner size='sm' />
+                            ) : (
+                                <>
+                                     {t('delete')}
+                                </>
+                            )}
+                        </Button>
+                    </>
+                )
+            }
+           </div>
+            
         </div>
 
     )

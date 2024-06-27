@@ -13,7 +13,9 @@ h5 {
     color: #434343;
     font-weight: bold;
 }
-
+.col-half-offset{
+    margin-left:3.166666667%
+}
 .fs-medium {
     font-size: medium;
 }
@@ -438,10 +440,7 @@ a {
 }
 
 .icon-follow {
-    width: 140px;
-    height: 40px;
-    right: 50px;
-    bottom: 20px;
+    
     background-color: white;
     color: #434343;
     font-weight: bold;

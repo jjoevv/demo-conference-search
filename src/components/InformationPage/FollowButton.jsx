@@ -73,8 +73,8 @@ const FollowButton = () => {
                         <div>
                             <Button
                                 className={
-                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap
-                                    ${windowWidth > 768 ? 'm-2 px-5 py-3 fw-semibold ' : 'm-2 p-2'}
+                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap fs-4
+                                    ${windowWidth > 768 ? 'm-2 px-5 py-3  fw-semibold ' : 'm-2 p-2'}
                                 `
                                 }
                                 onClick={handleUnfollow}
@@ -103,7 +103,7 @@ const FollowButton = () => {
                         <div className=''>
                             <Button
                                 className={
-                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap
+                                    `text-nowrap d-flex justify-content-center align-items-center rounded-5 btn-wave-wrap fs-5 
                                         ${windowWidth > 768 ? 'm-2 px-5 py-3   fw-semibold ' : 'm-2 p-2'}
                                     `
                                 }

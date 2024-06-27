@@ -159,7 +159,7 @@ const DetailedInformationPage = () => {
                                                         }
                                                         {renderLocation(conference.organizations) !== '' && (
                                                             <>
-                                                                <div className='d-flex justify-content-center align-items-center fs-4 my-2 mt-4 text-teal-dark fw-bold'>
+                                                                <div className='d-flex justify-content-center align-items-start fs-4 my-2 mt-4 text-teal-dark fw-bold'>
                                                                     <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5' />
                                                                     <h3 className='text-teal-black'> {renderLocation(conference.organizations)}</h3>
 
@@ -180,8 +180,12 @@ const DetailedInformationPage = () => {
                                                         </div>
 
                                                         <div className='mt-5 d-flex justify-content-center align-items-center mx-auto'>
+                                                            <div className="mx-1">
                                                             <FollowButton listFollowed={listFollowed} onGetListFollow={getListFollowedConferences} />
+                                                            </div>
+                                                            <div className="mx-1">
                                                             <UpdateNowButton />
+                                                            </div>
                                                         </div>
 
                                                     </>

@@ -76,7 +76,7 @@ const UpdateNowButton = () => {
       }
     >
       <Button
-        className={`text-nowrap rounded-5 fw-semibold border-0 bg-danger text-white 
+        className={`text-nowrap rounded-5 fw-semibold border-0 bg-danger text-white fs-5
           ${!status ? 'bg-danger' : 'bg-danger border-2 border-warning'} 
         ${windowWidth > 768 ? ' mt-2 px-5 py-3 mx-2' : 'p-2'} `}
         onClick={handleClick}

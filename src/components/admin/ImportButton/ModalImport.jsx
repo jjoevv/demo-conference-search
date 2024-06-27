@@ -29,7 +29,7 @@ const ModalImport = ({show, onHide}) => {
   const handleShowPost = () => setShowAddForm(true);
 
   return (
-    <Modal show={show}  onHide={onHide} >
+    <Modal show={show}  onHide={onHide} fullscreen="sm-down">
     <Modal.Header closeButton className='border-0'>    
     </Modal.Header>
     <Modal.Body className='pb-5'>

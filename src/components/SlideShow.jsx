@@ -97,7 +97,7 @@ const SlideShow = () => {
                                         <div className="text-primary-normal fw-bold fs-medium d-flex align-items-start">
                                             <FontAwesomeIcon icon={faLocationPin} className='me-2 text-success-emphasis' />
                                             {conference.organizations.filter(org => org.status === 'new').map((org, orgIdx) => (
-                                                <div key={orgIdx} className='text-light-emphasis'>
+                                                <div key={orgIdx} className='text-light-emphasis card-title-suggest'>
                                                     <span>{org.location !== '' ? org.location : ''}</span>
                                                 </div>
                                             ))}

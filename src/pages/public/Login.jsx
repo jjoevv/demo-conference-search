@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { Container, Form, Button, ButtonGroup, Row, Col, Image, InputGroup } from 'react-bootstrap'
+import { Container, Form, Button, Row, Col,  InputGroup } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 
-import googleIcon from './../../assets/imgs/google.png'
 import useAuth from '../../hooks/useAuth'
 import Loading from '../../components/Loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 const Login = () => {
+    const {t} = useTranslation()
+    const {windowWidth} = useScreenSize()
     const { loading, handleLogin } = useAuth();
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(false)
@@ -64,13 +67,18 @@ const Login = () => {
         setShowPassword(!showpassword);
     };
     return (
-        <Container className="100-w 100-h min-vh-100 d-flex justify-content-center align-items-center text-center overflow-hidden" fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
-            <Row className='bg-white rounded-4 d-flex box-area w-75 h-50 mx-auto'>
+        <Container className={` text-center 
+                ${windowWidth > 768 ? '100-h min-vh-100 d-flex justify-content-center align-items-center ': 'vh-100 100-h pt-5'}
+        `} fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
+            <Row className={`bg-white rounded-4 d-flex box-area mx-auto ${windowWidth > 768 ? 'w-75 h-50' : 'h-50'} `}>
 
-                <Col className='p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light rounded-start-4' >
+                <Col  sm={7} md={7} lg={7} 
+                className={`p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light
+                    ${windowWidth > 768 ? 'rounded-start-4': 'rounded-4'}
+                `} >
 
-                    <Form className='w-75 p-5 bg'>
-                        <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>Log In</h1>
+                    <Form className='w-100 p-5'>
+                        <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>{t('login')}</h1>
                      
                         <Form.Group className="mb-3 text-start">
                             <Form.Label htmlFor="inputPassword5" style={{ fontSize: "20px", color: "#434343" }}>Email</Form.Label>
@@ -85,13 +93,13 @@ const Login = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-4 text-start">
-                            <Form.Label htmlFor="inputPassword5" style={{ fontSize: "20px", color: "#434343" }}>Password</Form.Label>
+                            <Form.Label htmlFor="inputPassword5" style={{ fontSize: "20px", color: "#434343" }}>{t('password')}</Form.Label>
                             <InputGroup>
                                 <Form.Control
                                     type={showpassword ? "text" : "password"}
                                     value={account.password}
                                     name="password"
-                                    placeholder='Password'
+                                    placeholder={t('password')}
                                     onChange={handleInputChange}
                                     required
                                     className="border-0 shadow-sm rounded-start-2 px-3 py-2"
@@ -101,9 +109,7 @@ const Login = () => {
                                 </InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
-                        <ButtonGroup className="d-flex justify-content-around mb-3">
-                            <Button className='bg-transparent border-0 p-0' style={{ color: "#434343" }}>Forgot your password?</Button>
-                        </ButtonGroup>
+                        
                         {
                             isSubmit && error && <p className="text-warning">{error}</p>
                         }
@@ -122,29 +128,39 @@ const Login = () => {
                                     isSubmit && loading ?
                                         <Loading />
                                         :
-                                        "LOG IN"
+                                        `${t('login')}`
                                 }
                             </Button>
                         </div>
                         <div className="my-3 mx-3 d-flex align-items-center justify-content-center">
-                            <span htmlFor="#signup">{`Don't have an account?`}</span>
+                            <span htmlFor="#signup">{t('dont_have_account')}</span>
                             <Button
-                                className='bg-transparent border-0 fw-bold p-0 m-0 w-25'
+                                className='bg-transparent border-0 fw-bold p-0 m-0 w-25 text-nowrap'
                                 style={{ fontSize: "20px", color: "#419489" }}
                                 onClick={chooseSignup}>
-                                SIGN UP
+                                    {t('signup')}
                             </Button>
                         </div>
                     </Form>
+                    {
+                        windowWidth < 768 &&
+                        <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
+                        <Link to='/' className='fs-6 text-light'>  {"<  "}{t('back_to_homepage')}</Link>
+                    </div>
+                    }
                 </Col>
-                <Col sm={4} className='d-flex flex-column align-items-center justify-content-center rounded-end-4 text-light' style={{ backgroundColor: "#419489" }}>
+                {
+                    windowWidth > 768 &&
+                    <Col className='d-flex flex-column align-items-center justify-content-center rounded-end-4 text-light' style={{ backgroundColor: "#419489" }}>
                     <span className='h1 mb-2'>Welcome Back!</span>
-                    <span className='mt-3'>Enter your account and keep following conferences!</span>
+                    <span className='mt-3'>{t('description_login')}</span>
 
                     <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
-                        <Link to='/' className='fs-6 text-light'>  {"<  "}Back to Homepage</Link>
+                        <Link to='/' className='fs-6 text-light'>  {"<  "}{t('back_to_homepage')}</Link>
                     </div>
                 </Col>
+                }
+               
             </Row>
 
         </Container>

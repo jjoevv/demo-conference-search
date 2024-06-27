@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Container, Button, Form, Col, Spinner } from 'react-bootstrap'
+import { Container, Button, Form, Col, Spinner, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
@@ -10,9 +10,11 @@ import SuccessfulModal from '../../components/Modals/SuccessModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDiamondTurnRight, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const Account = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { loading,user, updateProfile, getCurrentUser } = useAuth()
   const [profile, setProfile] = useState([])
   const [showModalSuccess, setShowModalSuccess] = useState(false);
@@ -74,7 +76,7 @@ const Account = () => {
     setIsUpdated(false)
   };
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+<Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
       {
         user
         &&
@@ -89,31 +91,37 @@ const Account = () => {
         }
       </div>
       <Form autoComplete='off'>
-        <Form.Group as={Col} className="mb-3 mx-4 d-flex align-items-center">
-          <Form.Label column sm="3">
+        <Form.Group as={Row} className="mb-3 mx-4 d-flex align-items-center">
+          <Form.Label column sm="3" xs="12">
             {t('email')}:
           </Form.Label>
+          <Col sm="6" xs="12">
           <Form.Control
             type="text"
             placeholder={user.email}
             name='email'
             onChange={handleChange}
-            className='border-1 border-primary-normal w-25'
+            className='border-1 border-primary-normal'
             disabled
           />
+          </Col>
+        
         </Form.Group>
 
-        <Form.Group as={Col} className="mb-3 mx-4 d-flex align-items-center">
-          <Form.Label column sm="3">
+        <Form.Group as={Row} className="mb-3 mx-4 d-flex align-items-center">
+          <Form.Label column sm="3" xs="12">
             {t('password')}:
           </Form.Label>
+          <Col sm="6" xs="12">
           <Form.Control
             placeholder='*********'
             type='password'
-            className='rounded-2 p-1 text-center border-1 border-primary-normal w-25'
+             className='border-1 border-primary-normal'
             onClick={handleOpenModal}
             title={t('clickToChangePassword')}
           />
+          </Col>
+        
         </Form.Group>
       </Form>
 
@@ -133,11 +141,11 @@ const Account = () => {
         {profile.map((item, index) => (
           <div key={index}>
             {item.val !== 'license' &&
-              <Form.Group as={Col} className="mb-3 mx-4 d-flex align-items-center">
-                <Form.Label column sm="3" xs="3">
+              <Form.Group as={Row} className="mb-3 mx-4 d-flex align-items-center">
+                <Form.Label column sm="3" xs="12">
                   {t(item.title)}:
                 </Form.Label>
-                <Col sm="6" xs="6">
+                <Col sm="6" xs="12">
                   <Form.Control
                     type="text"
                     placeholder={item.infor !== ' ' ? item.infor : item.placeholder}

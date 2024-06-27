@@ -5,7 +5,6 @@ import editIcon from '../../assets/imgs/edit.png'
 import AddConference from '../../components/Modals/AddConference'
 import usePost from '../../hooks/usePost'
 import Conference from '../../components/Conference/Conference'
-import useLocalStorage from '../../hooks/useLocalStorage'
 
 import SuccessfulModal from '../../components/Modals/SuccessModal'
 import { checkExistValue } from '../../utils/checkFetchedResults'
@@ -16,16 +15,19 @@ import Loading from '../../components/Loading'
 import Filter from '../../components/Filter/Filter'
 import useSessionStorage from '../../hooks/useSessionStorage'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 const YourConf = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const [showAddForm, setShowAddForm] = useState(false)
   const { optionsSelected, getOptionsFilter } = useSearch()
   const { loading: loadingPost, postedConferences, getPostedConferences } = usePost()
   const { filterConferences } = useFilter()
   const [showSuccess, setShowSuccess] = useState(false)
   const [message, setMessage] = useState('')
-  const { user } = useLocalStorage()
   const { getDataListInStorage } = useSessionStorage()
   const [loading, setLoading] = useState(false)
 
@@ -92,15 +94,17 @@ const YourConf = () => {
   const handleShow = () => setShowAddForm(true);
 
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+    <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
 
-      <div className='d-flex align-items-center justify-content-between pe-5 mb-4'>
+      <div className='d-flex align-items-center justify-content-between pe-5 mb-4 text-nowrap'>
         <h4 className='mb-2'>{t('your_conferences')}</h4>
         <Button
-          className='rounded-2 bg-blue-normal border-0 d-flex align-items-center justify-content-between px-3'
+          className='rounded-2 bg-blue-normal border-0 d-flex align-items-center justify-content-between px-3 text-nowrap'
           onClick={handleShow}>
-          <Image width={20} height={20} className='me-2' src={editIcon} />
-          {t('add_new')}
+          <FontAwesomeIcon icon={faPlus} className='mx-1'/>
+          {
+            windowWidth > 768 && `${t('add_new')}`
+          }
         </Button>
       </div>
       <AddConference show={showAddForm} handleClose={handleClose} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />

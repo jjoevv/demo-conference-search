@@ -85,10 +85,10 @@ const InputFeedback = ({ defaultValue, onClick, onCheck, id, cfpid, onReloadList
                         {error && <p className='text-danger'>{t('input_feedback')}</p>}
                         <Row className="text-end m-2 mx-3 d-flex justify-content-between align-items-center">
 
-                            <Col lg={10}>
+                            <Col>
                             <RateConference rating={rating} setRating={setRating} />
                             </Col>
-                            <Col lg={2}>
+                            <Col >
                                 {error && message !== '' && <p className='text-danger'>{message}</p>}
                                 {
                                     onCheck && <Button className='bg-secondary border-light mx-2 px-4' onClick={onCheck}>

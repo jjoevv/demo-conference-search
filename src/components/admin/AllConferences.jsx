@@ -100,7 +100,6 @@ const AllConferences = ({ conferences }) => {
         Header:t('rank'),
         accessor: 'information.rank',
         id: 'rank',
-        width: 150,
         disableResizing: true
       },
       {
@@ -223,12 +222,12 @@ const AllConferences = ({ conferences }) => {
               onClick={() => handleChooseCfp(row.original)}
               title='View CFP'
             >
-              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon' />
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon fs-5' />
             </Button>
 
             <Button className='bg-transparent border-0 p-0  my-0 action-btn tb-icon-delete '
               onClick={() => handleChooseDelete(row.original)}>
-              <FontAwesomeIcon icon={faTrash} className='text-danger action-icon' />
+              <FontAwesomeIcon icon={faTrash} className='text-danger action-icon fs-5' />
             </Button>
 
 

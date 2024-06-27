@@ -12,9 +12,11 @@ import useFilter from '../../hooks/useFilter'
 import Filter from '../../components/Filter/Filter'
 import { checkExistValue } from '../../utils/checkFetchedResults'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const Followed = () => {
   const { t } = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
   const { getOptionsFilter, optionsSelected } = useSearch()
   const { user } = useLocalStorage()
@@ -63,9 +65,9 @@ const Followed = () => {
   }, [optionsSelected, listFollowed])
 
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+    <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
       <div className='d-flex justify-content-between align-items-center'>
-        <h4 className=''>{t('followed_conference')}</h4>
+        <h4 >{t('followed_conference')}</h4>
       </div>
 
       {
@@ -76,7 +78,7 @@ const Followed = () => {
                 ?
                 <>
 
-                  <h6>{t('review_followed_conferences')}</h6>
+                  <div className='fs-6 my-1 mb-3'>{t('review_followed_conferences')}</div>
                   <Filter />
 
                   <Conference

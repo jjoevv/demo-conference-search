@@ -36,7 +36,7 @@ const Information = ({ conference }) => {
     return newOrg ? newOrg.type : null
   };
   return (
-    <div className='p-5 m-0 pt-0'>
+    <div className='p-2 p-md-5 p-lg-5 m-0 pt-0'>
 
       <Row>
         <Col className='mt-5'>
@@ -48,44 +48,44 @@ const Information = ({ conference }) => {
           <div className='fw-bold fs-large mt-2 py-2'>{conference?.information?.name}</div>
           <div className='my-2'>
             <Row key="acronym" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('acronym')}:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0'>{t('acronym')}:</Col>
               <Col className='fw-bold fs-large'>{conference.information.acronym}</Col>
             </Row>
 
             <Row key="category" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('category')}:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0'>{t('category')}:</Col>
               <Col className='fw-bold fs-large'>{t('conference')}</Col>
-            </Row>,
+            </Row>
             <Row key="source" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('source')}:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0'>{t('source')}:</Col>
               <Col className='fw-bold fs-large'>{conference.information.source}</Col>
             </Row>
             <Row key="link" className='py-2 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>Link:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0 '>Link:</Col>
               <Col className='fw-bold fs-large'>{conference?.information?.link}</Col>
             </Row>
 
             <Row key="type" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('type')}:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0'>{t('type')}:</Col>
               <Col className='fw-bold fs-large'>
                 {capitalizeFirstLetter(renderType(conference.organizations))}
               </Col>
             </Row>
 
             <Row key="location" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('location')}:</Col>
+              <Col xs={4} className='d-flex align-items-start p-0'>{t('location')}:</Col>
               <Col className='fw-bold fs-large'>
                 {renderLocation(conference.organizations)}
               </Col>
             </Row>
             <Row key="conference-date" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('conference_date')}:</Col>
+              <Col xs={4} className='d-flex align-items-start p-0'>{t('conference_date')}:</Col>
               <Col className='fw-bold fs-large'>
                 {getConferenceDate(conference.organizations)}
               </Col>
             </Row>
             <Row key="rating" className='py-3 ps-4'>
-              <Col xs={4} className='d-flex align-items-center'>{t('rating')}:</Col>
+              <Col xs={4} className='d-flex align-items-center p-0'>{t('rating')}:</Col>
               <Col className='fw-bold fs-large'>
               {`${conference?.information?.rating ? `${parseFloat(conference.information?.rating?.toFixed(2))}*` : ''}`}
                
@@ -93,7 +93,7 @@ const Information = ({ conference }) => {
               </Col>
             </Row>
             <Row key="field-of-research" className={`py-3 ps-4 pe-1`}>
-              <Col xs={4} className='d-flex align-items-center'>{t('field_of_research')}:</Col>
+              <Col xs={4} className='d-flex align-items-start p-0'>{t('field_of_research')}:</Col>
               <Col className='fw-bold fs-large'>
                 {renderFieldOfResearch(conference.information.fieldOfResearch)}
               </Col>

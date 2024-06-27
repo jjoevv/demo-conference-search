@@ -10,10 +10,12 @@ import Information from "../../components/admin/Information"
 import ButtonGroupActive from "../../components/admin/ButtonGroupActive"
 import usePageNavigation from "../../hooks/usePageNavigation"
 import { useTranslation } from "react-i18next"
+import useScreenSize from "../../hooks/useScreenSize"
 
 
 const CallforPapers = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { pendingConf, getPendingConfById } = useAdmin()
   const conf_id = useParams()
   const [loadingConf, setLoadingConf] = useState(true)
@@ -76,7 +78,7 @@ const CallforPapers = () => {
 
   };
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+    <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
  {
         loadingConf ? (
           <div className="my-4">
@@ -110,9 +112,9 @@ const CallforPapers = () => {
               <div className="bg-skyblue-light">
                 <div className='pb-5'>
                   <Information conference={displayConf} />
-                  <div className='px-4 mx-4 fs-4 fw-bold mb-5'>
-                  <span className='text-teal-normal'>Call for paper</span>
-                    <p className="text-justify fs-medium pb-5">
+                  <div className='px-1 px-md-4 px-lg-4 mx-4 fs-4  mb-5'>
+                  <span className='text-teal-normal fw-bold'>Call for paper</span>
+                    <p className="text-justify fs-5 pb-5">
                       {processText(displayConf?.callForPaper)}
                     </p>
                   </div>

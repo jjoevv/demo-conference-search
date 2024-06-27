@@ -25,6 +25,10 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Shadow effect */
     font-size: large    ;
   }
+.custom-active-btn{
+    padding-left: 20%;
+    justify-content: start;
+}
 /* Media Query để điều chỉnh bố trí trên màn hình nhỏ */
 @media (max-width: 768px) {
     .chart-container {

@@ -24,7 +24,7 @@ const Filter = () => {
   const [searchInput, setSearchInput] = useState("")
   const { t } = useTranslation()
 
-  const {windowWidth} = useScreenSize()
+  const { windowWidth } = useScreenSize()
   const [showAllFilter, setShowAllFilter] = useState(false)
 
 
@@ -72,33 +72,33 @@ const Filter = () => {
       <div className="d-flex justify-content-between align-items-center pt-2">
         <div className="d-flex align-items-center mb-1">
           <FontAwesomeIcon icon={faFilter} className="text-color-black fs-5 me-2" />
-          <h4 className="mt-2">{t('filter')}</h4>
+          <h4 className="mt-2 fs-4">{t('filter')}</h4>
         </div>
         {windowWidth <= 768 && <FontAwesomeIcon icon={faCircleChevronDown} className="text-color-black fs-5 me-2" onClick={handleShowAllFilter} />}
       </div>
 
-      
-      {(windowWidth > 768 || (windowWidth <= 768 && showAllFilter)) && 
+
+      {(windowWidth > 768 || (windowWidth <= 768 && showAllFilter)) &&
         <>
           <Stack className="align-items-start">
-                <Row className="justify-content-start ">
-                <span className="fw-bold text-color-black">{t('what_are_you_looking_for')}</span>
-                <InputGroup className=" border-0 align-items-center d-flex">
-                  <InputGroup.Text className="border-0 bg-blue-light">
-                    <FontAwesomeIcon icon={faSearch} className="fs-4" onClick={handleApplySearch}/>
-                  </InputGroup.Text>
-                  <Form.Control
-                    placeholder={t('search_placeholder')}
-                    className="border-0 bg-blue-light"
-                    type="text"
-                    value={searchInput}
-                    name="searchInput"
-                    onChange={handleSearchChange}
-                    onKeyDown={handleEnterSearch}
-                  />
-                  {
-                    windowWidth > 768 &&
-                    <Button
+            <Row className="justify-content-start ">
+              <span className="fw-bold text-color-black fs-6">{t('what_are_you_looking_for')}?</span>
+              <InputGroup>
+                <InputGroup.Text className="border-0 bg-blue-light">
+                  <FontAwesomeIcon icon={faSearch} className="fs-4" onClick={handleApplySearch} />
+                </InputGroup.Text>
+                <Form.Control
+                  placeholder={t('search_placeholder')}
+                  className=' border-start-0'
+                  type="text"
+                  value={searchInput}
+                  name="searchInput"
+                  onChange={handleSearchChange}
+                  onKeyDown={handleEnterSearch}
+                />
+                {
+                  windowWidth > 768 &&
+                  <Button
                     onClick={handleApplySearch}
                     className="bg-primary-light text-primary-normal fw-bold border-0"
                     disabled={searchInput !== '' ? false : true}
@@ -106,22 +106,22 @@ const Filter = () => {
                   >
                     {t('search_button')}
                   </Button>
-                  }
-                </InputGroup>
-                </Row>
-            <Row direction="horizontal" gap={3} className="w-100 d-flex justify-content-center">
-              <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
-              <span className="fw-bold text-color-black text-nowrap">{t("field_of_research")}</span>
-              <Options label="for" />                
+                }
+              </InputGroup>
+            </Row>
+            <Row direction="horizontal" className="w-100 d-flex justify-content-center mt-2">
+              <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
+                <span className="fw-bold text-color-black text-nowrap">{t("field_of_research")}</span>
+                <Options label="for" />
               </Col>
 
-              <Col xs={12} sm={6} md={3} lg={3} className="mt-1">
+              <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
                 <span className="fw-bold text-color-black">{t('location')}</span>
                 <Options label="location" />
               </Col>
-              <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
-                <span className="fw-bold text-color-black text-nowrap">{t("area")}</span>
-                  <AreaFilter/>
+              <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
+                <span className="fw-bold text-color-black text-nowrap">{t('region')}</span>
+                <AreaFilter />
               </Col>
               <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
                 <span className="fw-bold text-color-black fs-medium">{t('submission_date')}</span>

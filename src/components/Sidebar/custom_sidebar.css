@@ -72,3 +72,18 @@
     transition: background-color 0.3s ease-in-out;
 }
 
+.offcanvas-button-custom{
+    background-color: #065758;
+    position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%; 
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000; /* Đảm bảo nút luôn nằm trên các thành phần khác */
+}

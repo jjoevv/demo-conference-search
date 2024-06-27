@@ -14,8 +14,10 @@ import useFilter from '../../hooks/useFilter'
 import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 const Users = () => {
   const {t, i18n} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const navigate = useNavigate()
   const { optionsSelected} = useSearch()
   const {
@@ -27,6 +29,9 @@ const Users = () => {
   const {loading:loadingUsers, users, getAllUsers, getUserById} = useAdmin()
   const [displayUsers, setDisplayedUsers] = useState([])
 
+  useEffect(()=>{
+    getAllUsers()
+  }, [])
   useEffect(() => {
     if(users.length === 0 || !users){
       getAllUsers()
@@ -107,12 +112,11 @@ const Users = () => {
     [i18n]
 );
   return (
-    <Container
-    fluid  className='pt-5 mt-5 px-5 ms-5  bg-light overflow-y-auto my-sidebar-content'>
+    <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
 
 
       <div className="d-flex justify-content-between align-items-center mb-3 ">
-        <h4>{t('Users')}</h4>
+        <h4 className='fs-3'>{t('Users')}</h4>
         <ButtonGroup>
           
         </ButtonGroup>

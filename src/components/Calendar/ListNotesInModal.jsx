@@ -57,7 +57,7 @@ const ListNotesInModal = ({ show, showDetailModal, setShowDetailModal, setDetail
 
                   {
                     notesList.map((note, index) => (
-                      <div className="d-flex justify-content-between bg-teal-light my-2 border-5 border-start" key={index}>
+                      <div className="d-flex justify-content-between bg-teal-light my-2 border-5 border-start" key={note.conf_id}>
                         <Button
                           onClick={() => handleShowDetailModal(note)}
                           className='w-100  border-0 text-start p-1 rounded mt-1 mb-2 ms-2 px-2 text-color-darker bg-transparent'

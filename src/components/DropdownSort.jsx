@@ -12,7 +12,7 @@ export const DropdownSort = ({ onSelect }) => {
   };
   return (
     <Dropdown>
-      <Dropdown.Toggle className='bg-transparent border-primary-normal text-dropdown-toggle'>
+      <Dropdown.Toggle className='bg-transparent border-primary-normal text-dropdown-toggle fs-6'>
         <span className='fw-semibold'>{t('sort_by')}:</span> {`  ${t(selectedOption)}` || 'Random'}
       </Dropdown.Toggle>
 
@@ -22,7 +22,7 @@ export const DropdownSort = ({ onSelect }) => {
           &&
           <>
             {options.map(option => (
-              <Dropdown.Item key={option} onClick={() => handleSelect(option)}>
+              <Dropdown.Item key={option} onClick={() => handleSelect(option)} className='fs-6'>
                 {t(option)}
               </Dropdown.Item>
             ))}

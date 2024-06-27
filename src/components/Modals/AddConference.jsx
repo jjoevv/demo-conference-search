@@ -10,9 +10,11 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import useSearch from '../../hooks/useSearch';
 import Loading from '../Loading';
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../hooks/useScreenSize';
 
 const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) => {
     const { t } = useTranslation()
+    const {windowWidth} = useScreenSize()
     const { loading, postConference } = usePost()
     const { filterOptions, getOptionsFilter } = useSearch()
 
@@ -292,6 +294,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
     const handleSelect = (selectedIndex) => {
         setPage(selectedIndex);
     };
+
+    
     return (
         <>
             <Modal
@@ -299,7 +303,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 onHide={handleCloseForm}
                 size="lg"
                 scrollable={true}
-
+                fullscreen="sm-down"
             >
 
                 <Modal.Header closeButton className='fixed'>
@@ -307,14 +311,15 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                 </Modal.Header>
                 <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>
 
-                    <Form className='px-5' style={{ minHeight: "470px" }}>
+                    <Form className='form-container' style={{ minHeight: "450px" }}>
                         <div className="modal-scrollable-body">
                             <Carousel activeIndex={page} onSelect={handleSelect} controls={false} interval={null} indicators={false}>
                                 <Carousel.Item className='mt-5'>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3">
+                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
                                             <span className='text-danger'>* </span>{t('name')}:
                                         </Form.Label>
+                                        <Col xs="12" sm="9"> 
                                         <Form.Control
                                             type="text"
                                             placeholder={t('enter_conference_name')}
@@ -324,11 +329,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             className={requiredFields.conf_name ? 'border-blue-normal' : 'border border-danger '}
                                             required
                                         />
+                                        </Col>
                                     </Form.Group>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3">
+                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
                                             <span className='text-danger'>* </span>{t('acronym')}:
                                         </Form.Label>
+                                        <Col xs="12" sm="9"> 
                                         <Form.Control
                                             type="text"
                                             placeholder={t('enter_acronym')} 
@@ -338,11 +345,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             className={requiredFields.acronym ? 'border-blue-normal' : 'border border-danger '}
                                             required
                                         />
+                                        </Col>
                                     </Form.Group>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3">
+                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
                                             <span className='text-danger'>* </span> Link:
                                         </Form.Label>
+                                        <Col xs="12" sm="9"> 
                                         <Form.Control
                                             name="link"
                                             value={formData.link}
@@ -351,12 +360,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             className={requiredFields.link ? 'border-blue-normal' : 'border border-danger '}
                                             required
                                         />
+                                        </Col>
                                     </Form.Group>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-start">
-                                        <Form.Label column sm="3">
+                                    <Form.Group as={Row} className="mb-3 d-flex align-items-start">
+                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
                                             <span className='text-danger'>* </span> {t('field_of_research')}:
                                         </Form.Label>
-                                        <Col sm="9">
+                                        <Col xs="12" sm="9"> 
                                             <ChooseFORs
                                                 selectedOptions={selectedfieldsOfResearch}
                                                 onChange={handlefieldsOfResearchChange}
@@ -372,8 +382,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             <div key={index}>
 
                                                 <Form.Group as={Row} className='my-3'>
-                                                    <Form.Label column sm="3">{t('type')}: </Form.Label>
-                                                    <Col>
+                                                    <Form.Label column sm="3" xs="12">{t('type')}: </Form.Label>
+                                                    <Col xs="12" sm="9"> 
                                                         <Form.Select value={organization.type} name='type' onChange={(e) => handleOrgChange(index, e)}>
                                                             <option value="">{`${t('select')} ${t('type').toLowerCase()}`}...</option>
                                                             <option value="online">Online</option>
@@ -382,8 +392,8 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                         </Form.Select>
                                                     </Col>
                                                 </Form.Group>
-                                                <Form.Group as={Row} className='my-3'>
-                                                    <Form.Label column sm="3">{t('location')}: </Form.Label>
+                                                <Form.Group as={Row} className='my-2'>
+                                                    <Form.Label column sm="3" xs="12" className='text-nowrap '>{t('location')}: </Form.Label>
                                                     <Col>
                                                         <LocationInput onLocationChange={handleLocationChange} orgIndex={index} />
                                                     </Col>
@@ -406,9 +416,18 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                 </Carousel.Item>
                                 <Carousel.Item>
                                     {formData.importantDates.map((date, index) => (
-                                        <Form.Group as={Row} key={index} className='my-3 d-flex w-100'>
-                                            <Col sm='6'>
+                                        <Form.Group as={Row} key={index} className='my-3 d-flex bg-beige-light '>
+                                            <Col sm='6' className='mt-1'>
+                                                <div className="d-flex justify-content-between align-items-center">
+
                                                 <Form.Label>{t('date_type')}:</Form.Label>
+                                                {
+                                                    windowWidth <= 768 &&
+                                                    <Button variant="danger" onClick={() => handleRemoveDate(index)} className='bg-transparent border-0' title='Delete this date'>
+                                                    <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
+                                                </Button>
+                                                }
+                                                </div>
                                                 <Form.Control
                                                     type="text"
                                                     placeholder={t('enter_date_description')} 
@@ -416,9 +435,9 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                     onChange={(e) => handleDateChange(e, index, 'date_type')}
                                                     className={invalidDates.includes(index) && date.date_type === '' ? 'border-danger' : ''}
                                                 />
-
+                                                
                                             </Col>
-                                            <Col >
+                                            <Col className='mt-1'>
                                                 <Form.Label>{t('date')}:</Form.Label>
                                                 <Form.Control
                                                     type="date"
@@ -427,11 +446,14 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                                     className={invalidDates.includes(index) && date.date_value === '' ? 'border-danger' : ''}
                                                 />
                                             </Col>
-                                            <Col sm='1' className='d-flex align-items-end'>
-                                                <Button variant="danger" onClick={() => handleRemoveDate(index)} className='bg-transparent border-0' title='Delete this date'>
+                                            {
+                                                windowWidth > 768 &&
+                                                <Col sm='1' className='d-flex align-items-end'>
+                                                <Button variant="danger" onClick={() => handleRemoveDate(index)} className='bg-transparent border-0 p-0' title='Delete this date'>
                                                     <FontAwesomeIcon icon={faCircleXmark} className='text-danger' />
                                                 </Button>
                                             </Col>
+                                            }
                                         </Form.Group>
                                     ))}
 
@@ -443,12 +465,13 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
 
                                 </Carousel.Item>
                                 <CarouselItem>
-                                    <Form.Group as={Col} className="mb-3 d-flex align-items-start">
+                                    <Form.Group as={Row} className="mb-3 d-flex align-items-start">
 
-                                        <Form.Label column sm="3"> <span className='text-danger'>* </span>Call for paper:</Form.Label>
-                                        <Form.Control
+                                        <Form.Label column sm="3" xs="12" className='text-nowrap '> <span className='text-danger'>* </span>Call for paper:</Form.Label>
+                                        <Col xs="12" sm="9"> 
+                                       <Form.Control
                                             as="textarea"
-                                            rows={18}
+                                            rows={17}
                                             name="callForPaper"
                                             value={formData.callForPaper}
                                             onChange={handleInputChange}
@@ -456,6 +479,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
                                             placeholder={t('enter_call_for_paper')} 
                                             className={requiredFields.callForPaper ? 'border-blue-normal' : 'border border-danger '}
                                         />
+                                       </Col>
                                     </Form.Group>
                                 </CarouselItem>
                             </Carousel>

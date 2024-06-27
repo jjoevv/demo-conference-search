@@ -91,7 +91,7 @@ const UserDetail = () => {
                     </div>
                     <span className='ms-4 text-color-black'>{userAccount.phone}</span>
                   </Col>
-                  <Col className='border rounded-1 p-3 m-2'>
+                  <Col xs="12" className='border rounded-1 p-3 m-2'>
                     <div className='d-flex align-items-center mb-2'>
                       <FontAwesomeIcon icon={faAddressCard} className='text-primary-normal me-2 fs-5' />
                       {`${t('address')}/${t('nationality')}`}:

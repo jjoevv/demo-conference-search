@@ -30,7 +30,6 @@ const UpcomingNote = () => {
         return dateA - dateB;
     });
 
-
     return (
         <div className='w-100'>
             {notes?.length > 0 &&
@@ -42,12 +41,12 @@ const UpcomingNote = () => {
                     notes &&
                     <>
                         {
-                            sortedNotes.map((note) => (
+                            sortedNotes.map((note, index) => (
                                 <>
                                     {
                                         isUpcoming(note.start_date) &&
 
-                                        <Card key={note.id} className='rounded-2 m-2' style={{ width: "200px", minWidth: "320px" }}>
+                                        <Card key={index} className='rounded-2 m-2' style={{ width: "200px", minWidth: "320px" }}>
                                             <Card.Body className='pb-0'>
                                                 <div className='d-flex flex-column'>
                                                     <span className='fw-semibold text-teal-normal fs-6'>{`${note.date_type}`}</span>

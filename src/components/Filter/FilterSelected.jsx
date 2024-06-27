@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/formatWord';
 import { useTranslation } from 'react-i18next';
 import useFilter from '../../hooks/useFilter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
 const FilterSelected = () => {
   const {t} = useTranslation()
@@ -51,17 +53,19 @@ const FilterSelected = () => {
       {
         keywordsSelected !== null && total > 0
           ?
-          <div className="d-flex flex-wrap border-1 border border-light-subtle p-3 my-3 me-4 rounded-3">
+          <div className="d-flex flex-wrap justify-content-start border-1 border border-light-subtle p-3 my-3 rounded-3">
             
             {keywordsSelected.map((keyword, index) => (
               <Button
                 onClick={() => handleDeletekeyword(keyword)}
                 key={index}
-                className="fs-6 text-color-black py-1 px-2 fw-bold border bg-transparent border-secondary rounded-pill d me-3 mb-3  d-flex align-items-center ">
+                className="fs-6 text-color-black py-1 px-2 fw-bold border bg-transparent border-secondary rounded-pill d me-3 mb-3 fs-6 d-flex align-items-center"
+                >
 
+                <span className='text-nowrap text-truncate'>
                 { handleRenderKeyword(keyword)}
-                 
-                  <Image width={20} src={deleteIcon} alt="" className="ms-1" />
+                </span>
+                  <FontAwesomeIcon icon={faXmarkCircle} className='text-secondary fs-6 mx-1'/>
               </Button>
               ))}
             <Button
@@ -69,7 +73,7 @@ const FilterSelected = () => {
               className="fs-6 py-1 px-2 fw-bold border border-danger bg-white text-red-normal rounded-pill d me-3 mb-3  d-flex align-items-center">
 
               {t('reset_all')}
-              <Image width={20} src={RedDeleteIcon} alt="" className="ms-1" />
+              <FontAwesomeIcon icon={faXmarkCircle} className='text-red fs-6 mx-1'/>
             </Button>
           </div>
           :

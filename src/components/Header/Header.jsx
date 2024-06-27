@@ -47,15 +47,17 @@ const Header = () => {
     goToPreviousPage(event);
   }, [])
 
-
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+};
   const handleSelect = (eventKey) => {
     setActiveKey(eventKey);
   };
-
+  const dropDirection = windowWidth <= 768 ? 'end' : 'bottom';
   return (
     <Navbar expand="md" id="header" className=" fixed-top px-5 shadow-sm bg-white">
     <LoginExpiredModal show={isLogin ? isExpiredLogin : false} />
-    <Container className="d-flex justify-content-between align-items-center w-100 px-5 px-md-5 px-sm-2 mt-2">
+    <Container className="d-flex justify-content-between align-items-center w-100 px-5 px-md-5 px-sm-2">
       <Navbar.Brand className="my-header-brand me-auto me-md-0">
         <Link to="/" className="text-teal-dark fs-4 fw-bold" title="Homepage">
           ConfHub
@@ -63,28 +65,30 @@ const Header = () => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
     </Container>
-    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
-      <Nav activeKey={activeKey} onSelect={handleSelect} className="d-flex align-items-center">
+      <Nav activeKey={activeKey} onSelect={handleSelect} className='d-flex'>
         <Nav.Link
           as={Link}
           to="/"
           title="Homepage"
-          className={`mx-2 mx-md-4 text-nowrap text-color-black fs-medium fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
+          className={` mx-md-4 text-nowrap text-color-black fs-5 fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
         >
           {t('home')}
         </Nav.Link>
         <Dropdown
           onMouseLeave={() => setShowDropdown(false)}
           onMouseEnter={() => setShowDropdown(true)}
-          show={showDropdown}
+          onClick={() => setShowDropdown(!showDropdown)}
+            show={showDropdown}
+            drop={dropDirection}
+          className='dropdown'
         >
           <Dropdown.Toggle
-            className={`mx-2 mx-md-4 rounded-0 text-center text-color-black fs-medium fw-bold header-title bg-transparent border-0 ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'text-center border-3 border-bottom border-secondary' : ''}`}
-            id="dropdown-basic"
+            className={`mx-md-4 px-0 rounded-0 text-center text-color-black fs-5 fw-bold header-title bg-transparent border-0 ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'text-center border-3 border-bottom border-secondary' : ''}`}
+            
           >
             {t('conference')}
           </Dropdown.Toggle>
-          <Dropdown.Menu>
+          <Dropdown.Menu >
             <Dropdown.Item className="fs-6" onClick={() => navigate('/user/followed')}>{t('followed_conference')}</Dropdown.Item>
             <Dropdown.Item className="fs-6" onClick={() => navigate('/user/yourconferences')}>{t('your_conferences')}</Dropdown.Item>
           </Dropdown.Menu>
@@ -93,7 +97,7 @@ const Header = () => {
           as={Link}
           to={user ? '/user/note' : '/login'}
           title="Timestamp"
-          className={`mx-2 mx-md-4 text-nowrap text-color-black fs-medium fw-bold header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
+          className={` mx-md-4 text-nowrap text-color-black fs-5 fw-bold header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
         >
          {t('note')}
         </Nav.Link>
@@ -108,11 +112,10 @@ const Header = () => {
           {user ? (
             <AvatarDropdown />
           ) : (
-            <Button className="bg-red-normal border-0 px-4 rounded-5 fw-bold text-nowrap" onClick={() => navigate('/login')}>LOG IN</Button>
+            <Button className="bg-red-normal border-0 px-4 rounded-5 fw-bold fs-5 text-nowrap" onClick={() => navigate('/login')}>{t('login').toUpperCase()}</Button>
           )}
         </Nav.Item>
       </Nav>
-    </Navbar.Collapse>
           <MessagesUpdateNow/>
   </Navbar>
   )

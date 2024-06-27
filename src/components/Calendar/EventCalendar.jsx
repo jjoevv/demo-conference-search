@@ -55,7 +55,6 @@ function EventCalendar() {
       }
       
     const handleDateClick = (event) => {
-        console.log({notes})
         const dateEvents = notes.filter((note) => moment(note.start_date).isSame(event.start, 'day'));
 
         setExistEvents(dateEvents)

@@ -63,7 +63,7 @@ const ImportantDatePage = ({conference}) => {
         <FontAwesomeIcon icon={faCalendar} className='me-2'/>
         {t('important_dates')}
         </span>
-      <div className='mt-2' style={{maxHeight: "600px", overflowY: "auto"}} >
+      <div className='mt-2 w-100' style={{maxHeight: "600px", overflowY: "auto"}} >
 
         {conference ?
           <>
@@ -75,9 +75,9 @@ const ImportantDatePage = ({conference}) => {
                   displayDates?.map((date, index) => (
                     <Row key={index} 
                     className={`${index % 2 === 0 ? 'bg-beige-light' : ''} 
-                    align-items-center justify-content-start m-2 px-1 py-2 position-relative  border-teal-light border-5 border-start overflow-hidden`}>
+                    align-items-center justify-content-start m-2 px-1 py-2 position-relative border-teal-light border-5 border-start overflow-hidden`}>
                      
-                          <span className=' fw-bold text-color-black d-flex align-items-center fs-large w-75' >
+                          <span className=' fw-bold text-color-black d-flex align-items-center fs-5' >
                             {capitalizeFirstLetter(date?.date_type)}
                           </span>
                         <span className='fs-large fw-medium text-color-black m-0'>

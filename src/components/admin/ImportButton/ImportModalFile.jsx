@@ -13,8 +13,8 @@ const ImportModalFile = ({show, onHide}) => {
         {fileUploaded ? `${t('columns')}` :  `${t('upload_data')}`}
       </Modal.Title>
     </Modal.Header>
-    <Modal.Body className='py-5 h-100 d-inline-block'>
-        <div className={`w-100 d-flex justify-content-center ${fileUploaded ? '' : 'my-5'}`}> 
+    <Modal.Body className='h-100 d-inline-block'>
+        <div className={` d-flex  ${fileUploaded ? 'justify-content-start' : 'my-5 justify-content-center'}`}> 
             {
                 !fileUploaded ?
                 <div {...getRootProps({ className: 'dropzone' })} className='p-5 bg-teal-light rounded text-center'  style={{maxWidth: "500px", minWidth: "100px", cursor: "pointer"}}>

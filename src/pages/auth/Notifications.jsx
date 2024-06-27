@@ -96,32 +96,37 @@ const Notifications = () => {
               currentNotifications.map((noti, index) => {
                 const { firstPart, secondPart } = splitNotificationMessage(noti.message);
                 return (
-                  <Row key={index} className={`p-4 rounded-2 my-4 me-3 noti-wrapper ${noti.read_status ? ' bg-light' : 'bg-skyblue-light'}`}>
-                    <div className="d-flex align-items-center">
-                      <FontAwesomeIcon icon={faCircle} className={`me-2 ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}/>
-                    <span className={`fw-semibold fs-5  ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}>{firstPart}</span>
-                    </div>
-                    <div className={`${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`} dangerouslySetInnerHTML={{ __html: secondPart }}></div>
-
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className='text-color-medium fs-medium'>
+                  <Row key={index} className={`py-4 rounded-2 my-4 me-3 noti-wrapper ${noti.read_status ? ' bg-light' : 'bg-skyblue-light'}`}>
+                    <div className="d-flex align-items-start ">
+                      <FontAwesomeIcon icon={faCircle} className={`me-2 mt-2 ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}/>
+                    <div>
+                      <span className={`fw-semibold fs-5  ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`}>{firstPart}</span>
+                      <div className={`fs-5 ${noti.read_status ? 'text-secondary' : ' text-darkcyan-normal'}`} dangerouslySetInnerHTML={{ __html: secondPart }}></div>
+                      <div className="d-flex justify-content-between align-items-center">
+                      <div className='text-color-medium fs-5  text-nowrap'>
                         {`${t('updated_in')} ${moment(noti.ctime).format('YYYY/MM/DD HH:mm')}`}
                       </div>
                       <Button
                         disabled={noti.Follow.CallForPaperCfpId !== 'null' ? false : true}
                         onClick={() => handleViewMore(noti)}
-                        className=" d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0 btn-noti-more"
+                        className=" d-flex justify-content-end bg-transparent text-teal-normal text-decoration-underline border-0 btn-noti-more text-nowrap"
                         title='Go to detailed information page'
                       >
                         {
                           noti.Follow.CallForPaperCfpId !== 'null'
                             ?
-                            `${t('more_details')} >`
+                            `${t('more_details')}`
                             :
                             `You've unfollowed this conference.`
                         }
                       </Button>
                     </div>
+                    </div>
+                    
+                    </div>
+                    
+
+                   
                   </Row>
                 )
               })

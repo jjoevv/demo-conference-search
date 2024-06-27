@@ -12,8 +12,10 @@ import AllConferences from '../../components/admin/AllConferences'
 import AllUsers from '../../components/admin/AllUsers'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 const Dashboard = () => {
   const { t, i18n } = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { etlLog, currentUsers,
     startDate, endDate, handleEndDateChange, handleStartDateChange, resetDates,
     getCurrentUser, getEtlLog, getUserLog, getLatestAccessInfo } = useDashboard()
@@ -128,8 +130,12 @@ const Dashboard = () => {
             </div>
 
             {/**Charts go here */}
-            <div className='bg-white d-flex justify-content-between align-items-center rounded bg-beige-light px-5 mx-5 pt-5'>
-              <div className="mx-1 fw-bold fs-large text-light-emphasis">
+            <div className=''>
+            
+
+              <Row className='align-items-center bg-white d-flex justify-content-between align-items-center rounded bg-beige-light px-5 mx-5 pt-5'>
+                <Col xs="12" sm="6" md="6" className='my-1'>
+                <div className="mx-1 fw-bold fs-large text-light-emphasis">
                 {
                   startDate && endDate &&
                   <>
@@ -138,11 +144,11 @@ const Dashboard = () => {
                   </>
                 }
               </div>
-
-              <div className='d-flex'>
+                </Col>
+                <Col xs="12" sm="6" md="6" className='d-flex p-0 justify-content-end my-1'>
                 {
-                  filterType === 'pickDate' &&
-                  <div className="d-flex justify-content-center align-items-center  etl-filter-date-input-wrapper">
+                  filterType === 'pickDate' && windowWidth > 768 &&
+                  (<div className="d-flex justify-content-center align-items-center  etl-filter-date-input-wrapper text-nowrap">
 
                     <input
                       type="date"
@@ -162,29 +168,62 @@ const Dashboard = () => {
                       className='text-darkcyan-normal rounded border-1 border-primary-normal p-1'
                     />
 
-                  </div>
+                  </div>)
                 }
-
                 <Button
                   onClick={() => handleFilterTypeChange('pickDate')}
-                  className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2  ${filterType === 'pickDate' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
+                  className={`rounded-pill  fw-bold btn-custom-etl-filter border-0 text-nowrap  
+                      ${filterType === 'pickDate' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}
+                      ${windowWidth > 768 ? 'p-2 px-3': 'p-1 px-2'}
+                      `}
                 >
                   {t('pick_date')}
                 </Button>
                 <Button
                   onClick={() => handleFilterTypeChange('weekly')}
-                  className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2 ${filterType === 'weekly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
+                  className={`rounded-pill  fw-bold btn-custom-etl-filter border-0 text-nowrap  
+                    ${filterType === 'weekly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}
+                    ${windowWidth > 768 ? 'p-2 px-3': 'p-1 px-2'}
+                    `}
                 >
                   {t('weekly')}
                 </Button>
                 <Button
                   onClick={() => handleFilterTypeChange('monthly')}
-                  className={`rounded-pill p-2 px-3 fw-bold btn-custom-etl-filter border-0 mx-2 ${filterType === 'monthly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}`}
+                  className={`rounded-pill  fw-bold btn-custom-etl-filter border-0 text-nowrap  
+                    ${filterType === 'monthly' ? 'bg-beige-normal text-teal-normal' : 'bg-white text-light-emphasis'}
+                    ${windowWidth > 768 ? 'p-2 px-3': 'p-1 px-2'}
+                    `}
                 >
                   {t('monthly')}
                 </Button>
-              </div>
+                </Col>
 
+              </Row>
+              {
+                  windowWidth < 768 && filterType === 'pickDate' &&
+                  (<div className="d-flex justify-content-center align-items-center  etl-filter-date-input-wrapper text-nowrap">
+
+                    <input
+                      type="date"
+                      id="startDate"
+                      name="startDate"
+                      value={startDate}
+                      onChange={(e) => handleStartDateChange(e.target.value)}
+                      className='text-darkcyan-normal rounded border-1 border-primary-normal p-1'
+                    />
+                    <FontAwesomeIcon icon={faArrowRight} className='mx-2' />
+                    <input
+                      type="date"
+                      id="endDate"
+                      name="endDate"
+                      value={endDate}
+                      onChange={(e) => handleEndDateChange(e.target.value)}
+                      className='text-darkcyan-normal rounded border-1 border-primary-normal p-1'
+                    />
+
+                  </div>)
+                }
             </div>
 
             <div className='mx-5 p-5 pb-0 bg-white chart-wrapper'>
@@ -199,11 +238,11 @@ const Dashboard = () => {
             <div className='mx-5 mb-3 my-3 p-5 bg-white rounded-1'>
               <div className='mb-3 ms-3 d-flex justify-content-between align-items-center'>
                 <div className='border-5 border-teal-normal border-start'>
-                  <h4 className="text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('conferences')}`}</h4>
+                  <h4 className="fs-4 text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('conferences')}`}</h4>
                 </div>
                 <Button
                   onClick={() => navigate('/admin/conferences_management')}
-                  className='d-flex justify-content-center align-items-center bg-teal-normal'>
+                  className='d-flex justify-content-center align-items-center bg-teal-normal text-nowrap fs-5'>
                   {t('showall')}
                   <div className="rounded-2 px-2 bg-teal-normal">
                     <FontAwesomeIcon icon={faSquareUpRight} />
@@ -216,11 +255,11 @@ const Dashboard = () => {
               <div className='mb-3 ms-3 d-flex justify-content-between align-items-center'>
 
                 <div className='border-5 border-darkcyan-normal border-start'>
-                  <h4 className="text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('users')}`}</h4>
+                  <h4 className="fs-4 text-darkcyan-normal ms-2 my-0">{`${t('all')} ${t('users')}`}</h4>
                 </div>
                 <Button
                   onClick={() => navigate('/admin/users_management')}
-                  className='d-flex justify-content-center align-items-center bg-darkcyan-normal'>
+                  className='d-flex justify-content-center align-items-center bg-darkcyan-normal text-nowrap fs-5'>
                   {t('showall')}
                   <div className="rounded-2 px-2 bg-darkcyan-normal">
                     <FontAwesomeIcon icon={faSquareUpRight} />

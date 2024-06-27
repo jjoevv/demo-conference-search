@@ -158,13 +158,14 @@ const ImportedDataTable = ({ onHide }) => {
         return (
             <tr>
                 {headersName.map((header, index) => (
-                    <th key={index}>
+                    <th key={index} >
                         {
                             isSelect ?
                                 <Form.Select
                                     value={selectedHeaders[index]?.name || ''}
                                     onChange={(e) => handleSelectHeader(e.target.value, index)}
                                     className='fw-bold'
+                                    style={{width: "auto"}} 
                                 >
                                     <option value="" disabled>{t('selectHeader')}</option>
                                     {headersNames.map((name, i) => (
@@ -280,7 +281,7 @@ const ImportedDataTable = ({ onHide }) => {
 
             </Carousel>
 
-            <div className="d-flex w-100 justify-content-end align-items-center fs-large">
+            <div className="d-flex justify-content-end align-items-center fs-5">
                 {!isImported && warningMessage !== '' && (
                     <div className="text-warning-emphasis">
                         {warningMessage}
@@ -302,7 +303,7 @@ const ImportedDataTable = ({ onHide }) => {
                 <Button
                     disable={activePage === 0 ? true : false}
                     onClick={() => setActivePage(0)}
-                    className='bg-secondary text-white mx-2 px-4 border-light'
+                    className='bg-secondary text-white mx-2 px-4 border-light text-nowrap'
                 >
                     {t('back')}
                 </Button>
@@ -320,8 +321,8 @@ const ImportedDataTable = ({ onHide }) => {
                         </Button>
                         :
                         <Button
-                            className='bg-primary-normal text-white mx-2 px-4 border-light'
-                            onClick={handleNext}>{t('Next')}</Button>
+                            className='bg-primary-normal text-white mx-2 px-4 border-light text-nowrap'
+                            onClick={handleNext}>{t('next')}</Button>
                 }
             </div>
         </div>

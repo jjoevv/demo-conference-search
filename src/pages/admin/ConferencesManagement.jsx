@@ -9,7 +9,7 @@ import { DropdownSort } from '../../components/DropdownSort'
 import Loading from '../../components/Loading'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faFilter, faGear } from '@fortawesome/free-solid-svg-icons'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 import useSearch from '../../hooks/useSearch'
 import { checkExistValue } from '../../utils/checkFetchedResults'
@@ -23,9 +23,12 @@ import useAdmin from '../../hooks/useAdmin'
 import ImportButton from '../../components/admin/ImportButton/ImportButton'
 import ExportButton from '../../components/admin/ExportButton'
 import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
+import FilterOffcanvas from '../../components/admin/FilterOffcanvas'
 
 const ConferencesManagement = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
+  const { windowWidth } = useScreenSize()
   const { optionsSelected, getOptionsFilter } = useSearch()
   const {
     priorityKeywords,
@@ -33,20 +36,21 @@ const ConferencesManagement = () => {
     sortConferencesByPriorityKeyword } = useFilter()
 
   const [showFilter, setShowFilter] = useState(false)
+  const [showFilterOffcanvas, setShowFilterOffcanvas] = useState(false)
   const { loading: loadingConf, conferences, selectOptionSort, displaySortList, handleSelectOptionSort, getAllConferences } = useConference()
   const { loading: loadingAdmin, allcolumns, pendingConferences, getAllPendingConferences } = useAdmin()
   const [key, setKey] = useState('allconf');
   const [displayConferences, setDisplayedConferences] = useState([])
-  const [conferencesList, setConferenceList] = useState([]) 
+  const [conferencesList, setConferenceList] = useState([])
   const [loading, setLoading] = useState(false)
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true)
     const fetchData = async () => {
-      await  getAllConferences()
+      await getAllConferences()
       setLoading(false)
     }
     fetchData()
-   
+
   }, [])
 
   useEffect(() => {
@@ -64,7 +68,7 @@ const ConferencesManagement = () => {
       getAllPendingConferences()
     }
     getOptionsFilter("", [])
-   // console.log({pendingConferences, key})
+    // console.log({pendingConferences, key})
     if (key === 'userowner') {
       setDisplayedConferences(pendingConferences)
     } else setDisplayedConferences(conferences)
@@ -133,15 +137,14 @@ const ConferencesManagement = () => {
     };
   }, []);
   return (
-    <Container
-    fluid  className='pt-5 mt-5 px-5 ms-5  bg-light overflow-y-auto my-sidebar-content'>
+    <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4>{t('conference_management')}</h4>
+        <h4 className='fs-3'>{t('conference_management')}</h4>
         <ButtonGroup>
-          <ImportButton/>
-          <ExportButton data={displayConferences} headers={allcolumns}/>
-        
+          <ImportButton />
+          <ExportButton data={displayConferences} headers={allcolumns} />
+
         </ButtonGroup>
       </div>
 
@@ -158,17 +161,29 @@ const ConferencesManagement = () => {
         </div>
 
         <Row md={4} className='justify-content-end my-2 mb-3'>
-          <Col><InputSearch /></Col>
+          <Col xs={12}><InputSearch /></Col>
           <Col md='auto'>
+            {/* Button hiển thị trên màn hình desktop (lg và lớn hơn) */}
             <Button
-              className={`rounded-1 border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
+              className={`rounded-1 d-lg-block d-none border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
               onClick={() => setShowFilter(!showFilter)}
             >
-              <FontAwesomeIcon icon={faFilter} className='mx-1'/>
+              <FontAwesomeIcon icon={faFilter} className='mx-1' />
               {t('filter')}
             </Button>
+
+            
+
           </Col>
-          <Col md='auto'>
+          <Col md='auto' className='d-flex justify-content-end my-2'>
+          {/* Button hiển thị trên màn hình điện thoại (sm và nhỏ hơn) */}
+          <Button
+              className={`rounded-1 mx-2 py-1 d-lg-none border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
+              onClick={() => setShowFilterOffcanvas(!showFilter)}
+            >
+              <FontAwesomeIcon icon={faFilter} className='mx-1' />
+              {t('filter')}
+            </Button>
             <DropdownSort
               options={["Random", "Upcoming", "Name A->Z", "Latest"]}
               onSelect={handleDropdownSelect}
@@ -177,7 +192,7 @@ const ConferencesManagement = () => {
         </Row>
 
         {showFilter && <Filter />}
-
+        {showFilterOffcanvas && <FilterOffcanvas showOffcanvas={showFilterOffcanvas} setShowOffcanvas={() => setShowFilterOffcanvas(!showFilterOffcanvas)} />}
         <FilterSelected />
         {
           loadingConf && loading ?
@@ -190,14 +205,14 @@ const ConferencesManagement = () => {
               activeKey={key}
               onSelect={(k) => setKey(k)}
             >
-              <Tab eventKey="allconf" title={`${t('all')} ${t('conferences')}`} className='pt-2' tabClassName= 'custom-tab-update'>
+              <Tab eventKey="allconf" title={`${t('all')} ${t('conferences')}`} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
                   <AllConferences conferences={displayConferences} />
                 </div>
               </Tab>
-              <Tab eventKey="userowner" title={t('pending')} className='pt-2' tabClassName= 'custom-tab-update'>
+              <Tab eventKey="userowner" title={t('pending')} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef}>
-                  <PendingCFPs conferences={displayConferences}/>
+                  <PendingCFPs conferences={displayConferences} />
                 </div>
               </Tab>
             </Tabs>

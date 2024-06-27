@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { Container, Form, Button, Image, Row, Col, InputGroup } from 'react-bootstrap'
+import { Container, Form, Button, Row, Col, InputGroup } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 
-import googleIcon from './../../assets/imgs/google.png'
 import useAuth from '../../hooks/useAuth'
 import Loading from '../../components/Loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { useTranslation } from 'react-i18next'
+import useScreenSize from '../../hooks/useScreenSize'
 
 const Signup = () => {
+    const {t} = useTranslation()
+    const {windowWidth} = useScreenSize()
     const { loading, handleRegister, handleLogin } = useAuth()
     const [account, setAccount] = useState({
         email: "",
@@ -72,27 +75,28 @@ const Signup = () => {
         setShowConfirmPassword(!showpConfirmassword);
     };
     return (
-        <Container className="100-w 100-h min-vh-100 d-flex justify-content-center align-items-center text-center overflow-hiddenFover" fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
-            <Row className='bg-white rounded-4 d-flex box-area w-75 h-50 mx-auto'>
+        <Container className={` text-center 
+            ${windowWidth > 768 ? '100-h min-vh-100 d-flex justify-content-center align-items-center ': 'vh-100 100-h pt-5'}
+    `} fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
+            <Row className={`bg-white rounded-4 d-flex box-area mx-auto ${windowWidth > 768 ? 'w-75 h-50' : 'h-50'} `}>
+             {
+                windowWidth > 768 &&
                 <Col sm={4} xs={12} className='d-flex flex-column align-items-center justify-content-center rounded-start-4 text-light' style={{ backgroundColor: "#419489" }}>
-                    <span className='h1 fw-bold my-2'>Hello!</span>
-                    <span className='w-75 fs-5'>Enter your account and start following conferences!</span>
-                    <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
-                        <Link to='/' className='fs-6 text-light'>  {"<  "}Back to Homepage</Link>
-                    </div>
-                </Col>
-                <Col className='p-5 d-flex flex-column align-items-center justify-content-center bg-skyblue-light rounded-end-4' >
+                <span className='h1 fw-bold my-2'>Hello!</span>
+                <span className='w-75 fs-5'>{t('description_signup')}</span>
+                <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
+                    <Link to='/' className='fs-6 text-light'>  {"<  "}{t('back_to_homepage')}</Link>
+                </div>
+            </Col>
+             }
+                 <Col 
+                className={`p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light
+                    ${windowWidth > 768 ? 'rounded-start-4': 'rounded-4 pt-5 w-100'}
+                `} >
 
-                    <Form className='w-75 '> 
-                        <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>Create Account</h1>
-                        {
-                            /*
-    <Button className='border-0 w-100 p-2' style={{ backgroundColor: "#E8F1F3", color: "#434343" }}>
-                            <Image src={googleIcon} width={20} className="me-2" />
-                            You can join with your Google account
-                        </Button>
-                             */
-                        }
+                    <Form className='w-100 p-5  '> 
+                        <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>{t('create_account')}</h1>
+                        
                     
                         
                         <Form.Group className="mb-3 text-start">
@@ -109,13 +113,13 @@ const Signup = () => {
                         </Form.Group>
                        
                         <Form.Group className="my-3 text-start">
-                            <Form.Label htmlFor="inputPassword5" className='text-color-black'>Password</Form.Label>
+                            <Form.Label htmlFor="inputPassword5" className='text-color-black'>{t('password')}</Form.Label>
                             <InputGroup>
                                 <Form.Control
                                     type={showpassword ? "text" : "password"}
                                     value={account.password}
                                     name="password"
-                                    placeholder='Your password'
+                                    placeholder={t('password')}
                                     onChange={handleInputChange}
                                     required
                                     className="border-0 shadow-sm rounded-start-2 px-3 py-2"
@@ -128,14 +132,14 @@ const Signup = () => {
                             </InputGroup>
                         </Form.Group>
                         <Form.Group className="my-3 mb-4 text-start">
-                            <Form.Label htmlFor="inputPassword5" className='text-color-black'>Confirm password</Form.Label>
+                            <Form.Label htmlFor="inputPassword5" className='text-color-black'>{t('confirm_password')}</Form.Label>
                           
                              <InputGroup>
                                 <Form.Control
                                     type={showpConfirmassword ? "text" : "password"}
                                     value={account.confirm}
                                     name="confirm"
-                                    placeholder='Your password'
+                                    placeholder={t('confirm_password')}
                                     onChange={handleInputChange}
                                     required
                                     className="border-0 shadow-sm rounded-start-2 px-3 py-2"
@@ -162,19 +166,24 @@ const Signup = () => {
                                     ?
                                     <Loading />
                                     :
-                                    'SIGN UP'
-                            }
+                                   `${t('signup')}`                            }
                         </Button>
-                        <div className="my-3  mx-5 d-flex align-items-center justify-content-center">
-                            <span htmlFor="#signup">Already have an account?</span>
+                        <div className="my-3  mx-5 d-flex align-items-center justify-content-center text-nowrap">
+                            <span htmlFor="#signup">{t('already_have_account')}</span>
                             <Button
                                 className='bg-transparent border-0 fw-bold'
                                 style={{ fontSize: "20px", color: "#419489" }}
                                 onClick={chooseLogin}>
-                                <span>LOG IN</span>
+                                <span>{t('login')}</span>
                             </Button>
                         </div>
                     </Form>
+                    {
+                        windowWidth < 768 &&
+                        <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
+                        <Link to='/' className='fs-6 text-light'>  {"<  "}{t('back_to_homepage')}</Link>
+                    </div>
+                    }
                 </Col>
 
             </Row>

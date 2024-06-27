@@ -84,7 +84,7 @@ const ButtonGroupUpdate = ({conference}) => {
                 onModalClick={handleOpenModalUpdate}
             />}
             
-            <ButtonGroup className='text-end'>
+            <ButtonGroup className='text-end p-0'>
                 <Button 
                 onClick={handleOpenModalUpdate}
                 className='bg-teal-normal border-0 rounded mx-2 px-3' >

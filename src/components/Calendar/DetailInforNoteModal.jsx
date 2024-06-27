@@ -260,7 +260,7 @@ const DetailInforNoteModal = ({ show, onClose, note, onDelete, onUpdate, onReloa
                 </ButtonGroup>
                 {isUpdate && statusUpdate && (
   <div className={statusUpdate ? 'text-success' : 'text-danger'}>
-    <span className='text-success'>{t('success')}</span>. {t('closing_countdown', { countdown: countdown })}
+    <span className='text-success'>{t('success')}</span>. {t('closing_countdown', { countdown: autoClose })}
   </div>
 )}
 

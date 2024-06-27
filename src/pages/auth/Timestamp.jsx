@@ -6,27 +6,29 @@ import EventCalendar from '../../components/Calendar/EventCalendar';
 import UpcomingNote from '../../components/Calendar/UpcomingNote';
 import Loading from '../../components/Loading';
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../hooks/useScreenSize';
 
 const Timestamp = () => {
   const {t} = useTranslation()
+  const {windowWidth} = useScreenSize()
   const { loading, notes, getAllNotes} = useNote()  
   
   return (
-    <Container className=' m-5 pt-5  overflow-x-hidden'>
+    <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
         <h4 className='mb-3'>{t('note')}</h4>
 
         <h6 className=''>{t('note_page_description')}</h6>  
-      <Row className='w-75'>
+      <Row className='w-100'>
         {
           loading
           ?
-          <div className=""></div>
+          <div className="w-100"></div>
           :          
           <UpcomingNote/>
         }
       </Row>
       <Row className='mt-5'>
-        <Col xs="9" >          
+        <Col xs="12" lg="9" md="9">          
         {
           loading
           ?
@@ -37,7 +39,7 @@ const Timestamp = () => {
           </>
         }
         </Col>
-        <Col xs="3" className='ps-3'>          
+        <Col xs="12" lg="3" md="3"  className='ps-3 mb-5'>          
           <div className='ms-1 mt-3'>
             <h5>{t('calendar_notes')}</h5>
             <Row className='align-items-center'>

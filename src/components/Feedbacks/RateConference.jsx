@@ -16,12 +16,12 @@ function RateConference({rating, setRating}) {
     };
 
     return (
-        <Row className='d-flex align-items-center'>
+        <Row className='d-flex align-items-center justify-content-start'>
             
-            <Col xs={12} lg={3} sm={4} className='text-start p-0'>
+            <Col className='text-start p-0'>
             <span className='me-2 text-nowrap'>{t('how_would_you_rate_this_conference')} {rating}/5*</span>
             </Col>
-           <Col xs={12} lg={8} sm={8} className=' ms-3 text-start p-0'>
+           <Col className=' ms-3 text-start p-0'>
            {[1, 2, 3, 4, 5].map((index) => (
                 <Image
                     key={index}
