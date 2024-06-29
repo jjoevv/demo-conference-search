@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
+import GoogleLoginButton from '../../components/ButtonLoginWithGoogle/GoogleLoginButton'
 const Login = () => {
     const {t} = useTranslation()
     const {windowWidth} = useScreenSize()
@@ -79,7 +80,14 @@ const Login = () => {
 
                     <Form className='w-100 p-5'>
                         <h1 className='mb-4 fw-bold' style={{ fontSize: "30px", color: "#419489" }}>{t('login')}</h1>
-                     
+                        <GoogleLoginButton/>
+                        <div className='d-flex flex-row align-items-center'>
+                            <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
+
+                            <div><p className='pt-3 mx-3 text-secondary-emphasis'>{t('or_login_account')}</p></div>
+
+                            <div style={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
+                        </div>
                         <Form.Group className="mb-3 text-start">
                             <Form.Label htmlFor="inputPassword5" style={{ fontSize: "20px", color: "#434343" }}>Email</Form.Label>
                             <Form.Control

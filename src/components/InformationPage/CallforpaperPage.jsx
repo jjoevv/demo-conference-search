@@ -31,7 +31,7 @@ const CallforpaperPage = ({conference}) => {
             ?
             <>
              <div className="px-3">
-               <p className="text-justify fs-medium">
+               <p className="text-justify fs-5">
                {processText(conference.callForPaper)}
                </p>
              </div>

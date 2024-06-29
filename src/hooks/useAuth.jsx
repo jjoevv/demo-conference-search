@@ -187,6 +187,28 @@ const useAuth = () => {
     }
   }
 
+  const loginWithGoogle = async (userData) => {
+    try {
+      savetokenToLocalStorage(userData.accessToken)
+      await getCurrentUser
+
+    if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
+      navigate(`${previousPath}`)
+    }
+    else {
+      if(userData.role === 'admin'){
+        navigate('/admin/dashboard')
+      }
+      else navigate('/')
+    }
+     
+    
+    } catch (error) {
+      dispatch(loginFailure('An error occurred during login.'));
+    }
+    
+  }
+
   const getCurrentUser = async () => {
     let storedToken = JSON.parse(localStorage.getItem('token'));
     const tokenHeader = token ? token : storedToken
@@ -232,7 +254,8 @@ const useAuth = () => {
     handleLogout,
     updateProfile,
     changePassword,
-    getCurrentUser
+    getCurrentUser,
+    loginWithGoogle
   };
 };
 

@@ -78,18 +78,10 @@ const useSetting = () => {
   const updateSetting = async (name, status, value) => {
     setLoading(true)
     try {
-      let postData = {}
-      if(name==='DATA_UPDATE_CYCLE'){
-        postData = {
-          name: name,
-          value: value
-        }
-      }
-      else {
-        postData = {
-          name: name,
-          status: status
-        }
+      const postData = {
+        name: name,
+        value: value,
+        status: status
       }
         let storedToken = JSON.parse(localStorage.getItem('token'));
         const tokenHeader = token ? token : storedToken
@@ -111,9 +103,6 @@ const useSetting = () => {
         // Lấy dữ liệu từ phản hồi và cập nhật state
         const data = await response.json();
         setLoading(false)
-        setLoading(false)
-        // Trả về dữ liệu từ API để có thể xử lý tiếp
-        return data.data;
       } catch (error) {
         // Nếu có lỗi xảy ra trong quá trình gửi yêu cầu hoặc xử lý dữ liệu, ném ra một lỗi
         throw new Error(`Error fetching feedbacks: ${error.message}`);

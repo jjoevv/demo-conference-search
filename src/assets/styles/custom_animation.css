@@ -208,3 +208,18 @@
 .rotate-toggle-button.rotated {
   transform: rotate(180deg); /* Xoay 180 độ khi có lớp 'rotated' */
 }
+
+
+.custom-progress {
+  height: 3%;
+  font-size: medium;
+  background-color: #98bfeb; /* Màu nền trong suốt */
+}
+
+.custom-progress .progress-bar {
+  transition: width 0.6s ease-out; /* Hiệu ứng khi thay đổi width (chiều dài thanh progress) */
+}
+
+.custom-progress .progress-bar-animated {
+  background-color: rgb(18, 206, 184); /* Màu sắc của thanh progress */
+}

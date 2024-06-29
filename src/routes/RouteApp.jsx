@@ -56,6 +56,7 @@ const RoutesApp = () => {
       <Route path="/detail/importantdates/:id" element={<ImportantDatePage />} />
       <Route path="/detail/callforpaper/:id" element={<CallforPapers />} />
 
+
       <Route element={<AuthLayout />}>
         {
           authPage.map(page =>

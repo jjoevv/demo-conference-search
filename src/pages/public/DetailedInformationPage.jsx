@@ -17,6 +17,7 @@ import ScrollToTopButton from '../../components/ScrollToTopButton'
 import SuggestedCarousel from '../../components/SuggestList/SuggestedCarousel'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
+import AutoProgressBar from '../../components/ProgressLoading/AutoProgressBar'
 const DetailedInformationPage = () => {
     const { t } = useTranslation()
     const {windowWidth} = useScreenSize()
@@ -120,11 +121,11 @@ const DetailedInformationPage = () => {
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             {
                 isCrawling &&
-                <div className="fixed-top p-3 text-center fw-bold fs-large bg-darkcyan-normal border border-3 border-white text-white opacity-75" style={heightHeader ? { top: `${heightHeader}px`, zIndex: '1' } : {}}>
+                <div className="fixed-top px-3 pt-3 text-center fw-bold fs-5 bg-darkcyan-normal border border-3 border-white text-white opacity-75" style={heightHeader ? { top: `${heightHeader}px`, zIndex: '1' } : {}}>
                     <span>
                         {t('message_waiting_update')}
                     </span>
-
+                <AutoProgressBar loading={isCrawling}/>
                 </div>
             }
             {
