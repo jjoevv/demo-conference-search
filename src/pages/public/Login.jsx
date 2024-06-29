@@ -70,7 +70,7 @@ const Login = () => {
         <Container className={` text-center 
                 ${windowWidth > 768 ? '100-h min-vh-100 d-flex justify-content-center align-items-center ': 'vh-100 100-h pt-5'}
         `} fluid={true} style={{ backgroundColor: "#C2F1EB" }} >
-            <Row className={`bg-white rounded-4 d-flex box-area mx-auto ${windowWidth > 768 ? 'w-75 h-50' : 'h-50'} `}>
+            <Row className={`bg-white rounded-4 d-flex box-area mx-auto ${windowWidth > 768 ? 'w-75 h-50' : 'h-100'} `}>
 
                 <Col  sm={7} md={7} lg={7} 
                 className={`p-1 d-flex flex-column align-items-center justify-content-center bg-skyblue-light
@@ -141,13 +141,14 @@ const Login = () => {
                                     {t('signup')}
                             </Button>
                         </div>
-                    </Form>
-                    {
+                        {
                         windowWidth < 768 &&
                         <div className=' border border-1 p-2 mt-5 border-white rounded-2'>
-                        <Link to='/' className='fs-6 text-light'>  {"<  "}{t('back_to_homepage')}</Link>
+                        <Link to='/' className=''>  {"<  "}{t('back_to_homepage')}</Link>
                     </div>
                     }
+                    </Form>
+                    
                 </Col>
                 {
                     windowWidth > 768 &&

@@ -33,7 +33,7 @@ const Sidebar = ({sidebar}) => {
   const isPathInSidebar = sidebar.some(link => location.pathname.includes(link.path));
 
   const renderSidebarContent = () => (
-    <Stack>
+    <Stack >
       {!isCollapsed && (
         <Button
           className="bg-transparent border-0 d-flex justify-content-center p-0 w-100"
@@ -43,7 +43,7 @@ const Sidebar = ({sidebar}) => {
           <h2 className="text-white text-center my-2">CONFHUB</h2>
         </Button>
       )}
-      <Stack md={3} className="fixed-left mt-5 mb-auto">
+      <Stack md={3} className="fixed-left mt-5 mb-auto ">
         {sidebar.map(link => (
           <NavLink
             key={link.title}
@@ -90,7 +90,7 @@ const Sidebar = ({sidebar}) => {
             <Offcanvas.Header closeButton>
               <Offcanvas.Title className='bg-darkcyan-dark'></Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body className="offcanvas-body-custom">
+            <Offcanvas.Body className="offcanvas-body-custom bg-darkcyan-dark">
               {renderSidebarContent()}
             </Offcanvas.Body>
           </Offcanvas>

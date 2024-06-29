@@ -75,7 +75,6 @@ const useImport = () => {
     const [showOptionImportModal, setOptionShowImportModal] = useState(false)
     const handleImport = async (data, headers) => {
         setLoading(true);
-    
         for (let row of data) {
             let conference = {
                 title: "",
@@ -112,8 +111,37 @@ const useImport = () => {
                 }
             });
     
-          //  console.log("Post result:", conference);
-            
+          // console.log("Post result:", conference);
+           if(user || localStorage.getItem('user')){
+            let storedToken = JSON.parse(localStorage.getItem('token'));
+            const tokenHeader = token ? token : storedToken
+            if(storedToken){
+            try {
+              const response = await fetch(`${baseURL}/conference/file/import`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${tokenHeader}`
+                },
+                body: JSON.stringify( conference ),
+              });
+              const data = await response.json()        
+              const message = data.message || data.data
+              setLoading(false)
+              if (!response.ok) {
+                return {status: false, message}
+              }
+              else {
+                if(response.status === 401){
+                  setIsExpired(true)
+                }
+              }
+            } catch (error) {
+              throw new Error('Network response was not ok');
+            }
+            }
+            else return {status: false, message: "Please log in again!"}
+          }
         }
     
         setLoading(false);

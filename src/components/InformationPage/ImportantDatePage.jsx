@@ -77,7 +77,7 @@ const ImportantDatePage = ({conference}) => {
                     className={`${index % 2 === 0 ? 'bg-beige-light' : ''} 
                     align-items-center justify-content-start m-2 px-1 py-2 position-relative border-teal-light border-5 border-start overflow-hidden`}>
                      
-                          <span className=' fw-bold text-color-black d-flex align-items-center fs-5' >
+                          <span className=' fw-bold text-color-black d-flex align-items-center fs-5 w-75' >
                             {capitalizeFirstLetter(date?.date_type)}
                           </span>
                         <span className='fs-large fw-medium text-color-black m-0'>
@@ -89,13 +89,13 @@ const ImportantDatePage = ({conference}) => {
                                 </span>
                                 <Image src={ArrowIcon} width={20} className='mx-2' />
                                 {moment(date?.date_value).format('ddd, YYYY/MM/DD')}
-                                {checkDate(date?.date_value) && <span className='text-secondary'> ({t('time_expired')})</span>}
+                                {checkDate(date?.date_value) && <span className='text-red-normal'> ({t('time_expired')})</span>}
 
                               </>
                               :
                               <>
                                 {moment(date?.date_value).format('dddd, YYYY/MM/DD')}
-                                {checkDate(date?.date_value) && <span className='text-secondary'> ({t('time_expired')})</span>}
+                                {checkDate(date?.date_value) && <span className='text-red-normal'> ({t('time_expired')})</span>}
 
                               </>
 

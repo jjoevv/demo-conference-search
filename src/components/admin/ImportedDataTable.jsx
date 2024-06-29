@@ -56,6 +56,7 @@ const ImportedDataTable = ({ onHide }) => {
                         const fieldOfResearchNames = fieldOfResearchCodes.map(code => {
                             if (code !== '') {
                                 const mapping = forcode.find(mapping => mapping.code === code);
+
                                 if (mapping) {
                                     return mapping.code;
                                 } else {
@@ -65,6 +66,7 @@ const ImportedDataTable = ({ onHide }) => {
                                 }
                             }
                         });
+                        
                         newRow.push(fieldOfResearchNames.join('; '));
                     } else {
                         if (header && header.name !== 'None') {
@@ -214,7 +216,7 @@ const ImportedDataTable = ({ onHide }) => {
                 <tr key={rowIndex}>
                     {renderRow.map((cell, cellIndex) => (
                         <td key={`${rowIndex}-${cellIndex}`} className=''>
-                            {typeof cell === 'string' && cell.includes(';') ? convertCodesToNames(cell) : cell}
+                            {typeof cell === 'string' ? convertCodesToNames(cell) : cell}
                         </td>
                     ))}
                 </tr>

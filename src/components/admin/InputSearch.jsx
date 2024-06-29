@@ -29,7 +29,7 @@ function InputSearch() {
         <FontAwesomeIcon icon={faSearch}/>
       </InputGroup.Text>
       <Form.Control
-        className=' border-start-0'
+        className=' border-start-0 fs-6'
         type="text"
         placeholder={`${t('search_keyword')}...`}
         value={keyword}

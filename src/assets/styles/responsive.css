@@ -75,9 +75,6 @@
     padding-left: 0px !important;
     padding-right: 0px !important;
   }
-  .nav-link{
-    padding: 2px !important;
-  }
   .fixed-column{
     width: 60px !important;
   }
@@ -127,4 +124,8 @@
   #header .popup {
     top: calc(100% + 56px); /* Adjust this value if necessary to account for the expanded menu height */
   }
+}
+
+.offcanvas-body-custom{
+  background-color: #054142;
 }

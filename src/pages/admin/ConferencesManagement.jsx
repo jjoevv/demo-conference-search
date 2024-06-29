@@ -4,7 +4,7 @@ import { Container, ButtonGroup, Button, Row, Col, Tabs, Tab } from 'react-boots
 import InputSearch from '../../components/admin/InputSearch'
 import Filter from '../../components/admin/Filter'
 import useConference from '../../hooks/useConferences'
-import { sortConferences } from '../../utils/sortConferences'
+import { sortByFollow, sortConferences } from '../../utils/sortConferences'
 import { DropdownSort } from '../../components/DropdownSort'
 import Loading from '../../components/Loading'
 
@@ -67,7 +67,6 @@ const ConferencesManagement = () => {
     if (pendingConferences.length === 0 || !pendingConferences) {
       getAllPendingConferences()
     }
-    getOptionsFilter("", [])
     // console.log({pendingConferences, key})
     if (key === 'userowner') {
       setDisplayedConferences(pendingConferences)
@@ -104,18 +103,19 @@ const ConferencesManagement = () => {
 
 
   useEffect(() => {
-    if (selectOptionSort === "Random") {
-      setDisplayedConferences(conferences)
-    }
-    else {
-      const sortedConferences = sortConferences(selectOptionSort, [...conferencesList])
+     //sắp xếp list
+     if (selectOptionSort === "random") {
+      setDisplayedConferences(conferencesList)
+  }
+ 
+  else {
+      const sortedConferences = sortConferences(selectOptionSort, [...displayConferences])
       setDisplayedConferences(sortedConferences)
-    }
+  }
   }, [selectOptionSort])
 
 
   const handleDropdownSelect = (value) => {
-    setDisplayedConferences(displaySortList)
     handleSelectOptionSort(value)
   };
 
@@ -136,13 +136,17 @@ const ConferencesManagement = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+  
   return (
     <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className='fs-3'>{t('conference_management')}</h4>
         <ButtonGroup>
-          <ImportButton />
+         
+          {
+             <ImportButton />
+          }
           <ExportButton data={displayConferences} headers={allcolumns} />
 
         </ButtonGroup>
@@ -175,7 +179,7 @@ const ConferencesManagement = () => {
             
 
           </Col>
-          <Col md='auto' className='d-flex justify-content-end my-2'>
+          <Col md='auto' className='d-flex justify-content-end my-xs-2'>
           {/* Button hiển thị trên màn hình điện thoại (sm và nhỏ hơn) */}
           <Button
               className={`rounded-1 mx-2 py-1 d-lg-none border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
@@ -185,7 +189,6 @@ const ConferencesManagement = () => {
               {t('filter')}
             </Button>
             <DropdownSort
-              options={["Random", "Upcoming", "Name A->Z", "Latest"]}
               onSelect={handleDropdownSelect}
             />
           </Col>

@@ -116,7 +116,7 @@ const Filter = () => {
               </Col>
 
               <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
-                <span className="fw-bold text-color-black">{t('location')}</span>
+                <span className="fw-bold text-color-black text-nowrap">{t('location')}</span>
                 <Options label="location" />
               </Col>
               <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
@@ -124,7 +124,7 @@ const Filter = () => {
                 <AreaFilter />
               </Col>
               <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
-                <span className="fw-bold text-color-black fs-medium">{t('submission_date')}</span>
+                <span className="fw-bold text-color-black text-nowrap">{t('submission_date')}</span>
                 <DateRangePicker label="submissionDate" />
               </Col>
 

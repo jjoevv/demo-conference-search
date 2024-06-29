@@ -36,10 +36,10 @@ const FilterSelected = () => {
 
   const handleRenderKeyword = (keyword) => {
     const { startDate: confStartDate, endDate: confEndDate } = extractDates(keyword);
-    if(keyword.includes('Submission')){
+    if(keyword.includes('Submission Date')){
       return t('submission_date_filter', { startDate: confStartDate, endDate: confEndDate } )
     }
-    else if (keyword.includes('Conference')){
+    else if (keyword.includes('Conference Date')){
       return t('conference_date_filter', { startDate: confStartDate, endDate: confEndDate } )
     }
     else if(keyword.includes('Rating')){

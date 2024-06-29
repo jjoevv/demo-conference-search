@@ -43,7 +43,7 @@ const useSearch = () => {
   };
 
   const getOptionsFilter = async (label) => {
-    const params = ["source", "acronym", "rank", "region"];
+    const params = ["source", "acronym", "rank", "region", "type"];
     const existedOptions = state.filterOptions
     if (!existedOptions[label]) {
       if (params.includes(label)) {

@@ -58,7 +58,6 @@ const HeaderNoti = ({ notifications, onReloadlist, onReadStatus }) => {
   const handleShow = () => setShowOffcanvas(true);
   return (
     <>
-      {windowWidth > 768 ? (
         <Dropdown>
           <Dropdown.Toggle
             className='noti rounded-pill p-1 my-header-bg-icon mx-2 border-0 text-center d-flex align-items-center'
@@ -102,45 +101,7 @@ const HeaderNoti = ({ notifications, onReloadlist, onReadStatus }) => {
             </Button>
           </Dropdown.Menu>
         </Dropdown>
-      ) : (
-        <>
-          <FontAwesomeIcon icon={faBell} className='text-primary-normal fs-4' onClick={handleShow} />
-          {hasNewNotification && <FontAwesomeIcon icon={faCircle} className='text-danger mt-3' style={{ height: "10px", textAlign: "end" }} />}
-          <Offcanvas show={showOffcanvas} onHide={handleClose}>
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>{t('notifications')}</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              {notifications.length > 0 ? (
-                notifications.map((noti, index) => {
-                  const { firstPart, secondPart } = splitNotificationMessage(noti.message);
-                  return (
-                    <div
-                      key={index}
-                      className='notification-item'
-                      onClick={() => handleClickMessage(noti)}
-                    >
-                      <div className='d-flex'>
-                        <div className='me-2'>
-                          <FontAwesomeIcon icon={faCircle} style={{ height: "8px" }} className={`${noti.read_status ? 'text-teal-normal' : 'text-danger'}`} />
-                        </div>
-                        <div>
-                          <div className={`${noti.read_status ? 'text-secondary' : 'text-color-black'}`}>
-                            <div className='fw-bold fs-6 notification-message'>{firstPart}</div>
-                            <span className='fs-6 notification-message'>{secondPart}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>{t('no_notifications')}</p>
-              )}
-            </Offcanvas.Body>
-          </Offcanvas>
-        </>
-      )}
+     
     </>
       );
 };

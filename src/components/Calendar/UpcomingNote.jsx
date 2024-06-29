@@ -6,6 +6,7 @@ import { faCalendarDay, faClock, faLocationPin } from '@fortawesome/free-solid-s
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
+import CountdownTimer from './CountdownTimer';
 
 const UpcomingNote = () => {
     const { t } = useTranslation()
@@ -33,7 +34,7 @@ const UpcomingNote = () => {
     return (
         <div className='w-100'>
             {notes?.length > 0 &&
-                <h5 className='text-danger mt-3'>{t('upcoming_note')}</h5>}
+                <h5 className='text-danger-emphasis mt-3'>{t('upcoming_note')}</h5>}
 
             <div className='d-flex overflow-x-auto overflow-y-hidden'>
 
@@ -46,7 +47,7 @@ const UpcomingNote = () => {
                                     {
                                         isUpcoming(note.start_date) &&
 
-                                        <Card key={index} className='rounded-2 m-2' style={{ width: "200px", minWidth: "320px" }}>
+                                        <Card key={index} className='rounded-2 m-2' style={{ width: "230px", minWidth: "330px" }}>
                                             <Card.Body className='pb-0'>
                                                 <div className='d-flex flex-column'>
                                                     <span className='fw-semibold text-teal-normal fs-6'>{`${note.date_type}`}</span>
@@ -107,10 +108,10 @@ const UpcomingNote = () => {
                                                 <>
                                                     {
                                                         note.start_date !== null &&
-                                                        <p className='text-darkcyan-normal fw-semibold m-0'>
-                                                            <FontAwesomeIcon icon={faClock} className='me-2' />
-                                                            {t('days_left', { count: daysUntilTargetDate(note.start_date) })}
-                                                        </p>
+                                                        <div className='text-danger fw-semibold m-0 d-flex align-items-center'>
+                                                            <FontAwesomeIcon icon={faClock} className='me-2 fs-5' />
+                                                            <CountdownTimer targetDate={note.start_date}/>
+                                                        </div>
                                                     }
                                                 </>
                                                 {

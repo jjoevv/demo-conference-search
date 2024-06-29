@@ -144,7 +144,7 @@ const DetailedInformationPage = () => {
                                                 conference.information ?
                                                     <>
                                                         <div className={windowWidth > 768 ? 'px-5': ''}>
-                                                            <p className={`text-teal-normal fw-bold mt-5 pt-5 ${windowWidth > 768 ? 'fs-larger' : 'fs-large'}`} dangerouslySetInnerHTML={{ __html: renderName(conference.information.name) }} />
+                                                            <p className={`text-teal-normal fw-bold mt-5 pt-5 ${windowWidth > 768 ? 'fs-larger px-5' : 'fs-large'}`} dangerouslySetInnerHTML={{ __html: renderName(conference.information.name) }} />
                                                         </div>
 
 
