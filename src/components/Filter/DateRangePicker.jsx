@@ -11,7 +11,7 @@ import dateIcon from '../../assets/imgs/conf_date_light.png'
 import { formatLabel } from '../../utils/formatWord';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
-const DateRangePicker = ({ label }) => {
+const DateRangePicker = ({ label, filter }) => {
   const {t, i18n} = useTranslation()  
   const { addKeywords } = useSearch()
   const [startDate, setStartDate] = useState(null);
@@ -64,7 +64,7 @@ const DateRangePicker = ({ label }) => {
     
     const keywordFormat = `${formatLabel(label)}: from ${moment(formatStart).format("yyyy/MM/DD")} to ${moment(formatEnd).format("yyyy/MM/DD")}`         
    // console.log({keywordFormat, startDate, endDate, formatStart, formatEnd})
-    addKeywords(label, [keywordFormat])
+    addKeywords(filter, label, [keywordFormat])
     setStartDate(null)
     setEndDate(null)
     handleToggleClick()

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import useAuth from '../../hooks/useAuth'
 import useAreaFilter from '../../hooks/useAreaFilter'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import { useAppContext } from '../../context/authContext'
 
 const customStyles = {
   menuPortal: (provided) => ({
@@ -77,10 +78,11 @@ const CustomOption = (props) => {
   );
 };
 
-const AreaFilter = () => {
+const AreaFilter = ({filter}) => {
+  const {state} = useAppContext()
   const { user } = useLocalStorage()
   const { checkForCountryInText, setUserLocation, handleNavigateAccount, handleNavigateLogin } = useAreaFilter()
-  const { filterOptions, optionsSelected, addKeywords, deleteKeyword, getOptionsFilter } = useSearch()
+  const { filterOptions, addKeywords, deleteKeyword, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([])
   const { t } = useTranslation()
 
@@ -109,7 +111,7 @@ const AreaFilter = () => {
   const handleOptionChange = async (items) => {
     const option = items[0].value
     const itemsValues = items.map(item => item.value);
-          const removedOptions = optionsSelected['region'].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
+          const removedOptions = state[filter]['region'].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
 
         if (removedOptions.length <= 0) {
           const addItem = [items[items.length-1].label]
@@ -123,7 +125,7 @@ const AreaFilter = () => {
               
               if (check !== '') {
                 setUserLocation(check)
-                addKeywords('region', addItem)
+                addKeywords(filter, 'region', addItem)
               }
               else {
                 handleNavigateAccount()
@@ -133,11 +135,11 @@ const AreaFilter = () => {
               handleNavigateLogin()
             }
             //addKeywords(label,[formatKeyword] )
-          } else addKeywords('region', addItem)
+          } else addKeywords(filter, 'region', addItem)
             
         } 
         else {
-            deleteKeyword('region', removedOptions[0].label)
+            deleteKeyword('region', removedOptions[0].label, filter)
         }
     
 
@@ -147,8 +149,8 @@ const AreaFilter = () => {
         <Select
           isMulti
           styles={customStyles}
-          value={optionsSelected['region']?.map(value => ({ value, label: value }))}
-          components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected['region']} />, MultiValue }}
+          value={state[filter]['region']?.map(value => ({ value, label: value }))}
+          components={{ Option: props => <CustomOption {...props} selectedOptions={state[filter]['region']} />, MultiValue }}
           options={options}
           onChange={handleOptionChange}
           closeMenuOnSelect={true}

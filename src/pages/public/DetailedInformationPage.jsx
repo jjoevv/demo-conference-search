@@ -22,7 +22,7 @@ const DetailedInformationPage = () => {
     const { t } = useTranslation()
     const {windowWidth} = useScreenSize()
     const { user } = useAuth()
-    const { conference, isCrawlingConfs, removeIDfromCrawlings, handleGetOne, getConferenceDate } = useConference()
+    const { conference, messages, isCrawlingConfs, removeIDfromCrawlings, handleGetOne, getConferenceDate } = useConference()
     const { listFollowed, getListFollowedConferences } = useFollow()
     const [loading, setLoading] = useState(false)
     const conf_id = useParams()
@@ -33,7 +33,6 @@ const DetailedInformationPage = () => {
     const [loadingConf, setLoadingConf] = useState(true)
     const [isCrawling, setIsCrawling] = useState(false)
     const [heightHeader, setHeightHeader] = useState(null)
-
     useEffect(() => {
         const fetchData = async () => {
             await handleGetOne(conf_id.id)
@@ -45,20 +44,14 @@ const DetailedInformationPage = () => {
     useEffect(() => {
         const header = document.getElementById('header');
         setHeightHeader(header?.offsetHeight)
-        const crawlingStatus = isCrawlingConfs.find(conf => conf.id === conf_id?.id);
-
+        const crawlingStatus = messages.find(mess => mess.id === conf_id?.id && mess.status !== 'completed');
+        
         if (crawlingStatus) {
-            const currentTime = new Date().getTime();
-            const elapsedTime = currentTime - crawlingStatus.timestamp;
-
-            // Nếu thời gian đã vượt quá 10 phút, xóa đối tượng khỏi danh sách
-            if (elapsedTime > 10 * 60 * 1000) {
-                removeIDfromCrawlings(conf_id?.id)
-            } else {
                 setIsCrawling(true)
-            }
-        } else setIsCrawling(false)
-    }, [isCrawlingConfs, conf_id])
+        } else {
+            setIsCrawling(false)
+        }
+    }, [conf_id, messages])
 
     useEffect(() => {
 
@@ -120,14 +113,15 @@ const DetailedInformationPage = () => {
     return (
         <Container className='w-100 h-25 p-0 overflow-x-hidden' fluid>
             {
-                isCrawling &&
+               isCrawling &&
                 <div className="fixed-top px-3 pt-3 text-center fw-bold fs-5 bg-darkcyan-normal border border-3 border-white text-white opacity-75" style={heightHeader ? { top: `${heightHeader}px`, zIndex: '1' } : {}}>
                     <span>
                         {t('message_waiting_update')}
                     </span>
-                <AutoProgressBar loading={isCrawling}/>
+                <AutoProgressBar/>
                 </div>
             }
+
             {
                 loadingConf || loading
                     ?
@@ -164,6 +158,7 @@ const DetailedInformationPage = () => {
                                                                     <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5' />
                                                                     <h3 className='text-teal-black'> {renderLocation(conference.organizations)}</h3>
 
+                                                                    {`${isCrawling}`}
                                                                 </div>
 
 

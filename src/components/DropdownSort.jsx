@@ -2,10 +2,10 @@ import { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
 
-export const DropdownSort = ({ onSelect }) => {
+export const DropdownSort = ({ onSelect, options }) => {
   const {t} = useTranslation()
   const [selectedOption, setSelectedOption] = useState('random');
-  const options = ["random", "followed", "upcoming", "nameAz", "latest"]
+  
   const handleSelect = (option) => {
     setSelectedOption(option);
     onSelect(option);
@@ -13,7 +13,7 @@ export const DropdownSort = ({ onSelect }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle className='bg-transparent border-primary-normal text-dropdown-toggle fs-6'>
-        <span className='fw-semibold'>{t('sort_by')}:</span> {`  ${t(selectedOption)}` || 'Random'}
+        <span className='fw-semibold'>{t('sort_by')}:</span> {`  ${t(selectedOption)}` || 'random'}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

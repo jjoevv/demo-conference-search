@@ -12,7 +12,7 @@ const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
 
   const [inputValue, setInputValue] = useState('');
   useEffect(() => {
-    getOptionsFilter('', [])
+    getOptionsFilter('for')
     if (filterOptions['for']) {
       const originalOptions = filterOptions['for'].map((item, index) => ({
         value: item,

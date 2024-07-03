@@ -5,9 +5,9 @@ export const getoptionsSelected = (option) => {
     type: actionTypes.GET_OPTIONS_FILTER,
     payload: option
 }}
-export const addFilter = (label, keywords) => ({
+export const addFilter = (filterList, label, keywords) => ({
     type: actionTypes.ADD_FILTER,
-    payload: {label, keywords, loading: false},
+    payload: {label, keywords, loading: false, filterList: filterList},
 })
 
 export const addFilterDateResults = (label, keyword) => {

@@ -245,3 +245,94 @@ button.bg-darkcyan-normal:hover {
 .bg-light-gray{
     background-color: rgb(205, 210, 211);
 }
+
+
+/* StatusStyles.css */
+
+.status-waiting {
+    color: #40508c; /* Orange */
+    background-color: #fff4e5; /* Light orange background */
+    border: 1px solid #40508c;
+    border-radius: 4px;
+    
+    text-align: center;
+  }
+  
+  .status-done {
+    color: #008031; /* Green */
+    background-color: #e6ffed; /* Light green background */
+    border: 1px solid #008031;
+    border-radius: 4px;
+    
+    text-align: center;
+  }
+  
+  .status-error {
+    color: #fb2a2a; /* Red */
+    background-color: #ffe6e6; /* Light red background */
+    border: 1px solid #fb2a2a;
+    border-radius: 4px;
+    
+    text-align: center;
+  }
+  
+  .status-crawling {
+    color: #1e90ff; /* Dodger blue */
+    background-color: #e6f3ff; /* Light blue background */
+    border: 1px solid #1e90ff;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .status-importing {
+    color: #561eff; /* Dodger blue */
+    background-color: #e6f3ff; /* Light blue background */
+    border: 1px solid #561eff;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .status-stopping {
+    color: #ff4500; /* Orange red */
+    background-color: #ffebd6; /* Light orange-red background */
+    border: 1px solid #ff4500;
+    border-radius: 4px;
+    
+    text-align: center;
+  }
+  
+  .custom-progress-waiting,
+ .custom-progress-crawling,
+ .custom-progress-done,
+ .custom-progress-error,
+ .custom-progress-stopping {
+    background-color: lightgray;
+ }
+
+ .custom-progress-waiting.progress-bar-animated{
+    background-color:#40508c;
+ }
+
+.custom-progress-done.progress-bar-animated {
+    background-color: #008031; /* Màu sắc của thanh progress */
+  }
+
+  
+.custom-progress-crawling.progress-bar-animated {
+    background-color: #1e90ff; /* Màu sắc của thanh progress */
+  }
+
+  
+  
+.custom-progress-error.progress-bar-animated {
+    background-color: #fb2a2a; /* Màu sắc của thanh progress */
+  }
+
+  
+.custom-progress-stopping.progress-bar-animated {
+    background-color: #ff4500; /* Màu sắc của thanh progress */
+  }
+  
+.custom-progress-stopping .progress-bar-animated {
+    background-color: #ff4500; /* Màu sắc của thanh progress */
+  }

@@ -10,7 +10,7 @@ import useScreenSize from "../../../hooks/useScreenSize"
 const ImportButton = () => {
   const {t} = useTranslation()
   const {windowWidth} = useScreenSize()
-    const {showOptionImportModal, setOptionShowImportModal, } = useImport()
+  const { showOptionImportModal, setOptionShowImportModal, } = useImport()
 
   return (
     <div>
@@ -22,7 +22,7 @@ const ImportButton = () => {
             {windowWidth > 768 && `${t('import_file')}`}
            
         </Button>
-      {showOptionImportModal &&  <ModalImport show={showOptionImportModal} onHide={()=>setOptionShowImportModal(false)}/>}
+      {showOptionImportModal && <ModalImport show={showOptionImportModal} onHide={()=>setOptionShowImportModal(false)}/>}
       
     </div>
   )

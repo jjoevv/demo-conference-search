@@ -6,9 +6,11 @@ import { useAppContext } from '../context/authContext';
 import { getNotifications } from '../actions/notiAction';
 import useToken from './useToken';
 import { baseURL } from './api/baseApi';
+import useImport from './useImport';
 
 const useNotification = () => {
   const [isConnected, setIsConnected] = useState(false);
+  const {isImporting} = useImport()
   const { token } = useToken()
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
@@ -70,18 +72,11 @@ const useNotification = () => {
         socket.on('notification', (message) => {
           //console.log('Received notification:', message);
           if (message.id) {
-            dispatch({type: "REMOVE_ID_CRAWLING", payload: message.id});
             dispatch({ type: 'ADD_MESSAGE', payload: message });
-            setTimeout(() => {
-              dispatch({
-                type: 'REMOVE_MESSAGE',
-                payload: message.id,
-              });
-            }, 10000);
-        
           }
           dispatch(getAllNotifications());
         });
+
 
         socket.on("connect_error", (err) => {
           console.error('Connect error:', err.message);
@@ -112,6 +107,28 @@ const useNotification = () => {
 
   }, [id, dispatch]);
 
+  useEffect(() => {
+    if (!socketRef.current) {
+        return;
+    }
+    const handleJobMessage = (message) => {
+        if (message.job?.type === 'import conference') {
+          if(isImporting){
+            dispatch({ type: 'UPDATE_IMPORT_LIST', payload: message });
+          }
+          else {
+            dispatch({ type: 'SET_BUFFER_LIST', payload: message });
+          }
+          
+        }
+    };
+
+    socketRef.current.on('job', handleJobMessage);
+
+    return () => {
+        socketRef.current?.off('job', handleJobMessage);
+    };
+}, [isImporting, dispatch]);
 
   function generateRandomUserId() {
     const prefix = "guest";

@@ -39,6 +39,57 @@ export const initialState = {
     owner: [],
     region: []
   },
+
+  optionsSelectedAdmin: {
+    location: [],
+    rank: [], 
+    for: [], 
+    source: [], 
+    acronym: [], 
+    type: [],
+    conferenceDate: [],
+    submissionDate: [],
+    search: [],
+    impactfactor: [],
+    rating: [],
+    category: [],
+    owner: [],
+    region: []
+  },
+
+  optionsSelectedFollow: {
+    location: [],
+    rank: [], 
+    for: [], 
+    source: [], 
+    acronym: [], 
+    type: [],
+    conferenceDate: [],
+    submissionDate: [],
+    search: [],
+    impactfactor: [],
+    rating: [],
+    category: [],
+    owner: [],
+    region: []
+  },
+
+  optionsSelectedOwn: {
+    location: [],
+    rank: [], 
+    for: [], 
+    source: [], 
+    acronym: [], 
+    type: [],
+    conferenceDate: [],
+    submissionDate: [],
+    search: [],
+    impactfactor: [],
+    rating: [],
+    category: [],
+    owner: [],
+    region: []
+  },
   priorityKeywords: {},
 
   pageParam: 0,
@@ -103,5 +154,10 @@ export const initialState = {
   currentUsers: [],
 
   socketID: null,
+  
+  inProgressLoading: [],
+  inBufferProgressLoading: [],
+  isImporting: false,
+  isCrawlingConImported: false,
 };
 

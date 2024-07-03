@@ -39,7 +39,6 @@ const ResultFilter = ({ conferencesProp, width }) => {
             setLoading(true)
             getListFollowedConferences()
             setLoading(false)
-            getOptionsFilter("", [])
             
             if(conferencesProp.length ===0 || !conferencesProp){
                 await handleGetList()

@@ -30,7 +30,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
     const [isOrgDateValid, setIsOrgDateValid] = useState(false)
     useEffect(() => {
         if (!filterOptions['rank']) {
-            getOptionsFilter('', [])
+            getOptionsFilter('for')
         }
     }, [filterOptions])
 

@@ -1,5 +1,5 @@
 import { useAppContext } from '../context/authContext'
-import { addFilter, getoptionsSelected, removeFilter } from '../actions/filterActions'
+import { addFilter, getoptionsSelected } from '../actions/filterActions'
 
 import { baseURL } from './api/baseApi'
 import { useState } from 'react'
@@ -8,11 +8,9 @@ import useFollow from './useFollow'
 import usePost from './usePost'
 import { capitalizeFirstLetter } from '../utils/formatWord'
 import countriesData from '../data/countries.json'
-import useAuth from './useAuth'
 
 const useSearch = () => {
   const { state, dispatch } = useAppContext()
-  const { user } = useAuth()
   const { listFollowed } = useFollow()
   const { postedConferences } = usePost()
   const [loading, setLoading] = useState(false)
@@ -107,36 +105,33 @@ const useSearch = () => {
 
 
 
-const addKeywords = (label, keywords) => {
-  const ischeck = state.optionsSelected[label].includes(keywords)
-
+const addKeywords = (filterList, label, keywords) => {
   if (label === 'submissionDate' || label === 'conferenceDate') {
-    dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords } })
+    dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords, filter: filterList } })
   }
   else {
-    if (!state.optionsSelected[label].includes(keywords[0])) {
-      dispatch(addFilter(label, keywords))
+    if (!state[filterList][label].includes(keywords[0])) {
+      dispatch(addFilter(filterList, label, keywords))
     }
-    else deleteKeyword(label, keywords[0])
+    else deleteKeyword(label, keywords[0], filterList)
   }
 }
 
 
-const deleteKeyword = (label, keyword) => {
-
+const deleteKeyword = (label, keyword, fromFilter) => {
   const updateOptionsSelected = {
-    ...state.optionsSelected,
-    [label]: state.optionsSelected[label].filter(item => item !== keyword),
+    ...state[fromFilter],
+    [label]: state[fromFilter][label].filter(item => item !== keyword),
   };
 
   // Xóa 1 filter trong danh sách
-  dispatch({ type: "REMOVE_FILTER", payload: updateOptionsSelected });
+  dispatch({ type: "REMOVE_FILTER", payload: {updatedList: updateOptionsSelected, fromFilter: fromFilter}  });
 
 }
-const clearKeywords = () => {
-  if (state.optionsSelected) {
-    const clearedOptionsSelected = Object.fromEntries(Object.keys(state.optionsSelected).map((key) => [key, []]));
-    dispatch({ type: 'CLEAR_FILTERS', payload: clearedOptionsSelected })
+const clearKeywords = (fromFilter) => {
+  if (state[fromFilter]) {
+    const clearedOptionsSelected = Object.fromEntries(Object.keys(state[fromFilter]).map((key) => [key, []]));
+    dispatch({ type: 'CLEAR_FILTERS', payload: {updatedList: clearedOptionsSelected, fromFilter: fromFilter} })
   }
   //reset all
 }
@@ -237,6 +232,9 @@ const filterAndAddToParams = () => {
 
 return {
   optionsSelected: state.optionsSelected,
+  optionsSelectedAdmin: state.optionsSelectedAdmin,
+  optionsSelectedFollow: state.optionsSelectedFollow,
+  optionsSelectedOwn: state.optionsSelectedOwn,
   filterOptions: state.filterOptions,
   page,
   loading,

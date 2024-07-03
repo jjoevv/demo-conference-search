@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import TableRender from './TableRender'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightFromSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import moment from 'moment'
 import { capitalizeFirstLetter } from '../../utils/formatWord'
-import DeleteModal from '../Modals/DeleteModal'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useAdmin from '../../hooks/useAdmin'
 import useConference from '../../hooks/useConferences'
-import { useTranslation } from 'react-i18next'
+import DeleteModal from '../Modals/DeleteModal'
 
-const AllConferences = ({ conferences }) => {
+const AllConferences = ({ conferences, isDeleteIcon }) => {
   const {t, i18n} = useTranslation()
   const scrollPositions = useRef({});
   const [showDeleteConf, setShowDelete] = useState(false)
@@ -23,6 +23,7 @@ const AllConferences = ({ conferences }) => {
   const [isConfirm, setIsConfirm] = useState(false)
   const [confDel, setConfDel] = useState(null)
   const navigate = useNavigate()
+
 
   const handleChooseDelete = (conf) => {
     setConfDel(conf)
@@ -218,22 +219,27 @@ const AllConferences = ({ conferences }) => {
         accessor: 'actions',
         Cell: ({ row }) => (
           <div className='fixed-column p-0 d-flex align-items-center justify-content-center'>
-            <Button className='bg-transparent  p-0 mx-2 my-0 border-0 action-btn tb-icon-view  '
-              onClick={() => handleChooseCfp(row.original)}
-              title='View CFP'
-            >
-              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon fs-5' />
-            </Button>
+          <Button className='bg-transparent  p-0 mx-2 my-0 border-0 action-btn tb-icon-view  '
+            onClick={() => handleChooseCfp(row.original)}
+            title='View CFP'
+          >
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon fs-5' />
+          </Button>
 
+          {
+            isDeleteIcon &&
             <Button className='bg-transparent border-0 p-0  my-0 action-btn tb-icon-delete '
-              onClick={() => handleChooseDelete(row.original)}>
-              <FontAwesomeIcon icon={faTrash} className='text-danger action-icon fs-5' />
-            </Button>
+            onClick={() => handleChooseDelete(row.original)}>
+            <FontAwesomeIcon icon={faTrash} className='text-danger action-icon fs-5' />
+          </Button>
+          }
 
 
-          </div>
+        </div>
+
         ),
         disableResizing: true,
+        width: 100,
       },
 
     ],
@@ -242,7 +248,7 @@ const AllConferences = ({ conferences }) => {
 
   return (
     <div>
-      {showDeleteConf &&
+       {showDeleteConf &&
         <DeleteModal
           show={showDeleteConf}
           onClose={() => setShowDelete(!showDeleteConf)}

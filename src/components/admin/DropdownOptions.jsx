@@ -100,7 +100,7 @@ const DropdownOptions = ({ label, placeholder }) => {
                 setOptions(transformedOptions)
             }
             setOptions(data[label])
-            getOptionsFilter(label, data[label])
+            getOptionsFilter(label)
         }
         else {
             let transformedOptions = []

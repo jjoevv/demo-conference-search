@@ -60,18 +60,20 @@ const appReducer = (state, action) => {
                 ...state,
                 filterOptions: { ...state.filterOptions, ...action.payload }
             };
-        case actionTypes.ADD_FILTER:
+        case actionTypes.ADD_FILTER: {
+            const { filterList, label, keywords } = action.payload;
             return {
                 ...state,
                 loading: false,
-                optionsSelected: {
-                    ...state.optionsSelected,
-                    [action.payload.label]: [
-                        ...(state.optionsSelected[action.payload.label] || []), // Nếu mảng không tồn tại, tạo một mảng mới
-                        ...action.payload.keywords, // Thêm giá trị mới vào mảng
+                [filterList]: {
+                    ...state[filterList],
+                    [label]: [
+                        ...(state[filterList][label] || []),
+                        ...keywords,
                     ],
                 },
             };
+        }
         case actionTypes.SET_PARAMS:
             return {
                 ...state,
@@ -81,22 +83,21 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 loading: false,
-                optionsSelected: {
-                    ...state.optionsSelected,
+                [action.payload.filter]: {
+                    ...state[action.payload.filter],
                     [action.payload.label]: [...action.payload.keyword],
                 },
             }
         case actionTypes.REMOVE_FILTER:
-
             return {
                 ...state,
-                optionsSelected: action.payload,
+                [action.payload.fromFilter]: action.payload.updatedList,
                 loading: false,
             }
         case actionTypes.CLEAR_FILTERS:
             return {
                 ...state,
-                optionsSelected: action.payload,
+                [action.payload.fromFilter]: action.payload.updatedList,
                 loading: false
             };
         case actionTypes.SET_PRIORITY_KEYWORD:
@@ -252,7 +253,7 @@ const appReducer = (state, action) => {
         case 'REMOVE_ID_CRAWLING':
             return {
                 ...state,
-                isCrawlingConfs: state.isCrawlingConfs.filter(
+                messages: state.messages.filter(
                     conf => conf.id !== action.payload
                 ),
             };
@@ -265,11 +266,23 @@ const appReducer = (state, action) => {
                         : conf
                 ),
             };
-        case 'ADD_MESSAGE':
-            return {
-                ...state,
-                messages: [...state.messages, action.payload],
-            };
+        case 'ADD_MESSAGE': {
+            const messageExists = state.messages.some(message => message.id === action.payload.id);
+
+            if (messageExists) {
+                return {
+                    ...state,
+                    messages: state.messages.map(message =>
+                        message.id === action.payload.id ? action.payload : message
+                    ),
+                };
+            } else {
+                return {
+                    ...state,
+                    messages: [...state.messages, action.payload],
+                };
+            }
+        }
         case 'REMOVE_MESSAGE':
             return {
                 ...state,
@@ -279,6 +292,53 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 userLocation: action.payload,
+            };
+        case actionTypes.SET_IMPORT_LIST: {
+            return {
+                ...state,
+                inProgressLoading: action.payload,
+            }
+        }
+        case actionTypes.SET_STOP_IMPORTING:
+            return {
+                ...state,
+                isImporting: action.payload
+            };
+        case actionTypes.UPDATE_IMPORT_LIST:
+            //console.log('sss', state.inProgressLoading, action.payload)
+            return {
+                ...state,
+                inProgressLoading: state.inProgressLoading.map((conf) =>
+                    conf.crawlJob === action.payload.jobID
+                        ? {
+                            ...conf,
+                            progress: action.payload?.job?.progress?.percentage ? action.payload?.job?.progress?.percentage : 0,
+                            describe: action.payload.job?.progress?.detail,
+                            error: action.payload.job?.error ? action.payload.job?.error : '',
+                            status: action.payload.operationType !== 'insert' ? action.payload.job?.status : 'waiting'
+                        }
+                        : conf
+                ),
+            };
+        case actionTypes.SET_BUFFER_LIST:
+            return {
+                ...state,
+                inBufferProgressLoading: state.inBufferProgressLoading.map((conf) =>
+                    conf.crawlJob === action.payload.jobID
+                        ? {
+                            ...conf,
+                            progress: action.payload?.job?.progress?.percentage ? action.payload?.job?.progress?.percentage : 0,
+                            describe: action.payload.job?.progress?.detail,
+                            error: action.payload.job?.error ? action.payload.job?.error : '',
+                            status: action.payload.operationType !== 'insert' ? action.payload.job?.status : 'waiting'
+                        }
+                        : conf
+                ),
+            };
+        case actionTypes.CLEAR_BUFFER_LIST_BUFFER_LIST:
+            return {
+                ...state,
+                inBufferProgressLoading: []
             };
         default:
             return state;

@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap'
 import useImport from '../../../hooks/useImport';
 import ImportedDataTable from '../ImportedDataTable';
 import { useTranslation } from 'react-i18next';
-const ImportModalFile = ({show, onHide}) => {
+const ImportModalFile = ({show, onHide, closeAllModal}) => {
   const {t} = useTranslation()
     const {getRootProps, getInputProps, isDragActive, fileUploaded} = useImport()
   return (
@@ -13,8 +13,8 @@ const ImportModalFile = ({show, onHide}) => {
         {fileUploaded ? `${t('columns')}` :  `${t('upload_data')}`}
       </Modal.Title>
     </Modal.Header>
-    <Modal.Body className='h-100 d-inline-block'>
-        <div className={` d-flex  ${fileUploaded ? 'justify-content-start' : 'my-5 justify-content-center'}`}> 
+    <Modal.Body className='h-100'>
+        <div className={` d-flex  ${fileUploaded ? 'justify-content-center w-100' : 'my-5 justify-content-center'}`}> 
             {
                 !fileUploaded ?
                 <div {...getRootProps({ className: 'dropzone' })} className='p-5 bg-teal-light rounded text-center'  style={{maxWidth: "500px", minWidth: "100px", cursor: "pointer"}}>
@@ -29,7 +29,7 @@ const ImportModalFile = ({show, onHide}) => {
               )}
             </div>
             :
-            <ImportedDataTable onHide={onHide}/>
+            <ImportedDataTable onHide={onHide} closeAllModal={closeAllModal}/>
             }
         </div>
     </Modal.Body>

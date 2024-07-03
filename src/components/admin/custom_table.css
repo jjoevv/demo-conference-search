@@ -126,3 +126,15 @@ tr.bg-white td {
     background: red;
 
 }
+
+
+.custom-error-column {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Đảm bảo nội dung vượt quá 3 dòng sẽ hiển thị ba chấm (...) */
+    white-space: pre-wrap !important; /* Cho phép xuống dòng */
+    word-wrap: break-word;
+
+}

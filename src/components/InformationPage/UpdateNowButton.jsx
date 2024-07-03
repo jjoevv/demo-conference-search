@@ -5,62 +5,42 @@ import { useEffect, useState } from 'react';
 import useConference from '../../hooks/useConferences';
 import { useTranslation } from 'react-i18next';
 import useScreenSize from '../../hooks/useScreenSize';
+import useMessageSocket from '../../hooks/useMessageSocket';
 const UpdateNowButton = () => {
     const {t} = useTranslation()
     const id = useParams()
     const {windowWidth} = useScreenSize()
-    const { message: messageNoti, conference, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
+    const { message: messageNoti, messages, conference, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
+    const {handleAddMessageCrawling} = useMessageSocket()
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
-    const [isClicked, setIsIsClicked] = useState(false)
-    const [message, setMessage] = useState('')
     const [isCrawling, setIsCrawling] = useState(false)
    
 
     useEffect(()=>{
-        const crawlingStatus = isCrawlingConfs.find(conf => conf.id === id?.id);
-    
-        if (crawlingStatus) {
-          const currentTime = new Date().getTime();
-          const elapsedTime = currentTime - crawlingStatus.timestamp;
-            
-          // Nếu thời gian đã vượt quá 10 phút, xóa đối tượng khỏi danh sách
-          if (elapsedTime > 10 * 60 * 1000) {
-            removeIDfromCrawlings(id?.id)
-          } else {
-            setIsCrawling(true)
-          }
-        }  else setIsCrawling(false)
-      }, [isCrawlingConfs, id, messageNoti])
+      const crawlingStatus = messages.find(mess => mess.id === id?.id && mess.status !== 'completed');
+      if (crawlingStatus) {
+        setIsCrawling(true)
+      } else {
+        setIsCrawling(false)
+      }
+      }, [id, messageNoti, messages])
 
     const handleClick = async () => {
         setLoading(true);
-        setIsIsClicked(true);
-        let ids = sessionStorage.getItem('confIDs');
-        const test = ids && ids?.includes(id?.id)
-        if (!test) {
             try {
 
                 const res = await crawlNow(conference.id);
                 setStatus(res.status);
-                setMessage(res.message);
                 //      console.log({res})
                 if (res.status) {
-                    setIsIsClicked(true);
                     setLoading(false);
-                    
+                    handleAddMessageCrawling({id: conference.id})
                     setIsCrawling(true)
-                } else {
-                    setMessage(res.message);
-                }
+                } 
             } catch (error) {
                 console.error('Error:', error);
-                setMessage('Something went wrong. Please refresh page.');
             } 
-        } else {
-            setLoading(false)
-            setIsCrawling(false)
-        }
 
     };
 

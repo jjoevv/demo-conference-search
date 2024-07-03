@@ -62,8 +62,8 @@ const CustomOption = ({ innerProps, label, isSelected }) => {
   );
 }
 
-const StarDropdown = ({ label, onApply }) => {
-  const { filterOptions, addKeywords, sendFilter, getQuantity } = useSearch()
+const StarDropdown = ({ label, filter }) => {
+  const { filterOptions, addKeywords } = useSearch()
   const [tranformOptions, setTranformOptions] = useState([])
   const {t} = useTranslation()
 
@@ -79,10 +79,9 @@ const StarDropdown = ({ label, onApply }) => {
     setTranformOptions(transformedState);
   }, []);
   const handleOptionChange = async (item) => {
-
     const rating = item[0].value
     const formatKeyword = `Rating from ${rating}*`
-    addKeywords(label,[formatKeyword] )
+    addKeywords(filter, label, [formatKeyword] )
   };
   return (
     <div>

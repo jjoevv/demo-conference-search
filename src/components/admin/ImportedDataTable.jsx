@@ -5,22 +5,29 @@ import forcode from './../../data/forcode.json'
 import useAdmin from '../../hooks/useAdmin'
 import ReactPaginate from 'react-paginate'
 import { useTranslation } from 'react-i18next'
-const ImportedDataTable = ({ onHide }) => {
+import { useNavigate } from 'react-router-dom'
+const ImportedDataTable = ({ onHide, closeAllModal }) => {
     const { t } = useTranslation()
-    const { getAllPendingConferences } = useAdmin()
-    const { dataUpload, setShowImportModal, handleImport } = useImport()
+    const { dataUpload, handleImport, handleShowImportModal, convertCodesToNames, handleIsCrawling } = useImport()
     const [selectedHeaders, setSelectedHeaders] = useState([]);
     const headersNames = ['None', 'Name', 'Acronym', 'Source', 'Rank', 'Field of Research'];
     const [activePage, setActivePage] = useState(0);
     const [warningMessage, setWarningMessage] = useState('')
-    const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState(false)
     const [isImported, setIsimported] = useState(false)
     const [formatedData, setFormatedData] = useState([])
     const [formatedHeaders, setFormatedHeaders] = useState([])
     const [currentPage, setCurrentPage] = useState(0);
-    const [currentPageFormatted, setCurrentPageFormatted] = useState(0);
     const [displayedData, setDisplayedData] = useState(dataUpload.data);
+    const [currentPageFormatted, setCurrentPageFormatted] = useState(0)
+    // Tính toán phần dữ liệu cho từng trang
+    const offsetUpload = currentPage * 5;
+    const currentPagedDataUpload = displayedData.slice(offsetUpload, offsetUpload + 5);
+    const navigate = useNavigate()
+
+
+    const offsetFormated = currentPageFormatted * 8;
+    const currentPageFormatedData = displayedData.slice(offsetFormated, offsetFormated + 8);
 
     const handlePageClick = (event) => {
         setCurrentPage(event.selected);
@@ -29,7 +36,6 @@ const ImportedDataTable = ({ onHide }) => {
     const handlePageClickFormatted = (event) => {
         setCurrentPageFormatted(event.selected);
     };
-    const ITEMS_PER_PAGE = 6
 
 
     useEffect(() => {
@@ -106,7 +112,7 @@ const ImportedDataTable = ({ onHide }) => {
 
             setFormatedHeaders(Array.from(uniqueColumnNames));
             setFormatedData(uniqueData);
-
+            setDisplayedData(uniqueData)
             if (!isFailed && warningMessage === '') {
                 setActivePage(activePage + 1);
             } else {
@@ -131,31 +137,15 @@ const ImportedDataTable = ({ onHide }) => {
         setSelectedHeaders(newSelectedColumns);
     };
     const handleImportFile = async () => {
-        setLoading(true)
         setIsimported(true)
-        const res = await handleImport(formatedData, formatedHeaders)
-        setStatus(res.status)
-        setWarningMessage(res.message)
-        setLoading(false)
-        if (res.status) {
-            getAllPendingConferences()
-            setTimeout(() => {
-                setWarningMessage('');
-                onHide()
-            }, 3000);
-        }
-        setTimeout(() => {
-            setWarningMessage('');
-        }, 3000);
+        handleIsCrawling(true)
+        handleImport(formatedData, formatedHeaders)
+        
+        navigate('/admin/import_conference')
+        closeAllModal()
+        handleShowImportModal(false)
     }
 
-
-    const convertCodesToNames = (codes) => {
-        return codes.split(';').map(code => {
-            const mapping = forcode.find(forMap => forMap.code.toString().trim() === code.trim());
-            return mapping ? mapping.for : code;
-        }).join('; ');
-    };
     const renderTableHeader = (headersName, isSelect) => {
         return (
             <tr>
@@ -167,7 +157,7 @@ const ImportedDataTable = ({ onHide }) => {
                                     value={selectedHeaders[index]?.name || ''}
                                     onChange={(e) => handleSelectHeader(e.target.value, index)}
                                     className='fw-bold'
-                                    style={{width: "auto"}} 
+                                    style={{width: "auto"}}
                                 >
                                     <option value="" disabled>{t('selectHeader')}</option>
                                     {headersNames.map((name, i) => (
@@ -226,47 +216,57 @@ const ImportedDataTable = ({ onHide }) => {
 
 
     return (
-        <div>
+        <div className='w-100'>
             <Carousel activeIndex={activePage} onSelect={() => { }} controls={false} interval={null} indicators={false}>
 
                 <Carousel.Item key={1}>
-                    <Table striped bordered hover responsive>
+                   <div className="overflow-y-auto" style={{maxHeight: "75%"}}>
+                   <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(dataUpload.headers, true)}
                         </thead>
                         <tbody>
-                            {renderTableBody(displayedData, currentPage)}
+                            {renderTableBody(currentPagedDataUpload, currentPage)}
                         </tbody>
                     </Table>
+                   </div>
                     <ReactPaginate
                         nextLabel=">"
                         previousLabel="<"
                         breakLabel={'...'}
                         breakClassName={'break-me'}
-                        pageCount={Math.ceil(displayedData.length / ITEMS_PER_PAGE)}
+                        pageCount={Math.ceil(displayedData.length / 5)}
                         marginPagesDisplayed={2}
                         pageRangeDisplayed={5}
                         onPageChange={handlePageClick}
                         containerClassName={'pagination'}
-                        activeClassName={'active'}
+                        activeClassName={'active'}  
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        breakLinkClassName="page-link"
                     />
 
                 </Carousel.Item>
                 <Carousel.Item key={2}>
+                    <div className="mh-75">
                     <Table striped bordered hover responsive>
                         <thead>
                             {renderTableHeader(formatedHeaders, false)}
                         </thead>
                         <tbody>
-                            {renderTableBody(formatedData, currentPageFormatted)}
+                            {renderTableBody(currentPageFormatedData, currentPageFormatted)}
                         </tbody>
                     </Table>
+                    </div>
                     <ReactPaginate
                         nextLabel=">"
                         previousLabel="<"
                         breakLabel={'...'}
                         breakClassName={'break-me'}
-                        pageCount={Math.ceil(formatedData.length / ITEMS_PER_PAGE)}
+                        pageCount={Math.ceil(currentPageFormatedData.length / 8)}
                         marginPagesDisplayed={2}
                         pageRangeDisplayed={5}
                         onPageChange={handlePageClickFormatted}
@@ -314,13 +314,8 @@ const ImportedDataTable = ({ onHide }) => {
                         <Button
                             className='bg-primary-normal text-white mx-2 px-4 border-light'
                             onClick={handleImportFile}>
-                            {
-                                loading ?
-                                    <Spinner size='sm' />
-                                    :
-                                    `${t('import_file')}`
-                            }
-                        </Button>
+                           
+                           {t('import_file')}                        </Button>
                         :
                         <Button
                             className='bg-primary-normal text-white mx-2 px-4 border-light text-nowrap'

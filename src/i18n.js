@@ -2,8 +2,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import translations from './data/translations.json'; // Đường dẫn tới file translations.json
-import moment from 'moment';
+
 import 'moment/locale/vi';
+import moment from 'moment';
 i18n
   .use(initReactI18next)
   .init({

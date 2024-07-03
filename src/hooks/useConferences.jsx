@@ -7,16 +7,11 @@ import { getAllConf, getOneConf } from "../actions/confAction"
 import moment from "moment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
-import useSessionStorage from "./useSessionStorage"
-import { sortByFollow } from "../utils/sortConferences"
 import useAuth from "./useAuth"
 import useLocalStorage from "./useLocalStorage"
-import useNotification from "./useNotification"
-
 const useConference = () => {
   const { state, dispatch } = useAppContext()
   const { user } = useAuth()
-  const { getDataListInStorage } = useSessionStorage()
   const [quantity] = useState(0)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -231,6 +226,11 @@ const useConference = () => {
     return newOrg ? newOrg.location : '';
   }
 
+  const getUserConferences = (listConf) =>{
+    const filteredConferences = listConf.filter(conference => conference?.information?.source === "ConfHub");
+    
+    return filteredConferences
+  }
 
   return {
     conferences: state.conferences,
@@ -252,7 +252,8 @@ const useConference = () => {
     showNoti, setShowNoti,
     isCrawlingConfs: state.isCrawlingConfs,
     addIDCrawling,
-    removeIDfromCrawlings
+    removeIDfromCrawlings,
+    getUserConferences
   }
 }
 

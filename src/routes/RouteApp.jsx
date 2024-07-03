@@ -25,6 +25,7 @@ import DetailedInformationPage from '../pages/public/DetailedInformationPage'
 import CallforPapers from '../pages/admin/CallforPapers'
 import ConferencesManagement from '../pages/admin/ConferencesManagement'
 import Dashboard from '../pages/admin/Dashboard'
+import ImportConferences from '../pages/admin/ImportConferences'
 
 const authPage = [
   { path: 'user/account', element: <Account /> },
@@ -42,6 +43,7 @@ const admin = [
   { path: '/admin/users_management/userdetail/:id', element: <UserDetail /> },
   { path: '/admin/admin_account', element: <AdminAccount /> },
   { path: '/admin/conferences_management/cfp/:id', element: <CallforPapers /> },
+  { path: '/admin/import_conference', element: <ImportConferences /> },
 ]
 
 const RoutesApp = () => {

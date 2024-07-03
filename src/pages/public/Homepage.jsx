@@ -17,7 +17,7 @@ import useParamsFilter from '../../hooks/useParamsFilter'
 import SlideShow from '../../components/SlideShow'
 
 const Homepage = () => {
-    const { optionsSelected, getOptionsFilter} = useSearch()
+    const { optionsSelected} = useSearch()
     const {loading: loadingAll, conferences,  getAllConferences} = useConference()
     const {getListFollowedConferences} = useFollow()
     const {getPostedConferences}= usePost()
@@ -82,7 +82,7 @@ const Homepage = () => {
           
         </div>
         
-         <Filter />
+         <Filter filter={'optionsSelected'}/>
         {
           loadingAll ?
           <Container fluid className='d-flex flex-column align-items-center vh-100 p-0 overflow-hidden'>

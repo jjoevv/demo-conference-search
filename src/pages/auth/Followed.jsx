@@ -18,7 +18,7 @@ const Followed = () => {
   const { t } = useTranslation()
   const {windowWidth} = useScreenSize()
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
-  const { getOptionsFilter, optionsSelected } = useSearch()
+  const { optionsSelectedFollow } = useSearch()
   const { user } = useLocalStorage()
 
   const { filterConferences } = useFilter()
@@ -27,8 +27,6 @@ const Followed = () => {
   const [displayConferences, setDisplayConferences] = useState(listFollowed)
 
   useEffect(() => {
-
-    getOptionsFilter("", [])
     getListFollowedConferences()
   }, [])
 
@@ -40,11 +38,11 @@ const Followed = () => {
   }, [user])
 
   useEffect(() => {
-    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    const isApliedFilter = checkExistValue(optionsSelectedFollow).some(value => value === true);
 
     if (isApliedFilter) {
 
-      const filterResult = filterConferences(listFollowed, optionsSelected)
+      const filterResult = filterConferences(listFollowed, optionsSelectedFollow)
       setDisplayConferences(filterResult)
 
     }
@@ -52,7 +50,7 @@ const Followed = () => {
       setDisplayConferences(listFollowed)
     }
     // Tạo query string 
-    const queryString = Object.entries(optionsSelected)
+    const queryString = Object.entries(optionsSelectedFollow)
       .filter(([, values]) => values.length > 0)
       .map(([key, values]) => `${key}=${values.join(',')}`)
       .join('&');
@@ -62,7 +60,7 @@ const Followed = () => {
 
     // Cập nhật URL
     window.history.pushState({}, '', newUrl);
-  }, [optionsSelected, listFollowed])
+  }, [optionsSelectedFollow, listFollowed])
 
   return (
     <Container className={` pt-5  overflow-x-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
@@ -79,7 +77,7 @@ const Followed = () => {
                 <>
 
                   <div className='fs-6 my-1 mb-3'>{t('review_followed_conferences')}</div>
-                  <Filter />
+                  <Filter filter={'optionsSelectedFollow'}/>
 
                   <Conference
                     conferencesProp={displayConferences}

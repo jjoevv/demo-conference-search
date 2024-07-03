@@ -27,7 +27,10 @@ const ModalImport = ({show, onHide}) => {
 
   const handleClosePost = () => setShowAddForm(false);
   const handleShowPost = () => setShowAddForm(true);
-
+  const hanleCloseAll = () => {
+    onHide()
+    setShowImportModal(false)
+  }
   return (
     <Modal show={show}  onHide={onHide} fullscreen="sm-down">
     <Modal.Header closeButton className='border-0'>    
@@ -35,7 +38,7 @@ const ModalImport = ({show, onHide}) => {
     <Modal.Body className='pb-5'>
     <AddConference show={showAddForm} handleClose={handleClosePost} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
       {showSuccess && <SuccessfulModal message={message} show={showSuccess} handleClosePost={() => setShowSuccess(false)} />}
-      {showImportModal &&  <ImportModalFile show={showImportModal} onHide={()=>setShowImportModal(false)}/>}
+      {showImportModal &&  <ImportModalFile show={showImportModal} onHide={()=>setShowImportModal(false)} closeAllModal={()=>hanleCloseAll()}/>}
       <div className="text-center text-teal-dark h4 fw-bold">
         {`${t('import_file')} ${t('conference').toLowerCase()}`}
       </div>

@@ -18,18 +18,20 @@ import FilterSelected from '../../components/Filter/FilterSelected'
 
 import AllConferences from '../../components/admin/AllConferences'
 import PendingCFPs from '../../components/admin/PendingCFP'
-import './../../components/admin/custom_tab.css'
+import './../../components/admin/custom_import.css'
 import useAdmin from '../../hooks/useAdmin'
 import ImportButton from '../../components/admin/ImportButton/ImportButton'
 import ExportButton from '../../components/admin/ExportButton'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
 import FilterOffcanvas from '../../components/admin/FilterOffcanvas'
+import { useAppContext } from '../../context/authContext'
 
 const ConferencesManagement = () => {
+  const { state } = useAppContext()
   const { t } = useTranslation()
   const { windowWidth } = useScreenSize()
-  const { optionsSelected, getOptionsFilter } = useSearch()
+  const { optionsSelectedAdmin } = useSearch()
   const {
     priorityKeywords,
     filterConferences,
@@ -37,81 +39,78 @@ const ConferencesManagement = () => {
 
   const [showFilter, setShowFilter] = useState(false)
   const [showFilterOffcanvas, setShowFilterOffcanvas] = useState(false)
-  const { loading: loadingConf, conferences, selectOptionSort, displaySortList, handleSelectOptionSort, getAllConferences } = useConference()
+  const { loading: loadingConf, conferences, selectOptionSort, handleSelectOptionSort, getAllConferences, getUserConferences } = useConference()
   const { loading: loadingAdmin, allcolumns, pendingConferences, getAllPendingConferences } = useAdmin()
   const [key, setKey] = useState('allconf');
   const [displayConferences, setDisplayedConferences] = useState([])
+  const [userConference, setUserConference] = useState([])
   const [conferencesList, setConferenceList] = useState([])
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async () => {
-      await getAllConferences()
-      setLoading(false)
-    }
-    fetchData()
+    setLoading(true);
 
-  }, [])
+    const fetchData = async () => {
+      await getAllConferences();
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    if (conferences.length === 0 || !conferences) {
-      getAllConferences()
-    }
-    getOptionsFilter("", [])
-    if (key === 'allconf') {
-      setDisplayedConferences(conferences)
-    }
+    setDisplayedConferences(conferences)
+    setConferenceList(conferences)
   }, [conferences])
 
   useEffect(() => {
-    if (pendingConferences.length === 0 || !pendingConferences) {
-      getAllPendingConferences()
+    if (!conferences || conferences.length === 0) {
+      getAllConferences();
     }
-    // console.log({pendingConferences, key})
-    if (key === 'userowner') {
-      setDisplayedConferences(pendingConferences)
-    } else setDisplayedConferences(conferences)
-  }, [pendingConferences])
-
-  useEffect(() => {
+    setDisplayedConferences(conferences)
     if (key === 'allconf') {
-      setConferenceList(conferences)
-      setDisplayedConferences(conferences)
+      setDisplayedConferences(conferences);
+    } else if (key === 'userowner') {
+      const byUsers = userConference.length > 0 ? userConference : getUserConferences(conferences)
+      setUserConference(byUsers)
+      setDisplayedConferences(byUsers);
+    } else if (key === 'pending') {
+      if (!pendingConferences || pendingConferences.length === 0) {
+        getAllPendingConferences();
+      }
+      setDisplayedConferences(pendingConferences);
     }
-    else {
-      setConferenceList(pendingConferences)
-      setDisplayedConferences(pendingConferences)
-    }
-  }, [key, conferences, pendingConferences])
+  }, [key, conferences, pendingConferences]);
+
+
 
   useEffect(() => {
-    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    const isApliedFilter = checkExistValue(optionsSelectedAdmin).some(value => value === true);
 
     if (isApliedFilter) {
 
-      const filterResult = filterConferences(conferencesList, optionsSelected)
-      const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
-
-
-      setDisplayedConferences(sortConferences)
+      const filterResult = filterConferences(conferencesList, optionsSelectedAdmin)
+      //const sortConferences = sortConferencesByPriorityKeyword(filterResult, priorityKeywords)
+      setDisplayedConferences(filterResult)
     }
     else {
       setDisplayedConferences(conferencesList)
     }
 
-  }, [optionsSelected, conferences, pendingConferences, conferencesList, priorityKeywords])
+  }, [optionsSelectedAdmin, conferences, pendingConferences, conferencesList, priorityKeywords])
 
 
   useEffect(() => {
-     //sắp xếp list
-     if (selectOptionSort === "random") {
+   //console.log({selectOptionSort})
+    //sắp xếp list
+    if (selectOptionSort === "random") {
       setDisplayedConferences(conferencesList)
-  }
- 
-  else {
-      const sortedConferences = sortConferences(selectOptionSort, [...displayConferences])
+    }
+    else {
+      const sortedConferences = sortConferences(selectOptionSort, [...conferencesList])
       setDisplayedConferences(sortedConferences)
-  }
+
+     // console.log({ selectOptionSort, sortedConferences })
+    }
   }, [selectOptionSort])
 
 
@@ -136,16 +135,16 @@ const ConferencesManagement = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
+
   return (
     <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className='fs-3'>{t('conference_management')}</h4>
         <ButtonGroup>
-         
+
           {
-             <ImportButton />
+            <ImportButton />
           }
           <ExportButton data={displayConferences} headers={allcolumns} />
 
@@ -176,12 +175,12 @@ const ConferencesManagement = () => {
               {t('filter')}
             </Button>
 
-            
+
 
           </Col>
           <Col md='auto' className='d-flex justify-content-end my-xs-2'>
-          {/* Button hiển thị trên màn hình điện thoại (sm và nhỏ hơn) */}
-          <Button
+            {/* Button hiển thị trên màn hình điện thoại (sm và nhỏ hơn) */}
+            <Button
               className={`rounded-1 mx-2 py-1 d-lg-none border-primary-normal ${showFilter ? 'bg-beige-normal text-teal-normal' : 'bg-white text-color-black'}`}
               onClick={() => setShowFilterOffcanvas(!showFilter)}
             >
@@ -190,13 +189,14 @@ const ConferencesManagement = () => {
             </Button>
             <DropdownSort
               onSelect={handleDropdownSelect}
+              options={["random", "upcoming", "nameAz", "latest"]}
             />
           </Col>
         </Row>
 
-        {showFilter && <Filter />}
+        {showFilter && <Filter filter={'optionsSelectedAdmin'} />}
         {showFilterOffcanvas && <FilterOffcanvas showOffcanvas={showFilterOffcanvas} setShowOffcanvas={() => setShowFilterOffcanvas(!showFilterOffcanvas)} />}
-        <FilterSelected />
+        <FilterSelected filterSelectedName={'optionsSelectedAdmin'} filterSelected={state['optionsSelectedAdmin']} />
         {
           loadingConf && loading ?
             <div className="my-4">
@@ -210,10 +210,15 @@ const ConferencesManagement = () => {
             >
               <Tab eventKey="allconf" title={`${t('all')} ${t('conferences')}`} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
-                  <AllConferences conferences={displayConferences} />
+                  <AllConferences conferences={displayConferences} isDeleteIcon={true}/>
                 </div>
               </Tab>
-              <Tab eventKey="userowner" title={t('pending')} className='pt-2' tabClassName='custom-tab-update'>
+              <Tab eventKey="userowner" title={`${t('userowner')}`} className='pt-2' tabClassName='custom-tab-update'>
+                <div ref={tabContentRef} className='overflow-y-auto' >
+                  <AllConferences conferences={displayConferences} isDeleteIcon={true}/>
+                </div>
+              </Tab>
+              <Tab eventKey="pending" title={t('pending')} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef}>
                   <PendingCFPs conferences={displayConferences} />
                 </div>

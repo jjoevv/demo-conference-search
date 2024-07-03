@@ -4,10 +4,9 @@ import useSearch from '../../hooks/useSearch'
 
 import { capitalizeFirstLetter } from '../../utils/formatWord'
 import Select from 'react-select'
-
-import data from './options.json'
 import countries from '../../data/countries.json'
 import { useTranslation } from 'react-i18next'
+import { useAppContext } from '../../context/authContext'
 const customStyles = {
     menuPortal: (provided) => ({
         ...provided,
@@ -75,8 +74,9 @@ const MultiValue = ({ index, getValue, ...props }) => {
     ) : null;
   };
 
-const Options = ({ label }) => {
-    const { optionsSelected, filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
+const Options = ({ label, filter }) => {
+    const {state} = useAppContext()
+    const { filterOptions, getOptionsFilter, addKeywords, deleteKeyword } = useSearch()
     const [options, setOptions] = useState([])
     const [selectedOptions, setSelectedOptions] = useState([])
     const [searchTerm, setSearchTerm] = useState('');
@@ -116,13 +116,13 @@ const Options = ({ label }) => {
     const handleOptionChange = async (items) => {
         setSelectedOptions(items)
         const itemsValues = items.map(item => item.value);
-        const removedOptions = optionsSelected[label].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
+        const removedOptions = state[filter][label].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
 
         if (removedOptions.length <= 0) {
-            addKeywords(label, [items[items.length-1].label])
-        } 
-        else {
-            deleteKeyword(label, removedOptions[0].label)
+            addKeywords(filter, label, [items[items.length-1].label])
+        }   
+        else {  
+            deleteKeyword(label, removedOptions[0].label, filter)
         }
     
     }
@@ -170,10 +170,10 @@ const Options = ({ label }) => {
             <Select
             isMulti={true}
             options={options}
-            value={optionsSelected[label].map(value => ({ value, label: value }))}
+            value={state[filter][label].map(value => ({ value, label: value }))}
             hideSelectedOptions={false}
             isClearable={false}
-            components={{ Option: props => <CustomOption {...props} selectedOptions={optionsSelected[label]} />, MultiValue }}
+            components={{ Option: props => <CustomOption {...props}  />, MultiValue }}
             onChange={handleOptionChange}
             onInputChange={handleInputChange}
             filterOption={filterOption}

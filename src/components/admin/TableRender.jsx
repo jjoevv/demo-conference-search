@@ -5,8 +5,6 @@ import { useFlexLayout, usePagination, useResizeColumns, useSortBy, useTable } f
 import useAdmin from '../../hooks/useAdmin';
 import { useTranslation } from 'react-i18next';
 
-
-
 const TableRender = ({ data, columns }) => {
   const { t } = useTranslation()
   const { handleGetHeadersExport } = useAdmin()
@@ -20,8 +18,6 @@ const TableRender = ({ data, columns }) => {
     }
     setPage(null);
   };
-
-
 
   const {
     getTableProps,
@@ -97,15 +93,15 @@ const TableRender = ({ data, columns }) => {
 
   return (
     <div>
-      <div className="conference-table-container pt-2">
-        <table className="conference-table" {...getTableProps()}>
+      <div className="conference-table-container pt-2 w-100">
+        <table className="conference-table w-100" {...getTableProps()}>
           <thead>
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
                 {headerGroup.headers.map((column, index) => (
                   <th {...column.getHeaderProps()} key={column.id}
                     className={`bg-primary-light text-color-black text-center 
-                                            ${index === columns.length - 1 && 'fixed-column fixed-right'}
+                                            ${index === columns.length - 1 && column.id !== 'error' ? 'fixed-column fixed-right' : ''}
                                             ${index === 0 && 'fixed-column fixed-left'}
                                             `}>
                     {column.render('Header')}
@@ -133,12 +129,15 @@ const TableRender = ({ data, columns }) => {
                           return (
                             <td {...cell.getCellProps()} key={cell.column.id}
                               className={` p-1 px-2 text-color-black d-flex align-items-center 
-                                                      ${index === columns.length - 1 && 'fixed-column fixed-right justify-content-center p-0'} 
+                                                      ${index === columns.length - 1 &&  cell.column.id !== 'error' ? 'fixed-column fixed-right justify-content-center p-0': ''} 
                                                       ${index === 0 && 'fixed-column fixed-left'} 
-                                                      ${(index === 0 ||
+                                                      ${cell.column.id === 'error' ? 'custom-error-column' : ''} 
+                                                      ${(index === 0 ||                                                        
+                                  cell.column.id === 'status' ||
                                   cell.column.id === 'type' ||
                                   cell.column.id === 'rank' ||
                                   cell.column.id === 'acronym' ||
+                                  cell.column.id === 'import' ||
                                   cell.column.id === 'important_dates')
                                 && 'justify-content-center '}`}
                             >

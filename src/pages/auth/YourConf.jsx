@@ -23,7 +23,7 @@ const YourConf = () => {
   const {t} = useTranslation()
   const {windowWidth} = useScreenSize()
   const [showAddForm, setShowAddForm] = useState(false)
-  const { optionsSelected, getOptionsFilter } = useSearch()
+  const { optionsSelectedOwn } = useSearch()
   const { loading: loadingPost, postedConferences, getPostedConferences } = usePost()
   const { filterConferences } = useFilter()
   const [showSuccess, setShowSuccess] = useState(false)
@@ -37,7 +37,6 @@ const YourConf = () => {
   useEffect(() => {
     setLoading(true)
     const fetchData = async () => {
-      await getOptionsFilter("", [])
       await getPostedConferences()
       setLoading(false)
     }
@@ -51,11 +50,11 @@ const YourConf = () => {
   }, [postedConferences])
 
   useEffect(() => {
-    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
+    const isApliedFilter = checkExistValue(optionsSelectedOwn).some(value => value === true);
 
     if (isApliedFilter) {
 
-      const filterResult = filterConferences(postedConferences, optionsSelected)
+      const filterResult = filterConferences(postedConferences, optionsSelectedOwn)
       setDisplayConferences(filterResult)
       setTotalConferences(filterResult.length)
       setTotalPages(Math.ceil(filterResult.length / 7))
@@ -69,7 +68,7 @@ const YourConf = () => {
       setDisplayConferences(postedConferences)
     }
     // Tạo query string 
-    const queryString = Object.entries(optionsSelected)
+    const queryString = Object.entries(optionsSelectedOwn)
       .filter(([, values]) => values.length > 0)
       .map(([key, values]) => `${key}=${values.join(',')}`)
       .join('&');
@@ -79,7 +78,7 @@ const YourConf = () => {
 
     // Cập nhật URL
     window.history.pushState({}, '', newUrl);
-  }, [optionsSelected, postedConferences])
+  }, [optionsSelectedOwn, postedConferences])
 
   const handleCheckStatus = (status, messageSuccess) => {
     setMessage(messageSuccess)
@@ -120,7 +119,7 @@ const YourConf = () => {
               postedConferences && postedConferences.length > 0 && !loadingPost ?
                 <>
                 <h6>{t('conference_list_description')}</h6>
-                  <Filter />
+                  <Filter filter={'optionsSelectedOwn'}/>
                   <Conference
                     conferencesProp={displayConferences}
                     onReloadPage={getPostedConferences}

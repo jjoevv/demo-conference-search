@@ -66,7 +66,7 @@ const ModalUpdateConf = ({ conference, show, onClose, onUpdatePost, onModalClick
 
   useEffect(() => {
     if (!filterOptions['rank'] || !filterOptions['for']) {
-      getOptionsFilter('', [])
+      getOptionsFilter('for')
     }
   }, [filterOptions])
 

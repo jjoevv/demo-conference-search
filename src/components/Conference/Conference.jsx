@@ -187,6 +187,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                 </div>
                 <DropdownSort
                     onSelect={handleDropdownSelect}
+                    options={["random", "followed", "upcoming", "nameAz", "latest"]}
                 />
             </div>
             <Row className='w-100 justify-content-start'>

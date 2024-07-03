@@ -12,25 +12,25 @@ import { capitalizeFirstLetter } from '../../utils/formatWord';
 import { useTranslation } from 'react-i18next';
 import useFilter from '../../hooks/useFilter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
+import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
-const FilterSelected = () => {
+const FilterSelected = ({filterSelected, filterSelectedName}) => {
   const {t} = useTranslation()
-  const { deleteKeyword, clearKeywords, optionsSelected } = useSearch()
+  const { deleteKeyword, clearKeywords } = useSearch()
   const {extractStars, extractDates} = useFilter()
   const [keywordsSelected, setKeywordsSelected] = useState(null)
   const [total, setTotal] = useState(0)
   useEffect(()=>{
-    const uniqueValues = getUniqueConferences(optionsSelected)
+    const uniqueValues = getUniqueConferences(filterSelected)
     setKeywordsSelected(uniqueValues)
     setTotal(uniqueValues.length)
-  }, [optionsSelected])
+  }, [filterSelected])
   
   const handleDeletekeyword = (keyword) => {
-    deleteKeyword(findKeyByKeyword(optionsSelected, keyword),keyword)
+    deleteKeyword(findKeyByKeyword(filterSelected, keyword),keyword, filterSelectedName)
   }
   const handleClearKeyword = () => {
-    clearKeywords()
+    clearKeywords(filterSelectedName)
   }
  
 

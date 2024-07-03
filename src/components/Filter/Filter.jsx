@@ -1,5 +1,5 @@
 import { Stack, Form, InputGroup, Button, Image, Container, Row, Col } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import DateRangePicker from "./DateRangePicker";
 import AdvancedFilter from "./AdvancedFilter";
@@ -15,8 +15,10 @@ import { faCircleChevronDown, faFilter } from "@fortawesome/free-solid-svg-icons
 import { useTranslation } from "react-i18next";
 import useScreenSize from "../../hooks/useScreenSize";
 import AreaFilter from "./AreaFilter";
+import { useAppContext } from "../../context/authContext";
 
-const Filter = () => {
+const Filter = ({filter}) => {
+  const {state} = useAppContext()
   const { loading: loadingOption, addKeywords, optionsSelected } = useSearch()
   const { loading } = useFilter()
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
@@ -112,25 +114,25 @@ const Filter = () => {
             <Row direction="horizontal" className="w-100 d-flex justify-content-center mt-2">
               <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
                 <span className="fw-bold text-color-black text-nowrap">{t("field_of_research")}</span>
-                <Options label="for" />
+                <Options filter={filter} label="for" />
               </Col>
 
               <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
                 <span className="fw-bold text-color-black text-nowrap">{t('location')}</span>
-                <Options label="location" />
+                <Options filter={filter} label="location" />
               </Col>
               <Col xs={12} sm={2} md={2} lg={2} className="mt-1">
                 <span className="fw-bold text-color-black text-nowrap">{t('region')}</span>
-                <AreaFilter />
+                <AreaFilter filter={filter} />
               </Col>
               <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
                 <span className="fw-bold text-color-black text-nowrap">{t('submission_date')}</span>
-                <DateRangePicker label="submissionDate" />
+                <DateRangePicker filter={filter} label="submissionDate" />
               </Col>
 
               <Col xs={12} sm={3} md={3} lg={3} className="mt-1">
                 <span className="fw-bold text-color-black">{t('conference_date')}</span>
-                <DateRangePicker label="conferenceDate" />
+                <DateRangePicker filter={filter} label="conferenceDate" />
               </Col>
             </Row>
           </Stack>
@@ -143,10 +145,10 @@ const Filter = () => {
               className={showAdvancedFilter ? "ms-2 rotate-180" : 'ms-2'} />
           </Button>
 
-          {showAdvancedFilter && <AdvancedFilter />}
+          {showAdvancedFilter && <AdvancedFilter filter={filter}/>}
         </>
       }
-      <div className="filter-selected overflow-hidden">{optionsSelected && <FilterSelected />}  </div>
+      <div className="filter-selected overflow-hidden">{optionsSelected && <FilterSelected filterSelected={state[filter]} filterSelectedName={filter}/>}  </div>
 
     </Container>
   );
