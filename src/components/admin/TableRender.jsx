@@ -1,9 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import 'react-resizable/css/styles.css';
 import './custom_table.css';
-import { useFlexLayout, usePagination, useResizeColumns, useSortBy, useTable } from 'react-table';
+import { useFilters, useFlexLayout, usePagination, useResizeColumns, useSortBy, useTable } from 'react-table';
 import useAdmin from '../../hooks/useAdmin';
 import { useTranslation } from 'react-i18next';
+
+const DefaultColumnFilter = ({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}) => {
+  const count = preFilteredRows.length;
+
+  return (
+    <input
+      value={filterValue || ''}
+      onChange={e => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  );
+};
 
 const TableRender = ({ data, columns }) => {
   const { t } = useTranslation()
@@ -18,6 +34,13 @@ const TableRender = ({ data, columns }) => {
     }
     setPage(null);
   };
+
+  const defaultColumn = useMemo(
+    () => ({
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  );
 
   const {
     getTableProps,
@@ -128,7 +151,7 @@ const TableRender = ({ data, columns }) => {
                         {row.cells.map((cell, index) => {
                           return (
                             <td {...cell.getCellProps()} key={cell.column.id}
-                              className={` p-1 px-2 text-color-black d-flex align-items-center 
+                              className={`py-1 px-2 text-color-black d-flex align-items-center 
                                                       ${index === columns.length - 1 &&  cell.column.id !== 'error' ? 'fixed-column fixed-right justify-content-center p-0': ''} 
                                                       ${index === 0 && 'fixed-column fixed-left'} 
                                                       ${cell.column.id === 'error' ? 'custom-error-column' : ''} 
@@ -138,6 +161,8 @@ const TableRender = ({ data, columns }) => {
                                   cell.column.id === 'rank' ||
                                   cell.column.id === 'acronym' ||
                                   cell.column.id === 'import' ||
+                                  cell.column.id === 'progress' ||
+                                  cell.column.id === 'duration' ||
                                   cell.column.id === 'important_dates')
                                 && 'justify-content-center '}`}
                             >

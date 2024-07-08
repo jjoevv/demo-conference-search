@@ -5,19 +5,20 @@ import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import {  useNavigate } from 'react-router-dom'
 
 const LoginExpiredModal = ({show}) => {
-  const {setIsExpired, handleLogout, isLogin} = useAuth()
+  const {handleLogout, isLogin, handleIsExpired} = useAuth()
 
 const navigate = useNavigate()
-  const handleLoginClick = () => {    
-    setIsExpired(false)
+  const handleLoginClick = async () => {    
+    await handleLogout()
+    handleIsExpired(false)
     navigate('/login')
   }
-  const handleContinue = () => {
-    handleLogout()
-    setIsExpired(false)
+  const handleContinue = async () => {
+    await handleLogout()
+    handleIsExpired(false)
   }
   return (
-    <Modal show={show} onHide={()=>setIsExpired(false)} centered>
+    <Modal show={show} onHide={()=>handleIsExpired(false)} centered>
         <Modal.Header closeButton className='border-0'>
           <Modal.Title className='text-color-black w-100 align-items-center'>
             <FontAwesomeIcon icon={faTriangleExclamation} className='text-yellow me-3 '/>

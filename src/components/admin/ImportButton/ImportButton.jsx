@@ -17,7 +17,7 @@ const ImportButton = () => {
         <Button 
         title="Import data to dashboard"
         onClick={()=>setOptionShowImportModal(true)}
-        className="bg-white border-0 bg-white text-color-black fw-medium d-flex align-items-center border border-0">
+        className="bg-teal-light border-0 text-color-black fw-medium d-flex align-items-center border mx-2">
             <FontAwesomeIcon icon={faFileImport} className='me-2'/>
             {windowWidth > 768 && `${t('import_file')}`}
            

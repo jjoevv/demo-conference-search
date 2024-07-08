@@ -16,7 +16,6 @@ const useAuth = () => {
   const [error, setError] = useState('')
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
-  const [isExpiredLogin, setIsExpired] = useState(false)
   const navigate = useNavigate()
   const {previousPath} = usePageNavigation()
 
@@ -42,7 +41,6 @@ const useAuth = () => {
           
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-         // dispatch({type: "LOGIN_SUCCESS", payload: {userData: userData}})
          await getCurrentUser()
           if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
             navigate(`${previousPath}`)
@@ -116,6 +114,7 @@ const useAuth = () => {
   const handleLogout = async () => {
     dispatch(logoutUser());
     dispatch({type: "LOGIN_SUCCESS", payload: null})
+    dispatch({type: "SET_IS_LOGIN", payload: false})
     sessionStorage.removeItem('user-id')
     deleteUserFromLocalStorage()
     navigate(`${previousPath}`)
@@ -142,7 +141,7 @@ const useAuth = () => {
       setLoading(false)
       if (!response.ok) {
         if(response.status === 401){
-          setIsExpired(true)
+          handleIsExpired(false)
         }
         setError(response.status) 
       }
@@ -176,7 +175,7 @@ const useAuth = () => {
       setLoading(false)
       if (!response.ok) {
         if(response.status === 401){
-          setIsExpired(true)
+          handleIsExpired(false)
         }
         setError(response.status) 
       }
@@ -224,13 +223,14 @@ const useAuth = () => {
   
         if (!response.ok) {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           setError(response.status)         
         }
         else {
           const data = await response.json()
-          dispatch({type: "LOGIN_SUCCESS", payload: data.data})
+          dispatch({type: "LOGIN_SUCCESS", payload: data.data})          
+          dispatch({type: "SET_IS_LOGIN", payload: true})
           sessionStorage.setItem('user-id', JSON.stringify(data.data.id))
           localStorage.setItem('user', JSON.stringify(data.data));
           
@@ -241,21 +241,25 @@ const useAuth = () => {
     }
   }
 
+
+  const handleIsExpired = (isLoginAvailabel) => {
+    console.log({isLoginAvailabel})
+    dispatch({type: "SET_IS_LOGIN", payload: isLoginAvailabel})
+  }
   return {
     user: state.user,
     error: error,
     userId,
     loading,
-    isExpiredLogin,
     isLogin: state.isLogin,
-    setIsExpired,
     handleLogin,
     handleRegister,
     handleLogout,
     updateProfile,
     changePassword,
     getCurrentUser,
-    loginWithGoogle
+    loginWithGoogle,
+    handleIsExpired
   };
 };
 

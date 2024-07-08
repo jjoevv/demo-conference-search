@@ -9,7 +9,7 @@ import { faTruckMonster } from '@fortawesome/free-solid-svg-icons'
 
 
 const Setting = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { windowWidth } = useScreenSize()
   const { settings, loading, getAllSetting, updateSetting } = useSetting()
   const [displaySetting, setDisplaySetting] = useState([])
@@ -79,7 +79,7 @@ const Setting = () => {
                         </Form.Label>
                         <Col sm="2"
                           className={`ms-3 d-flex  align-items-center justify-content-between px-2 py-1 rounded-2
-                          ${setting?.name !== "AUTO_ADD_EVENT_TO_SCHEDULE" ? 'border' : ''}
+                          ${setting?.name === 'YOUR_UPCOMING_EVENT' ? 'border border-secondary' : ''}
                           ${!setting?.status ? 'bg-light-gray' : ''}
                           `}>
 
@@ -96,18 +96,19 @@ const Setting = () => {
                           ) : (
                             <>
                               {
-                                setting?.name !== "AUTO_ADD_EVENT_TO_SCHEDULE" ?
+                                setting?.name === "YOUR_UPCOMING_EVENT" ?
                                   <Form.Select
                                     disabled={!setting?.status}
                                     className='pe-1 border p-1 rounded-2 text-body'
+                                    style={{cursor: "pointer"}}
                                     defaultValue={setting?.value}
                                     value={setting?.value}
                                     id={setting?.tid}
                                     name={setting?.name}
                                     onChange={(e) => handleChangeSelect(e, setting)}>
-                                    {Array.from({ length: 100 }, (_, i) => i + 1).map((num) => (
+                                    {Array.from({ length: 28 }, (_, i) => i + 3).map((num) => (
                                       <option key={num} value={num}>
-                                        {`${num} ${t('day').toLowerCase()}`}
+                                        {`${num} ${t('day').toLowerCase()}${i18n.language === 'en' ? 's' : ''}`}
                                       </option>
                                     ))}
                                   </Form.Select>

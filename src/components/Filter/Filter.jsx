@@ -54,7 +54,7 @@ const Filter = ({filter}) => {
   };
   const handleApplySearch = async () => {
     if (searchInput !== '') {
-      addKeywords("search", [searchInput])
+      addKeywords(filter, "search", [searchInput])
     }
   }
   const handleEnterSearch = (e) => {

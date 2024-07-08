@@ -8,6 +8,7 @@ import SuccessfulModal from '../../Modals/SuccessModal'
 import useImport from '../../../hooks/useImport'
 import ImportModalFile from './ImportModalFile'
 import { useTranslation } from 'react-i18next'
+import ImportAConfModal from '../ImportAConfModal'
 
 const ModalImport = ({show, onHide}) => {
   const {t} = useTranslation()
@@ -36,7 +37,7 @@ const ModalImport = ({show, onHide}) => {
     <Modal.Header closeButton className='border-0'>    
     </Modal.Header>
     <Modal.Body className='pb-5'>
-    <AddConference show={showAddForm} handleClose={handleClosePost} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
+    <ImportAConfModal show={showAddForm} handleClose={handleClosePost} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
       {showSuccess && <SuccessfulModal message={message} show={showSuccess} handleClosePost={() => setShowSuccess(false)} />}
       {showImportModal &&  <ImportModalFile show={showImportModal} onHide={()=>setShowImportModal(false)} closeAllModal={()=>hanleCloseAll()}/>}
       <div className="text-center text-teal-dark h4 fw-bold">

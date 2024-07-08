@@ -1,4 +1,4 @@
-import { useEffect, useInsertionEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useImport from "../../hooks/useImport";
 import { Container, OverlayTrigger, ProgressBar, Spinner, Tooltip } from "react-bootstrap";
@@ -8,8 +8,9 @@ import ImportButton from "../../components/admin/ImportButton/ImportButton";
 import ImportingProgressBar from "../../components/ProgressLoading/ImportingProgressBar";
 import ImportingFilter from "../../components/Filter/ImportingFilter";
 import StopButton from "../../components/admin/StopButton";
-import CountdownTime from "../../components/Calendar/CountdownTime";
 import IntendTime from "../../components/Calendar/IntendTime";
+import JobManagement from "../../components/admin/jobmanage/JobManagement";
+import FinishImportButton from "../../components/FinishImportButton";
 
 const ImportConferences = () => {
   const { t, i18n } = useTranslation()
@@ -17,7 +18,7 @@ const ImportConferences = () => {
   const { windowWidth } = useScreenSize()
 
   useEffect(() => {
-   // console.log('importing...', inProgressLoading, isImporting)
+   //console.log('importing...', inProgressLoading, isImporting)
   }, [inProgressLoading, isImporting, ])
 
   useEffect(()=>{
@@ -27,9 +28,9 @@ const ImportConferences = () => {
     switch (status) {
       case 'waiting':
         return 'status-waiting';
-      case 'crawling':
+      case 'processing':
         return 'status-crawling';
-      case 'done':
+      case 'completed':  
         return 'status-done';
       case 'failed':
         return 'status-error';
@@ -106,9 +107,9 @@ const ImportConferences = () => {
         id: 'status',
         disableResizing: true,
         Cell: ({ value }) => (
-          <div className={`px-3 ${isImporting ? getStatusClass(value) : getStatusClass('stopping')}`}>
+          <div className={`px-3 ${getStatusClass(value)}`}>
             {
-              !isImporting ? `${t('stopping')}` : 
+              
               value !== 'pending' ?
               `${t(value)}` :
               `${t('status_pending')}`
@@ -123,14 +124,17 @@ const ImportConferences = () => {
         accessor: 'progress',
         id: 'progress',
         disableResizing: true,
-        Cell: ({ value }) => (
-          <div className="w-100 d-flex justify-content-center align-items-center">
-            {value === 0 && `${value}%`}
-            <div className="w-100 mx-1">
-              <ProgressBar animated striped variant="info"  label={value === 0 ? '0%' : `${value}%`} now={value} />
+        Cell: ({ value, row }) => {
+          const progressVal = value === 0 ? 0 : row?.original?.status === 'completed' ? 100 : value;
+          return (
+            <div className="w-100 d-flex justify-content-center align-items-center">
+              {value === 0 && `${value}%`}
+              <div className="w-100 mx-1">
+                <ProgressBar animated striped variant="info"  label={progressVal === 0 ? '0%' : `${progressVal}%`} now={progressVal} />
+              </div>
             </div>
-          </div>
-        )
+          )
+        }
       },
 
       {
@@ -171,13 +175,14 @@ const ImportConferences = () => {
                     <IntendTime totalConferences={inProgressLoading.length} />
                     <ImportingProgressBar />
                     <StopButton />
+                    <FinishImportButton/>
                   </div>
 
                   <div className="d-flex justify-content-center w-100 mb-2">
                     <ImportingFilter />
                   </div>
 
-                  <div className='overflow-y-auto' >
+                  <div className='' >
                     <TableRender data={inProgressLoading} columns={columns} />
                   </div>
 
@@ -190,6 +195,8 @@ const ImportConferences = () => {
           </> :
           <p>{t('no_progress_loading')}</p>
       }
+      
+      <JobManagement/>
     </Container>
   )
 }

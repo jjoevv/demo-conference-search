@@ -7,13 +7,13 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 
-const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, loading, isConfirm, countdown, onModalClick }) => {
+const DeleteModal = ({ show, onClose, onConfirm, status, loading, isConfirm, countdown, onModalClick, message }) => {
   const {t} = useTranslation()
   const modalRef = useRef(null);
 
   return (
     <Modal show={show} onHide={(e)=>onClose(e)} centered>
-        <div   ref={modalRef} >
+        <div ref={modalRef} >
           <Modal.Body onClick={(e) => e.stopPropagation()}>
           <div className="d-flex justify-content-between align-items-center py-2 mb-3">
               <Modal.Title className='text-center w-100 text-danger ps-5'>{`${t('delete')} ${t('conference')}`}</Modal.Title>
@@ -26,15 +26,21 @@ const DeleteModal = ({ show, onClose, onConfirm, modalTitle, message, status, lo
           </Modal.Body>
           <Modal.Footer>
             {
-              isConfirm && status
+              isConfirm && !loading
                 ?
                 <>
-                {status && (
+                {
+                status ? (
                   <div className = {status ? 'text-success' : 'text-danger'}>
                     {status && <div>
                       <span className='text-success'>{t('success')}</span>. {t('closing_countdown', {countdown: countdown})}</div>}
                   </div>
-            )}
+                )
+                :
+                <div className = {'text-danger'}>
+                      <span>{message}</span>. 
+                  </div>
+                }
                 </>
                 :
                 <ButtonGroup className='w-100'>

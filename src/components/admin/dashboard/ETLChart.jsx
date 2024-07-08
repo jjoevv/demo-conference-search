@@ -1,10 +1,11 @@
 import moment from 'moment';
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useDashboard from '../../../hooks/useDashboard';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './custom_dashboard.css'
 import { useTranslation } from 'react-i18next';
+import useScreenSize from '../../../hooks/useScreenSize';
 Chart.register(...registerables);
 
 const ETLChart = ({ startDate, endDate }) => {
@@ -138,7 +139,12 @@ const ETLChart = ({ startDate, endDate }) => {
             <div>
                 {
                     chartData.labels?.length > 0 &&
-                    <Line data={chartData} options={{ plugins: { tooltip: customTooltip } }} />
+                    <Line 
+                        data={chartData} 
+                        options={{ 
+                            plugins: { tooltip: customTooltip },
+                        }} 
+                    />
                 }
             </div>
         </div>

@@ -26,7 +26,7 @@ import OffcanvasHeaderRes from './OffcanvasHeaderRes'
 const Header = () => {
   const { t} = useTranslation()
   const {windowWidth} = useScreenSize()
-  const { isExpiredLogin, isLogin } = useAuth()
+  const { isLogin } = useAuth()
   const { user } = useLocalStorage();
   const navigate = useNavigate()
   const { goToPreviousPage } = usePageNavigation()
@@ -50,22 +50,18 @@ const Header = () => {
     goToPreviousPage(event);
   }, [])
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-};
   const handleSelect = (eventKey) => {
     setActiveKey(eventKey);
   };
   const handleOffcanvasClose = () => setShowOffcanvas(false);
   const handleOffcanvasShow = () => setShowOffcanvas(true);
-  const dropDirection = windowWidth <= 768 ? 'end' : 'bottom';
   const navLinks = (
     <>
       <Nav.Link
         as={Link}
         to="/"
         title="Homepage"
-        className={`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-5 fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
+        className={`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-6 fw-bold header-title ${location.pathname === '/' ? 'border-3 border-bottom border-secondary' : ''}`}
       >
         {t('home')}
       </Nav.Link>
@@ -76,7 +72,7 @@ const Header = () => {
         show={showDropdown}
       >
         <Dropdown.Toggle
-          className={`d-flex align-items-center mx-md-4 px-0 rounded-0 text-center text-color-black fs-5 fw-bold  bg-transparent border-0 header-title ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'text-center border-3 border-bottom border-secondary' : ''}`}
+          className={`d-flex align-items-center mx-md-4 px-0 rounded-0 text-center text-color-black fs-6 fw-bold  bg-transparent border-0 header-title ${location.pathname.includes('/followed') || location.pathname.includes('/your') ? 'text-center border-3 border-bottom border-secondary' : ''}`}
         >
           {t('conference')}
         </Dropdown.Toggle>
@@ -89,7 +85,7 @@ const Header = () => {
         as={Link}
         to={user ? '/user/note' : '/login'}
         title="Timestamp"
-        className={`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-5 fw-bold text-center header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
+        className={`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-6 fw-bold text-center header-title ${location.pathname.includes('/note') ? 'border-3 border-bottom border-secondary' : ''}`}
       >
         {t('note')}
       </Nav.Link>
@@ -112,7 +108,7 @@ const Header = () => {
   );
   return (
     <Navbar expand="md" id="header" className=" fixed-top px-5 shadow-sm bg-white">
-    <LoginExpiredModal show={isLogin ? isExpiredLogin : false} />
+    <LoginExpiredModal show={!isLogin} />
     <Container className="d-flex justify-content-between align-items-center w-100 px-sm-2">
       <Navbar.Brand className="my-header-brand me-auto me-md-0">
         <Link to="/" className="text-teal-dark fs-4 fw-bold" title="Homepage">

@@ -10,53 +10,19 @@ import { useTranslation } from 'react-i18next'
 import useAdmin from '../../hooks/useAdmin'
 import useConference from '../../hooks/useConferences'
 import DeleteModal from '../Modals/DeleteModal'
+import DeleteButton from './DeleteButton'
 
-const AllConferences = ({ conferences, isDeleteIcon }) => {
+const AllConferences = ({ conferences, isDeleteIcon, onReloadList }) => {
   const {t, i18n} = useTranslation()
   const scrollPositions = useRef({});
   const [showDeleteConf, setShowDelete] = useState(false)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState(false)
-  const {loading, deletePost} = useAdmin()
+  const {deletePost} = useAdmin()
   const {getAllConferences} = useConference()
-  const [countdown, setCountdown] = useState(3);
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [confDel, setConfDel] = useState(null)
   const navigate = useNavigate()
 
 
-  const handleChooseDelete = (conf) => {
-    setConfDel(conf)
-    setShowDelete(true)
-  }
-
-  const handleDeletePost = async (e) => {
-    e.preventDefault();
-    setIsConfirm(true)
-    const result = await deletePost(confDel.id);
-    setStatus(result.status);
-    setMessage(result.message);
-    if (result.status) {
-      getAllConferences()
-      const countdownInterval = setInterval(() => {
-        setCountdown((prevCountdown) => {
-          if (prevCountdown === 0) {
-            clearInterval(countdownInterval);
-            handleClose();
-            return 0;
-          }
-          return prevCountdown - 1;
-        });
-      }, 1000); // Giảm mỗi 1 giây
-    }
-  }
-
-  const handleClose = () => {
-    setShowDelete(false);
-    setStatus(null);
-    setMessage('');
-    setCountdown(3);
-  };
   const handleChooseCfp = async (conf) => {
     // Lưu vị trí cuộn hiện tại trước khi cập nhật URL
     scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
@@ -220,7 +186,7 @@ const AllConferences = ({ conferences, isDeleteIcon }) => {
         Cell: ({ row }) => (
           <div className='fixed-column p-0 d-flex align-items-center justify-content-center'>
           <Button className='bg-transparent  p-0 mx-2 my-0 border-0 action-btn tb-icon-view  '
-            onClick={() => handleChooseCfp(row.original)}
+            onClick={() => handleChooseCfp(row.original.id)}
             title='View CFP'
           >
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-primary-normal action-icon fs-5' />
@@ -228,10 +194,11 @@ const AllConferences = ({ conferences, isDeleteIcon }) => {
 
           {
             isDeleteIcon &&
-            <Button className='bg-transparent border-0 p-0  my-0 action-btn tb-icon-delete '
-            onClick={() => handleChooseDelete(row.original)}>
-            <FontAwesomeIcon icon={faTrash} className='text-danger action-icon fs-5' />
-          </Button>
+            <DeleteButton
+              id={row.original.id}
+              onDelete={deletePost}
+              onReloadList={onReloadList}
+            />
           }
 
 
@@ -248,18 +215,6 @@ const AllConferences = ({ conferences, isDeleteIcon }) => {
 
   return (
     <div>
-       {showDeleteConf &&
-        <DeleteModal
-          show={showDeleteConf}
-          onClose={() => setShowDelete(!showDeleteConf)}
-          onConfirm={handleDeletePost}
-          modalTitle={'conference'}
-          message={message}
-          status={status}
-          loading={loading}
-          countdown={countdown}
-          isConfirm={isConfirm}
-        />}
       <TableRender data={conferences} columns={columns} />
     </div>
   )

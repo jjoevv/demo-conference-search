@@ -44,9 +44,9 @@ const DetailedInformationPage = () => {
     useEffect(() => {
         const header = document.getElementById('header');
         setHeightHeader(header?.offsetHeight)
-        const crawlingStatus = messages.find(mess => mess.id === conf_id?.id && mess.status !== 'completed');
+        const crawlingStatus = messages.find(mess => mess.id === conf_id?.id && mess.status !== 'completed' && mess.status !== 'failed');
         
-        if (crawlingStatus) {
+        if (crawlingStatus && crawlingStatus.status !== 'failed') {
                 setIsCrawling(true)
         } else {
             setIsCrawling(false)
@@ -158,7 +158,6 @@ const DetailedInformationPage = () => {
                                                                     <FontAwesomeIcon icon={faLocationPin} className='mx-3 fs-5' />
                                                                     <h3 className='text-teal-black'> {renderLocation(conference.organizations)}</h3>
 
-                                                                    {`${isCrawling}`}
                                                                 </div>
 
 

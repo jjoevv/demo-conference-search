@@ -7,7 +7,7 @@ import { getAllPosted } from '../actions/postAction'
 import useAuth from './useAuth'
 const usePost = () => {
   const {state, dispatch} = useAppContext()
-  const {setIsExpired} =useAuth()
+  const {handleIsExpired} =useAuth()
   const {user} = useLocalStorage()
   const {token} = useSessionToken()
   const [loading, setLoading] = useState(false)
@@ -24,7 +24,7 @@ const usePost = () => {
   });
     if (!response.ok) {
       if(response.status === 401){
-        setIsExpired(true)
+        handleIsExpired(false)
       }
         throw new Error('Network response was not ok');
     }
@@ -104,7 +104,7 @@ const updateNewList = (newConferences)  => {
         }
         else {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           return {status: false, message}
         }
@@ -139,7 +139,7 @@ const updateNewList = (newConferences)  => {
         }
         else {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           return {status: false, message}
         }
@@ -168,7 +168,7 @@ const updateNewList = (newConferences)  => {
         }
         else {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           return {status: false, message}
         }

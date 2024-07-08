@@ -74,7 +74,31 @@ const useSetting = () => {
       }
   };
   
-
+  const getCycleSetting = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${baseURL}/cycle`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch settings');
+      }
+  
+      const data = await response.json();
+      return data.updateCycle;
+    } catch (error) {
+      console.error('Error fetching cycle settings:', error);
+      // Bạn có thể hiển thị thông báo lỗi cho người dùng tại đây
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   const updateSetting = async (name, status, value) => {
     setLoading(true)
     try {
@@ -109,13 +133,46 @@ const useSetting = () => {
       }
   }
 
+  const updateCycleSetting = async (cycle, period) => {
+    setLoading(true)
+    try {
+      const postData = {
+        cycle: cycle,
+        period: period
+      }
+        let storedToken = JSON.parse(localStorage.getItem('token'));
+        const tokenHeader = token ? token : storedToken
+        // Gửi yêu cầu lấy danh sách feedback đến API
+        const response = await fetch(`${baseURL}/cycle`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenHeader}`
+          },
+          body: JSON.stringify( postData ),
+        });
+  
+        // Kiểm tra xem kết quả trả về từ API có hợp lệ không
+        if (!response.ok) {
+          throw new Error('Failed to fetch feedbacks');
+        }
+  
+        setLoading(false)
+      } catch (error) {
+        // Nếu có lỗi xảy ra trong quá trình gửi yêu cầu hoặc xử lý dữ liệu, ném ra một lỗi
+        throw new Error(`Error fetching feedbacks: ${error.message}`);
+      }
+  }
+
     return {
      loading, 
      settings: state.settings,
      selectedValue,
      handleSelect,
      getAllSetting, 
-     updateSetting
+     updateSetting,
+     getCycleSetting,
+     updateCycleSetting
     }
   }
 

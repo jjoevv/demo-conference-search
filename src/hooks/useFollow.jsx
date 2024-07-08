@@ -14,7 +14,7 @@ const useFollow = () => {
   const { token } = useToken()
   const {updateDataListInStorage} = useSessionStorage()
   const { user } = useLocalStorage()
-  const {setIsExpired} = useAuth()
+  const {handleIsExpired} = useAuth()
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ const useFollow = () => {
     });
     if (!response.ok) {
       if(response.status === 401){
-        setIsExpired(true)
+        handleIsExpired(false)
       }
       throw new Error('Network response was not ok');
     }
@@ -105,7 +105,7 @@ const useFollow = () => {
         setLoading(false)
         if (!response.ok) {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           throw new Error(response.message);
         }
@@ -137,7 +137,7 @@ const useFollow = () => {
       setLoading(false)
       if (!response.ok) {
         if(response.status === 401){
-          setIsExpired(true)
+          handleIsExpired(false)
         }
         return false
       }

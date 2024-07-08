@@ -7,14 +7,16 @@ import { getNotifications } from '../actions/notiAction';
 import useToken from './useToken';
 import { baseURL } from './api/baseApi';
 import useImport from './useImport';
+import useCrawlJob from './useCrawlJob';
 
 const useNotification = () => {
   const [isConnected, setIsConnected] = useState(false);
   const {isImporting} = useImport()
+  const {getAllCrawlJobs} = useCrawlJob()
   const { token } = useToken()
   const [loading, setLoading] = useState(false)
   const { state, dispatch } = useAppContext()
-  const { user, userId, isLogin, getCurrentUser, setIsExpired } = useAuth()
+  const { user, getCurrentUser, handleIsExpired } = useAuth()
   
   const [id, setId] = useState(null);
   let socketRef = useRef(null);
@@ -112,14 +114,9 @@ const useNotification = () => {
         return;
     }
     const handleJobMessage = (message) => {
+     // getAllCrawlJobs()
         if (message.job?.type === 'import conference') {
-          if(isImporting){
-            dispatch({ type: 'UPDATE_IMPORT_LIST', payload: message });
-          }
-          else {
-            dispatch({ type: 'SET_BUFFER_LIST', payload: message });
-          }
-          
+          dispatch({ type: 'UPDATE_IMPORT_LIST', payload: message });
         }
     };
 
@@ -161,7 +158,7 @@ const useNotification = () => {
           dispatch(getNotifications(data.data))
         }
         else if (response.status === 401) {
-          setIsExpired(true)
+          handleIsExpired(false)
         }
       } catch (error) {
         throw new Error('Network response was not ok');
@@ -186,7 +183,7 @@ const useNotification = () => {
             getAllNotifications()
           }
           else if (response.status === 401) {
-            setIsExpired(true)
+            handleIsExpired(false)
           }
         }
       } catch (error) {

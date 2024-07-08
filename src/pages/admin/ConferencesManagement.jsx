@@ -4,7 +4,7 @@ import { Container, ButtonGroup, Button, Row, Col, Tabs, Tab } from 'react-boots
 import InputSearch from '../../components/admin/InputSearch'
 import Filter from '../../components/admin/Filter'
 import useConference from '../../hooks/useConferences'
-import { sortByFollow, sortConferences } from '../../utils/sortConferences'
+import { sortConferences } from '../../utils/sortConferences'
 import { DropdownSort } from '../../components/DropdownSort'
 import Loading from '../../components/Loading'
 
@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
 import FilterOffcanvas from '../../components/admin/FilterOffcanvas'
 import { useAppContext } from '../../context/authContext'
+import CycleButton from '../../components/admin/CycleButton'
 
 const ConferencesManagement = () => {
   const { state } = useAppContext()
@@ -34,50 +35,39 @@ const ConferencesManagement = () => {
   const { optionsSelectedAdmin } = useSearch()
   const {
     priorityKeywords,
-    filterConferences,
-    sortConferencesByPriorityKeyword } = useFilter()
+    filterConferences } = useFilter()
 
   const [showFilter, setShowFilter] = useState(false)
   const [showFilterOffcanvas, setShowFilterOffcanvas] = useState(false)
   const { loading: loadingConf, conferences, selectOptionSort, handleSelectOptionSort, getAllConferences, getUserConferences } = useConference()
-  const { loading: loadingAdmin, allcolumns, pendingConferences, getAllPendingConferences } = useAdmin()
+  const { allcolumns, pendingConferences, getAllPendingConferences } = useAdmin()
   const [key, setKey] = useState('allconf');
   const [displayConferences, setDisplayedConferences] = useState([])
-  const [userConference, setUserConference] = useState([])
   const [conferencesList, setConferenceList] = useState([])
   const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     setLoading(true);
-
     const fetchData = async () => {
       await getAllConferences();
+      await getAllPendingConferences();
       setLoading(false);
     };
-
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setDisplayedConferences(conferences)
-    setConferenceList(conferences)
-  }, [conferences])
 
   useEffect(() => {
-    if (!conferences || conferences.length === 0) {
-      getAllConferences();
-    }
-    setDisplayedConferences(conferences)
     if (key === 'allconf') {
       setDisplayedConferences(conferences);
+      setConferenceList(conferences)
     } else if (key === 'userowner') {
-      const byUsers = userConference.length > 0 ? userConference : getUserConferences(conferences)
-      setUserConference(byUsers)
+      const byUsers = getUserConferences(conferences)
       setDisplayedConferences(byUsers);
+      setConferenceList(byUsers)
     } else if (key === 'pending') {
-      if (!pendingConferences || pendingConferences.length === 0) {
-        getAllPendingConferences();
-      }
       setDisplayedConferences(pendingConferences);
+      setConferenceList(pendingConferences)
     }
   }, [key, conferences, pendingConferences]);
 
@@ -96,7 +86,7 @@ const ConferencesManagement = () => {
       setDisplayedConferences(conferencesList)
     }
 
-  }, [optionsSelectedAdmin, conferences, pendingConferences, conferencesList, priorityKeywords])
+  }, [optionsSelectedAdmin, conferencesList, priorityKeywords])
 
 
   useEffect(() => {
@@ -137,15 +127,13 @@ const ConferencesManagement = () => {
   }, []);
 
   return (
-    <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5' : 'auth-container'}`}>
+    <Container className={` pt-5 overflow-hidden ${windowWidth > 768 ? 'm-5 my-sidebar-content' : 'auth-container'}`}>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className='fs-3'>{t('conference_management')}</h4>
         <ButtonGroup>
-
-          {
+          <CycleButton/>
             <ImportButton />
-          }
           <ExportButton data={displayConferences} headers={allcolumns} />
 
         </ButtonGroup>
@@ -164,7 +152,7 @@ const ConferencesManagement = () => {
         </div>
 
         <Row md={4} className='justify-content-end my-2 mb-3'>
-          <Col xs={12}><InputSearch /></Col>
+          <Col xs={12}><InputSearch filter={'optionsSelectedAdmin'}/></Col>
           <Col md='auto'>
             {/* Button hiển thị trên màn hình desktop (lg và lớn hơn) */}
             <Button
@@ -210,17 +198,17 @@ const ConferencesManagement = () => {
             >
               <Tab eventKey="allconf" title={`${t('all')} ${t('conferences')}`} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
-                  <AllConferences conferences={displayConferences} isDeleteIcon={true}/>
+                  <AllConferences conferences={displayConferences} isDeleteIcon={true} onReloadList={getAllConferences}/>
                 </div>
               </Tab>
               <Tab eventKey="userowner" title={`${t('userowner')}`} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef} className='overflow-y-auto' >
-                  <AllConferences conferences={displayConferences} isDeleteIcon={true}/>
+                  <AllConferences conferences={displayConferences} isDeleteIcon={true} onReloadList={getAllConferences}/>
                 </div>
               </Tab>
               <Tab eventKey="pending" title={t('pending')} className='pt-2' tabClassName='custom-tab-update'>
                 <div ref={tabContentRef}>
-                  <PendingCFPs conferences={displayConferences} />
+                  <PendingCFPs conferences={displayConferences} onReloadList={getAllPendingConferences}/>
                 </div>
               </Tab>
             </Tabs>

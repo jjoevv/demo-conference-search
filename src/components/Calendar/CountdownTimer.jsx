@@ -26,7 +26,7 @@ const CountdownTimer = ({ targetDate }) => {
   }, []);
 
   return (
-    <div className='fs-5 text-danger'>
+    <div className='fs-6 text-danger'>
       <span>{timeRemaining.days}d </span>
       <span>{timeRemaining.hours}h </span>
       <span>{timeRemaining.minutes}m </span>

@@ -1,6 +1,6 @@
 export const initialState = {
   user: null,
-  isLogin: false,
+  isLogin: true,
   loading: false,
   error: null,
   
@@ -159,5 +159,10 @@ export const initialState = {
   inBufferProgressLoading: [],
   isImporting: false,
   isCrawlingConImported: false,
+
+  allCrawlJobs: [],
+  
+
+  searchByKeyworResult: ''
 };
 

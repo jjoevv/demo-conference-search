@@ -5,7 +5,7 @@ import useDashboard from '../../hooks/useDashboard'
 import useConference from '../../hooks/useConferences'
 import useAdmin from '../../hooks/useAdmin'
 import UserChart from '../../components/admin/dashboard/UserChart'
-import { Button, Col, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import moment from 'moment'
 import ETLChart from '../../components/admin/dashboard/ETLChart'
 import AllConferences from '../../components/admin/AllConferences'
@@ -13,6 +13,7 @@ import AllUsers from '../../components/admin/AllUsers'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
+import DashboardLoading from '../../components/ProgressLoading/DashboardLoading'
 const Dashboard = () => {
   const { t, i18n } = useTranslation()
   const {windowWidth} = useScreenSize()
@@ -23,7 +24,7 @@ const Dashboard = () => {
   const { conferences, getAllConferences } = useConference()
   const { users, getAllUsers } = useAdmin()
   const [latesDateETL, setLatestDateETL] = useState({ date: '', totalCrawls: 0 });
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -70,12 +71,11 @@ const Dashboard = () => {
     setFilterType(type);
     resetDates(type);
   };
-
   return (
     <div className='my-sidebar-content bg-light'>
       {
         loading ?
-          <Spinner />
+          <DashboardLoading />
           :
           <>
             <div className="mx-5 my-3 p-5 bg-white border-bottom rounded-1">

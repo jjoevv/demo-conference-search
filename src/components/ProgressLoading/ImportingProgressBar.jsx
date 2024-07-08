@@ -23,10 +23,10 @@ const ImportingProgressBar = () => {
     // Duyệt qua danh sách inProgressLoading và tính tổng số lượng từng trạng thái
     inProgressLoading.forEach(item => {
       switch (item.status) {
-        case 'pending':
+        case 'processing':
           totalCrawling++;
           break;
-        case 'done':
+        case 'completed':
           totalDone++;
           break;
         case 'waiting':
@@ -64,8 +64,7 @@ const ImportingProgressBar = () => {
 
   return (
     <div className="w-100 mx-2">
-        {
-          isImporting ?
+        
           <ProgressBar>
         
         <ProgressBar striped animated now={doneCount} label={`${doneCount}%`} className="custom-progress-done" />
@@ -74,9 +73,8 @@ const ImportingProgressBar = () => {
         <ProgressBar striped animated now={stoppingCount} label={`${stoppingCount}%`} className="custom-progress-stopping" />
         <ProgressBar striped animated now={errorCount} label={`${errorCount}%`} className="custom-progress-error" />
       </ProgressBar>
-      :
-      <ProgressBar striped animated now={100} label={`100%`} className="custom-progress-stopping"/>
-        }
+    
+        
     </div>
   )
 }

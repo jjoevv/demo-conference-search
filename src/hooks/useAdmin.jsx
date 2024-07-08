@@ -11,7 +11,7 @@ const useAdmin = () => {
   const { user } = useLocalStorage()
   const { token } = useToken()
   const [loading, setLoading] = useState(false)
-  const {setIsExpired} = useAuth()
+  const {handleIsExpired} = useAuth()
 
   const getAllPendingConferences = async () => {
     setLoading(true);
@@ -35,27 +35,36 @@ const useAdmin = () => {
     }
   }
   const getAllUsers = async () => {
-    setLoading(true)
-    if (user || localStorage.getItem('user')) {
-      let storedToken = JSON.parse(localStorage.getItem('token'));
-
-      const tokenHeader = token ? token : storedToken
-      const response = await fetch(`${baseURL}/user`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenHeader}`
+    setLoading(true);
+    try {
+      const userToken = user || localStorage.getItem('user');
+      if (userToken) {
+        let storedToken = JSON.parse(localStorage.getItem('token'));
+        const tokenHeader = token || storedToken;
+  
+        const response = await fetch(`${baseURL}/user`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${tokenHeader}`
+          }
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Something went wrong');
         }
-      });
-      if (!response.ok) {
-        throw new Error(response.message);
+  
+        const data = await response.json();
+        dispatch({ type: "ADMIN_GET_USERS", payload: data.data });
       }
-      const data = await response.json();
-
-      setLoading(false)
-      // Sử dụng hàm này để lấy thông tin từ danh sách dựa trên OrganizationOrgId
-      dispatch({ type: "ADMIN_GET_USERS", payload: data.data })
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      // Bạn có thể hiển thị thông báo lỗi cho người dùng tại đây
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   const getUserById = async (id) => {
     const copied = [...state.users]
     const filteredUser = copied.filter(item => item.id === id);
@@ -139,12 +148,15 @@ const useAdmin = () => {
   const deletePost = async (id) => {
     setLoading(true)
     if(user || localStorage.getItem('user')){
+      let storedToken = JSON.parse(localStorage.getItem('token'));
+      const tokenHeader = token ? token : storedToken
+      
       try {
         const response = await fetch(`${baseURL}/conference/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${tokenHeader}`
           },
         });
         const data = await response.json()        
@@ -155,7 +167,7 @@ const useAdmin = () => {
         }
         else {
           if(response.status === 401){
-            setIsExpired(true)
+            handleIsExpired(false)
           }
           return {status: false, message}
         }

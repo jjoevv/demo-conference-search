@@ -676,3 +676,16 @@ a {
   .custom-modal .modal-body {
     overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
   }
+
+
+  .custom-select {
+    position: relative;
+    appearance: none;
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 6.343a.5.5 0 0 1 .354-.854h10.39a.5.5 0 0 1 .354.854l-4.796 4.796a.5.5 0 0 1-.707 0z"/></svg>') no-repeat right 0.75rem center;
+    padding-right: 2rem;
+  }
+  
+  .custom-select::-ms-expand {
+    display: none;
+  }
+  

@@ -230,6 +230,10 @@ const filterAndAddToParams = () => {
   return params;
 };
 
+const searchByKeyword = (keyword, list) => {
+
+}
+
 return {
   optionsSelected: state.optionsSelected,
   optionsSelectedAdmin: state.optionsSelectedAdmin,

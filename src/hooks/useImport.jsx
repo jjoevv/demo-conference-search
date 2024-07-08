@@ -16,7 +16,7 @@ const useImport = () => {
     const [data, setData] = useState([]);
     const [fileUploaded, setFileUploaded] = useState(false);
     const [selectedHeaders, setSelectedHeaders] = useState([]);
-    const { user, setIsExpired } = useAuth()
+    const { user, handleIsExpired } = useAuth()
     const { token } = useToken()
     const stopRef = useRef(false);
 
@@ -75,7 +75,7 @@ const useImport = () => {
 
     const handleIsCrawling = (val) => {
         dispatch({ type: "SET_STOP_IMPORTING", payload: val });
-        if(val){
+        if (val) {
             handleBufferList()
         } else {
             let updatedConferences = [...state.inProgressLoading]; // Tạo bản sao của dữ liệu ban đầu
@@ -85,7 +85,7 @@ const useImport = () => {
                         ...conf,
                         import: 'import_success',
                         isStopping: true
-                        
+
                     };
                 }
                 return conf;
@@ -104,8 +104,9 @@ const useImport = () => {
             if (stopRef.current) {
                 break;
             }
+            const job = updatedConferences[i]
+            if(job.status === 'waiting' || job.status === 'stopping' )
 
-            
             try {
                 const response = await uploadConf(updatedConferences[i].conference);
                 if (!response.message?.includes('error')) {
@@ -116,12 +117,12 @@ const useImport = () => {
                                 ...conf,
                                 import: 'import_success',
                                 crawlJob: response.crawlJob,
-                                
+
                             };
                         }
                         return conf;
                     });
-                    
+
 
                     dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
 
@@ -175,7 +176,7 @@ const useImport = () => {
     const handleImport = async (data, headers) => {
         setLoading(true);
         const conferencesWithStatus = [];
-    
+
         // Tạo mảng các promise từ mỗi lần lặp
         const promises = data.map(async row => {
             let conference = {
@@ -185,7 +186,7 @@ const useImport = () => {
                 rank: "",
                 PrimaryFoR: []
             };
-    
+
             headers.forEach((header, index) => {
                 if (header) {
                     switch (header) {
@@ -211,7 +212,7 @@ const useImport = () => {
                     }
                 }
             });
-    
+
             const conferenceWithStatus = {
                 conference,
                 status: 'waiting',
@@ -222,23 +223,23 @@ const useImport = () => {
                 crawlJob: '',
                 error: ''
             };
-    
+
             const exists = state.inProgressLoading.some(existingConf =>
                 JSON.stringify(existingConf.conference) === JSON.stringify(conference)
             );
-    
+
             if (!exists) {
                 conferencesWithStatus.push(conferenceWithStatus);
             }
         });
-    
+
         // Chờ tất cả các promise hoàn thành
         await Promise.all(promises);
-    
+
         await dispatch({ type: "SET_IMPORT_LIST", payload: { updatedConferences: conferencesWithStatus, isImporting: true } });
         startUploading(conferencesWithStatus);
     };
-    
+
 
     const uploadConf = async (conf) => {
         let storedToken = JSON.parse(localStorage.getItem('token'));
@@ -256,29 +257,92 @@ const useImport = () => {
         return response.json();
     }
 
+   
+
+    const deletePendingJobs = async () => {
+        setLoading(true)
+        try {
+            // let storedToken = JSON.parse(localStorage.getItem('token'));
+            //const tokenHeader = token ? token : storedToken
+            // Gửi yêu cầu lấy danh sách feedback đến API
+            const response = await fetch(`${baseURL}/job`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Kiểm tra xem kết quả trả về từ API có hợp lệ không
+            if (!response.ok) {
+                throw new Error('Failed to fetch feedbacks');
+            }
+
+            // Lấy dữ liệu từ phản hồi và cập nhật state
+            const data = await response.json();
+            setLoading(false)
+        } catch (error) {
+            // Nếu có lỗi xảy ra trong quá trình gửi yêu cầu hoặc xử lý dữ liệu, ném ra một lỗi
+            throw new Error(`Error fetching feedbacks: ${error.message}`);
+        }
+    }
     const handleBufferList = () => {
         // Wait for 5 seconds before starting to add messages
         setTimeout(() => {
-          // Add messages from buffer to main list one by one
-          let index = 0;
-          const interval = setInterval(() => {
-            if (index < state.inBufferProgressLoading.length) {
-              const message = state.inBufferProgressLoading[index];
-              dispatch({ type: 'UPDATE_IMPORT_LIST', payload: message });
-              index++;
-            } else {
-              // Clear the interval after all messages are dispatched
-              clearInterval(interval);
-              
-              // Clear the buffer after adding all messages
-              setTimeout(() => {
-                dispatch({ type: 'CLEAR_BUFFER' }); // Replace 'CLEAR_BUFFER' with your actual action type
-              }, 1000); // Adjust the delay as needed
+            // Add messages from buffer to main list one by one
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < state.inBufferProgressLoading.length) {
+                    const message = state.inBufferProgressLoading[index];
+                    dispatch({ type: 'UPDATE_IMPORT_LIST', payload: message });
+                    index++;
+                } else {
+                    // Clear the interval after all messages are dispatched
+                    clearInterval(interval);
+
+                    // Clear the buffer after adding all messages
+                    setTimeout(() => {
+                        dispatch({ type: 'CLEAR_BUFFER' }); // Replace 'CLEAR_BUFFER' with your actual action type
+                    }, 1000); // Adjust the delay as needed
+                }
+            }, 1000); // Add one message every second
+        }, 6000); // Adjust the initial delay as needed
+    };
+
+
+    const handleStopping = () => {
+        dispatch({ type: "SET_STOP_IMPORTING", payload: false });
+        deletePendingJobs()
+        let updatedConferences = [...state.inProgressLoading]; // Tạo bản sao của dữ liệu ban đầu
+        
+        updatedConferences = updatedConferences.map((conf, index) => {
+            if (conf.status !== 'failed' && conf.status !== 'completed' && conf.status === 'waiting') {
+                return {
+                    ...conf,
+                    status: 'stopping'
+
+                };
             }
-          }, 1000); // Add one message every second
-        }, 5000); // Adjust the initial delay as needed
-      };
-      
+            return conf;
+        });
+        dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
+    }
+    const handleContinue = () => {
+        // Lọc các conference có trong buffer
+        dispatch({ type: "SET_STOP_IMPORTING", payload: true });
+        let updatedConferences = [...state.inProgressLoading]; // Tạo bản sao của dữ liệu ban đầu
+            updatedConferences = updatedConferences.map((conf) => {
+                if (conf.status === 'stopping') {
+                    return {
+                        ...conf,
+                        status: "waiting"
+
+                    };
+                }
+                return conf;
+            });
+      //  dispatch({ type: "SET_IMPORT_LIST", payload: filteredInProgress });
+        startUploading(updatedConferences)
+    }
 
     const convertCodesToNames = (codes) => {
         return codes.split(';').map(code => {
@@ -288,7 +352,7 @@ const useImport = () => {
     };
     const filterConferencesByStatus = (conferences, status) => {
         return conferences.filter(conference => conference.status === status);
-      };
+    };
     return {
         inProgressLoading: state.inProgressLoading,
         isImporting: state.isImporting,
@@ -304,6 +368,9 @@ const useImport = () => {
         filterConferencesByStatus,
         handleIsCrawling,
         handleBufferList,
+        deletePendingJobs,
+        handleStopping,
+        handleContinue
     }
 }
 

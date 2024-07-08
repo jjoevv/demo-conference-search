@@ -18,7 +18,7 @@ const IntendTime = ({totalConferences}) => {
     useEffect(() => {
         const currentTime = moment();
         const estimatedCompletionTime = currentTime.add(totalTime, 'milliseconds');
-        const formattedTime = estimatedCompletionTime.format('HH:mm A');
+        const formattedTime = estimatedCompletionTime.format('hh:mm A');
         setCompletionTime(formattedTime);
     }, [totalConferences, totalTime, isImporting]);
 

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 
 
-function InputSearch() {
+function InputSearch({filter}) {
   const {t} = useTranslation()
   const [keyword, setKeyword] = useState('');
   const {addKeywords} = useSearch()
@@ -19,7 +19,7 @@ function InputSearch() {
     if (event.key === 'Enter') {
       // Xử lý khi nhấn phím Enter
 
-      addKeywords('search', [keyword])
+      addKeywords(filter, 'search', [keyword])
     }
   };
 

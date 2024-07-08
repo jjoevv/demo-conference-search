@@ -12,13 +12,13 @@ const MessagesUpdateNow = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const completed = messages.filter(message => message.status === 'completed');
+        const completed = messages.filter(message => message.status === 'completed' || message.status === 'failed');
         setCompletedMessages(completed);
         const timers = [];
         const message_popup = document.getElementById('message-popup');
         setPopupheight(message_popup?.clientHeight)
         messages.forEach(message => {
-            if (message.status === 'completed') {
+            if (message.status === 'completed' || message.status === 'failed') {
                 const timer = setTimeout(() => {
                     removeIDfromCrawlings(message.id)
                 }, 10000);
@@ -52,7 +52,7 @@ const MessagesUpdateNow = () => {
         }
     };
     return (
-        <div >
+        <div className='mt-5'>
             {
                 completedMessages?.map((message, index) => (
                                 <div key={message?.id} id="message-popup"

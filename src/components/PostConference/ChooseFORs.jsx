@@ -5,7 +5,7 @@ import { FloatingLabel, Form } from "react-bootstrap"
 import { useTranslation } from 'react-i18next';
 
 
-const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
+const ChooseFORs = ({ selectedOptions, onChange, requiredFields, isError }) => {
   const {t} = useTranslation()
   const { filterOptions, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([]);
@@ -98,7 +98,7 @@ const ChooseFORs = ({ selectedOptions, onChange, requiredFields }) => {
             name='inputValue'
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className={requiredFields.fieldsOfResearch ? 'border-blue-normal' : 'border border-danger '}
+            className={requiredFields?.fieldsOfResearch || !isError ? 'border-blue-normal' : 'border border-danger '}
           />
         </FloatingLabel>
     </div>

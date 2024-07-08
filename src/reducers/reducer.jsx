@@ -18,13 +18,18 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 user: action.payload,
-                isLogin: true,
             };
         case actionTypes.LOGIN_FAILURE:
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
+            };
+
+        case actionTypes.SET_IS_LOGIN:
+            return {
+                ...state,
+                isLogin: action.payload,
             };
         case actionTypes.LOGOUT_USER:
             return {
@@ -323,22 +328,17 @@ const appReducer = (state, action) => {
         case actionTypes.SET_BUFFER_LIST:
             return {
                 ...state,
-                inBufferProgressLoading: state.inBufferProgressLoading.map((conf) =>
-                    conf.crawlJob === action.payload.jobID
-                        ? {
-                            ...conf,
-                            progress: action.payload?.job?.progress?.percentage ? action.payload?.job?.progress?.percentage : 0,
-                            describe: action.payload.job?.progress?.detail,
-                            error: action.payload.job?.error ? action.payload.job?.error : '',
-                            status: action.payload.operationType !== 'insert' ? action.payload.job?.status : 'waiting'
-                        }
-                        : conf
-                ),
+                inBufferProgressLoading: action.payload
             };
         case actionTypes.CLEAR_BUFFER_LIST_BUFFER_LIST:
             return {
                 ...state,
                 inBufferProgressLoading: []
+            };
+        case actionTypes.SET_CRAWL_JOBS:
+            return {
+                ...state,
+                allCrawlJobs: action.payload,
             };
         default:
             return state;
