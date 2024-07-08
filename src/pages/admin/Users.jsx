@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, ButtonGroup, Button,  Row, Col } from 'react-bootstrap'
 
-import InputSearch from '../../components/admin/InputSearch'
 import useConference from '../../hooks/useConferences'
 import { sortConferences } from '../../utils/sortConferences'
 import Loading from '../../components/Loading'
@@ -15,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
+import InputSearhInList from '../../components/admin/InputSearhInList'
 const Users = () => {
   const {t, i18n} = useTranslation()
   const {windowWidth} = useScreenSize()
@@ -136,7 +136,7 @@ const Users = () => {
         </div>
 
         <Row md={4} className='justify-content-end my-2 mb-3'>
-          <Col><InputSearch /></Col>
+          <Col><InputSearhInList /></Col>
         
           <Col md='auto'>
        

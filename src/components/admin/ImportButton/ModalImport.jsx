@@ -26,7 +26,10 @@ const ModalImport = ({show, onHide}) => {
     }
   }
 
-  const handleClosePost = () => setShowAddForm(false);
+  const handleClosePost = () => {
+    setShowAddForm(false)
+    onHide()
+  };
   const handleShowPost = () => setShowAddForm(true);
   const hanleCloseAll = () => {
     onHide()

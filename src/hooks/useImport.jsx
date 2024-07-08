@@ -350,6 +350,52 @@ const useImport = () => {
             return mapping ? mapping.for : code;
         }).join('; ');
     };
+
+    const handleImportAConf = async (conf) => {
+        // Chuyển đổi giá trị PrimaryFoR từ chuỗi sang mã code
+        const updatedPrimaryFoR = conf.PrimaryFoR.map(forString => {
+            const found = forcode.find(item => item.for === forString);
+            return found ? found.code : forString;
+        });
+    
+        // Tạo conference mới với các giá trị được cập nhật
+        const conference = {
+            ...conf,
+            PrimaryFoR: updatedPrimaryFoR,
+        };
+    
+        // Tạo conferenceWithStatus với trạng thái ban đầu
+        const conferenceWithStatus = {
+            conference,
+            status: 'waiting',
+            isStopping: false,
+            import: '',
+            progress: 0,
+            describe: '',
+            crawlJob: '',
+            error: ''
+        };
+    
+        // Kiểm tra xem conference đã tồn tại trong danh sách inProgressLoading hay chưa
+        const exists = state.inProgressLoading.some(existingConf =>
+            JSON.stringify(existingConf.conference) === JSON.stringify(conference)
+        );
+    
+        let conferencesWithStatus = [...state.inProgressLoading];
+        
+        // Nếu conference chưa tồn tại, thêm nó vào danh sách
+        if (!exists) {
+            conferencesWithStatus.push(conferenceWithStatus);
+        }
+    
+        // Dispatch action để cập nhật danh sách conferences
+        await dispatch({ type: "SET_IMPORT_LIST", payload: { updatedConferences: conferencesWithStatus, isImporting: true } });
+    
+        // Khởi tạo việc upload
+        startUploading(conferencesWithStatus);
+    };
+    
+
     const filterConferencesByStatus = (conferences, status) => {
         return conferences.filter(conference => conference.status === status);
     };
@@ -370,7 +416,8 @@ const useImport = () => {
         handleBufferList,
         deletePendingJobs,
         handleStopping,
-        handleContinue
+        handleContinue,
+        handleImportAConf
     }
 }
 

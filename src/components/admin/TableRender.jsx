@@ -24,23 +24,33 @@ const DefaultColumnFilter = ({
 const TableRender = ({ data, columns }) => {
   const { t } = useTranslation()
   const { handleGetHeadersExport } = useAdmin()
-  const [pageInput, setPage] = useState(null)
+  const [pageInput, setPageInput] = useState(null)
 
-  const handlePageInput = (event) => {
-    event.preventDefault();
-    const pageNumber = Number(pageInput) - 1;
-    if (pageNumber >= 0 && pageNumber < pageCount) {
-      gotoPage(pageNumber);
-    }
-    setPage(null);
+  const handlePageInput = (e) => {
+    if (
+      !(
+        (e.key >= '0' && e.key <= '9') || // số từ 0 đến 9
+        e.key === 'Backspace' ||
+        e.key === 'Delete' ||
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight'
+      )
+    ) {
+      e.preventDefault();
+      const pageNumber = Number(pageInput) - 1;
+      if (pageNumber >= 0 && pageNumber < pageCount) {
+        gotoPage(pageNumber);
+      }
+      setPageInput(null);
+    }   
   };
 
-  const defaultColumn = useMemo(
-    () => ({
-      Filter: DefaultColumnFilter,
-    }),
-    []
-  );
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || (value >= 1 && value <= pageCount)) {
+      setPageInput(value);
+    }
+  };
 
   const {
     getTableProps,
@@ -196,7 +206,7 @@ const TableRender = ({ data, columns }) => {
           type="number"
           placeholder={t('page')}
           value={pageInput}
-          onChange={(e) => setPage(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={handlePageInput}
           max={pageCount}
           min={1}

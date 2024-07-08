@@ -243,7 +243,6 @@ const useAuth = () => {
 
 
   const handleIsExpired = (isLoginAvailabel) => {
-    console.log({isLoginAvailabel})
     dispatch({type: "SET_IS_LOGIN", payload: isLoginAvailabel})
   }
   return {

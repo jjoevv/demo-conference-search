@@ -94,6 +94,20 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [selectOptionSort])
 
 
+    // Hàm để tách acronym
+    const splitAcronym = (acronym) => {
+        const match = acronym.match(/(.*?)(\s*\(.*\))/);
+        if (match) {
+            return {
+                main: match[1],
+                sub: match[2]
+            };
+        }
+        return {
+            main: acronym,
+            sub: ''
+        };
+    };
 
 
     const isFollowed = (itemId) => {
@@ -222,7 +236,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                     windowWidth > 768 ?
                                                         <Col lg={2} sm={2} md={2}>
                                                             <div className="acronym-container text-center d-flex align-items-center justify-content-center bg-white border border-teal-light rounded-4 text-nowrap">
-                                                                <span className={`fw-bold text-nowrap ${getLengthString(conf.information.acronym) > 6 ? 'fs-5' : 'fs-4'}`}>{conf.information.acronym}</span>
+                                                                <span className={`fw-bold text-nowrap ${getLengthString(conf?.information.acronym) > 6 ? 'fs-5' : 'fs-4'}`}>
+                                                                    {splitAcronym(conf.information.acronym).main}
+                                                                    {splitAcronym(conf.information.acronym).sub && <span className="d-block fs-6">{splitAcronym(conf.information.acronym).sub}</span>}
+                                                                </span>
                                                             </div>
                                                         </Col>
                                                         :
@@ -275,21 +292,21 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                         </span>
                                                     </div>
                                                     <Row >
-                                                            {
-                                                        
-                                                                getSubDate(conf.importantDates) &&
-                                                                <Col xs={12} sm={12} md={5}>
-                                                            <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
+                                                        {
+
+                                                            getSubDate(conf.importantDates) &&
+                                                            <Col xs={12} sm={12} md={5}>
+                                                                <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
                                                                     <FontAwesomeIcon icon={faClock} className='me-2 fs-6' />
                                                                     <label className='fs-5  text-nowrap'>{t('submission_date')}: </label>
                                                                     <span className='fs-5 fw-bold text-nowrap'>
                                                                         {getSubDate(conf.importantDates)}
                                                                     </span>
                                                                 </Card.Text>
-                                                        </Col>
-                                                               
-                                                            }
-                                                        
+                                                            </Col>
+
+                                                        }
+
                                                         <Col xs={12} lg={7} md={7} sm={7} className='text-truncate'>
 
                                                             {
@@ -309,14 +326,14 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                 </Card.Text>
                                                             }
 
-                                                           
+
 
                                                         </Col>
                                                         {
-                                                                !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
-                                                                &&
-                                                                <>
-                                                                    <Col>
+                                                            !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
+                                                            &&
+                                                            <>
+                                                                <Col>
                                                                     <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
                                                                         <label className='fs-5 text-nowrap'>{t('rank')}: </label>
                                                                         <span className='fs-5  fw-bold text-nowrap'>
@@ -325,9 +342,9 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                             </>
                                                                         </span>
                                                                     </Card.Text>
-                                                                    </Col>
-                                                                   <Col>
-                                                                   <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
                                                                         <label className='fs-5  text-nowrap'>{t('source')}: </label>
                                                                         <span className='fs-5  fw-bold text-nowrap'>
                                                                             <>
@@ -335,12 +352,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                             </>
                                                                         </span>
                                                                     </Card.Text>
-                                                                   </Col>
-                                                                </>
-                                                            }
+                                                                </Col>
+                                                            </>
+                                                        }
                                                     </Row>
                                                     <Row className="w-100 d-flex align-items-center justify-content-between">
-                                                        <Col xs={12} lg={8} sm={8} md={8}> 
+                                                        <Col xs={12} lg={8} sm={8} md={8}>
                                                             {
                                                                 renderLocation(conf.organizations) ?
                                                                     <span className='d-flex align-items-center mt-2 fs-5 text-secondary-emphasis text-justify text-nowrap text-truncate overflow-hidden' >
@@ -376,7 +393,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                     {
                                                                                         loadingMap[conf.id] ? <Spinner size={'sm'} /> :
                                                                                             <>
-                                                                                                <Image src={FollowIcon} width={17} className='me-2'/>
+                                                                                                <Image src={FollowIcon} width={17} className='me-2' />
                                                                                                 <span className='fs-5'>{t('followed')}</span>
                                                                                             </>
                                                                                     }
@@ -391,7 +408,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
                                                                                     {
                                                                                         loadingMap[conf.id] ? <Spinner size={'sm'} /> :
                                                                                             <>
-                                                                                                <Image src={UnFollowIcon} width={17} className='me-2'/>
+                                                                                                <Image src={UnFollowIcon} width={17} className='me-2' />
                                                                                                 <span className='fs-5'>{t('follow')}</span>
                                                                                             </>
                                                                                     }

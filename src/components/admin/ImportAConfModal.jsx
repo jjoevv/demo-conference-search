@@ -8,13 +8,17 @@ import { useTranslation } from 'react-i18next';
 import useScreenSize from '../../hooks/useScreenSize';
 import useSearch from '../../hooks/useSearch';
 import usePost from '../../hooks/usePost';
+import useImport from '../../hooks/useImport';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }) => {
     const { t } = useTranslation()
-    const {windowWidth} = useScreenSize()
-    const { loading, postConference } = usePost()
+    const { windowWidth } = useScreenSize()
+    const {handleImportAConf} = useImport()
     const { filterOptions, getOptionsFilter } = useSearch()
 
+    const ranks = ['A*', 'A', 'B', 'C']
 
     useEffect(() => {
         getOptionsFilter('for')
@@ -29,7 +33,7 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
         PrimaryFoR: []
     });
     const [errors, setErrors] = useState({});
-    
+
 
     const [selectedfieldsOfResearch, setSelectedfieldsOfResearch] = useState([]);
 
@@ -54,20 +58,20 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
         });
 
     };
-   
+
 
     const validateForm = () => {
         const newErrors = {};
-    
+
         if (!formData.title) newErrors.title = true;
         if (!formData.acronym) newErrors.acronym = true;
         if (!formData.source) newErrors.source = true;
         if (!formData.rank) newErrors.rank = true;
         if (formData.PrimaryFoR.length === 0) newErrors.PrimaryFoR = true;
-    
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-      };
+    };
 
     const handleCloseForm = () => {
         handleClose()
@@ -78,13 +82,13 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        console.log({formData})
         if (validateForm()) {
             // All fields are valid, proceed with form submission
-            console.log('Form data:', formData);
-          } else {
+            handleImportAConf(formData)
+            handleClose()
+        } else {
             console.log('Form has errors:', errors);
-          }
+        }
     }
     return (
         <>
@@ -103,83 +107,91 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
 
                     <Form className='form-container' style={{ minHeight: "450px" }}>
                         <div className="modal-scrollable-body">
-                        <Form.Group as={Row} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
-                                            <span className='text-danger'>* </span>{t('name')}:
-                                        </Form.Label>
-                                        <Col xs="12" sm="9"> 
-                                        <Form.Control
-                                            type="text"
-                                            placeholder={t('enter_conference_name')}
-                                            name="title"
-                                            value={formData.title}
-                                            onChange={handleInputChange}
-                                            className={errors.title ? 'border border-danger' : 'border-blue-normal'}
-                                            required
-                                        />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
-                                            <span className='text-danger'>* </span>{t('acronym')}:
-                                        </Form.Label>
-                                        <Col xs="12" sm="9"> 
-                                        <Form.Control
-                                            type="text"
-                                            placeholder={t('enter_acronym')} 
-                                            name="acronym"
-                                            value={formData.acronym}
-                                            onChange={handleInputChange}
-                                            className={errors.acronym ? 'border border-danger' : 'border-blue-normal'}
-                                            required
-                                        />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
-                                            <span className='text-danger'>* </span> {t('rank')}:
-                                        </Form.Label>
-                                        <Col xs="12" sm="9"> 
-                                        <Form.Select
-                                            name="source"
-                                            value={formData.source}
-                                            onChange={handleInputChange}
-                                            placeholder={t('enter_rank')}
-                                            className={errors.rank ? 'border border-danger' : 'border-blue-normal'}
-                                            required
-                                        >
-
-                                        </Form.Select>
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3 d-flex align-items-center">
-                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
-                                            <span className='text-danger'>* </span> {t('source')}: {`${errors.source}`}
-                                        </Form.Label>
-                                        <Col xs="12" sm="9"> 
-                                        <Form.Control
-                                            name="source"
-                                            value={formData.source}
-                                            onChange={handleInputChange}
-                                            placeholder={t('enter_source')}
-                                            className={errors.source ? 'border border-danger' : 'border-blue-normal'}
-                                            required
-                                        />
-                                        </Col>
-                                    </Form.Group>
-                                    <Form.Group as={Row} className="mb-3 d-flex align-items-start">
-                                        <Form.Label column sm="3" xs="12" className='text-nowrap '>
-                                            <span className='text-danger'>* </span> {t('field_of_research')}:
-                                        </Form.Label>
-                                        <Col xs="12" sm="9"> 
-                                            <ChooseFORs
-                                                selectedOptions={selectedfieldsOfResearch}
-                                                onChange={handlefieldsOfResearchChange}
-                                                errors={errors}
-                                                isError={errors.PrimaryFoR ? true: false}
-                                            />
-                                        </Col>
-                                    </Form.Group>
+                            <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                <Form.Label column sm="3" xs="12" className='text-nowrap '>
+                                    <span className='text-danger'>* </span>{t('name')}:
+                                </Form.Label>
+                                <Col xs="12" sm="9">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder={t('enter_conference_name')}
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={handleInputChange}
+                                        className={errors.title ? 'border border-danger' : 'border-blue-normal'}
+                                        required
+                                    />
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                <Form.Label column sm="3" xs="12" className='text-nowrap '>
+                                    <span className='text-danger'>* </span>{t('acronym')}:
+                                </Form.Label>
+                                <Col xs="12" sm="9">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder={t('enter_acronym')}
+                                        name="acronym"
+                                        value={formData.acronym}
+                                        onChange={handleInputChange}
+                                        className={errors.acronym ? 'border border-danger' : 'border-blue-normal'}
+                                        required
+                                    />
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                <Form.Label column sm="3" xs="12" className='text-nowrap '>
+                                    <span className='text-danger'>* </span> {t('rank')}:
+                                </Form.Label>
+                                <Col xs="12" sm="9">
+                                    <Form.Select
+                                        name="rank"
+                                        value={formData.rank}
+                                        onChange={handleInputChange}
+                                        placeholder={t('enter_rank')}
+                                        className={errors.rank ? 'border border-danger' : 'border-blue-normal'}
+                                        required
+                                    >
+                                        <option value="">Select a rank</option>
+                                        {ranks.map(rank => (
+                                            <option key={rank} value={rank}>{rank}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3 d-flex align-items-center">
+                                <Form.Label column sm="3" xs="12" className='text-nowrap '>
+                                    <span className='text-danger'>* </span> {t('source')}: {`${errors.source}`}
+                                </Form.Label>
+                                <Col xs="12" sm="9">
+                                    <Form.Select
+                                        name="source"
+                                        value={formData.source}
+                                        onChange={handleInputChange}
+                                        placeholder={t('enter_source')}
+                                        className={errors.source ? 'border border-danger' : 'border-blue-normal'}
+                                        required
+                                    >
+                                        <option value="">{t('select_source')}</option>
+                                        {['CORE2021', 'CORE2022', 'CORE2023'].map(rank => (
+                                            <option key={rank} value={rank}>{rank}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3 d-flex align-items-start">
+                                <Form.Label column sm="3" xs="12" className='text-nowrap '>
+                                    <span className='text-danger'>* </span> {t('field_of_research')}:
+                                </Form.Label>
+                                <Col xs="12" sm="9">
+                                    <ChooseFORs
+                                        selectedOptions={selectedfieldsOfResearch}
+                                        onChange={handlefieldsOfResearchChange}
+                                        errors={errors}
+                                        isError={errors.PrimaryFoR ? true : false}
+                                    />
+                                </Col>
+                            </Form.Group>
                         </div>
                     </Form>
                 </Modal.Body>
@@ -191,17 +203,9 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
                             {t('cancel')}
                         </Button>
                         <Button onClick={handleFormSubmit} className='bg-blue-normal px-4 py-1 mx-3 rounded'>
-                                        {
-                                            loading
-                                                ?
-                                                <Loading size={'sm'} />
-                                                :
-                                                <div>
-                                                    <Image width={20} height={20} className='me-2' src={AddButtonIcon} />
-                                                    {t('submit')}
-                                                </div>
-                                        }
-                                    </Button>
+                            <FontAwesomeIcon icon={faEdit} className='text-white mx-1'/>
+                            {t('submit')}
+                        </Button>
                     </ButtonGroup>
                 </Modal.Footer>
             </Modal>
