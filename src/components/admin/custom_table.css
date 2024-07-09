@@ -101,11 +101,12 @@ tr.bg-white td {
     background: #007a7f;
 
 }
-
-
 .action-btn.tb-icon-delete::before {    
     background: red;
 
+}
+.action-btn.tb-icon-update::before {
+    background: #FFB13B;
 }
 .action-btn .icon {
     position: relative;

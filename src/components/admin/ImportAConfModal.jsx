@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Button, Col, Form, Image, Modal, Row, ButtonGroup } from 'react-bootstrap'
-import AddButtonIcon from './../../assets/imgs/edit.png'
+import { Button, Col, Form, Modal, Row, ButtonGroup } from 'react-bootstrap'
 import ChooseFORs from '../Postconference/ChooseFORs';
 
-import Loading from '../Loading';
 import { useTranslation } from 'react-i18next';
 import useScreenSize from '../../hooks/useScreenSize';
 import useSearch from '../../hooks/useSearch';
-import usePost from '../../hooks/usePost';
 import useImport from '../../hooks/useImport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -168,7 +165,7 @@ const ImportAConfModal = ({ show, handleClose, handleCheckStatus, onReloadList }
                                         name="source"
                                         value={formData.source}
                                         onChange={handleInputChange}
-                                        placeholder={t('enter_source')}
+                                        placeholder={t('select_source')}
                                         className={errors.source ? 'border border-danger' : 'border-blue-normal'}
                                         required
                                     >

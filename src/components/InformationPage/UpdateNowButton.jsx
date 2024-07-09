@@ -7,47 +7,47 @@ import { useTranslation } from 'react-i18next';
 import useScreenSize from '../../hooks/useScreenSize';
 import useMessageSocket from '../../hooks/useMessageSocket';
 const UpdateNowButton = () => {
-    const {t} = useTranslation()
-    const id = useParams()
-    const {windowWidth} = useScreenSize()
-    const { message: messageNoti, messages, conference, crawlNow, isCrawlingConfs, removeIDfromCrawlings } = useConference()
-    const {handleAddMessageCrawling} = useMessageSocket()
-    const [loading, setLoading] = useState(false)
-    const [status, setStatus] = useState(false)
-    const [isCrawling, setIsCrawling] = useState(false)
-   
+  const { t } = useTranslation()
+  const id = useParams()
+  const { windowWidth } = useScreenSize()
+  const { message: messageNoti, messages, conference, crawlNow } = useConference()
+  const { handleAddMessageCrawling } = useMessageSocket()
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState(false)
+  const [isCrawling, setIsCrawling] = useState(false)
 
-    useEffect(()=>{
-      const crawlingStatus = messages.find(mess => mess.id === id?.id && mess.status !== 'completed');
-      if (crawlingStatus) {
+
+  useEffect(() => {
+    const crawlingStatus = messages.find(mess => mess.id === id?.id && mess.status !== 'completed');
+    
+    if (crawlingStatus) {
+      setIsCrawling(true)
+    } else {
+      setIsCrawling(false)
+    }
+  }, [id, messageNoti, messages])
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+
+      const res = await crawlNow(conference.id);
+      setStatus(res.status);
+      if (res.status) {
+        setLoading(false);
+     //   handleAddMessageCrawling({ id: conference.id })
         setIsCrawling(true)
-      } else {
-        setIsCrawling(false)
       }
-      }, [id, messageNoti, messages])
+    } catch (error) {
+      console.error('Error:', error);
+    }
 
-    const handleClick = async () => {
-        setLoading(true);
-            try {
-
-                const res = await crawlNow(conference.id);
-                setStatus(res.status);
-                //      console.log({res})
-                if (res.status) {
-                    setLoading(false);
-                    handleAddMessageCrawling({id: conference.id})
-                    setIsCrawling(true)
-                } 
-            } catch (error) {
-                console.error('Error:', error);
-            } 
-
-    };
+  };
 
 
 
-    return (
-        <OverlayTrigger
+  return (
+    <OverlayTrigger
       placement="bottom"
       overlay={
         <Tooltip id={'tooltip-bottom'}>
@@ -85,7 +85,7 @@ const UpdateNowButton = () => {
       </Button>
     </OverlayTrigger>
 
-    );
+  );
 };
 
 export default UpdateNowButton;

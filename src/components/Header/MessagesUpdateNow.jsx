@@ -55,34 +55,34 @@ const MessagesUpdateNow = () => {
         <div className='mt-5'>
             {
                 completedMessages?.map((message, index) => (
-                                <div key={message?.id} id="message-popup"
-                                    className={`message-popup ${getMessageClassName(message?.status)}`}
-                                    style={popupheight ? { top: `${popupheight * (index + 1)}px` } : {}}
-                                >
-                                    <div className='message-name overflow-hidden fw-bold px-3'>
-                                        {`${message?.name} `}
+                    <div key={message?.id} id="message-popup"
+                        className={`message-popup ${getMessageClassName(message?.status)}`}
+                        style={popupheight ? { top: `${popupheight * (index + 1)}px` } : {}}
+                    >
+                        <div className='message-name overflow-hidden fw-bold px-3'>
+                            {`${message?.name} `}
 
-                                    </div>
-                                    <div className='d-inline-block'>
-                                        {
-                                            message?.status === "completed" && message?.error ? `${t('hasBeenUpdated')}`
-                                                :
-                                                `${t('cannotBeCrawledRightNow')}`
+                        </div>
+                        <div className='d-inline-block'>
+                            {
+                                message?.status === "completed" && message?.error ? `${t('hasBeenUpdated')}`
+                                    :
+                                    `${t('cannotBeCrawledRightNow')}`
 
-                                        }
-                                        {
-                                            message?.status === "completed" &&
-                                            <Button
-                                                onClick={() => handleNavigate(message?.id)}
-                                                className='text-decoration-underline bg-transparent border-0 p-0 ps-1'>
-                                                {t('clickToViewDetails')}
-                                            </Button>
-                                        }
-                                    </div>
+                            }
+                            {
+                                message?.status === "completed" &&
+                                <Button
+                                    onClick={() => handleNavigate(message?.id)}
+                                    className='text-decoration-underline bg-transparent border-0 p-0 ps-1'>
+                                    {t('clickToViewDetails')}
+                                </Button>
+                            }
+                        </div>
 
 
 
-                                </div>
+                    </div>
                 ))
             }
 

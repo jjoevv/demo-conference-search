@@ -105,31 +105,52 @@ const useImport = () => {
                 break;
             }
             const job = updatedConferences[i]
-            if(job.status === 'waiting' || job.status === 'stopping' )
+            if (job.status === 'waiting' || job.status === 'stopping')
 
-            try {
-                const response = await uploadConf(updatedConferences[i].conference);
-                if (!response.message?.includes('error')) {
-                    // Cập nhật trạng thái conference hiện tại thành "done" hoặc "error"
-                    updatedConferences = updatedConferences.map((conf, index) => {
-                        if (index === i) {
-                            return {
-                                ...conf,
-                                import: 'import_success',
-                                crawlJob: response.crawlJob,
+                try {
+                    const response = await uploadConf(updatedConferences[i].conference);
+                    if (!response.message?.includes('error')) {
+                        // Cập nhật trạng thái conference hiện tại thành "done" hoặc "error"
+                        updatedConferences = updatedConferences.map((conf, index) => {
+                            if (index === i) {
+                                return {
+                                    ...conf,
+                                    import: 'import_success',
+                                    crawlJob: response.crawlJob,
 
-                            };
-                        }
-                        return conf;
-                    });
+                                };
+                            }
+                            return conf;
+                        });
 
 
-                    dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
+                        dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
 
-                }
-                else {
+                    }
+                    else {
 
-                    // Cập nhật trạng thái conference thành "error" nếu có lỗi xảy ra
+                        // Cập nhật trạng thái conference thành "error" nếu có lỗi xảy ra
+                        updatedConferences = updatedConferences.map((conf, index) => {
+                            if (index === i) {
+                                return {
+                                    ...conf,
+                                    status: 'error',
+                                    import: 'import_failed',
+                                    progress: 0,
+                                    describe: '',
+                                    crawlJob: '',
+                                    error: ''
+                                };
+                            }
+                            return conf;
+                        });
+
+                        dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
+                    }
+
+
+                } catch (error) {
+                    console.error('Error uploading conference:', error);
                     updatedConferences = updatedConferences.map((conf, index) => {
                         if (index === i) {
                             return {
@@ -147,37 +168,12 @@ const useImport = () => {
 
                     dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
                 }
-
-
-            } catch (error) {
-                console.error('Error uploading conference:', error);
-                updatedConferences = updatedConferences.map((conf, index) => {
-                    if (index === i) {
-                        return {
-                            ...conf,
-                            status: 'error',
-                            import: 'import_failed',
-                            progress: 0,
-                            describe: '',
-                            crawlJob: '',
-                            error: ''
-                        };
-                    }
-                    return conf;
-                });
-
-                dispatch({ type: "SET_IMPORT_LIST", payload: updatedConferences });
-            }
         }
 
     };
 
-
-    const handleImport = async (data, headers) => {
-        setLoading(true);
+    const handleBeforeImport = async (data, headers) => {
         const conferencesWithStatus = [];
-
-        // Tạo mảng các promise từ mỗi lần lặp
         const promises = data.map(async row => {
             let conference = {
                 title: "",
@@ -235,9 +231,20 @@ const useImport = () => {
 
         // Chờ tất cả các promise hoàn thành
         await Promise.all(promises);
+        return conferencesWithStatus
+    }
 
-        await dispatch({ type: "SET_IMPORT_LIST", payload: { updatedConferences: conferencesWithStatus, isImporting: true } });
-        startUploading(conferencesWithStatus);
+    const handleImport = async (data, headers) => {
+        setLoading(true);
+
+        const listFormat = await handleBeforeImport(data, headers)
+
+        const { matchedConferences, unmatchedConferences } = await splitConferences(listFormat);
+        
+        await dispatch({ type: "SET_IMPORT_LIST", payload: unmatchedConferences });
+        await dispatch({ type: "SET_EXISTED_CONF", payload: matchedConferences });
+        dispatch({ type: "SET_STOP_IMPORTING", payload: true });
+        startUploading(unmatchedConferences);
     };
 
 
@@ -257,7 +264,7 @@ const useImport = () => {
         return response.json();
     }
 
-   
+
 
     const deletePendingJobs = async () => {
         setLoading(true)
@@ -313,7 +320,7 @@ const useImport = () => {
         dispatch({ type: "SET_STOP_IMPORTING", payload: false });
         deletePendingJobs()
         let updatedConferences = [...state.inProgressLoading]; // Tạo bản sao của dữ liệu ban đầu
-        
+
         updatedConferences = updatedConferences.map((conf, index) => {
             if (conf.status !== 'failed' && conf.status !== 'completed' && conf.status === 'waiting') {
                 return {
@@ -330,17 +337,17 @@ const useImport = () => {
         // Lọc các conference có trong buffer
         dispatch({ type: "SET_STOP_IMPORTING", payload: true });
         let updatedConferences = [...state.inProgressLoading]; // Tạo bản sao của dữ liệu ban đầu
-            updatedConferences = updatedConferences.map((conf) => {
-                if (conf.status === 'stopping') {
-                    return {
-                        ...conf,
-                        status: "waiting"
+        updatedConferences = updatedConferences.map((conf) => {
+            if (conf.status === 'stopping') {
+                return {
+                    ...conf,
+                    status: "waiting"
 
-                    };
-                }
-                return conf;
-            });
-      //  dispatch({ type: "SET_IMPORT_LIST", payload: filteredInProgress });
+                };
+            }
+            return conf;
+        });
+        //  dispatch({ type: "SET_IMPORT_LIST", payload: filteredInProgress });
         startUploading(updatedConferences)
     }
 
@@ -357,13 +364,13 @@ const useImport = () => {
             const found = forcode.find(item => item.for === forString);
             return found ? found.code : forString;
         });
-    
+
         // Tạo conference mới với các giá trị được cập nhật
         const conference = {
             ...conf,
             PrimaryFoR: updatedPrimaryFoR,
         };
-    
+
         // Tạo conferenceWithStatus với trạng thái ban đầu
         const conferenceWithStatus = {
             conference,
@@ -375,32 +382,76 @@ const useImport = () => {
             crawlJob: '',
             error: ''
         };
-    
+
         // Kiểm tra xem conference đã tồn tại trong danh sách inProgressLoading hay chưa
         const exists = state.inProgressLoading.some(existingConf =>
             JSON.stringify(existingConf.conference) === JSON.stringify(conference)
         );
-    
+
         let conferencesWithStatus = [...state.inProgressLoading];
-        
+
         // Nếu conference chưa tồn tại, thêm nó vào danh sách
         if (!exists) {
             conferencesWithStatus.push(conferenceWithStatus);
         }
-    
+
         // Dispatch action để cập nhật danh sách conferences
         await dispatch({ type: "SET_IMPORT_LIST", payload: { updatedConferences: conferencesWithStatus, isImporting: true } });
-    
+
         // Khởi tạo việc upload
         startUploading(conferencesWithStatus);
     };
-    
+
+
+    const isConferenceMatch = (conf1, conf2) => {
+        const check = conf1.information.name === conf2.title &&
+            conf1.information.acronym === conf2.acronym &&
+            conf1.information.source === conf2.source
+        if (check) {
+            return conf1
+        } else {
+            return check
+        }
+    };
+
+    const splitConferences = async (targetConferences) => {
+        const matchedConferences = [];
+        const unmatchedConferences = [];
+
+        let allConferences = []
+        if (state.conferences.length > 0) {
+            allConferences = [...state.conferences];
+        } else {
+            const response = await fetch(`${baseURL}/conference?status=true`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+            const data = await response.json()
+            allConferences = [...data.data];
+        }
+        targetConferences.forEach(targetConf => {
+            const isMatched = allConferences.filter(conf => isConferenceMatch(conf, targetConf.conference));
+
+            if (isMatched.length > 0) {
+                matchedConferences.push(...isMatched);
+            } else {
+                unmatchedConferences.push(targetConf);
+            }
+        });
+        return { matchedConferences, unmatchedConferences };
+    };
 
     const filterConferencesByStatus = (conferences, status) => {
         return conferences.filter(conference => conference.status === status);
     };
+
+
     return {
         inProgressLoading: state.inProgressLoading,
+        existedConf: state.existedConf,
         isImporting: state.isImporting,
         showImportModal, setShowImportModal,
         showOptionImportModal, setOptionShowImportModal,

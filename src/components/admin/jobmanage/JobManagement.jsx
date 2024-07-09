@@ -9,11 +9,14 @@ import { capitalizeFirstLetter } from '../../../utils/formatWord'
 import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import useFilter from '../../../hooks/useFilter'
+import InputSearhInList from '../InputSearhInList'
 
 const JobManagement = () => {
   const {t, i18n} = useTranslation()
   const {allCrawlJobs, getAllCrawlJobs, deleteJobByID} = useCrawlJob()
-  const [displayConferences, setDisplayedConferences] = useState([])
+  const [displayConferences, setDisplayedConferences] = useState(allCrawlJobs)
+  const {searchInObject} = useFilter()
 
   useEffect(()=> {
     getAllCrawlJobs()
@@ -23,6 +26,11 @@ const JobManagement = () => {
     setDisplayedConferences(allCrawlJobs)
   },[allCrawlJobs])
 
+  const handleFilter = (keyword) => {
+    const filtered = allCrawlJobs.filter(user => searchInObject(user, keyword));
+    console.log({filtered})
+    setDisplayedConferences(filtered);
+  }
   const columns = useMemo(
     () => [
       {
@@ -155,10 +163,12 @@ const JobManagement = () => {
   );
 
   return (
-    <div className='mt-3'>
-      <div className='fw-bold fs-5'>
-        {t('total_crawl_job')}: {allCrawlJobs.length} 
-       
+    <div className='mt-3 border-top pt-3'>
+      <div className='fw-bold fs-5 d-flex justify-content-between align-items-center'>
+        <span className='now-wrap'>{t('total_crawl_job')}: {allCrawlJobs.length} </span>
+        <div>
+          <InputSearhInList onApplyFilter={handleFilter}/>       
+        </div>
       </div>
 
       <TableRender columns={columns} data={displayConferences}/> 

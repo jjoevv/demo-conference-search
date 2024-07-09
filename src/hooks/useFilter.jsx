@@ -547,7 +547,8 @@ const useFilter = () => {
     setSelectedKeywords,
     getCountForSelectedKeyword,
     extractStars,
-    extractDates
+    extractDates,
+    searchInObject
   }
 }
 

@@ -19,15 +19,9 @@ const Users = () => {
   const {t, i18n} = useTranslation()
   const {windowWidth} = useScreenSize()
   const navigate = useNavigate()
-  const { optionsSelected} = useSearch()
-  const {
-    priorityKeywords, 
-    filterConferences, 
-    }= useFilter()
-
-  const {  conferences, selectOptionSort } = useConference()
   const {loading:loadingUsers, users, getAllUsers, getUserById} = useAdmin()
-  const [displayUsers, setDisplayedUsers] = useState([])
+  const [displayUsers, setDisplayedUsers] = useState(users)
+  const {searchInObject} = useFilter()
 
   useEffect(()=>{
     getAllUsers()
@@ -39,30 +33,7 @@ const Users = () => {
     setDisplayedUsers(users)
   }, [users])
 
-  useEffect(()=>{
-    const isApliedFilter = checkExistValue(optionsSelected).some(value => value === true);
-    
-    if(isApliedFilter){
-
-      const filterResult = filterConferences(users, optionsSelected)
-      setDisplayedUsers(filterResult)
-    }
-    else {
-      setDisplayedUsers(users)
-    }
-    
-  }, [optionsSelected, users, priorityKeywords])
-
-
-  useEffect(() => {
-    if (selectOptionSort === "Random") {
-        setDisplayedUsers(conferences)
-    }
-    else {
-        const sortedConferences = sortConferences(selectOptionSort, [...conferences])
-        setDisplayedUsers(sortedConferences)
-    }
-}, [selectOptionSort])
+ 
 
 
 
@@ -71,6 +42,11 @@ const Users = () => {
     navigate(`/admin/users_management/userdetail/${id}`)
   }
 
+  const handleFilter = (keyword) => {
+    const filtered = users.filter(user => searchInObject(user, keyword));
+    console.log({filtered})
+    setDisplayedUsers(filtered);
+  }
 
   const columns = React.useMemo(
     () => [
@@ -136,7 +112,7 @@ const Users = () => {
         </div>
 
         <Row md={4} className='justify-content-end my-2 mb-3'>
-          <Col><InputSearhInList /></Col>
+          <Col><InputSearhInList onApplyFilter={handleFilter}/></Col>
         
           <Col md='auto'>
        
@@ -150,7 +126,7 @@ const Users = () => {
             <Loading/>
           </div>
           :
-          <TableRender data={users} columns={columns}/>
+          <TableRender data={displayUsers} columns={columns}/>
         }
 
       </div>

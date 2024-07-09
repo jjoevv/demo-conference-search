@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useImport from "../../hooks/useImport";
-import { Container, OverlayTrigger, ProgressBar, Spinner, Tooltip } from "react-bootstrap";
+import { Button, Container, OverlayTrigger, ProgressBar, Spinner, Tooltip } from "react-bootstrap";
 import useScreenSize from "../../hooks/useScreenSize";
 import TableRender from "../../components/admin/TableRender";
 import ImportButton from "../../components/admin/ImportButton/ImportButton";
@@ -11,10 +11,11 @@ import StopButton from "../../components/admin/StopButton";
 import IntendTime from "../../components/Calendar/IntendTime";
 import JobManagement from "../../components/admin/jobmanage/JobManagement";
 import FinishImportButton from "../../components/FinishImportButton";
+import AllConferences from "../../components/admin/AllConferences";
 
 const ImportConferences = () => {
   const { t, i18n } = useTranslation()
-  const { isImporting, inProgressLoading, convertCodesToNames, handleBufferList } = useImport()
+  const { isImporting, inProgressLoading, existedConf, convertCodesToNames, handleBufferList } = useImport()
   const { windowWidth } = useScreenSize()
 
   useEffect(() => {
@@ -169,7 +170,7 @@ const ImportConferences = () => {
         isImporting || inProgressLoading.length > 0 ?
           <>
             {
-              inProgressLoading.length > 0 ?
+              inProgressLoading.length > 0 || existedConf.length > 0 ?
                 <>
                   <div className="d-flex justify-content-between align-items-center">
                     <IntendTime totalConferences={inProgressLoading.length} />
@@ -182,8 +183,12 @@ const ImportConferences = () => {
                     <ImportingFilter />
                   </div>
 
-                  <div className='' >
+                  <div className='mb-5' >
                     <TableRender data={inProgressLoading} columns={columns} />
+                    <span className="fs-5 fw-bold">
+                      {t('existed_in_db')}
+                    </span>
+                    <AllConferences conferences={existedConf}/>
                   </div>
 
                 </>

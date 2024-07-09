@@ -159,6 +159,7 @@ export const initialState = {
   inBufferProgressLoading: [],
   isImporting: false,
   isCrawlingConImported: false,
+  existedConf: [],
 
   allCrawlJobs: [],
   

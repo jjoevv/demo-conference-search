@@ -12,7 +12,7 @@ const IntendTime = ({totalConferences}) => {
 
 
     // Tính toán thời gian trung bình xử lý 1 conference là 3.5 phút
-    const averageTimePerConf = 4 * 60 * 1000; // 3.5 phút * 60 giây
+    const averageTimePerConf = 2 * 60 * 1000; // 3.5 phút * 60 giây
     const totalTime = totalConferences * averageTimePerConf;
 
     useEffect(() => {

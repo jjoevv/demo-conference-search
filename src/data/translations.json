@@ -192,6 +192,7 @@
       "Delete": "Delete",
       "page": "page",
       "conference_management": "Conferences Management",
+      "existed_in_db": "Existed conference",
       "search_keyword": "Search keyword",
       "search_button": "Search",
       "pending": "Pending",
@@ -214,7 +215,7 @@
       "enter_call_for_paper": "Enter callForPaper...",
       "select_field_of_research": "Select the field of research...",
       "enter_something": "Enter something",
-      "enter_source": "Enter source",
+      "select_source": "Enter source",
       "add_new": "Add new",
       "enter_number_street": "Enter number street...",
       "enter_state_province": "Enter district/state...",
@@ -264,7 +265,7 @@
       "updated_at": "Updated At",
       "detail": "Progress Detail",
       "completed": "Completed",
-      "total_crawl_job": "Total crawl job",
+      "total_crawl_job": "Total crawled job",
       "select_cycle": "Select cycle",
       "period_description": "Define how far in advance you want to collect events from today",
       "select_period": "Select period",
@@ -462,6 +463,7 @@
       "go_to_page": "Đi đến trang",
       "page": "trang",
       "conference_management": "Quản lý danh sách hội nghị",
+      "existed_in_db": "Đã tồn tại",
       "search_keyword": "Nhập từ khóa",
       "search_button": "Tìm kiếm",
       "pending": "Chờ duyệt",
@@ -485,7 +487,7 @@
       "enter_call_for_paper": "Nhập thông tin CallForPaper...",
       "select_field_of_research": "Chọn lĩnh vực nghiên cứu...",
       "enter_something": "Nhập nội dung",
-      "enter_source": "Nhập source",
+      "select_source": "Nhập source",
       "add_new": "Thêm mới",
       "enter_number_street": "Nhập số và tên đường...",
       "enter_state_province": "Nhập quận/huyện...",
@@ -542,6 +544,7 @@
       "period_description": "Xác định trước khoảng thời gian bạn muốn thu thập các sự kiện từ hôm nay",
       "select_period": "Chọn khoảng",
       "period_label": "Khoảng thời gian thu thập (7-30 ngàys)"
+      
     }
   }
 }

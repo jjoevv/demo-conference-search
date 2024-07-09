@@ -340,6 +340,12 @@ const appReducer = (state, action) => {
                 ...state,
                 allCrawlJobs: action.payload,
             };
+        case actionTypes.SET_EXISTED_CONF:
+
+            return {
+                ...state,
+                existedConf: action.payload,
+            };
         default:
             return state;
     }
