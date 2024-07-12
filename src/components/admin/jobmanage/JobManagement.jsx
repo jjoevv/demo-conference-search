@@ -28,7 +28,7 @@ const JobManagement = () => {
 
   const handleFilter = (keyword) => {
     const filtered = allCrawlJobs.filter(user => searchInObject(user, keyword));
-    console.log({filtered})
+    //console.log({filtered})
     setDisplayedConferences(filtered);
   }
   const columns = useMemo(

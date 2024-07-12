@@ -7,7 +7,6 @@ import { useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 import usePost from './usePost'
-import useAuth from './useAuth'
 import forcode from './../data/forcode.json'
 const useImport = () => {
     const { state, dispatch } = useAppContext()
@@ -16,7 +15,7 @@ const useImport = () => {
     const [data, setData] = useState([]);
     const [fileUploaded, setFileUploaded] = useState(false);
     const [selectedHeaders, setSelectedHeaders] = useState([]);
-    const { user, handleIsExpired } = useAuth()
+    
     const { token } = useToken()
     const stopRef = useRef(false);
 

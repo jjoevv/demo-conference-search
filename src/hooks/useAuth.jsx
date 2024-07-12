@@ -114,7 +114,7 @@ const useAuth = () => {
   const handleLogout = async () => {
     dispatch(logoutUser());
     dispatch({type: "LOGIN_SUCCESS", payload: null})
-    dispatch({type: "SET_IS_LOGIN", payload: false})
+    dispatch({type: "SET_IS_LOGIN", payload: true})
     sessionStorage.removeItem('user-id')
     deleteUserFromLocalStorage()
     navigate(`${previousPath}`)

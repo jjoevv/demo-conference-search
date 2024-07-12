@@ -7,7 +7,8 @@ import {  useNavigate } from 'react-router-dom'
 const LoginExpiredModal = ({show}) => {
   const {handleLogout, isLogin, handleIsExpired} = useAuth()
 
-const navigate = useNavigate()
+  const navigate = useNavigate()
+
   const handleLoginClick = async () => {    
     await handleLogout()
     handleIsExpired(false)
@@ -17,8 +18,13 @@ const navigate = useNavigate()
     await handleLogout()
     handleIsExpired(false)
   }
+  
+  const handleHide = async () => {
+    await handleLogout()
+    handleIsExpired(true)
+  }
   return (
-    <Modal show={show} onHide={()=>handleIsExpired(false)} centered>
+    <Modal show={show} onHide={handleHide} centered>
         <Modal.Header closeButton className='border-0'>
           <Modal.Title className='text-color-black w-100 align-items-center'>
             <FontAwesomeIcon icon={faTriangleExclamation} className='text-yellow me-3 '/>

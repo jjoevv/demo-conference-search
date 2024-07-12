@@ -44,7 +44,7 @@ const Users = () => {
 
   const handleFilter = (keyword) => {
     const filtered = users.filter(user => searchInObject(user, keyword));
-    console.log({filtered})
+    //console.log({filtered})
     setDisplayedUsers(filtered);
   }
 
