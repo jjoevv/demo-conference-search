@@ -532,7 +532,7 @@
       "rating_filter": "từ {{stars}}*",
       "reset_all": "Xóa hết",
       "date_filter": "từ {{startDate}} đến {{endDate}}",
-      "pls_login_to_use_area_filter": "Hãy diền thông tin quốc gia của bạn",
+      "pls_login_to_use_area_filter": "Hãy điền thông tin quốc gia của bạn",
       "pls_login_to_use_this_feature": "Vui lòng đăng nhập để tiếp tục",
       "conf_id": "ID Hội nghị",
       "created_at": "Ngày cào",

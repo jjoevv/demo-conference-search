@@ -59,7 +59,7 @@ const Followed = () => {
     const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
 
     // Cập nhật URL
-    window.history.pushState({}, '', newUrl);
+    //window.history.pushState({}, '', newUrl);
   }, [optionsSelectedFollow, listFollowed])
 
   return (

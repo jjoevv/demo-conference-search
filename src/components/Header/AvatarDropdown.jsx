@@ -12,14 +12,13 @@ const menu = [
 ]
 const AvatarDropdown = () => {
     const { t } = useTranslation()
-    const {windowWidth} = useScreenSize()
+    const { windowWidth } = useScreenSize()
     const { handleLogout } = useAuth()
     const dropDirection = windowWidth <= 768 ? 'end' : 'bottom';
 
     return (
         <Dropdown
             drop={dropDirection}
-            menuAlign="right"
             className='dropdown'
         >
             <Dropdown.Toggle className='noti rounded-pill my-header-bg-icon mx-1 border-0 d-flex align-items-center'>
@@ -27,15 +26,13 @@ const AvatarDropdown = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu style={{ right: 0, left: 'auto' }}>
                 {menu.map((item) => (
-                    <Dropdown.Item key={item.path}>
-                        <Link to={item.path} className='text-color-black'>
-                            <Image width={20} className='me-2' src={item.icon} />
+                        <Link key={item.path} to={item.path} className="dropdown-item text-color-black d-flex align-items-center">
+                            <Image width={20} className="me-2" src={item.icon} />
                             {t(`${item.trans}`)}
                         </Link>
-                    </Dropdown.Item>
                 ))}
                 <Dropdown.Item onClick={handleLogout}>
-                    <Image width={20} className='me-2' src={logoutIcon} />
+                    <Image width={20} className="me-2" src={logoutIcon} />
                     {t('logout')}
                 </Dropdown.Item>
             </Dropdown.Menu>

@@ -27,19 +27,18 @@ import { checkExistValue } from '../../utils/checkFetchedResults'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
 
-const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConferences, isPost, isFilters }) => {
+const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
     const { t } = useTranslation()
     const { windowWidth } = useScreenSize()
     const { selectOptionSort, getStartEndDate, handleSelectOptionSort } = useConference()
     const { listFollowed, followConference, unfollowConference } = useFollow()
     const { optionsSelected } = useSearch()
     const [selected, setSelected] = useState(false)
-    const { pageParam, setPage } = useParamsFilter()
     const { user } = useAuth()
     const navigate = useNavigate()
     const [showPopupFollow, setShowPopupFollow] = useState(false)
     const [followedIds, setFollowedIds] = useState(new Set());
-    const [pageDisplay, setPageDisplay] = useState(pageParam)
+    const [pageDisplay, setPageDisplay] = useState(page)
     const [displayConferences, setDisplayedConferences] = useState(conferencesProp)
     const [loadingMap, setLoadingMap] = useState({});
     const scrollPositions = useRef({});
@@ -48,12 +47,12 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
 
 
     useEffect(() => {
-        setPageDisplay(pageParam)
+        setPageDisplay(page)
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
         });
-    }, [pageParam])
+    }, [page])
 
     useEffect(() => {
         const idsSet = new Set(listFollowed.map(item => item.id));
@@ -61,7 +60,7 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     }, [listFollowed]);
 
     useEffect(() => {
-        if (pageParam > pageCount) {
+        if (page > pageCount) {
             setPageDisplay(0)
         }
         setDisplayedConferences(conferencesProp)
@@ -163,10 +162,10 @@ const Conference = ({ conferencesProp, loading, totalPages, onReload, totalConfe
     const chooseConf = async (e, id) => {
         e.preventDefault()
         // Lưu vị trí cuộn hiện tại trước khi cập nhật URL
-        scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
+        //scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
         // Cập nhật URL với trang mới
         const newUrl = new URL(window.location);
-        window.history.pushState({}, '', newUrl);
+        //window.history.pushState({}, '', newUrl);
         navigate(`/detailed-information/${id}`)
 
     }

@@ -7,7 +7,9 @@ const useToken = () => {
   useEffect(() => {
     // Kiểm tra xem có thông tin người dùng trong localStorage không
     const storedtoken = localStorage.getItem('token');
-    if (storedtoken) {
+    if(storedtoken === 'undefined'){
+      localStorage.clear()
+    } else if (storedtoken) {
       setToken(JSON.parse(storedtoken));
     }
   }, []);

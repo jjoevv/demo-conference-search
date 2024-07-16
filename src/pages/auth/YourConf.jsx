@@ -77,7 +77,7 @@ const YourConf = () => {
     const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
 
     // Cập nhật URL
-    window.history.pushState({}, '', newUrl);
+    //window.history.pushState({}, '', newUrl);
   }, [optionsSelectedOwn, postedConferences])
 
   const handleCheckStatus = (status, messageSuccess) => {
@@ -122,11 +122,8 @@ const YourConf = () => {
                   <Filter filter={'optionsSelectedOwn'}/>
                   <Conference
                     conferencesProp={displayConferences}
-                    onReloadPage={getPostedConferences}
-                    totalPages={totalPages}
                     totalConferences={totalConferences}
                     loading={loadingPost}
-                    isPost={true}
                   />
                 </>
                 : <p>{t('no_posted_conferences')}</p>

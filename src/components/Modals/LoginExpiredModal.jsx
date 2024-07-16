@@ -32,7 +32,7 @@ const LoginExpiredModal = ({show}) => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            Please log in again to continue using the app {`${isLogin}`}
+            Please log in again to continue using the app
         </Modal.Body> 
         <Modal.Footer className='border-0'>
          <ButtonGroup>

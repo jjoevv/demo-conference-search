@@ -55,8 +55,13 @@ const Header = () => {
   };
 
   const checkExpired = () => {
-    return user 
+    if(user){
+      return !isLogin
+    } else {
+      return false
+    }
   }
+
   const handleOffcanvasClose = () => setShowOffcanvas(false);
   const handleOffcanvasShow = () => setShowOffcanvas(true);
   const navLinks = (
@@ -112,7 +117,7 @@ const Header = () => {
   );
   return (
     <Navbar expand="md" id="header" className=" fixed-top px-5 shadow-sm bg-white">
-    <LoginExpiredModal show={!isLogin} />
+    <LoginExpiredModal show={checkExpired()} />
     <Container className="d-flex justify-content-between align-items-center w-100 px-sm-2">
       <Navbar.Brand className="my-header-brand me-auto me-md-0">
         <Link to="/" className="text-teal-dark fs-4 fw-bold" title="Homepage">
@@ -132,7 +137,7 @@ const Header = () => {
               <OffcanvasHeaderRes onClose={()=>setShowOffcanvas(false)} notifications={notifications} onReadStatus={getNoticationById} onReloadlist={getAllNotifications}/>
             </Offcanvas.Body>
           </Offcanvas>
-        </>
+        </> 
       ) : (
         <div  onSelect={handleSelect} className="d-flex">
           {navLinks}

@@ -110,7 +110,9 @@ const addKeywords = (filterList, label, keywords) => {
     dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords, filter: filterList } })
   }
   else {
-    if (!state[filterList][label].includes(keywords[0])) {
+    const check = state[filterList][label].includes(keywords[0])
+   
+    if (!check) {
       dispatch(addFilter(filterList, label, keywords))
     }
     else deleteKeyword(label, keywords[0], filterList)
@@ -230,9 +232,6 @@ const filterAndAddToParams = () => {
   return params;
 };
 
-const searchByKeyword = (keyword, list) => {
-
-}
 
 return {
   optionsSelected: state.optionsSelected,

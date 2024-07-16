@@ -1,7 +1,7 @@
 // useAuth.js
 // handleLogin, handleRegister, Logout, updateProfile
 import { useAppContext } from '../context/authContext';
-import { loginRequest, loginSuccess, loginFailure, logoutUser, registrationFailure } from '../actions/actions';
+import { loginRequest, loginFailure, logoutUser, registrationFailure } from '../actions/actions';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from './api/baseApi';
 import useLocalStorage from './useLocalStorage';
@@ -41,7 +41,7 @@ const useAuth = () => {
           
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
-         await getCurrentUser()
+          await getCurrentUser()
           if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
             navigate(`${previousPath}`)
           }
@@ -117,9 +117,9 @@ const useAuth = () => {
     dispatch({type: "SET_IS_LOGIN", payload: true})
     sessionStorage.removeItem('user-id')
     deleteUserFromLocalStorage()
-    navigate(`${previousPath}`)
-    
-//   window.location.reload()
+    if(!previousPath.includes('/login') || !previousPath.includes('/signup')){
+      navigate(`${previousPath}`)
+    } else navigate(`/`)
   };
 
 
@@ -186,22 +186,22 @@ const useAuth = () => {
     }
   }
 
-  const loginWithGoogle = async (userData) => {
+  const loginWithGoogle = async (refreshToken) => {
     try {
-      savetokenToLocalStorage(userData.accessToken)
-      await getCurrentUser
-
-    if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
-      navigate(`${previousPath}`)
-    }
-    else {
-      if(userData.role === 'admin'){
-        navigate('/admin/dashboard')
+      dispatch({type: "SET_IS_LOGIN", payload: true})
+      savetokenToLocalStorage(refreshToken)      
+      saveUserToLocalStorage({})
+      await getCurrentUser()
+      const userData = state.user || JSON.parse(localStorage.getItem('user'))
+      if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
+        navigate(`${previousPath}`)
       }
-      else navigate('/')
-    }
-     
-    
+      else {
+        if(userData.role === 'admin'){
+          navigate('/admin/dashboard')
+        }
+        else navigate('/')
+      }
     } catch (error) {
       dispatch(loginFailure('An error occurred during login.'));
     }

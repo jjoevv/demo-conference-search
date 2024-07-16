@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Image } from 'react-bootstrap'
-
 import useSearch from '../../hooks/useSearch'
-
-import starIcon from '../../assets/imgs/star.png'
-import unstarIcon from '../../assets/imgs/unstar.png'
 
 import Select from 'react-select'
 import { useTranslation } from 'react-i18next'
-import useAuth from '../../hooks/useAuth'
 import useAreaFilter from '../../hooks/useAreaFilter'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import { useAppContext } from '../../context/authContext'
@@ -81,7 +75,7 @@ const CustomOption = (props) => {
 const AreaFilter = ({filter}) => {
   const {state} = useAppContext()
   const { user } = useLocalStorage()
-  const { checkForCountryInText, setUserLocation, handleNavigateAccount, handleNavigateLogin } = useAreaFilter()
+  const { checkForCountryInText, setUserLocation, handleNavigateLogin } = useAreaFilter()
   const { filterOptions, addKeywords, deleteKeyword, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([])
   const { t } = useTranslation()
@@ -107,9 +101,8 @@ const AreaFilter = ({filter}) => {
 
     setOptions(transformedState);
   }, [filterOptions]);
-  
+
   const handleOptionChange = async (items) => {
-    const option = items[0].value
     const itemsValues = items.map(item => item.value);
           const removedOptions = state[filter]['region'].map(value => ({ value, label: value })).filter(option => !itemsValues.includes(option.value));
 
@@ -128,13 +121,13 @@ const AreaFilter = ({filter}) => {
                 addKeywords(filter, 'region', addItem)
               }
               else {
-                handleNavigateAccount()
+               // handleNavigateAccount()
+               console.log({})
               }
             }
             else {
               handleNavigateLogin()
             }
-            //addKeywords(label,[formatKeyword] )
           } else addKeywords(filter, 'region', addItem)
             
         } 

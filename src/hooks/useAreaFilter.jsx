@@ -8,19 +8,39 @@ const useAreaFilter = () => {
   const {state, dispatch} = useAppContext()
   const {t} =useTranslation()
   const navigate = useNavigate()
-    const checkForCountryInText = (text) => {
-      if(!text || text === undefined && text === ''){
-        return ''
+
+  const containsVietnamese = (str) => {
+    const vietnamesePattern = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+    return vietnamesePattern.test(str);
+  };
+  
+  const normalizeString = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase();
+  };
+  
+  const checkForCountryInText = (text) => {
+    if (!text || text === undefined || text === '') {
+      return '';
+    }
+  
+    const normalizedText = containsVietnamese(text) ? text.toLowerCase() : normalizeString(text);
+  
+    for (const key in countries) {
+      const country = countries[key];
+      const valuesToCheck = [
+        country.country_name,
+        country.country_name_full,
+      ];
+  
+      const found = valuesToCheck.some(value => normalizedText.includes(containsVietnamese(value) ? value.toLowerCase() : normalizeString(value)));
+      
+      if (found) {
+        return country.country_name;
       }
-        const countryNames = Object.values(countries).map(country => country.country_name);
-        const foundCountry = countryNames.find(country => text.toLowerCase().includes(country.toLowerCase()));
-    
-        if (foundCountry) {
-          return foundCountry
-        } else {
-          return ''
-        }
-      };
+    }
+  
+    return '';
+  };
 
       const setUserLocation = (location) => {
         dispatch({type: "SET_USER_LOCATION", payload: location})

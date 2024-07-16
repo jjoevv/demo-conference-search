@@ -23,7 +23,7 @@ const AllConferences = ({ conferences, isDeleteIcon, onReloadList }) => {
     scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
     // Cập nhật URL với trang mới
     const newUrl = new URL(window.location);
-    window.history.pushState({}, '', newUrl);
+    //window.history.pushState({}, '', newUrl);
 
     navigate(`/admin/conferences_management/cfp/${conf.id}`)
   }

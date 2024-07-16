@@ -1,28 +1,29 @@
-import { useState, useEffect } from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { Button, Image } from 'react-bootstrap';
 import googleIcon from './../../assets/imgs/google.png'
+import { useLocation } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const GoogleLoginButton = () => {
     const { t } = useTranslation()
-    const [token, setToken] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
-  const [error, setError] = useState(null);
-
-  const [userData, setUserData] = useState(null);
+    const { loginWithGoogle } = useAuth()
+    const location = useLocation()
 
   useEffect(() => {
-      // Lấy thông tin người dùng từ URL sau khi chuyển hướng
-      
-    //  console.log('Refresh Token:', window.location);
-  }, []);
+    const urlParams = new URLSearchParams(location.search);
+    const refreshToken = urlParams.get('refreshToken');
+    
+    if (refreshToken) {
+      loginWithGoogle(refreshToken)
+    } else {
+      console.error('Refresh token not found.');
+    }
+  }, [location.search]);
     
     const handleLoginWithGoogle = () => {
-        const url = ''
-         window.location.href = url
-        
+       window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=https%3A%2F%2Fconference-searching.onrender.com%2Fauth%2Fgoogle%2Fcallback&scope=profile%20email&client_id=332252746670-fh1iqdls3v0ka6plmrqaqam8q5l8se26.apps.googleusercontent.com';
     }
 
     return (

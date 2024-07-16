@@ -148,6 +148,16 @@ const useFilter = () => {
     return '';
   };
 
+  const containsVietnamese = (str) => {
+    const vietnamesePattern = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+    return vietnamesePattern.test(str);
+  };
+  
+  const normalizeString = (str) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase();
+  };
+  
+
   const isLocationMatch = (location, keyword) => {
     const locationLower = location ? location.toLowerCase().trim() : '';
     const keywordLower = keyword ? keyword.toLowerCase().trim() : '';
@@ -169,39 +179,43 @@ const useFilter = () => {
       return true;
     }
 
-    // Kiểm tra nếu locationAfterComma khớp với bất kỳ giá trị nào trong countries
-    const isMatch = Object.values(countries).some(country => {
-      const countryLower2 = country.country_code2.toLowerCase();
-      const countryLower3 = country.country_code3.toLowerCase();
-      const countryNameLower = country.country_name.toLowerCase();
-      const countryNameFullLower = country.country_name_full.toLowerCase();
+    const normalizedLocationAfterComma = containsVietnamese(location) ? cleanedLocationAfterComma : normalizeString(cleanedLocationAfterComma);
+  const normalizedKeyword = containsVietnamese(keyword) ? keyword : normalizeString(keyword);
 
-      // Kiểm tra locationAfterComma có chứa country code ở phần từ sau dấu phẩy không
-      const locationContainsCountryCode = (
-        (cleanedLocationAfterComma.endsWith(countryLower2) && cleanedLocationAfterComma.length <= countryLower2.length + 2) ||
-        (cleanedLocationAfterComma.endsWith(countryLower3) && cleanedLocationAfterComma.length <= countryLower3.length + 2)
-      );
+  // Kiểm tra nếu locationAfterComma khớp với bất kỳ giá trị nào trong countries
+  const isMatch = Object.values(countries).some(country => {
+    const countryLower2 = country.country_code2.toLowerCase();
+    const countryLower3 = country.country_code3.toLowerCase();
+    const countryNameLower = normalizeString(country.country_name);
+    const countryNameFullLower = normalizeString(country.country_name_full);
 
-      // Kiểm tra location và keyword có khớp với bất kỳ giá trị country name nào không
-      const locationMatches = (
-        cleanedLocationAfterComma.includes(countryNameLower) ||
-        cleanedLocationAfterComma.includes(countryNameFullLower) ||
-        countryNameLower.includes(locationLower) ||
-        countryNameFullLower.includes(locationLower)
-      );
+    // Kiểm tra locationAfterComma có chứa country code ở phần từ sau dấu phẩy không
+    const locationContainsCountryCode = (
+      (cleanedLocationAfterComma.endsWith(countryLower2) && cleanedLocationAfterComma.length <= countryLower2.length + 2) ||
+      (cleanedLocationAfterComma.endsWith(countryLower3) && cleanedLocationAfterComma.length <= countryLower3.length + 2)
+    );
 
-      const keywordMatches = (
-        keywordLower.includes(countryNameLower) ||
-        keywordLower.includes(countryNameFullLower) ||
-        countryNameLower.includes(keywordLower) ||
-        countryNameFullLower.includes(keywordLower)
-      );
+    // Kiểm tra location và keyword có khớp với bất kỳ giá trị country name nào không
+    const locationMatches = (
+      normalizedLocationAfterComma.includes(countryNameLower) ||
+      normalizedLocationAfterComma.includes(countryNameFullLower) ||
+      countryNameLower.includes(normalizedLocationAfterComma) ||
+      countryNameFullLower.includes(normalizedLocationAfterComma)
+    );
 
-      return (locationContainsCountryCode || locationMatches) && keywordMatches;
-    });
+    const keywordMatches = (
+      normalizedKeyword.includes(countryNameLower) ||
+      normalizedKeyword.includes(countryNameFullLower) ||
+      countryNameLower.includes(normalizedKeyword) ||
+      countryNameFullLower.includes(normalizedKeyword)
+    );
+   
+    return (locationContainsCountryCode || locationMatches) && keywordMatches;
+  });
 
-    return isMatch;
+  return isMatch;
   };
+
 
 
   const isLocationAndContinentMatch = (location, keyword) => {
@@ -220,6 +234,9 @@ const useFilter = () => {
     // Loại bỏ các dấu chấm và dấu ngoặc trong locationAfterComma
     const cleanedLocationAfterComma = locationAfterComma.replace(/[.()]/g, '').trim();
 
+    const normalizedLocationAfterComma = containsVietnamese(location) ? cleanedLocationAfterComma : normalizeString(cleanedLocationAfterComma);
+    const normalizedKeyword = containsVietnamese(keyword) ? keyword : normalizeString(keyword);
+
     // Tìm country trong danh sách countries thỏa mãn location
     const matchingCountry = Object.values(countries).find(country => {
       const countryLower2 = country.country_code2.toLowerCase();
@@ -229,14 +246,14 @@ const useFilter = () => {
 
       // Kiểm tra cleanedLocationAfterComma có chứa country code ở phần từ sau dấu phẩy không
       const locationContainsCountryCode = (
-        cleanedLocationAfterComma === countryLower2 ||
-        cleanedLocationAfterComma === countryLower3
+        normalizedLocationAfterComma === countryLower2 ||
+        normalizedLocationAfterComma === countryLower3
       );
 
       // Kiểm tra location có khớp với bất kỳ giá trị country name nào không
       const locationMatches = (
-        cleanedLocationAfterComma === countryNameLower ||
-        cleanedLocationAfterComma === countryNameFullLower
+        normalizedLocationAfterComma === countryNameLower ||
+        normalizedLocationAfterComma === countryNameFullLower
       );
       return locationContainsCountryCode || locationMatches;
     });
@@ -334,7 +351,7 @@ const useFilter = () => {
                 else {
                   isMatch = !conference.organizations.some(org => {
                     if (org.status === "new") {
-                      return isLocationMatch(org.location, user_location, countries);
+                      return isLocationMatch(org.location, user_location);
                     }
                   });
                 }
