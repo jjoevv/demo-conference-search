@@ -20,26 +20,19 @@ const useSearch = () => {
 
 
   const sortList = (list) => {
-    // Lọc các mục là các chữ cái duy nhất
-    const uniqueLetters = list.filter(item => /^[A-Z]$/.test(item));
-    // Lọc các mục không phải là chữ cái duy nhất
-    const nonUniqueLetters = list.filter(item => !/^[A-Z]$/.test(item)).sort();
-
-    // Sắp xếp các chữ cái duy nhất theo thứ tự bảng chữ cái
-    const uniqueList = nonUniqueLetters.reduce((accumulator, currentValue) => {
-      const standardizedValue = currentValue.toLowerCase(); // Chuyển đổi giá trị thành chữ thường
-      if (!accumulator.includes(standardizedValue)) {
-        accumulator.push(capitalizeFirstLetter(standardizedValue));
-      }
-      return accumulator;
-    }, []);
-
-    // Sắp xếp danh sách giá trị duy nhất theo thứ tự bảng chữ cái
-    uniqueList.sort();
-    // Kết hợp lại
-    return [...uniqueLetters, ...uniqueList];
+    // Lọc và sắp xếp các chữ cái duy nhất
+    const uniqueLetters = list.filter(item => /^[A-Za-z]$/i.test(item)).sort();
+  
+    // Lọc và sắp xếp các mục không phải chữ cái duy nhất
+    const nonUniqueLetters = list.filter(item => !/^[A-Za-z]$/i.test(item) && isNaN(item)).sort();
+  
+    // Kết hợp kết quả cuối cùng
+    const sortedList = [...uniqueLetters, ...nonUniqueLetters];
+  
+    return sortedList;
   };
-
+  
+  
   const getOptionsFilter = async (label) => {
     const params = ["source", "acronym", "rank", "region", "type"];
     const existedOptions = state.filterOptions

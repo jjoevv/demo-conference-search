@@ -71,7 +71,7 @@ const SlideShow = () => {
             const conferenceSlice = displayConferences.slice(i, i + step);
             items.push(
                 <Carousel.Item key={i}>
-                    <Row className="d-flex flex-wrap p-1">
+                    <Row className="d-flex flex-wrap p-1" style={{minHeight: '183px'}}>
                         {conferenceSlice.map(conference => (
                             <Col key={conference.id} className=' fw-bold border mx-2 p-2 rounded bg-beige-light'>
                                 <Button onClick={(e) => chooseConf(e, conference.id)} className='bg-transparent border-0 text-start'>
