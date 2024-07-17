@@ -75,7 +75,7 @@ const CustomOption = (props) => {
 const AreaFilter = ({filter}) => {
   const {state} = useAppContext()
   const { user } = useLocalStorage()
-  const { checkForCountryInText, setUserLocation, handleNavigateLogin } = useAreaFilter()
+  const { checkForCountryInText, setUserLocation, handleNavigateLogin, handleNavigateAccount } = useAreaFilter()
   const { filterOptions, addKeywords, deleteKeyword, getOptionsFilter } = useSearch()
   const [options, setOptions] = useState([])
   const { t } = useTranslation()
@@ -115,14 +115,12 @@ const AreaFilter = ({filter}) => {
               const checkAddress = checkForCountryInText(user.address)
               const checkNationality = checkForCountryInText(user.nationality)
               const check = checkAddress || checkNationality
-              
               if (check !== '') {
                 setUserLocation(check)
                 addKeywords(filter, 'region', addItem)
               }
               else {
-               // handleNavigateAccount()
-               console.log({})
+                handleNavigateAccount()
               }
             }
             else {

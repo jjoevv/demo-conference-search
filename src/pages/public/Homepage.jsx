@@ -50,6 +50,7 @@ const Homepage = () => {
 
 
   useEffect(() => {
+    
     setLoadingFilter(true);
     const isAppliedFilter = checkExistValue(optionsSelected).some(value => value === true);
     setSelected(isAppliedFilter);

@@ -2,11 +2,10 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/authContext';
 import queryString from 'query-string';
-import useSearch from './useSearch';
+import { addFilter } from '../actions/filterActions';
 
 const useParamsFilter = () => {
   const {state, dispatch} = useAppContext()
-  const {addKeywords} = useSearch()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -14,6 +13,7 @@ useEffect(() => {
   const search = location.search;
   const queryLocation = queryString.parse(search);
 
+  //console.log({optionsSelected, search, queryLocation})
   let filterList = ''
   if(location.pathname.includes('followed')){
     filterList = 'optionsSelectedFollow'
@@ -29,8 +29,7 @@ useEffect(() => {
       } else {
         const keywords = value.split(',').map(keyword => keyword.trim());
         keywords.forEach(keyword => {
-          
-        addKeywords(filterList, key, [keyword]); //add keyword
+        dispatch(addFilter(filterList, key, [keyword]))
         })
       }
     });
@@ -54,7 +53,6 @@ useEffect(() => {
        // Tạo URL mới
        const queryFilter = new URLSearchParams(paramsFilter).toString()
        const newUrl = `?page=${copiedPageNumber + 1}&${queryFilter}`;
-       
        //window.history.pushState({}, '', newUrl);
        navigate(newUrl)
 

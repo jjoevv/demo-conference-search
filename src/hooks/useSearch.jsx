@@ -106,12 +106,12 @@ const useSearch = () => {
 
 
 const addKeywords = (filterList, label, keywords) => {
+  
   if (label === 'submissionDate' || label === 'conferenceDate') {
     dispatch({ type: "ADD_FILTER_DATE", payload: { label, keyword: keywords, filter: filterList } })
   }
   else {
     const check = state[filterList][label].includes(keywords[0])
-   
     if (!check) {
       dispatch(addFilter(filterList, label, keywords))
     }

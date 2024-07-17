@@ -67,17 +67,17 @@ const appReducer = (state, action) => {
             };
         case actionTypes.ADD_FILTER: {
             const { filterList, label, keywords } = action.payload;
-            return {
-                ...state,
-                loading: false,
-                [filterList]: {
-                    ...state[filterList],
-                    [label]: [
-                        ...(state[filterList][label] || []),
-                        ...keywords,
-                    ],
-                },
-            };
+            
+      return {
+        ...state,
+        loading: false,
+        [filterList]: {
+          ...state[filterList],
+          [label]: [
+            ...new Set([...state[filterList][label], ...keywords]),
+          ],
+        },
+      };
         }
         case actionTypes.SET_PARAMS:
             return {

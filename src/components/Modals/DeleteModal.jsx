@@ -5,7 +5,7 @@ import Loading from '../Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const DeleteModal = ({ show, onClose, onConfirm, status, loading, isConfirm, countdown, onModalClick, message }) => {
   const {t} = useTranslation()

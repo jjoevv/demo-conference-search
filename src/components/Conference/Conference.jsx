@@ -94,20 +94,32 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
 
 
     // Hàm để tách acronym
-    const splitAcronym = (acronym) => {
-        const match = acronym.match(/(.*?)(\s*\(.*\))/);
+const splitAcronym = (acronym) => {
+    // Tách nội dung trong và ngoài ngoặc
+     // Trường hợp có dấu ngoặc đơn
+     if (acronym.includes('(') && acronym.includes(')')) {
+        const regex = /\((.*?)\)/;
+        const match = acronym.match(regex);
         if (match) {
-            return {
-                main: match[1],
-                sub: match[2]
-            };
+          const insideParentheses = match[0].trim();
+          const outsideParentheses = acronym.replace(match[0], '').trim();
+          return { top: outsideParentheses, bottom: insideParentheses };
         }
-        return {
-            main: acronym,
-            sub: ''
-        };
-    };
-
+      }
+      
+      // Trường hợp có dấu cách và dấu "-"
+      if (acronym.includes('-')) {
+        const parts = acronym.split('-');
+        if (parts.length > 1) {
+          const top = parts[0].trim();
+          const bottom = parts[1].trim();
+          return { top, bottom };
+        }
+      }
+      
+      // Trường hợp mặc định
+      return { top: acronym, bottom: '' };
+};
 
     const isFollowed = (itemId) => {
         return followedIds.has(itemId);
@@ -162,12 +174,9 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
     const chooseConf = async (e, id) => {
         e.preventDefault()
         // Lưu vị trí cuộn hiện tại trước khi cập nhật URL
-        //scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
-        // Cập nhật URL với trang mới
-        const newUrl = new URL(window.location);
-        //window.history.pushState({}, '', newUrl);
+        scrollPositions.current[window.location.pathname + window.location.search] = window.scrollY;
+     
         navigate(`/detailed-information/${id}`)
-
     }
 
 
@@ -182,12 +191,11 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
     };
-    //   console.log({loading, conferencesProp, displayConferences})
 
     if (loading) {
         return (
             <Container fluid className='d-flex flex-column align-items-center vh-100 p-0 overflow-hidden'>
-                <LoadingConferences onReload={onReload} />
+                <LoadingConferences />
             </Container>
         )
     }
@@ -236,8 +244,8 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
                                                         <Col lg={2} sm={2} md={2}>
                                                             <div className="acronym-container text-center d-flex align-items-center justify-content-center bg-white border border-teal-light rounded-4 text-nowrap">
                                                                 <span className={`fw-bold text-nowrap ${getLengthString(conf?.information.acronym) > 6 ? 'fs-5' : 'fs-4'}`}>
-                                                                    {splitAcronym(conf.information.acronym).main}
-                                                                    {splitAcronym(conf.information.acronym).sub && <span className="d-block fs-6">{splitAcronym(conf.information.acronym).sub}</span>}
+                                                                    {splitAcronym(conf.information.acronym).top}
+                                                                    {splitAcronym(conf.information.acronym).bottom && <span className="d-block fs-6">{splitAcronym(conf.information.acronym).bottom}</span>}
                                                                 </span>
                                                             </div>
                                                         </Col>
@@ -306,11 +314,12 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
 
                                                         }
 
-                                                        <Col xs={12} lg={7} md={7} sm={7} className='text-truncate'>
+                                                       
 
                                                             {
                                                                 getStartEndDate(conf.organizations)
                                                                 &&
+                                                                <Col xs={12} lg={7} md={7} sm={7} className='text-truncate'>
                                                                 <Card.Text className='d-flex align-items-center mb-1 text-secondary-emphasis'>
                                                                     <FontAwesomeIcon icon={faClock} className='me-2 fs-6 ' />
                                                                     <label className='fs-5 text-nowrap'>{t('conference_date')}: </label>
@@ -323,11 +332,12 @@ const Conference = ({ conferencesProp, loading, page, setPage, isPost }) => {
 
                                                                     </span>
                                                                 </Card.Text>
+                                                                
+                                                        </Col>
                                                             }
 
 
 
-                                                        </Col>
                                                         {
                                                             !getSubDate(conf.importantDates) && !getStartEndDate(conf.organizations)
                                                             &&

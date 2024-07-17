@@ -53,7 +53,6 @@ const updateNewList = (newConferences)  => {
 }
   const getPostedConferences = async () => {
     setLoading(true)
-    
     if(user || localStorage.getItem('user') ){
       try {
         if(state.conferences.length === 0){
@@ -100,13 +99,13 @@ const updateNewList = (newConferences)  => {
         const message = data.message || data.data
         setLoading(false)
         if (response.ok) {
-          return {status: true, message}
+          return {status: true, message: message}
         }
         else {
           if(response.status === 401){
             handleIsExpired(false)
           }
-          return {status: false, message}
+          return {status: false, message: message}
         }
       } catch (error) {
         throw new Error('Network response was not ok');
@@ -164,13 +163,13 @@ const updateNewList = (newConferences)  => {
         const message = data.message || data.data
         if (response.ok) {
           setLoading(false)
-          return {status: true, message}
+          return {status: true, message: message}
         }
         else {
           if(response.status === 401){
             handleIsExpired(false)
           }
-          return {status: false, message}
+          return {status: false, message: message}
         }
       } catch (error) {
         throw new Error('Network response was not ok');

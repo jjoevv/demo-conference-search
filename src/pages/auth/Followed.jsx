@@ -13,6 +13,7 @@ import Filter from '../../components/Filter/Filter'
 import { checkExistValue } from '../../utils/checkFetchedResults'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
+import useParamsFilter from '../../hooks/useParamsFilter'
 
 const Followed = () => {
   const { t } = useTranslation()
@@ -20,7 +21,7 @@ const Followed = () => {
   const { loading: loadingFollow, listFollowed, getListFollowedConferences } = useFollow()
   const { optionsSelectedFollow } = useSearch()
   const { user } = useLocalStorage()
-
+  const { pageParam, setPage,  addtoParams } = useParamsFilter()
   const { filterConferences } = useFilter()
 
 
@@ -29,6 +30,10 @@ const Followed = () => {
   useEffect(() => {
     getListFollowedConferences()
   }, [])
+
+  useEffect(() => {
+    addtoParams(optionsSelectedFollow, pageParam)
+  }, [pageParam, optionsSelectedFollow])
 
   useEffect(() => {
     if (!listFollowed) {
@@ -81,7 +86,8 @@ const Followed = () => {
 
                   <Conference
                     conferencesProp={displayConferences}
-                    onReloadPage={getListFollowedConferences}
+                    page={pageParam}
+            setPage={setPage}
                     loading={loadingFollow} />
                 </>
                 :

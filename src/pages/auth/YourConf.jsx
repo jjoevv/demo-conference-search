@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Container, Image, Button } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 
-import editIcon from '../../assets/imgs/edit.png'
 import AddConference from '../../components/Modals/AddConference'
 import usePost from '../../hooks/usePost'
 import Conference from '../../components/Conference/Conference'
@@ -13,11 +12,11 @@ import useSearch from '../../hooks/useSearch'
 import useFilter from '../../hooks/useFilter'
 import Loading from '../../components/Loading'
 import Filter from '../../components/Filter/Filter'
-import useSessionStorage from '../../hooks/useSessionStorage'
 import { useTranslation } from 'react-i18next'
 import useScreenSize from '../../hooks/useScreenSize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import useParamsFilter from '../../hooks/useParamsFilter'
 
 const YourConf = () => {
   const {t} = useTranslation()
@@ -28,12 +27,10 @@ const YourConf = () => {
   const { filterConferences } = useFilter()
   const [showSuccess, setShowSuccess] = useState(false)
   const [message, setMessage] = useState('')
-  const { getDataListInStorage } = useSessionStorage()
   const [loading, setLoading] = useState(false)
 
   const [displayConferences, setDisplayConferences] = useState(postedConferences)
-  const [totalConferences, setTotalConferences] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const { pageParam, setPage,  addtoParams } = useParamsFilter()
   useEffect(() => {
     setLoading(true)
     const fetchData = async () => {
@@ -43,7 +40,9 @@ const YourConf = () => {
     fetchData()
     setDisplayConferences(postedConferences)
   }, [])
-
+  useEffect(() => {
+    addtoParams(optionsSelectedOwn, pageParam)
+  }, [pageParam, optionsSelectedOwn])
 
   useEffect(() => {
     setDisplayConferences(postedConferences)
@@ -56,28 +55,12 @@ const YourConf = () => {
 
       const filterResult = filterConferences(postedConferences, optionsSelectedOwn)
       setDisplayConferences(filterResult)
-      setTotalConferences(filterResult.length)
-      setTotalPages(Math.ceil(filterResult.length / 7))
 
     }
     else {
-      const totalConfLS = getDataListInStorage('totalConfPost')
-      const totalPagesLS = getDataListInStorage('totalPagesPost')
-      setTotalConferences(totalConfLS)
-      setTotalPages(Math.ceil(totalPagesLS))
       setDisplayConferences(postedConferences)
     }
-    // Tạo query string 
-    const queryString = Object.entries(optionsSelectedOwn)
-      .filter(([, values]) => values.length > 0)
-      .map(([key, values]) => `${key}=${values.join(',')}`)
-      .join('&');
-    // Lấy phần hash của URL nếu có
-    const { hash, pathname } = window.location;
-    const newUrl = queryString ? `${pathname}${hash}?${queryString}` : `${pathname}${hash}`;
-
-    // Cập nhật URL
-    //window.history.pushState({}, '', newUrl);
+    
   }, [optionsSelectedOwn, postedConferences])
 
   const handleCheckStatus = (status, messageSuccess) => {
@@ -106,7 +89,11 @@ const YourConf = () => {
           }
         </Button>
       </div>
-      <AddConference show={showAddForm} handleClose={handleClose} handleCheckStatus={handleCheckStatus} onReloadList={getPostedConferences} />
+      <AddConference 
+      show={showAddForm} 
+      handleClose={handleClose} 
+      handleCheckStatus={handleCheckStatus} 
+      onReloadList={getPostedConferences} />
       {showSuccess && <SuccessfulModal message={message} show={showSuccess} handleClose={() => setShowSuccess(false)} />}
       {
         loading && loadingPost ?
@@ -122,7 +109,9 @@ const YourConf = () => {
                   <Filter filter={'optionsSelectedOwn'}/>
                   <Conference
                     conferencesProp={displayConferences}
-                    totalConferences={totalConferences}
+                    page={pageParam}
+                    setPage={setPage}
+                    isPost={true}
                     loading={loadingPost}
                   />
                 </>

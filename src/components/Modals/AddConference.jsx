@@ -15,7 +15,7 @@ import useScreenSize from '../../hooks/useScreenSize';
 const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) => {
     const { t } = useTranslation()
     const {windowWidth} = useScreenSize()
-    const { loading, postConference } = usePost()
+    const { loading, postConference, getPostedConferences } = usePost()
     const { filterOptions, getOptionsFilter } = useSearch()
 
     const [page, setPage] = useState(0)
@@ -257,7 +257,7 @@ const AddConference = ({ show, handleClose, handleCheckStatus, onReloadList }) =
             if (result.status) {
                 setShowSuccessModal(true)
                 setIsPosted(false)
-
+                getPostedConferences()
                 onReloadList()
                 handleCloseForm()
             }
