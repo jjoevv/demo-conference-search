@@ -960,72 +960,15 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 `),i.bookType=="fods"?c.push("</office:document>"):c.push("</office:document-content>"),c.join("")}}();function BX(e,t){if(t.bookType=="fods")return _k(e,t);var n=PW(),r="",a=[],o=[];return r="mimetype",re(n,r,"application/vnd.oasis.opendocument.spreadsheet"),r="content.xml",re(n,r,_k(e,t)),a.push([r,"text/xml"]),o.push([r,"ContentFile"]),r="styles.xml",re(n,r,SA0(e,t)),a.push([r,"text/xml"]),o.push([r,"StylesFile"]),r="meta.xml",re(n,r,tn+wj()),a.push([r,"text/xml"]),o.push([r,"MetadataFile"]),r="manifest.rdf",re(n,r,od0(o)),a.push([r,"application/rdf+xml"]),r="META-INF/manifest.xml",re(n,r,rd0(a)),n}/*! sheetjs (C) 2013-present SheetJS -- http://sheetjs.com */function mp(e){return new DataView(e.buffer,e.byteOffset,e.byteLength)}function dq(e){return typeof TextDecoder<"u"?new TextDecoder().decode(e):Qe(rl(e))}function NA0(e){return typeof TextEncoder<"u"?new TextEncoder().encode(e):la(us(e))}function LA0(e,t){e:for(var n=0;n<=e.length-t.length;++n){for(var r=0;r<t.length;++r)if(e[n+r]!=t[r])continue e;return!0}return!1}function Ic(e){var t=e.reduce(function(a,o){return a+o.length},0),n=new Uint8Array(t),r=0;return e.forEach(function(a){n.set(a,r),r+=a.length}),n}function Sk(e){return e-=e>>1&1431655765,e=(e&858993459)+(e>>2&858993459),(e+(e>>4)&252645135)*16843009>>>24}function kA0(e,t){for(var n=(e[t+15]&127)<<7|e[t+14]>>1,r=e[t+14]&1,a=t+13;a>=t;--a)r=r*256+e[a];return(e[t+15]&128?-r:r)*Math.pow(10,n-6176)}function CA0(e,t,n){var r=Math.floor(n==0?0:Math.LOG10E*Math.log(Math.abs(n)))+6176-20,a=n/Math.pow(10,r-6176);e[t+15]|=r>>7,e[t+14]|=(r&127)<<1;for(var o=0;a>=1;++o,a/=256)e[t+o]=a&255;e[t+15]|=n>=0?0:128}function Gb(e,t){var n=t?t[0]:0,r=e[n]&127;e:if(e[n++]>=128&&(r|=(e[n]&127)<<7,e[n++]<128||(r|=(e[n]&127)<<14,e[n++]<128)||(r|=(e[n]&127)<<21,e[n++]<128)||(r+=(e[n]&127)*Math.pow(2,28),++n,e[n++]<128)||(r+=(e[n]&127)*Math.pow(2,35),++n,e[n++]<128)||(r+=(e[n]&127)*Math.pow(2,42),++n,e[n++]<128)))break e;return t&&(t[0]=n),r}function Ie(e){var t=new Uint8Array(7);t[0]=e&127;var n=1;e:if(e>127){if(t[n-1]|=128,t[n]=e>>7&127,++n,e<=16383||(t[n-1]|=128,t[n]=e>>14&127,++n,e<=2097151)||(t[n-1]|=128,t[n]=e>>21&127,++n,e<=268435455)||(t[n-1]|=128,t[n]=e/256>>>21&127,++n,e<=34359738367)||(t[n-1]|=128,t[n]=e/65536>>>21&127,++n,e<=4398046511103))break e;t[n-1]|=128,t[n]=e/16777216>>>21&127,++n}return t.slice(0,n)}function It(e){var t=0,n=e[t]&127;e:if(e[t++]>=128){if(n|=(e[t]&127)<<7,e[t++]<128||(n|=(e[t]&127)<<14,e[t++]<128)||(n|=(e[t]&127)<<21,e[t++]<128))break e;n|=(e[t]&127)<<28}return n}function Se(e){for(var t=[],n=[0];n[0]<e.length;){var r=n[0],a=Gb(e,n),o=a&7;a=Math.floor(a/8);var s=0,i;if(a==0)break;switch(o){case 0:{for(var c=n[0];e[n[0]++]>=128;);i=e.slice(c,n[0])}break;case 5:s=4,i=e.slice(n[0],n[0]+s),n[0]+=s;break;case 1:s=8,i=e.slice(n[0],n[0]+s),n[0]+=s;break;case 2:s=Gb(e,n),i=e.slice(n[0],n[0]+s),n[0]+=s;break;case 3:case 4:default:throw new Error("PB Type ".concat(o," for Field ").concat(a," at offset ").concat(r))}var l={data:i,type:o};t[a]==null?t[a]=[l]:t[a].push(l)}return t}function In(e){var t=[];return e.forEach(function(n,r){n.forEach(function(a){a.data&&(t.push(Ie(r*8+a.type)),a.type==2&&t.push(Ie(a.data.length)),t.push(a.data))})}),Ic(t)}function uw(e,t){return(e==null?void 0:e.map(function(n){return t(n.data)}))||[]}function ka(e){for(var t,n=[],r=[0];r[0]<e.length;){var a=Gb(e,r),o=Se(e.slice(r[0],r[0]+a));r[0]+=a;var s={id:It(o[1][0].data),messages:[]};o[2].forEach(function(i){var c=Se(i.data),l=It(c[3][0].data);s.messages.push({meta:c,data:e.slice(r[0],r[0]+l)}),r[0]+=l}),(t=o[3])!=null&&t[0]&&(s.merge=It(o[3][0].data)>>>0>0),n.push(s)}return n}function lu(e){var t=[];return e.forEach(function(n){var r=[];r[1]=[{data:Ie(n.id),type:0}],r[2]=[],n.merge!=null&&(r[3]=[{data:Ie(+!!n.merge),type:0}]);var a=[];n.messages.forEach(function(s){a.push(s.data),s.meta[3]=[{type:0,data:Ie(s.data.length)}],r[2].push({data:In(s.meta),type:2})});var o=In(r);t.push(Ie(o.length)),t.push(o),a.forEach(function(s){return t.push(s)})}),Ic(t)}function EA0(e,t){if(e!=0)throw new Error("Unexpected Snappy chunk type ".concat(e));for(var n=[0],r=Gb(t,n),a=[];n[0]<t.length;){var o=t[n[0]]&3;if(o==0){var s=t[n[0]++]>>2;if(s<60)++s;else{var i=s-59;s=t[n[0]],i>1&&(s|=t[n[0]+1]<<8),i>2&&(s|=t[n[0]+2]<<16),i>3&&(s|=t[n[0]+3]<<24),s>>>=0,s++,n[0]+=i}a.push(t.slice(n[0],n[0]+s)),n[0]+=s;continue}else{var c=0,l=0;if(o==1?(l=(t[n[0]]>>2&7)+4,c=(t[n[0]++]&224)<<3,c|=t[n[0]++]):(l=(t[n[0]++]>>2)+1,o==2?(c=t[n[0]]|t[n[0]+1]<<8,n[0]+=2):(c=(t[n[0]]|t[n[0]+1]<<8|t[n[0]+2]<<16|t[n[0]+3]<<24)>>>0,n[0]+=4)),a=[Ic(a)],c==0)throw new Error("Invalid offset 0");if(c>a[0].length)throw new Error("Invalid offset beyond length");if(l>=c)for(a.push(a[0].slice(-c)),l-=c;l>=a[a.length-1].length;)a.push(a[a.length-1]),l-=a[a.length-1].length;a.push(a[0].slice(-c,-c+l))}}var p=Ic(a);if(p.length!=r)throw new Error("Unexpected length: ".concat(p.length," != ").concat(r));return p}function Ca(e){for(var t=[],n=0;n<e.length;){var r=e[n++],a=e[n]|e[n+1]<<8|e[n+2]<<16;n+=3,t.push(EA0(r,e.slice(n,n+a))),n+=a}if(n!==e.length)throw new Error("data is not a valid framed stream!");return Ic(t)}function pu(e){for(var t=[],n=0;n<e.length;){var r=Math.min(e.length-n,268435455),a=new Uint8Array(4);t.push(a);var o=Ie(r),s=o.length;t.push(o),r<=60?(s++,t.push(new Uint8Array([r-1<<2]))):r<=256?(s+=2,t.push(new Uint8Array([240,r-1&255]))):r<=65536?(s+=3,t.push(new Uint8Array([244,r-1&255,r-1>>8&255]))):r<=16777216?(s+=4,t.push(new Uint8Array([248,r-1&255,r-1>>8&255,r-1>>16&255]))):r<=4294967296&&(s+=5,t.push(new Uint8Array([252,r-1&255,r-1>>8&255,r-1>>16&255,r-1>>>24&255]))),t.push(e.slice(n,n+r)),s+=r,a[0]=0,a[1]=s&255,a[2]=s>>8&255,a[3]=s>>16&255,n+=r}return Ic(t)}function TA0(e,t,n,r){var a=mp(e),o=a.getUint32(4,!0),s=(r>1?12:8)+Sk(o&(r>1?3470:398))*4,i=-1,c=-1,l=NaN,p=new Date(2001,0,1);o&512&&(i=a.getUint32(s,!0),s+=4),s+=Sk(o&(r>1?12288:4096))*4,o&16&&(c=a.getUint32(s,!0),s+=4),o&32&&(l=a.getFloat64(s,!0),s+=8),o&64&&(p.setTime(p.getTime()+a.getFloat64(s,!0)*1e3),s+=8);var u;switch(e[2]){case 0:break;case 2:u={t:"n",v:l};break;case 3:u={t:"s",v:t[c]};break;case 5:u={t:"d",v:p};break;case 6:u={t:"b",v:l>0};break;case 7:u={t:"n",v:l/86400};break;case 8:u={t:"e",v:0};break;case 9:if(i>-1)u={t:"s",v:n[i]};else if(c>-1)u={t:"s",v:t[c]};else if(!isNaN(l))u={t:"n",v:l};else throw new Error("Unsupported cell type ".concat(e.slice(0,4)));break;default:throw new Error("Unsupported cell type ".concat(e.slice(0,4)))}return u}function DA0(e,t,n){var r=mp(e),a=r.getUint32(8,!0),o=12,s=-1,i=-1,c=NaN,l=NaN,p=new Date(2001,0,1);a&1&&(c=kA0(e,o),o+=16),a&2&&(l=r.getFloat64(o,!0),o+=8),a&4&&(p.setTime(p.getTime()+r.getFloat64(o,!0)*1e3),o+=8),a&8&&(i=r.getUint32(o,!0),o+=4),a&16&&(s=r.getUint32(o,!0),o+=4);var u;switch(e[1]){case 0:break;case 2:u={t:"n",v:c};break;case 3:u={t:"s",v:t[i]};break;case 5:u={t:"d",v:p};break;case 6:u={t:"b",v:l>0};break;case 7:u={t:"n",v:l/86400};break;case 8:u={t:"e",v:0};break;case 9:if(s>-1)u={t:"s",v:n[s]};else throw new Error("Unsupported cell type ".concat(e[1]," : ").concat(a&31," : ").concat(e.slice(0,4)));break;case 10:u={t:"n",v:c};break;default:throw new Error("Unsupported cell type ".concat(e[1]," : ").concat(a&31," : ").concat(e.slice(0,4)))}return u}function Mv(e,t){var n=new Uint8Array(32),r=mp(n),a=12,o=0;switch(n[0]=5,e.t){case"n":n[1]=2,CA0(n,a,e.v),o|=1,a+=16;break;case"b":n[1]=6,r.setFloat64(a,e.v?1:0,!0),o|=2,a+=8;break;case"s":if(t.indexOf(e.v)==-1)throw new Error("Value ".concat(e.v," missing from SST!"));n[1]=3,r.setUint32(a,t.indexOf(e.v),!0),o|=8,a+=4;break;default:throw"unsupported cell type "+e.t}return r.setUint32(8,o,!0),n.slice(0,a)}function zv(e,t){var n=new Uint8Array(32),r=mp(n),a=12,o=0;switch(n[0]=3,e.t){case"n":n[2]=2,r.setFloat64(a,e.v,!0),o|=32,a+=8;break;case"b":n[2]=6,r.setFloat64(a,e.v?1:0,!0),o|=32,a+=8;break;case"s":if(t.indexOf(e.v)==-1)throw new Error("Value ".concat(e.v," missing from SST!"));n[2]=3,r.setUint32(a,t.indexOf(e.v),!0),o|=16,a+=4;break;default:throw"unsupported cell type "+e.t}return r.setUint32(4,o,!0),n.slice(0,a)}function PA0(e,t,n){switch(e[0]){case 0:case 1:case 2:case 3:return TA0(e,t,n,e[0]);case 5:return DA0(e,t,n);default:throw new Error("Unsupported payload version ".concat(e[0]))}}function ar(e){var t=Se(e);return Gb(t[1][0].data)}function Nk(e,t){var n=Se(t.data),r=It(n[1][0].data),a=n[3],o=[];return(a||[]).forEach(function(s){var i=Se(s.data),c=It(i[1][0].data)>>>0;switch(r){case 1:o[c]=dq(i[3][0].data);break;case 8:{var l=e[ar(i[9][0].data)][0],p=Se(l.data),u=e[ar(p[1][0].data)][0],f=It(u.meta[1][0].data);if(f!=2001)throw new Error("2000 unexpected reference to ".concat(f));var b=Se(u.data);o[c]=b[3].map(function(M){return dq(M.data)}).join("")}break}}),o}function BA0(e,t){var n,r,a,o,s,i,c,l,p,u,f,b,M,z,h=Se(e),m=It(h[1][0].data)>>>0,O=It(h[2][0].data)>>>0,A=((r=(n=h[8])==null?void 0:n[0])==null?void 0:r.data)&&It(h[8][0].data)>0||!1,v,x;if((o=(a=h[7])==null?void 0:a[0])!=null&&o.data&&t!=0)v=(i=(s=h[7])==null?void 0:s[0])==null?void 0:i.data,x=(l=(c=h[6])==null?void 0:c[0])==null?void 0:l.data;else if((u=(p=h[4])==null?void 0:p[0])!=null&&u.data&&t!=1)v=(b=(f=h[4])==null?void 0:f[0])==null?void 0:b.data,x=(z=(M=h[3])==null?void 0:M[0])==null?void 0:z.data;else throw"NUMBERS Tile missing ".concat(t," cell storage");for(var W=A?4:1,q=mp(v),_=[],N=0;N<v.length/2;++N){var L=q.getUint16(N*2,!0);L<65535&&_.push([N,L])}if(_.length!=O)throw"Expected ".concat(O," cells, found ").concat(_.length);var k=[];for(N=0;N<_.length-1;++N)k[_[N][0]]=x.subarray(_[N][1]*W,_[N+1][1]*W);return _.length>=1&&(k[_[_.length-1][0]]=x.subarray(_[_.length-1][1]*W)),{R:m,cells:k}}function FA0(e,t){var n,r=Se(t.data),a=(n=r==null?void 0:r[7])!=null&&n[0]?It(r[7][0].data)>>>0>0?1:0:-1,o=uw(r[5],function(s){return BA0(s,a)});return{nrows:It(r[4][0].data)>>>0,data:o.reduce(function(s,i){return s[i.R]||(s[i.R]=[]),i.cells.forEach(function(c,l){if(s[i.R][l])throw new Error("Duplicate cell r=".concat(i.R," c=").concat(l));s[i.R][l]=c}),s},[])}}function IA0(e,t,n){var r,a=Se(t.data),o={s:{r:0,c:0},e:{r:0,c:0}};if(o.e.r=(It(a[6][0].data)>>>0)-1,o.e.r<0)throw new Error("Invalid row varint ".concat(a[6][0].data));if(o.e.c=(It(a[7][0].data)>>>0)-1,o.e.c<0)throw new Error("Invalid col varint ".concat(a[7][0].data));n["!ref"]=ne(o);var s=Se(a[4][0].data),i=Nk(e,e[ar(s[4][0].data)][0]),c=(r=s[17])!=null&&r[0]?Nk(e,e[ar(s[17][0].data)][0]):[],l=Se(s[3][0].data),p=0;l[1].forEach(function(u){var f=Se(u.data),b=e[ar(f[2][0].data)][0],M=It(b.meta[1][0].data);if(M!=6002)throw new Error("6001 unexpected reference to ".concat(M));var z=FA0(e,b);z.data.forEach(function(h,m){h.forEach(function(O,A){var v=U1({r:p+m,c:A}),x=PA0(O,i,c);x&&(n[v]=x)})}),p+=z.nrows})}function jA0(e,t){var n=Se(t.data),r={"!ref":"A1"},a=e[ar(n[2][0].data)],o=It(a[0].meta[1][0].data);if(o!=6001)throw new Error("6000 unexpected reference to ".concat(o));return IA0(e,a[0],r),r}function XA0(e,t){var n,r=Se(t.data),a={name:(n=r[1])!=null&&n[0]?dq(r[1][0].data):"",sheets:[]},o=uw(r[2],ar);return o.forEach(function(s){e[s].forEach(function(i){var c=It(i.meta[1][0].data);c==6e3&&a.sheets.push(jA0(e,i))})}),a}function $A0(e,t){var n=zw(),r=Se(t.data),a=uw(r[1],ar);if(a.forEach(function(o){e[o].forEach(function(s){var i=It(s.meta[1][0].data);if(i==2){var c=XA0(e,s);c.sheets.forEach(function(l,p){hw(n,l,p==0?c.name:c.name+"_"+p,!0)})}})}),n.SheetNames.length==0)throw new Error("Empty NUMBERS file");return n}function hv(e){var t,n,r,a,o={},s=[];if(e.FullPaths.forEach(function(c){if(c.match(/\.iwpv2/))throw new Error("Unsupported password protection")}),e.FileIndex.forEach(function(c){if(c.name.match(/\.iwa$/)){var l;try{l=Ca(c.content)}catch(u){return console.log("?? "+c.content.length+" "+(u.message||u))}var p;try{p=ka(l)}catch(u){return console.log("## "+(u.message||u))}p.forEach(function(u){o[u.id]=u.messages,s.push(u.id)})}}),!s.length)throw new Error("File has no messages");var i=((a=(r=(n=(t=o==null?void 0:o[1])==null?void 0:t[0])==null?void 0:n.meta)==null?void 0:r[1])==null?void 0:a[0].data)&&It(o[1][0].meta[1][0].data)==1&&o[1][0];if(i||s.forEach(function(c){o[c].forEach(function(l){var p=It(l.meta[1][0].data)>>>0;if(p==1)if(!i)i=l;else throw new Error("Document has multiple roots")})}),!i)throw new Error("Cannot find Document root");return $A0(o,i)}function HA0(e,t,n){var r,a,o,s;if(!((r=e[6])!=null&&r[0])||!((a=e[7])!=null&&a[0]))throw"Mutation only works on post-BNC storages!";var i=((s=(o=e[8])==null?void 0:o[0])==null?void 0:s.data)&&It(e[8][0].data)>0||!1;if(i)throw"Math only works with normal offsets";for(var c=0,l=mp(e[7][0].data),p=0,u=[],f=mp(e[4][0].data),b=0,M=[],z=0;z<t.length;++z){if(t[z]==null){l.setUint16(z*2,65535,!0),f.setUint16(z*2,65535);continue}l.setUint16(z*2,p,!0),f.setUint16(z*2,b,!0);var h,m;switch(typeof t[z]){case"string":h=Mv({t:"s",v:t[z]},n),m=zv({t:"s",v:t[z]},n);break;case"number":h=Mv({t:"n",v:t[z]},n),m=zv({t:"n",v:t[z]},n);break;case"boolean":h=Mv({t:"b",v:t[z]},n),m=zv({t:"b",v:t[z]},n);break;default:throw new Error("Unsupported value "+t[z])}u.push(h),p+=h.length,M.push(m),b+=m.length,++c}for(e[2][0].data=Ie(c);z<e[7][0].data.length/2;++z)l.setUint16(z*2,65535,!0),f.setUint16(z*2,65535,!0);return e[6][0].data=Ic(u),e[3][0].data=Ic(M),c}function UA0(e,t){if(!t||!t.numbers)throw new Error("Must pass a `numbers` option -- check the README");var n=e.Sheets[e.SheetNames[0]];e.SheetNames.length>1&&console.error("The Numbers writer currently writes only the first table");var r=ea(n["!ref"]);r.s.r=r.s.c=0;var a=!1;r.e.c>9&&(a=!0,r.e.c=9),r.e.r>49&&(a=!0,r.e.r=49),a&&console.error("The Numbers writer is currently limited to ".concat(ne(r)));var o=im(n,{range:r,header:1}),s=["~Sh33tJ5~"];o.forEach(function(j){return j.forEach(function(P){typeof P=="string"&&s.push(P)})});var i={},c=[],l=T1.read(t.numbers,{type:"base64"});l.FileIndex.map(function(j,P){return[j,l.FullPaths[P]]}).forEach(function(j){var P=j[0],E=j[1];if(P.type==2&&P.name.match(/\.iwa/)){var J=P.content,M0=Ca(J),O0=ka(M0);O0.forEach(function(W0){c.push(W0.id),i[W0.id]={deps:[],location:E,type:It(W0.messages[0].meta[1][0].data)}})}}),c.sort(function(j,P){return j-P});var p=c.filter(function(j){return j>1}).map(function(j){return[j,Ie(j)]});l.FileIndex.map(function(j,P){return[j,l.FullPaths[P]]}).forEach(function(j){var P=j[0];if(j[1],!!P.name.match(/\.iwa/)){var E=ka(Ca(P.content));E.forEach(function(J){J.messages.forEach(function(M0){p.forEach(function(O0){J.messages.some(function(W0){return It(W0.meta[1][0].data)!=11006&&LA0(W0.data,O0[1])})&&i[O0[0]].deps.push(J.id)})})})}});for(var u=T1.find(l,i[1].location),f=ka(Ca(u.content)),b,M=0;M<f.length;++M){var z=f[M];z.id==1&&(b=z)}var h=ar(Se(b.messages[0].data)[1][0].data);for(u=T1.find(l,i[h].location),f=ka(Ca(u.content)),M=0;M<f.length;++M)z=f[M],z.id==h&&(b=z);for(h=ar(Se(b.messages[0].data)[2][0].data),u=T1.find(l,i[h].location),f=ka(Ca(u.content)),M=0;M<f.length;++M)z=f[M],z.id==h&&(b=z);for(h=ar(Se(b.messages[0].data)[2][0].data),u=T1.find(l,i[h].location),f=ka(Ca(u.content)),M=0;M<f.length;++M)z=f[M],z.id==h&&(b=z);var m=Se(b.messages[0].data);{m[6][0].data=Ie(r.e.r+1),m[7][0].data=Ie(r.e.c+1);var O=ar(m[46][0].data),A=T1.find(l,i[O].location),v=ka(Ca(A.content));{for(var x=0;x<v.length&&v[x].id!=O;++x);if(v[x].id!=O)throw"Bad ColumnRowUIDMapArchive";var W=Se(v[x].messages[0].data);W[1]=[],W[2]=[],W[3]=[];for(var q=0;q<=r.e.c;++q){var _=[];_[1]=_[2]=[{type:0,data:Ie(q+420690)}],W[1].push({type:2,data:In(_)}),W[2].push({type:0,data:Ie(q)}),W[3].push({type:0,data:Ie(q)})}W[4]=[],W[5]=[],W[6]=[];for(var N=0;N<=r.e.r;++N)_=[],_[1]=_[2]=[{type:0,data:Ie(N+726270)}],W[4].push({type:2,data:In(_)}),W[5].push({type:0,data:Ie(N)}),W[6].push({type:0,data:Ie(N)});v[x].messages[0].data=In(W)}A.content=pu(lu(v)),A.size=A.content.length,delete m[46];var L=Se(m[4][0].data);{L[7][0].data=Ie(r.e.r+1);var k=Se(L[1][0].data),S=ar(k[2][0].data);A=T1.find(l,i[S].location),v=ka(Ca(A.content));{if(v[0].id!=S)throw"Bad HeaderStorageBucket";var B=Se(v[0].messages[0].data);for(N=0;N<o.length;++N){var V=Se(B[2][0].data);V[1][0].data=Ie(N),V[4][0].data=Ie(o[N].length),B[2][N]={type:B[2][0].type,data:In(V)}}v[0].messages[0].data=In(B)}A.content=pu(lu(v)),A.size=A.content.length;var K=ar(L[2][0].data);A=T1.find(l,i[K].location),v=ka(Ca(A.content));{if(v[0].id!=K)throw"Bad HeaderStorageBucket";for(B=Se(v[0].messages[0].data),q=0;q<=r.e.c;++q)V=Se(B[2][0].data),V[1][0].data=Ie(q),V[4][0].data=Ie(r.e.r+1),B[2][q]={type:B[2][0].type,data:In(V)};v[0].messages[0].data=In(B)}A.content=pu(lu(v)),A.size=A.content.length;var i0=ar(L[4][0].data);(function(){for(var j=T1.find(l,i[i0].location),P=ka(Ca(j.content)),E,J=0;J<P.length;++J){var M0=P[J];M0.id==i0&&(E=M0)}var O0=Se(E.messages[0].data);{O0[3]=[];var W0=[];s.forEach(function(e0,l0){W0[1]=[{type:0,data:Ie(l0)}],W0[2]=[{type:0,data:Ie(1)}],W0[3]=[{type:2,data:NA0(e0)}],O0[3].push({type:2,data:In(W0)})})}E.messages[0].data=In(O0);var x0=lu(P),X0=pu(x0);j.content=X0,j.size=j.content.length})();var G=Se(L[3][0].data);{var U=G[1][0];delete G[2];var F=Se(U.data);{var n0=ar(F[2][0].data);(function(){for(var j=T1.find(l,i[n0].location),P=ka(Ca(j.content)),E,J=0;J<P.length;++J){var M0=P[J];M0.id==n0&&(E=M0)}var O0=Se(E.messages[0].data);{delete O0[6],delete G[7];var W0=new Uint8Array(O0[5][0].data);O0[5]=[];for(var x0=0,X0=0;X0<=r.e.r;++X0){var e0=Se(W0);x0+=HA0(e0,o[X0],s),e0[1][0].data=Ie(X0),O0[5].push({data:In(e0),type:2})}O0[1]=[{type:0,data:Ie(r.e.c+1)}],O0[2]=[{type:0,data:Ie(r.e.r+1)}],O0[3]=[{type:0,data:Ie(x0)}],O0[4]=[{type:0,data:Ie(r.e.r+1)}]}E.messages[0].data=In(O0);var l0=lu(P),g0=pu(l0);j.content=g0,j.size=j.content.length})()}U.data=In(F)}L[3][0].data=In(G)}m[4][0].data=In(L)}b.messages[0].data=In(m);var a0=lu(f),T=pu(a0);return u.content=T,u.size=u.content.length,l}function FX(e){return function(n){for(var r=0;r!=e.length;++r){var a=e[r];n[a[0]]===void 0&&(n[a[0]]=a[1]),a[2]==="n"&&(n[a[0]]=Number(n[a[0]]))}}}function dw(e){FX([["cellNF",!1],["cellHTML",!0],["cellFormula",!0],["cellStyles",!1],["cellText",!0],["cellDates",!1],["sheetStubs",!1],["sheetRows",0,"n"],["bookDeps",!1],["bookSheets",!1],["bookProps",!1],["bookFiles",!1],["bookVBA",!1],["password",""],["WTF",!1]])(e)}function fw(e){FX([["cellDates",!1],["bookSST",!1],["bookType","xlsx"],["compression",!1],["WTF",!1]])(e)}function YA0(e){return ue.WS.indexOf(e)>-1?"sheet":e==ue.CS?"chart":e==ue.DS?"dialog":e==ue.MS?"macro":e&&e.length?e:"sheet"}function VA0(e,t){if(!e)return 0;try{e=t.map(function(r){return r.id||(r.id=r.strRelID),[r.name,e["!id"][r.id].Target,YA0(e["!id"][r.id].Type)]})}catch{return null}return!e||e.length===0?null:e}function GA0(e,t,n,r,a,o,s,i,c,l,p,u){try{o[r]=Tf(pa(e,n,!0),t);var f=sn(e,t),b;switch(i){case"sheet":b=hm0(f,t,a,c,o[r],l,p,u);break;case"chart":if(b=Om0(f,t,a,c,o[r],l,p,u),!b||!b["!drawel"])break;var M=lf(b["!drawel"].Target,t),z=Xb(M),h=az0(pa(e,M,!0),Tf(pa(e,z,!0),M)),m=lf(h,M),O=Xb(m);b=H30(pa(e,m,!0),m,c,Tf(pa(e,O,!0),m),l,b);break;case"macro":b=mm0(f,t,a,c,o[r],l,p,u);break;case"dialog":b=Am0(f,t,a,c,o[r],l,p,u);break;default:throw new Error("Unrecognized sheet type "+i)}s[r]=b;var A=[];o&&o[r]&&Xt(o[r]).forEach(function(v){var x="";if(o[r][v].Type==ue.CMNT){x=lf(o[r][v].Target,t);var W=qm0(sn(e,x,!0),x,c);if(!W||!W.length)return;zk(b,W,!1)}o[r][v].Type==ue.TCMNT&&(x=lf(o[r][v].Target,t),A=A.concat(sz0(sn(e,x,!0),c)))}),A&&A.length&&zk(b,A,!0,c.people||[])}catch(v){if(c.WTF)throw v}}function _a(e){return e.charAt(0)=="/"?e.slice(1):e}function KA0(e,t){if(K2(),t=t||{},dw(t),Ea(e,"META-INF/manifest.xml")||Ea(e,"objectdata.xml"))return wk(e,t);if(Ea(e,"Index/Document.iwa")){if(typeof Uint8Array>"u")throw new Error("NUMBERS file parsing requires Uint8Array support");if(typeof hv<"u"){if(e.FileIndex)return hv(e);var n=T1.utils.cfb_new();return DL(e).forEach(function(V){re(n,V,i20(e,V))}),hv(n)}throw new Error("Unsupported NUMBERS file")}if(!Ea(e,"[Content_Types].xml"))throw Ea(e,"index.xml.gz")?new Error("Unsupported NUMBERS 08 file"):Ea(e,"index.xml")?new Error("Unsupported NUMBERS 09 file"):new Error("Unsupported ZIP file");var r=DL(e),a=ed0(pa(e,"[Content_Types].xml")),o=!1,s,i;if(a.workbooks.length===0&&(i="xl/workbook.xml",sn(e,i,!0)&&a.workbooks.push(i)),a.workbooks.length===0){if(i="xl/workbook.bin",!sn(e,i,!0))throw new Error("Could not find workbook");a.workbooks.push(i),o=!0}a.workbooks[0].slice(-3)=="bin"&&(o=!0);var c={},l={};if(!t.bookSheets&&!t.bookProps){if(Df=[],a.sst)try{Df=ym0(sn(e,_a(a.sst)),a.sst,t)}catch(V){if(t.WTF)throw V}t.cellStyles&&a.themes.length&&(c=vm0(pa(e,a.themes[0].replace(/^\//,""),!0)||"",a.themes[0],t)),a.style&&(l=gm0(sn(e,_a(a.style)),a.style,c,t))}a.links.map(function(V){try{var K=Tf(pa(e,Xb(_a(V))),V);return Wm0(sn(e,_a(V)),K,V,t)}catch{}});var p=zm0(sn(e,_a(a.workbooks[0])),a.workbooks[0],t),u={},f="";a.coreprops.length&&(f=sn(e,_a(a.coreprops[0]),!0),f&&(u=Rj(f)),a.extprops.length!==0&&(f=sn(e,_a(a.extprops[0]),!0),f&&id0(f,u,t)));var b={};(!t.bookSheets||t.bookProps)&&a.custprops.length!==0&&(f=pa(e,_a(a.custprops[0]),!0),f&&(b=ld0(f,t)));var M={};if((t.bookSheets||t.bookProps)&&(p.Sheets?s=p.Sheets.map(function(K){return K.name}):u.Worksheets&&u.SheetNames.length>0&&(s=u.SheetNames),t.bookProps&&(M.Props=u,M.Custprops=b),t.bookSheets&&typeof s<"u"&&(M.SheetNames=s),t.bookSheets?M.SheetNames:t.bookProps))return M;s={};var z={};t.bookDeps&&a.calcchain&&(z=xm0(sn(e,_a(a.calcchain)),a.calcchain));var h=0,m={},O,A;{var v=p.Sheets;u.Worksheets=v.length,u.SheetNames=[];for(var x=0;x!=v.length;++x)u.SheetNames[x]=v[x].name}var W=o?"bin":"xml",q=a.workbooks[0].lastIndexOf("/"),_=(a.workbooks[0].slice(0,q+1)+"_rels/"+a.workbooks[0].slice(q+1)+".rels").replace(/^\//,"");Ea(e,_)||(_="xl/_rels/workbook."+W+".rels");var N=Tf(pa(e,_,!0),_.replace(/_rels.*/,"s5s"));(a.metadata||[]).length>=1&&(t.xlmeta=wm0(sn(e,_a(a.metadata[0])),a.metadata[0],t)),(a.people||[]).length>=1&&(t.people=cz0(sn(e,_a(a.people[0])),t)),N&&(N=VA0(N,p.Sheets));var L=sn(e,"xl/worksheets/sheet.xml",!0)?1:0;e:for(h=0;h!=u.Worksheets;++h){var k="sheet";if(N&&N[h]?(O="xl/"+N[h][1].replace(/[\/]?xl\//,""),Ea(e,O)||(O=N[h][1]),Ea(e,O)||(O=_.replace(/_rels\/.*$/,"")+N[h][1]),k=N[h][2]):(O="xl/worksheets/sheet"+(h+1-L)+"."+W,O=O.replace(/sheet0\./,"sheet.")),A=O.replace(/^(.*)(\/)([^\/]*)$/,"$1/_rels/$3.rels"),t&&t.sheets!=null)switch(typeof t.sheets){case"number":if(h!=t.sheets)continue e;break;case"string":if(u.SheetNames[h].toLowerCase()!=t.sheets.toLowerCase())continue e;break;default:if(Array.isArray&&Array.isArray(t.sheets)){for(var S=!1,B=0;B!=t.sheets.length;++B)typeof t.sheets[B]=="number"&&t.sheets[B]==h&&(S=1),typeof t.sheets[B]=="string"&&t.sheets[B].toLowerCase()==u.SheetNames[h].toLowerCase()&&(S=1);if(!S)continue e}}GA0(e,O,A,u.SheetNames[h],h,m,s,k,t,p,c,l)}return M={Directory:a,Workbook:p,Props:u,Custprops:b,Deps:z,Sheets:s,SheetNames:u.SheetNames,Strings:Df,Styles:l,Themes:c,SSF:zt($1)},t&&t.bookFiles&&(e.files?(M.keys=r,M.files=e.files):(M.keys=[],M.files={},e.FullPaths.forEach(function(V,K){V=V.replace(/^Root Entry[\/]/,""),M.keys.push(V),M.files[V]=e.FileIndex[K]}))),t&&t.bookVBA&&(a.vba.length>0?M.vbaraw=sn(e,_a(a.vba[0]),!0):a.defaults&&a.defaults.bin===zz0&&(M.vbaraw=sn(e,"xl/vbaProject.bin",!0))),M}function JA0(e,t){var n=t||{},r="Workbook",a=T1.find(e,r);try{if(r="/!DataSpaces/Version",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);if(wb0(a.content),r="/!DataSpaces/DataSpaceMap",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);var o=_b0(a.content);if(o.length!==1||o[0].comps.length!==1||o[0].comps[0].t!==0||o[0].name!=="StrongEncryptionDataSpace"||o[0].comps[0].v!=="EncryptedPackage")throw new Error("ECMA-376 Encrypted file bad "+r);if(r="/!DataSpaces/DataSpaceInfo/StrongEncryptionDataSpace",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);var s=Sb0(a.content);if(s.length!=1||s[0]!="StrongEncryptionTransform")throw new Error("ECMA-376 Encrypted file bad "+r);if(r="/!DataSpaces/TransformInfo/StrongEncryptionTransform/!Primary",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);Lb0(a.content)}catch{}if(r="/EncryptionInfo",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);var i=kb0(a.content);if(r="/EncryptedPackage",a=T1.find(e,r),!a||!a.content)throw new Error("ECMA-376 Encrypted file missing "+r);if(i[0]==4&&typeof decrypt_agile<"u")return decrypt_agile(i[1],a.content,n.password||"",n);if(i[0]==2&&typeof decrypt_std76<"u")return decrypt_std76(i[1],a.content,n.password||"",n);throw new Error("File is password-protected")}function QA0(e,t){return t.bookType=="ods"?BX(e,t):t.bookType=="numbers"?UA0(e,t):t.bookType=="xlsb"?ZA0(e,t):eg0(e,t)}function ZA0(e,t){Pu=1024,e&&!e.SSF&&(e.SSF=zt($1)),e&&e.SSF&&(K2(),FA(e.SSF),t.revssf=jA(e.SSF),t.revssf[e.SSF[65535]]=0,t.ssf=e.SSF),t.rels={},t.wbrels={},t.Strings=[],t.Strings.Count=0,t.Strings.Unique=0,Pf?t.revStrings=new Map:(t.revStrings={},t.revStrings.foo=[],delete t.revStrings.foo);var n=t.bookType=="xlsb"?"bin":"xml",r=fX.indexOf(t.bookType)>-1,a=QW();fw(t=t||{});var o=PW(),s="",i=0;if(t.cellXfs=[],ol(t.cellXfs,{},{revssf:{General:0}}),e.Props||(e.Props={}),s="docProps/core.xml",re(o,s,_j(e.Props,t)),a.coreprops.push(s),Xe(t.rels,2,s,ue.CORE_PROPS),s="docProps/app.xml",!(e.Props&&e.Props.SheetNames))if(!e.Workbook||!e.Workbook.Sheets)e.Props.SheetNames=e.SheetNames;else{for(var c=[],l=0;l<e.SheetNames.length;++l)(e.Workbook.Sheets[l]||{}).Hidden!=2&&c.push(e.SheetNames[l]);e.Props.SheetNames=c}for(e.Props.Worksheets=e.Props.SheetNames.length,re(o,s,Lj(e.Props)),a.extprops.push(s),Xe(t.rels,3,s,ue.EXT_PROPS),e.Custprops!==e.Props&&Xt(e.Custprops||{}).length>0&&(s="docProps/custom.xml",re(o,s,kj(e.Custprops)),a.custprops.push(s),Xe(t.rels,4,s,ue.CUST_PROPS)),i=1;i<=e.SheetNames.length;++i){var p={"!id":{}},u=e.Sheets[e.SheetNames[i-1]],f=(u||{})["!type"]||"sheet";switch(f){case"chart":default:s="xl/worksheets/sheet"+i+"."+n,re(o,s,_m0(i-1,s,t,e,p)),a.sheets.push(s),Xe(t.wbrels,-1,"worksheets/sheet"+i+"."+n,ue.WS[0])}if(u){var b=u["!comments"],M=!1,z="";b&&b.length>0&&(z="xl/comments"+i+"."+n,re(o,z,Lm0(b,z)),a.comments.push(z),Xe(p,-1,"../comments"+i+"."+n,ue.CMNT),M=!0),u["!legacy"]&&M&&re(o,"xl/drawings/vmlDrawing"+i+".vml",uX(i,u["!comments"])),delete u["!comments"],delete u["!legacy"]}p["!id"].rId1&&re(o,Xb(s),Zu(p))}return t.Strings!=null&&t.Strings.length>0&&(s="xl/sharedStrings."+n,re(o,s,Nm0(t.Strings,s,t)),a.strs.push(s),Xe(t.wbrels,-1,"sharedStrings."+n,ue.SST)),s="xl/workbook."+n,re(o,s,Rm0(e,s)),a.workbooks.push(s),Xe(t.rels,1,s,ue.WB),s="xl/theme/theme1.xml",re(o,s,aw(e.Themes,t)),a.themes.push(s),Xe(t.wbrels,-1,"theme/theme1.xml",ue.THEME),s="xl/styles."+n,re(o,s,Sm0(e,s,t)),a.styles.push(s),Xe(t.wbrels,-1,"styles."+n,ue.STY),e.vbaraw&&r&&(s="xl/vbaProject.bin",re(o,s,e.vbaraw),a.vba.push(s),Xe(t.wbrels,-1,"vbaProject.bin",ue.VBA)),s="xl/metadata."+n,re(o,s,km0(s)),a.metadata.push(s),Xe(t.wbrels,-1,"metadata."+n,ue.XLMETA),re(o,"[Content_Types].xml",Wj(a,t)),re(o,"_rels/.rels",Zu(t.rels)),re(o,"xl/_rels/workbook."+n+".rels",Zu(t.wbrels)),delete t.revssf,delete t.ssf,o}function eg0(e,t){Pu=1024,e&&!e.SSF&&(e.SSF=zt($1)),e&&e.SSF&&(K2(),FA(e.SSF),t.revssf=jA(e.SSF),t.revssf[e.SSF[65535]]=0,t.ssf=e.SSF),t.rels={},t.wbrels={},t.Strings=[],t.Strings.Count=0,t.Strings.Unique=0,Pf?t.revStrings=new Map:(t.revStrings={},t.revStrings.foo=[],delete t.revStrings.foo);var n="xml",r=fX.indexOf(t.bookType)>-1,a=QW();fw(t=t||{});var o=PW(),s="",i=0;if(t.cellXfs=[],ol(t.cellXfs,{},{revssf:{General:0}}),e.Props||(e.Props={}),s="docProps/core.xml",re(o,s,_j(e.Props,t)),a.coreprops.push(s),Xe(t.rels,2,s,ue.CORE_PROPS),s="docProps/app.xml",!(e.Props&&e.Props.SheetNames))if(!e.Workbook||!e.Workbook.Sheets)e.Props.SheetNames=e.SheetNames;else{for(var c=[],l=0;l<e.SheetNames.length;++l)(e.Workbook.Sheets[l]||{}).Hidden!=2&&c.push(e.SheetNames[l]);e.Props.SheetNames=c}e.Props.Worksheets=e.Props.SheetNames.length,re(o,s,Lj(e.Props)),a.extprops.push(s),Xe(t.rels,3,s,ue.EXT_PROPS),e.Custprops!==e.Props&&Xt(e.Custprops||{}).length>0&&(s="docProps/custom.xml",re(o,s,kj(e.Custprops)),a.custprops.push(s),Xe(t.rels,4,s,ue.CUST_PROPS));var p=["SheetJ5"];for(t.tcid=0,i=1;i<=e.SheetNames.length;++i){var u={"!id":{}},f=e.Sheets[e.SheetNames[i-1]],b=(f||{})["!type"]||"sheet";switch(b){case"chart":default:s="xl/worksheets/sheet"+i+"."+n,re(o,s,qX(i-1,t,e,u)),a.sheets.push(s),Xe(t.wbrels,-1,"worksheets/sheet"+i+"."+n,ue.WS[0])}if(f){var M=f["!comments"],z=!1,h="";if(M&&M.length>0){var m=!1;M.forEach(function(O){O[1].forEach(function(A){A.T==!0&&(m=!0)})}),m&&(h="xl/threadedComments/threadedComment"+i+"."+n,re(o,h,iz0(M,p,t)),a.threadedcomments.push(h),Xe(u,-1,"../threadedComments/threadedComment"+i+"."+n,ue.TCMNT)),h="xl/comments"+i+"."+n,re(o,h,dX(M)),a.comments.push(h),Xe(u,-1,"../comments"+i+"."+n,ue.CMNT),z=!0}f["!legacy"]&&z&&re(o,"xl/drawings/vmlDrawing"+i+".vml",uX(i,f["!comments"])),delete f["!comments"],delete f["!legacy"]}u["!id"].rId1&&re(o,Xb(s),Zu(u))}return t.Strings!=null&&t.Strings.length>0&&(s="xl/sharedStrings."+n,re(o,s,Zj(t.Strings,t)),a.strs.push(s),Xe(t.wbrels,-1,"sharedStrings."+n,ue.SST)),s="xl/workbook."+n,re(o,s,_X(e)),a.workbooks.push(s),Xe(t.rels,1,s,ue.WB),s="xl/theme/theme1.xml",re(o,s,aw(e.Themes,t)),a.themes.push(s),Xe(t.wbrels,-1,"theme/theme1.xml",ue.THEME),s="xl/styles."+n,re(o,s,iX(e,t)),a.styles.push(s),Xe(t.wbrels,-1,"styles."+n,ue.STY),e.vbaraw&&r&&(s="xl/vbaProject.bin",re(o,s,e.vbaraw),a.vba.push(s),Xe(t.wbrels,-1,"vbaProject.bin",ue.VBA)),s="xl/metadata."+n,re(o,s,pX()),a.metadata.push(s),Xe(t.wbrels,-1,"metadata."+n,ue.XLMETA),p.length>1&&(s="xl/persons/person.xml",re(o,s,lz0(p)),a.people.push(s),Xe(t.wbrels,-1,"persons/person.xml",ue.PEOPLE)),re(o,"[Content_Types].xml",Wj(a,t)),re(o,"_rels/.rels",Zu(t.rels)),re(o,"xl/_rels/workbook."+n+".rels",Zu(t.wbrels)),delete t.revssf,delete t.ssf,o}function bw(e,t){var n="";switch((t||{}).type||"base64"){case"buffer":return[e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7]];case"base64":n=ma(e.slice(0,12));break;case"binary":n=e;break;case"array":return[e[0],e[1],e[2],e[3],e[4],e[5],e[6],e[7]];default:throw new Error("Unrecognized type "+(t&&t.type||"undefined"))}return[n.charCodeAt(0),n.charCodeAt(1),n.charCodeAt(2),n.charCodeAt(3),n.charCodeAt(4),n.charCodeAt(5),n.charCodeAt(6),n.charCodeAt(7)]}function tg0(e,t){return T1.find(e,"EncryptedPackage")?JA0(e,t):kX(e,t)}function ng0(e,t){var n,r=e,a=t||{};return a.type||(a.type=le&&Buffer.isBuffer(e)?"buffer":"base64"),n=tj(r,a),KA0(n,a)}function IX(e,t){var n=0;e:for(;n<e.length;)switch(e.charCodeAt(n)){case 10:case 13:case 32:++n;break;case 60:return pq(e.slice(n),t);default:break e}return m2.to_workbook(e,t)}function rg0(e,t){var n="",r=bw(e,t);switch(t.type){case"base64":n=ma(e);break;case"binary":n=e;break;case"buffer":n=e.toString("binary");break;case"array":n=Mp(e);break;default:throw new Error("Unrecognized type "+t.type)}return r[0]==239&&r[1]==187&&r[2]==191&&(n=Qe(n)),t.type="binary",IX(n,t)}function ag0(e,t){var n=e;return t.type=="base64"&&(n=ma(n)),n=sc.utils.decode(1200,n.slice(2),"str"),t.type="binary",IX(n,t)}function og0(e){return e.match(/[^\x00-\x7F]/)?us(e):e}function Ov(e,t,n,r){return r?(n.type="string",m2.to_workbook(e,n)):m2.to_workbook(t,n)}function sm(e,t){kW();var n=t||{};if(typeof ArrayBuffer<"u"&&e instanceof ArrayBuffer)return sm(new Uint8Array(e),(n=zt(n),n.type="array",n));typeof Uint8Array<"u"&&e instanceof Uint8Array&&!n.type&&(n.type=typeof Deno<"u"?"buffer":"array");var r=e,a=[0,0,0,0],o=!1;if(n.cellStyles&&(n.cellNF=!0,n.sheetStubs=!0),t2={},n.dateNF&&(t2.dateNF=n.dateNF),n.type||(n.type=le&&Buffer.isBuffer(e)?"buffer":"base64"),n.type=="file"&&(n.type=le?"buffer":"binary",r=Zu0(e),typeof Uint8Array<"u"&&!le&&(n.type="array")),n.type=="string"&&(o=!0,n.type="binary",n.codepage=65001,r=og0(e)),n.type=="array"&&typeof Uint8Array<"u"&&e instanceof Uint8Array&&typeof ArrayBuffer<"u"){var s=new ArrayBuffer(3),i=new Uint8Array(s);if(i.foo="bar",!i.foo)return n=zt(n),n.type="array",sm(CW(r),n)}switch((a=bw(r,n))[0]){case 208:if(a[1]===207&&a[2]===17&&a[3]===224&&a[4]===161&&a[5]===177&&a[6]===26&&a[7]===225)return tg0(T1.read(r,n),n);break;case 9:if(a[1]<=8)return kX(r,n);break;case 60:return pq(r,n);case 73:if(a[1]===73&&a[2]===42&&a[3]===0)throw new Error("TIFF Image File is not a spreadsheet");if(a[1]===68)return pb0(r,n);break;case 84:if(a[1]===65&&a[2]===66&&a[3]===76)return Jj.to_workbook(r,n);break;case 80:return a[1]===75&&a[2]<9&&a[3]<9?ng0(r,n):Ov(e,r,n,o);case 239:return a[3]===60?pq(r,n):Ov(e,r,n,o);case 255:if(a[1]===254)return ag0(r,n);if(a[1]===0&&a[2]===2&&a[3]===0)return Kl.to_workbook(r,n);break;case 0:if(a[1]===0&&(a[2]>=2&&a[3]===0||a[2]===0&&(a[3]===8||a[3]===9)))return Kl.to_workbook(r,n);break;case 3:case 131:case 139:case 140:return lq.to_workbook(r,n);case 123:if(a[1]===92&&a[2]===114&&a[3]===116)return aX.to_workbook(r,n);break;case 10:case 13:case 32:return rg0(r,n);case 137:if(a[1]===80&&a[2]===78&&a[3]===71)throw new Error("PNG Image File is not a spreadsheet");break}return lb0.indexOf(a[0])>-1&&a[2]<=12&&a[3]<=31?lq.to_workbook(r,n):Ov(e,r,n,o)}function jX(e,t){switch(t.type){case"base64":case"binary":break;case"buffer":case"array":t.type="";break;case"file":return HM(t.file,T1.write(e,{type:le?"buffer":""}));case"string":throw new Error("'string' output type invalid for '"+t.bookType+"' files");default:throw new Error("Unrecognized type "+t.type)}return T1.write(e,t)}function sg0(e,t){var n=zt(t||{}),r=QA0(e,n);return ig0(r,n)}function ig0(e,t){var n={},r=le?"nodebuffer":typeof Uint8Array<"u"?"array":"string";if(t.compression&&(n.compression="DEFLATE"),t.password)n.type=r;else switch(t.type){case"base64":n.type="base64";break;case"binary":n.type="string";break;case"string":throw new Error("'string' output type invalid for '"+t.bookType+"' files");case"buffer":case"file":n.type=r;break;default:throw new Error("Unrecognized type "+t.type)}var a=e.FullPaths?T1.write(e,{fileType:"zip",type:{nodebuffer:"buffer",string:"binary"}[n.type]||n.type,compression:!!t.compression}):e.generate(n);if(typeof Deno<"u"&&typeof a=="string"){if(t.type=="binary"||t.type=="base64")return a;a=new Uint8Array(BA(a))}return t.password&&typeof encrypt_agile<"u"?jX(encrypt_agile(a,t.password),t):t.type==="file"?HM(t.file,a):t.type=="string"?Qe(a):a}function cg0(e,t){var n=t||{},r=oA0(e,n);return jX(r,n)}function Vo(e,t,n){n||(n="");var r=n+e;switch(t.type){case"base64":return Pb(us(r));case"binary":return us(r);case"string":return e;case"file":return HM(t.file,r,"utf8");case"buffer":return le?Di(r,"utf8"):typeof TextEncoder<"u"?new TextEncoder().encode(r):Vo(r,{type:"binary"}).split("").map(function(a){return a.charCodeAt(0)})}throw new Error("Unrecognized type "+t.type)}function lg0(e,t){switch(t.type){case"base64":return Pb(e);case"binary":return e;case"string":return e;case"file":return HM(t.file,e,"binary");case"buffer":return le?Di(e,"binary"):e.split("").map(function(n){return n.charCodeAt(0)})}throw new Error("Unrecognized type "+t.type)}function Ph(e,t){switch(t.type){case"string":case"base64":case"binary":for(var n="",r=0;r<e.length;++r)n+=String.fromCharCode(e[r]);return t.type=="base64"?Pb(n):t.type=="string"?Qe(n):n;case"file":return HM(t.file,e);case"buffer":return e;default:throw new Error("Unrecognized type "+t.type)}}function XX(e,t){kW(),tm0(e);var n=zt(t||{});if(n.cellStyles&&(n.cellNF=!0,n.sheetStubs=!0),n.type=="array"){n.type="binary";var r=XX(e,n);return n.type="array",BA(r)}var a=0;if(n.sheet&&(typeof n.sheet=="number"?a=n.sheet:a=e.SheetNames.indexOf(n.sheet),!e.SheetNames[a]))throw new Error("Sheet not found: "+n.sheet+" : "+typeof n.sheet);switch(n.bookType||"xlsb"){case"xml":case"xlml":return Vo(Qm0(e,n),n);case"slk":case"sylk":return Vo(Kj.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"htm":case"html":return Vo(EX(e.Sheets[e.SheetNames[a]],n),n);case"txt":return lg0($X(e.Sheets[e.SheetNames[a]],n),n);case"csv":return Vo(Mw(e.Sheets[e.SheetNames[a]],n),n,"\uFEFF");case"dif":return Vo(Jj.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"dbf":return Ph(lq.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"prn":return Vo(m2.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"rtf":return Vo(aX.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"eth":return Vo(Qj.from_sheet(e.Sheets[e.SheetNames[a]],n),n);case"fods":return Vo(BX(e,n),n);case"wk1":return Ph(Kl.sheet_to_wk1(e.Sheets[e.SheetNames[a]],n),n);case"wk3":return Ph(Kl.book_to_wk3(e,n),n);case"biff2":n.biff||(n.biff=2);case"biff3":n.biff||(n.biff=3);case"biff4":return n.biff||(n.biff=4),Ph(CX(e,n),n);case"biff5":n.biff||(n.biff=5);case"biff8":case"xla":case"xls":return n.biff||(n.biff=8),cg0(e,n);case"xlsx":case"xlsm":case"xlam":case"xlsb":case"numbers":case"ods":return sg0(e,n);default:throw new Error("Unrecognized bookType |"+n.bookType+"|")}}function pg0(e){if(!e.bookType){var t={xls:"biff8",htm:"html",slk:"sylk",socialcalc:"eth",Sh33tJS:"WTF"},n=e.file.slice(e.file.lastIndexOf(".")).toLowerCase();n.match(/^\.[a-z]+$/)&&(e.bookType=n.slice(1)),e.bookType=t[e.bookType]||e.bookType}}function ug0(e,t,n){var r={};return r.type="file",r.file=t,pg0(r),XX(e,r)}function dg0(e,t,n,r,a,o,s,i){var c=en(n),l=i.defval,p=i.raw||!Object.prototype.hasOwnProperty.call(i,"raw"),u=!0,f=a===1?[]:{};if(a!==1)if(Object.defineProperty)try{Object.defineProperty(f,"__rowNum__",{value:n,enumerable:!1})}catch{f.__rowNum__=n}else f.__rowNum__=n;if(!s||e[n])for(var b=t.s.c;b<=t.e.c;++b){var M=s?e[n][b]:e[r[b]+c];if(M===void 0||M.t===void 0){if(l===void 0)continue;o[b]!=null&&(f[o[b]]=l);continue}var z=M.v;switch(M.t){case"z":if(z==null)break;continue;case"e":z=z==0?null:void 0;break;case"s":case"d":case"b":case"n":break;default:throw new Error("unrecognized type "+M.t)}if(o[b]!=null){if(z==null)if(M.t=="e"&&z===null)f[o[b]]=null;else if(l!==void 0)f[o[b]]=l;else if(p&&z===null)f[o[b]]=null;else continue;else f[o[b]]=p&&(M.t!=="n"||M.t==="n"&&i.rawNumbers!==!1)?z:_i(M,z,i);z!=null&&(u=!1)}}return{row:f,isempty:u}}function im(e,t){if(e==null||e["!ref"]==null)return[];var n={t:"n",v:0},r=0,a=1,o=[],s=0,i="",c={s:{r:0,c:0},e:{r:0,c:0}},l=t||{},p=l.range!=null?l.range:e["!ref"];switch(l.header===1?r=1:l.header==="A"?r=2:Array.isArray(l.header)?r=3:l.header==null&&(r=0),typeof p){case"string":c=we(p);break;case"number":c=we(e["!ref"]),c.s.r=p;break;default:c=p}r>0&&(a=0);var u=en(c.s.r),f=[],b=[],M=0,z=0,h=Array.isArray(e),m=c.s.r,O=0,A={};h&&!e[m]&&(e[m]=[]);var v=l.skipHidden&&e["!cols"]||[],x=l.skipHidden&&e["!rows"]||[];for(O=c.s.c;O<=c.e.c;++O)if(!(v[O]||{}).hidden)switch(f[O]=St(O),n=h?e[m][O]:e[f[O]+u],r){case 1:o[O]=O-c.s.c;break;case 2:o[O]=f[O];break;case 3:o[O]=l.header[O-c.s.c];break;default:if(n==null&&(n={w:"__EMPTY",t:"s"}),i=s=_i(n,null,l),z=A[s]||0,!z)A[s]=1;else{do i=s+"_"+z++;while(A[i]);A[s]=z,A[i]=1}o[O]=i}for(m=c.s.r+a;m<=c.e.r;++m)if(!(x[m]||{}).hidden){var W=dg0(e,c,m,f,r,o,h,l);(W.isempty===!1||(r===1?l.blankrows!==!1:l.blankrows))&&(b[M++]=W.row)}return b.length=M,b}var Lk=/"/g;function fg0(e,t,n,r,a,o,s,i){for(var c=!0,l=[],p="",u=en(n),f=t.s.c;f<=t.e.c;++f)if(r[f]){var b=i.dense?(e[n]||[])[f]:e[r[f]+u];if(b==null)p="";else if(b.v!=null){c=!1,p=""+(i.rawNumbers&&b.t=="n"?b.v:_i(b,null,i));for(var M=0,z=0;M!==p.length;++M)if((z=p.charCodeAt(M))===a||z===o||z===34||i.forceQuotes){p='"'+p.replace(Lk,'""')+'"';break}p=="ID"&&(p='"ID"')}else b.f!=null&&!b.F?(c=!1,p="="+b.f,p.indexOf(",")>=0&&(p='"'+p.replace(Lk,'""')+'"')):p="";l.push(p)}return i.blankrows===!1&&c?null:l.join(s)}function Mw(e,t){var n=[],r=t??{};if(e==null||e["!ref"]==null)return"";var a=we(e["!ref"]),o=r.FS!==void 0?r.FS:",",s=o.charCodeAt(0),i=r.RS!==void 0?r.RS:`
 `,c=i.charCodeAt(0),l=new RegExp((o=="|"?"\\|":o)+"+$"),p="",u=[];r.dense=Array.isArray(e);for(var f=r.skipHidden&&e["!cols"]||[],b=r.skipHidden&&e["!rows"]||[],M=a.s.c;M<=a.e.c;++M)(f[M]||{}).hidden||(u[M]=St(M));for(var z=0,h=a.s.r;h<=a.e.r;++h)(b[h]||{}).hidden||(p=fg0(e,a,h,u,s,c,o,r),p!=null&&(r.strip&&(p=p.replace(l,"")),(p||r.blankrows!==!1)&&n.push((z++?i:"")+p)));return delete r.dense,n.join("")}function $X(e,t){t||(t={}),t.FS="	",t.RS=`
 `;var n=Mw(e,t);return n}function bg0(e){var t="",n,r="";if(e==null||e["!ref"]==null)return[];var a=we(e["!ref"]),o="",s=[],i,c=[],l=Array.isArray(e);for(i=a.s.c;i<=a.e.c;++i)s[i]=St(i);for(var p=a.s.r;p<=a.e.r;++p)for(o=en(p),i=a.s.c;i<=a.e.c;++i)if(t=s[i]+o,n=l?(e[p]||[])[i]:e[t],r="",n!==void 0){if(n.F!=null){if(t=n.F,!n.f)continue;r=n.f,t.indexOf(":")==-1&&(t=t+":"+t)}if(n.f!=null)r=n.f;else{if(n.t=="z")continue;if(n.t=="n"&&n.v!=null)r=""+n.v;else if(n.t=="b")r=n.v?"TRUE":"FALSE";else if(n.w!==void 0)r="'"+n.w;else{if(n.v===void 0)continue;n.t=="s"?r="'"+n.v:r=""+n.v}}c[c.length]=t+"="+r}return c}function HX(e,t,n){var r=n||{},a=+!r.skipHeader,o=e||{},s=0,i=0;if(o&&r.origin!=null)if(typeof r.origin=="number")s=r.origin;else{var c=typeof r.origin=="string"?Nt(r.origin):r.origin;s=c.r,i=c.c}var l,p={s:{c:0,r:0},e:{c:i,r:s+t.length-1+a}};if(o["!ref"]){var u=we(o["!ref"]);p.e.c=Math.max(p.e.c,u.e.c),p.e.r=Math.max(p.e.r,u.e.r),s==-1&&(s=u.e.r+1,p.e.r=s+t.length-1+a)}else s==-1&&(s=0,p.e.r=t.length-1+a);var f=r.header||[],b=0;t.forEach(function(z,h){Xt(z).forEach(function(m){(b=f.indexOf(m))==-1&&(f[b=f.length]=m);var O=z[m],A="z",v="",x=U1({c:i+b,r:s+h+a});l=Kb(o,x),O&&typeof O=="object"&&!(O instanceof Date)?o[x]=O:(typeof O=="number"?A="n":typeof O=="boolean"?A="b":typeof O=="string"?A="s":O instanceof Date?(A="d",r.cellDates||(A="n",O=mn(O)),v=r.dateNF||$1[14]):O===null&&r.nullError&&(A="e",O=0),l?(l.t=A,l.v=O,delete l.w,delete l.R,v&&(l.z=v)):o[x]=l={t:A,v:O},v&&(l.z=v))})}),p.e.c=Math.max(p.e.c,i+f.length-1);var M=en(s);if(a)for(b=0;b<f.length;++b)o[St(b+i)+M]={t:"s",v:f[b]};return o["!ref"]=ne(p),o}function Mg0(e,t){return HX(null,e,t)}function Kb(e,t,n){if(typeof t=="string"){if(Array.isArray(e)){var r=Nt(t);return e[r.r]||(e[r.r]=[]),e[r.r][r.c]||(e[r.r][r.c]={t:"z"})}return e[t]||(e[t]={t:"z"})}return typeof t!="number"?Kb(e,U1(t)):Kb(e,U1({r:t,c:n||0}))}function zg0(e,t){if(typeof t=="number"){if(t>=0&&e.SheetNames.length>t)return t;throw new Error("Cannot find sheet # "+t)}else if(typeof t=="string"){var n=e.SheetNames.indexOf(t);if(n>-1)return n;throw new Error("Cannot find sheet name |"+t+"|")}else throw new Error("Cannot find sheet |"+t+"|")}function zw(){return{SheetNames:[],Sheets:{}}}function hw(e,t,n,r){var a=1;if(!n)for(;a<=65535&&e.SheetNames.indexOf(n="Sheet"+a)!=-1;++a,n=void 0);if(!n||e.SheetNames.length>=65535)throw new Error("Too many worksheets");if(r&&e.SheetNames.indexOf(n)>=0){var o=n.match(/(^.*?)(\d+)$/);a=o&&+o[2]||0;var s=o&&o[1]||n;for(++a;a<=65535&&e.SheetNames.indexOf(n=s+a)!=-1;++a);}if(RX(n),e.SheetNames.indexOf(n)>=0)throw new Error("Worksheet with name |"+n+"| already exists!");return e.SheetNames.push(n),e.Sheets[n]=t,n}function hg0(e,t,n){e.Workbook||(e.Workbook={}),e.Workbook.Sheets||(e.Workbook.Sheets=[]);var r=zg0(e,t);switch(e.Workbook.Sheets[r]||(e.Workbook.Sheets[r]={}),n){case 0:case 1:case 2:break;default:throw new Error("Bad sheet visibility setting "+n)}e.Workbook.Sheets[r].Hidden=n}function Og0(e,t){return e.z=t,e}function UX(e,t,n){return t?(e.l={Target:t},n&&(e.l.Tooltip=n)):delete e.l,e}function mg0(e,t,n){return UX(e,"#"+t,n)}function Ag0(e,t,n){e.c||(e.c=[]),e.c.push({t,a:n||"SheetJS"})}function gg0(e,t,n,r){for(var a=typeof t!="string"?t:we(t),o=typeof t=="string"?t:ne(t),s=a.s.r;s<=a.e.r;++s)for(var i=a.s.c;i<=a.e.c;++i){var c=Kb(e,s,i);c.t="n",c.F=o,delete c.v,s==a.s.r&&i==a.s.c&&(c.f=n,r&&(c.D=!0))}return e}var If={encode_col:St,encode_row:en,encode_cell:U1,encode_range:ne,decode_col:UW,decode_row:HW,split_cell:N20,decode_cell:Nt,decode_range:ea,format_cell:_i,sheet_add_aoa:mj,sheet_add_json:HX,sheet_add_dom:TX,aoa_to_sheet:J2,json_to_sheet:Mg0,table_to_sheet:DX,table_to_book:wA0,sheet_to_csv:Mw,sheet_to_txt:$X,sheet_to_json:im,sheet_to_html:EX,sheet_to_formulae:bg0,sheet_to_row_object_array:im,sheet_get_cell:Kb,book_new:zw,book_append_sheet:hw,book_set_sheet_visibility:hg0,cell_set_number_format:Og0,cell_set_hyperlink:UX,cell_set_internal_link:mg0,cell_add_comment:Ag0,sheet_set_array_formula:gg0,consts:{SHEET_VISIBLE:0,SHEET_HIDDEN:1,SHEET_VERY_HIDDEN:2}};const kk=e=>({type:q9,payload:e}),sl=()=>{const{state:e,dispatch:t}=Ht(),{handleIsExpired:n}=Ut(),{user:r}=Ar(),{token:a}=Po(),[o,s]=y.useState(!1),i=async b=>{let M=JSON.parse(localStorage.getItem("token"));const z=a||M,h=await fetch(`${H1}/post?page=${b}&size=50`,{method:"GET",headers:{Authorization:`Bearer ${z}`}});if(!h.ok)throw h.status===401&&n(!1),new Error("Network response was not ok");return h.json()},c=b=>{const M=[...e.postedConferences];return b.forEach(z=>{const h=M.findIndex(m=>m.id===z.id);h!==-1?M[h]=z:M.push(z)}),b},l=async()=>{if(s(!0),r||localStorage.getItem("user"))try{if(e.conferences.length===0){const b=await i(1),M=b.maxPages,z=b.maxRecords;sessionStorage.setItem("totalConfPost",JSON.stringify(z)),sessionStorage.setItem("totalPagesPost",JSON.stringify(M));const h=c(b.data);t(kk(h));for(let m=2;m<=M;m++){const O=await i(m),A=c(O.data);t(kk(A))}}s(!1)}catch{s(!1)}},p=async b=>{if(s(!0),r||localStorage.getItem("user")){let M=JSON.parse(localStorage.getItem("token"));const z=a||M;if(M)try{const h=await fetch(`${H1}/post`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${z}`},body:JSON.stringify(b)}),m=await h.json(),O=m.message||m.data;return s(!1),h.ok?{status:!0,message:O}:(h.status===401&&n(!1),{status:!1,message:O})}catch{throw new Error("Network response was not ok")}else return{status:!1,message:"Please log in again!"}}},u=async(b,M)=>{if(s(!0),r||localStorage.getItem("user")){let z=JSON.parse(localStorage.getItem("token"));const h=a||z;try{const m=await fetch(`${H1}/post/${M}`,{method:"PUT",headers:{"Content-Type":"application/json",Authorization:`Bearer ${h}`},body:JSON.stringify(b)}),A=(await m.json()).data;return s(!1),m.ok?{status:!0,message:A}:(m.status===401&&n(!1),{status:!1,message:A})}catch{throw new Error("Network response was not ok")}}},f=async b=>{if(s(!0),r||localStorage.getItem("user"))try{const M=await fetch(`${H1}/post/${b}`,{method:"DELETE",headers:{"Content-Type":"application/json",Authorization:`Bearer ${a}`}}),z=await M.json(),h=z.message||z.data;return M.ok?(s(!1),{status:!0,message:h}):(M.status===401&&n(!1),{status:!1,message:h})}catch{throw new Error("Network response was not ok")}};return{postedConferences:e.postedConferences,loading:o,getPostedConferences:l,postConference:p,updatePost:u,deletePost:f}},fq=[{code:4601,for:"Applied computing"},{code:4602,for:"Artificial intelligence"},{code:4603,for:"Computer vision and multimedia computation"},{code:4604,for:"Cybersecurity and privacy"},{code:4605,for:"Data management and data science"},{code:4606,for:"Distributed computing and systems software"},{code:4607,for:"Graphics, augmented reality and games"},{code:4608,for:"Human-centred computing"},{code:4611,for:"Machine learning"},{code:4612,for:"Software engineering"},{code:4613,for:"Theory of computation"},{code:461303,for:"Computational logic and formal languages"},{code:461304,for:"Concurrency theory"},{code:461305,for:"Data structures and algorithms"},{code:461306,for:"Numerical computation and mathematical software"},{code:461307,for:"Quantum computation"},{code:460101,for:"Applications in arts and humanities"},{code:460102,for:"Applications in health"},{code:460103,for:"Applications in life sciences"},{code:460104,for:"Applications in physical sciences"},{code:460105,for:"Applications in social sciences and education"},{code:460106,for:"Spatial data and applications"},{code:460201,for:"Artificial life and complex adaptive systems"},{code:460202,for:"Autonomous agents and multiagent systems"},{code:460203,for:"Evolutionary computation"},{code:460204,for:"Fuzzy computation"},{code:460205,for:"Intelligent robotics"},{code:460206,for:"Knowledge representation and reasoning"},{code:460207,for:"Modelling and simulation"},{code:460208,for:"Natural language processing"},{code:460209,for:"Planning and decision making"},{code:460210,for:"Satisfiability and optimisation"},{code:460211,for:"Speech production"},{code:460212,for:"Speech recognition"},{code:460301,for:"Active sensing"},{code:460302,for:"Audio processing"},{code:460303,for:"Computational imaging"},{code:460304,for:"Computer vision"},{code:460305,for:"Image and video coding"},{code:460306,for:"Image processing"},{code:460307,for:"Multimodal analysis and synthesis"},{code:460308,for:"Pattern recognition"},{code:460309,for:"Video processing"},{code:460401,for:"Cryptography"},{code:460402,for:"Data and information privacy"},{code:460403,for:"Data security and protection"},{code:460404,for:"Digital forensics"},{code:460405,for:"Hardware security"},{code:460406,for:"Software and application security"},{code:460407,for:"System and network security"},{code:460501,for:"Data engineering and data science"},{code:460502,for:"Data mining and knowledge discovery"},{code:460503,for:"Data models, storage and indexing"},{code:460504,for:"Data quality"},{code:460505,for:"Database systems"},{code:460506,for:"Graph, social and multimedia data"},{code:460507,for:"Information extraction and fusion"},{code:460508,for:"Information retrieval and web search"},{code:460509,for:"Query processing and optimisation"},{code:460510,for:"Recommender systems"},{code:460511,for:"Stream and sensor data"},{code:460601,for:"Cloud computing"},{code:460602,for:"Concurrent/parallel systems and technologies"},{code:460603,for:"Cyberphysical systems and internet of things"},{code:460604,for:"Dependable systems"},{code:460605,for:"Distributed systems and algorithms"},{code:460606,for:"Energy-efficient computing"},{code:460607,for:"High performance computing"},{code:460608,for:"Mobile computing"},{code:460609,for:"Networking and communications"},{code:460610,for:"Operating systems"},{code:460611,for:"Performance evaluation"},{code:460612,for:"Service oriented computing"},{code:460701,for:"Computer aided design"},{code:460702,for:"Computer graphics"},{code:460703,for:"Entertainment and gaming"},{code:460704,for:"Interactive narrative"},{code:460705,for:"Procedural content generation"},{code:460706,for:"Serious games"},{code:460707,for:"Sound and music computing"},{code:460708,for:"Virtual and mixed reality"},{code:460801,for:"Accessible computing"},{code:460802,for:"Affective computing"},{code:460803,for:"Collaborative and social computing"},{code:460804,for:"Computing education"},{code:460805,for:"Fairness, accountability, transparency, trust and ethics of computer systems"},{code:460806,for:"Human-computer interaction"},{code:460807,for:"Information visualisation"},{code:460808,for:"Mixed initiative and human-in-the-loop"},{code:460809,for:"Pervasive computing"},{code:460810,for:"Social robotics"},{code:461101,for:"Adversarial machine learning"},{code:461102,for:"Context learning"},{code:461103,for:"Deep learning"},{code:461104,for:"Neural networks"},{code:461105,for:"Reinforcement learning"},{code:461106,for:"Semi- and unsupervised learning"},{code:461201,for:"Automated software engineering"},{code:461202,for:"Empirical software engineering"},{code:461203,for:"Formal methods for software"},{code:461204,for:"Programming languages"},{code:461205,for:"Requirements engineering"},{code:461206,for:"Software architecture"},{code:461207,for:"Software quality, processes and metrics"},{code:461208,for:"Software testing, verification and validation"},{code:461301,for:"Coding, information theory and compression"},{code:461302,for:"Computational complexity and computability"}],no=()=>{const{state:e,dispatch:t}=Ht();sl();const[n,r]=y.useState(!1),[a,o]=y.useState([]),[s,i]=y.useState(!1);y.useState([]);const{token:c}=Po(),l=y.useRef(!1),p=G=>{r(!0);const U=G[0],F=new FileReader,n0=a0=>{let T=[];if(U.type==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"||U.type==="application/vnd.ms-excel"){const E=sm(a0,{type:"array"}),J=E.SheetNames[0],M0=E.Sheets[J];T=If.sheet_to_json(M0,{header:1})}else if(U.type==="text/csv")T=If.sheet_to_json(sm(a0,{type:"binary"}).Sheets.Sheet1,{header:1});else{console.error("Unsupported file type");return}const j=Math.max(...T.map(E=>E.length)),P=new Array(j).fill("");o(T),t({type:"SET_DATA_UPLOAD",payload:{data:T,headers:P}}),i(!0)};F.onload=a0=>{n0(a0.target.result)},F.readAsArrayBuffer(U)},{getRootProps:u,getInputProps:f,isDragActive:b}=DI({onDrop:p,accept:["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.ms-excel","text/csv"]}),[M,z]=y.useState(!1),[h,m]=y.useState(!1),O=G=>{z(G)},A=G=>{if(t({type:"SET_STOP_IMPORTING",payload:G}),G)N();else{let U=[...e.inProgressLoading];U=U.map((F,n0)=>F.status!=="failed"&&F.status!=="completed"?{...F,import:"import_success",isStopping:!0}:F),t({type:"SET_IMPORT_LIST",payload:U})}},v=async G=>{var F;l.current=!1;let U=[...G];for(let n0=0;n0<U.length&&!l.current;n0++){const a0=U[n0];if(a0.status==="waiting"||a0.status==="stopping")try{const T=await q(U[n0].conference);(F=T.message)!=null&&F.includes("error")?(U=U.map((j,P)=>P===n0?{...j,status:"error",import:"import_failed",progress:0,describe:"",crawlJob:"",error:""}:j),t({type:"SET_IMPORT_LIST",payload:U})):(U=U.map((j,P)=>P===n0?{...j,import:"import_success",crawlJob:T.crawlJob}:j),t({type:"SET_IMPORT_LIST",payload:U}))}catch(T){console.error("Error uploading conference:",T),U=U.map((j,P)=>P===n0?{...j,status:"error",import:"import_failed",progress:0,describe:"",crawlJob:"",error:""}:j),t({type:"SET_IMPORT_LIST",payload:U})}}},x=async(G,U)=>{const F=[],n0=G.map(async a0=>{let T={title:"",acronym:"",source:"",rank:"",PrimaryFoR:[]};U.forEach((E,J)=>{if(E)switch(E){case"Name":T.title=a0[J];break;case"Acronym":T.acronym=a0[J];break;case"Source":T.source=a0[J]||"Not found";break;case"Rank":T.rank=a0[J]||" ";break;case"Field of Research":a0[J]&&(T.PrimaryFoR=a0[J].split(";").map(M0=>parseInt(M0.trim(),10)));break}});const j={conference:T,status:"waiting",isStopping:!1,import:"",progress:0,describe:"",crawlJob:"",error:""};e.inProgressLoading.some(E=>JSON.stringify(E.conference)===JSON.stringify(T))||F.push(j)});return await Promise.all(n0),F},W=async(G,U)=>{r(!0);const F=await x(G,U),{matchedConferences:n0,unmatchedConferences:a0}=await K(F);await t({type:"SET_IMPORT_LIST",payload:a0}),await t({type:"SET_EXISTED_CONF",payload:n0}),t({type:"SET_STOP_IMPORTING",payload:!0}),v(a0)},q=async G=>{let U=JSON.parse(localStorage.getItem("token"));const F=c||U;return(await fetch(`${H1}/conference/file/import`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${F}`},body:JSON.stringify(G)})).json()},_=async()=>{r(!0);try{const G=await fetch(`${H1}/job`,{method:"DELETE",headers:{"Content-Type":"application/json"}});if(!G.ok)throw new Error("Failed to fetch feedbacks");const U=await G.json();r(!1)}catch(G){throw new Error(`Error fetching feedbacks: ${G.message}`)}},N=()=>{setTimeout(()=>{let G=0;const U=setInterval(()=>{if(G<e.inBufferProgressLoading.length){const F=e.inBufferProgressLoading[G];t({type:"UPDATE_IMPORT_LIST",payload:F}),G++}else clearInterval(U),setTimeout(()=>{t({type:"CLEAR_BUFFER"})},1e3)},1e3)},6e3)},L=()=>{t({type:"SET_STOP_IMPORTING",payload:!1}),_();let G=[...e.inProgressLoading];G=G.map((U,F)=>U.status!=="failed"&&U.status!=="completed"&&U.status==="waiting"?{...U,status:"stopping"}:U),t({type:"SET_IMPORT_LIST",payload:G})},k=()=>{t({type:"SET_STOP_IMPORTING",payload:!0});let G=[...e.inProgressLoading];G=G.map(U=>U.status==="stopping"?{...U,status:"waiting"}:U),v(G)},S=G=>G.split(";").map(U=>{const F=fq.find(n0=>n0.code.toString().trim()===U.trim());return F?F.for:U}).join("; "),B=async G=>{const U=G.PrimaryFoR.map(j=>{const P=fq.find(E=>E.for===j);return P?P.code:j}),F={...G,PrimaryFoR:U},n0={conference:F,status:"waiting",isStopping:!1,import:"",progress:0,describe:"",crawlJob:"",error:""},a0=e.inProgressLoading.some(j=>JSON.stringify(j.conference)===JSON.stringify(F));let T=[...e.inProgressLoading];a0||T.push(n0),await t({type:"SET_IMPORT_LIST",payload:{updatedConferences:T,isImporting:!0}}),v(T)},V=(G,U)=>{const F=G.information.name===U.title&&G.information.acronym===U.acronym&&G.information.source===U.source;return F&&G},K=async G=>{const U=[],F=[];let n0=[];return e.conferences.length>0?n0=[...e.conferences]:n0=[...(await(await fetch(`${H1}/conference?status=true`,{method:"GET",headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*"}})).json()).data],G.forEach(a0=>{const T=n0.filter(j=>V(j,a0.conference));T.length>0?U.push(...T):F.push(a0)}),{matchedConferences:U,unmatchedConferences:F}},i0=(G,U)=>G.filter(F=>F.status===U);return{inProgressLoading:e.inProgressLoading,existedConf:e.existedConf,isImporting:e.isImporting,showImportModal:M,setShowImportModal:z,showOptionImportModal:h,setOptionShowImportModal:m,getRootProps:u,getInputProps:f,isDragActive:b,onDrop:p,fileUploaded:s,dataUpload:e.dataUpload,loading:n,handleImport:W,handleShowImportModal:O,convertCodesToNames:S,filterConferencesByStatus:i0,handleIsCrawling:A,handleBufferList:N,deletePendingJobs:_,handleStopping:L,handleContinue:k,handleImportAConf:B}},Ow=()=>{const{state:e,dispatch:t}=Ht(),[n,r]=y.useState(!1),{deletePendingJobs:a}=no(),{user:o}=Ut(),s=async()=>{try{const p=await fetch(`${H1}/job?size=1`,{method:"GET",headers:{"Content-Type":"application/json"}}),u=await p.json();if(r(!1),p.ok)return u.maxRecords}catch{throw new Error("Network response was not ok")}},i=async()=>{if(r(!0),o||localStorage.getItem("user")){JSON.parse(localStorage.getItem("token"));try{const p=await s(),u=await fetch(`${H1}/job?size=${p}`,{method:"GET",headers:{"Content-Type":"application/json"}}),f=await u.json();r(!1),u.ok&&t({type:"SET_CRAWL_JOBS",payload:f.data})}catch{throw new Error("Network response was not ok")}}},c=async p=>{r(!0);try{const u=await fetch(`${H1}/job/${p}`,{method:"DELETE",headers:{"Content-Type":"application/json"}});if(!u.ok)return{status:!1,message:b};const f=await u.json(),b=f.message||f.data;return r(!1),{status:!0,message:b}}catch(u){throw new Error(`Error fetching feedbacks: ${u.message}`)}},l=()=>{t({type:"SET_IMPORT_LIST",payload:[]}),t({type:"SET_STOP_IMPORTING",payload:!1}),a(),i()};return{allCrawlJobs:e.allCrawlJobs,loading:n,getAllCrawlJobs:i,handleFinishJobs:l,deleteJobByID:c}},YX=()=>{const[e,t]=y.useState(!1),{isImporting:n}=no();Ow();const{token:r}=Po(),[a,o]=y.useState(!1),{state:s,dispatch:i}=Ht(),{user:c,getCurrentUser:l,handleIsExpired:p}=Ut(),[u,f]=y.useState(null);let b=y.useRef(null);y.useEffect(()=>{const O=JSON.parse(sessionStorage.getItem("user-id"));c?O&&f(O):(async()=>{try{if(await l(),O)f(O);else{const v=M();f(v)}}catch(v){console.error("Error fetching user ID:",v)}})()},[c]),y.useEffect(()=>{if(u&&!b.current){try{b.current=LO("https://conference-searching.onrender.com",{query:{"user-id":u},path:"/socket.io",transports:["websocket","polling"]});const O=b.current;O.on("connect",()=>{console.log("Connected to socket.io server"),t(!0);const A=O.id;sessionStorage.setItem("socket-id",JSON.stringify(A))}),O.on("notification",A=>{A.id&&i({type:"ADD_MESSAGE",payload:A}),i(h())}),O.on("connect_error",A=>{console.error("Connect error:",A.message),console.error("Description:",A.description),console.error("Context:",A.context)}),O.on("error",A=>{console.error("Socket error:",A)}),O.on("disconnect",()=>{console.log("Disconnected from socket server"),t(!1)})}catch(O){console.error("Socket initialization error:",O)}return()=>{b.current&&(b.current.disconnect(),b.current=null)}}},[u,i]),y.useEffect(()=>{if(!b.current)return;const O=A=>{var v;((v=A.job)==null?void 0:v.type)==="import conference"&&i({type:"UPDATE_IMPORT_LIST",payload:A})};return b.current.on("job",O),()=>{var A;(A=b.current)==null||A.off("job",O)}},[n,i]);function M(){const O="guest",A=Math.floor(1e14+Math.random()*9e14);return O+A}const z=()=>{i({type:"SET_NOTI_MESSAGE_CRAWL",payload:null})},h=async()=>{if(o(!0),c||localStorage.getItem("user")){let O=JSON.parse(localStorage.getItem("token"));const A=r||O;try{const v=await fetch(`${H1}/notification`,{method:"GET",headers:{"Content-Type":"application/json",Authorization:`Bearer ${A}`}}),x=await v.json();o(!1),v.ok?i(wp0(x.data)):v.status===401&&p(!1)}catch{throw new Error("Network response was not ok")}}},m=async O=>{if(c||localStorage.getItem("user")){let A=JSON.parse(localStorage.getItem("token"));const v=r||A;try{for(const x of O){const W=await fetch(`${H1}/notification/${x.tid}`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${v}`}});W.ok?h():W.status===401&&p(!1)}}catch{throw new Error("Network response was not ok")}}};return{socketRef:b,socketID:s.socketID,notifications:s.notifications,messages:s.messages,isConnected:e,loading:a,getNoticationById:m,getAllNotifications:h,setMessageNoti:z}},vg0=()=>{const{t:e}=p1(),{messages:t,removeIDfromCrawlings:n}=Cr(),[r,a]=y.useState(null),[o,s]=y.useState([]),i=Re();y.useEffect(()=>{const p=t.filter(b=>b.status==="completed"||b.status==="failed");s(p);const u=[],f=document.getElementById("message-popup");return a(f==null?void 0:f.clientHeight),t.forEach(b=>{if(b.status==="completed"||b.status==="failed"){const M=setTimeout(()=>{n(b.id)},1e4);u.push(M)}}),()=>{u.forEach(b=>clearTimeout(b))}},[t]);const c=p=>{i(`/detailed-information/${p}`),window.location.reload()};if((t==null?void 0:t.length)===0)return null;const l=p=>{switch(p){case"completed":return"message-popup-success";case"failed":return"message-popup-failed";default:return""}};return d.jsx("div",{className:"mt-5",children:o==null?void 0:o.map((p,u)=>d.jsxs("div",{id:"message-popup",className:`message-popup ${l(p==null?void 0:p.status)}`,style:r?{top:`${r*(u+1)}px`}:{},children:[d.jsx("div",{className:"message-name overflow-hidden fw-bold px-3",children:`${p==null?void 0:p.name} `}),d.jsxs("div",{className:"d-inline-block",children:[(p==null?void 0:p.status)==="completed"&&(p!=null&&p.error)?`${e("hasBeenUpdated")}`:`${e("cannotBeCrawledRightNow")}`,(p==null?void 0:p.status)==="completed"&&d.jsx(B0,{onClick:()=>c(p==null?void 0:p.id),className:"text-decoration-underline bg-transparent border-0 p-0 ps-1",children:e("clickToViewDetails")})]})]},p==null?void 0:p.id))})},yg0=()=>{const{i18n:e}=p1(),t=e.language,n=r=>{e.changeLanguage(r),q0.updateLocale(r),localStorage.setItem("language",r)};return d.jsxs("div",{children:[t!=="en"&&d.jsx(B0,{className:"custom-trans-btn bg-transparent border-secondary text-secondary-emphasis py-0",onClick:()=>n("en"),children:"vi"}),t!=="vi"&&d.jsx(B0,{className:"custom-trans-btn bg-transparent border-secondary text-warning-emphasis py-0",onClick:()=>n("vi"),children:"en"})]})},qg0=({onClose:e,notifications:t,onReloadlist:n,onReadStatus:r})=>{const{t:a}=p1(),{user:o,handleLogout:s}=Ut(),[i,c]=y.useState(0),[l,p]=y.useState(!1),[u,f]=y.useState(!1),b=Re();y.useEffect(()=>{n()},[]),y.useEffect(()=>{const v=t.some(x=>!x.read_status);p(v)},[t]);const M=v=>{c(v)},z=v=>{e(),b(o?v:"./login")},h=()=>{e(),s()},m=async v=>{o?(await r([v]),b(o?"/user/notifications":"login"),e()):(alert("Please login before continue!"),e(),b("/login"))},O=async()=>{e();const v=t.filter(x=>!x.read_status);await r(v),b(o?"/user/notifications":"login")},A=v=>{const x=v.split(". "),W=x[0],q=x.slice(1).join(". ");return{firstPart:W,secondPart:q}};return d.jsxs(Un,{className:"px-5 h-100",interval:null,activeIndex:i,onSelect:M,indicators:!1,controls:!1,children:[d.jsx(Un.Item,{className:"h-100",children:d.jsx("div",{className:"d-flex flex-column align-items-end px-5",children:d.jsxs("div",{className:"d-flex flex-column w-100",children:[d.jsx("div",{to:"./",className:" my-3 h2 text-teal-dark",onClick:()=>z("./"),children:a("home")}),d.jsxs("div",{onClick:()=>f(!u),className:" my-3 h2 text-teal-dark d-flex align-items-center",children:[a("conference"),d.jsx(j0,{icon:ml0,className:`rotate-toggle-button mx-5 fs-4 ${u?"rotated":""}`})]}),u&&d.jsxs("div",{className:"ms-3 text-teal-dark h3 text-decoration-underline ",children:[d.jsx("div",{className:"mb-2",onClick:()=>z("/user/followed"),children:a("followed_conference")}),d.jsx("div",{className:"my-2",onClick:()=>z("/user/yourconferences"),children:a("your_conferences")})]}),d.jsx("div",{className:" my-3 h2 text-teal-dark",onClick:()=>z("./"),children:a("note")}),d.jsxs("div",{className:" my-3 h2 text-teal-dark",onClick:()=>z("./user/account"),children:[a("account")," ",d.jsx("span",{className:"mx-1 text-teal-dark fs-3",children:`(${o==null?void 0:o.name})`})]}),d.jsx("div",{className:"my-3 h2 text-teal-dark",onClick:()=>c(1),children:a("notifications")}),d.jsx("div",{className:"my-3 h2 text-teal-dark",onClick:()=>z("./user/setting"),children:a("setting")}),o?d.jsx("div",{className:"my-3 h2 text-red-normal",onClick:h,children:a("logout").toUpperCase()}):d.jsx("div",{className:"my-3 h2 text-red-normal",onClick:()=>z("./login"),children:a("login").toUpperCase()})]})})}),d.jsxs(Un.Item,{className:"h-100",children:[d.jsxs("div",{style:{position:"absolute",top:"10px",left:"50%",transform:"translateX(-50%)",zIndex:999},className:"w-100 d-flex align-items-center justify-content-between",children:[d.jsx("span",{className:"h2 text-teal-normal",children:a("notifications")}),d.jsx(j0,{icon:$y,className:"text-secondary fs-3",onClick:()=>c(0)})]}),d.jsx("div",{className:"overflow-auto",style:{maxHeight:"calc(100vh - 200px)",marginTop:"60px",marginBottom:"60px"},children:t.length>0?t.map((v,x)=>{const{firstPart:W,secondPart:q}=A(v.message);return d.jsxs("div",{className:"d-flex",onClick:()=>m(v),children:[d.jsx("div",{className:"me-2 ",children:d.jsx(j0,{icon:Cb,style:{height:"8px"},className:`${v.read_status?"text-teal-normal":"text-danger"}`})}),d.jsx("div",{children:d.jsxs("div",{className:`${v.read_status?"text-secondary":"text-color-black"}`,children:[d.jsx("div",{className:"fw-bold notification-message",children:W}),d.jsx("span",{className:"notification-message",children:q})]})})]},x)}):d.jsx("p",{children:a("no_notifications")})}),d.jsx("div",{style:{position:"absolute",bottom:"10px",left:"50%",transform:"translateX(-50%)",zIndex:999},children:d.jsxs(B0,{onClick:O,className:"fw-bold text-nowrap fw-normal text-center w-100 text-color-darker bg-transparent border-0",children:[a("view_all_notifications")," ","  >"]})})]})]})},xg0=()=>{const{t:e}=p1(),{windowWidth:t}=Ee(),{isLogin:n}=Ut(),{user:r}=Ar(),a=Re(),{goToPreviousPage:o}=el(),[s,i]=y.useState(!1),c=ya(),[l,p]=y.useState(null),[u,f]=y.useState(!1),{notifications:b,getAllNotifications:M,getNoticationById:z}=YX();y.useEffect(()=>{r===null&&a("/");const x=new KeyboardEvent("keydown",{key:"r",ctrlKey:!0});o(x)},[]);const h=x=>{p(x)},m=()=>r?!n:!1,O=()=>f(!1),A=()=>f(!0),v=d.jsxs(d.Fragment,{children:[d.jsx(Ou.Link,{as:bs,to:"/",title:"Homepage",className:`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-6 fw-bold header-title ${c.pathname==="/"?"border-3 border-bottom border-secondary":""}`,children:e("home")}),d.jsxs(it,{onMouseLeave:()=>i(!1),onMouseEnter:()=>i(!0),onClick:()=>i(!s),show:s,children:[d.jsx(it.Toggle,{className:`d-flex align-items-center mx-md-4 px-0 rounded-0 text-center text-color-black fs-6 fw-bold  bg-transparent border-0 header-title ${c.pathname.includes("/followed")||c.pathname.includes("/your")?"text-center border-3 border-bottom border-secondary":""}`,children:e("conference")}),d.jsxs(it.Menu,{children:[d.jsx(it.Item,{className:"fs-6",onClick:()=>a("/user/followed"),children:e("followed_conference")}),d.jsx(it.Item,{className:"fs-6",onClick:()=>a("/user/yourconferences"),children:e("your_conferences")})]})]}),d.jsx(Ou.Link,{as:bs,to:r?"/user/note":"/login",title:"Timestamp",className:`d-flex align-items-center mx-md-4 text-nowrap text-color-black fs-6 fw-bold text-center header-title ${c.pathname.includes("/note")?"border-3 border-bottom border-secondary":""}`,children:e("note")}),d.jsx(Ou.Item,{className:"d-flex align-items-center mx-2",children:d.jsx(yg0,{})}),r?d.jsx(Ou.Item,{className:"d-flex align-items-center",children:d.jsx(Ll0,{notifications:b,onReadStatus:z,onReloadlist:M})}):null,d.jsx(Ou.Item,{className:"d-flex align-items-center",children:r?d.jsx(Dl0,{}):d.jsx(B0,{className:"bg-red-normal border-0 px-4 rounded-5 fw-bold fs-5 text-nowrap",onClick:()=>a("/login"),children:e("login").toUpperCase()})})]});return d.jsxs(gN,{expand:"md",id:"header",className:" fixed-top px-5 shadow-sm bg-white",children:[d.jsx(kl0,{show:m()}),d.jsxs(Ze,{className:"d-flex justify-content-between align-items-center w-100 px-sm-2",children:[d.jsx(gN.Brand,{className:"my-header-brand me-auto me-md-0",children:d.jsx(bs,{to:"/",className:"text-teal-dark fs-4 fw-bold",title:"Homepage",children:"ConfHub"})}),t<=768?d.jsxs(d.Fragment,{children:[d.jsx(B0,{variant:"primary",onClick:A,className:"bg-white border px-3",children:d.jsx(j0,{icon:Vc0,className:"text-secondary"})}),d.jsxs(da,{show:u,onHide:O,placement:"end",className:"bg-darkcyan-dark",children:[d.jsx(da.Header,{closeButton:!0,children:d.jsx(da.Title,{children:e("ConfHub")})}),d.jsx(da.Body,{children:d.jsx(qg0,{onClose:()=>f(!1),notifications:b,onReadStatus:z,onReloadlist:M})})]})]}):d.jsx("div",{onSelect:h,className:"d-flex",children:v})]}),d.jsx(vg0,{})]})},Wg0=()=>{const e=ya();return el(),d.jsxs("div",{children:[e.pathname==="/login"||e.pathname==="/signup"?null:d.jsx(xg0,{}),d.jsx(x6,{})]})};var VX={exports:{}};(function(e,t){(function(n,r){e.exports=r(y)})(ur,n=>(()=>{var r={703:(i,c,l)=>{var p=l(414);function u(){}function f(){}f.resetWarningCache=u,i.exports=function(){function b(h,m,O,A,v,x){if(x!==p){var W=new Error("Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types");throw W.name="Invariant Violation",W}}function M(){return b}b.isRequired=b;var z={array:b,bigint:b,bool:b,func:b,number:b,object:b,string:b,symbol:b,any:b,arrayOf:M,element:b,elementType:b,instanceOf:M,node:b,objectOf:M,oneOf:M,oneOfType:M,shape:M,exact:M,checkPropTypes:f,resetWarningCache:u};return z.PropTypes=z,z}},697:(i,c,l)=>{i.exports=l(703)()},414:i=>{i.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},98:i=>{i.exports=n}},a={};function o(i){var c=a[i];if(c!==void 0)return c.exports;var l=a[i]={exports:{}};return r[i](l,l.exports,o),l.exports}o.n=i=>{var c=i&&i.__esModule?()=>i.default:()=>i;return o.d(c,{a:c}),c},o.d=(i,c)=>{for(var l in c)o.o(c,l)&&!o.o(i,l)&&Object.defineProperty(i,l,{enumerable:!0,get:c[l]})},o.o=(i,c)=>Object.prototype.hasOwnProperty.call(i,c),o.r=i=>{typeof Symbol<"u"&&Symbol.toStringTag&&Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(i,"__esModule",{value:!0})};var s={};return(()=>{o.r(s),o.d(s,{default:()=>k});var i=o(98),c=o.n(i),l=o(697),p=o.n(l);function u(){return u=Object.assign?Object.assign.bind():function(S){for(var B=1;B<arguments.length;B++){var V=arguments[B];for(var K in V)Object.prototype.hasOwnProperty.call(V,K)&&(S[K]=V[K])}return S},u.apply(this,arguments)}var f=function(S){var B=S.pageClassName,V=S.pageLinkClassName,K=S.page,i0=S.selected,G=S.activeClassName,U=S.activeLinkClassName,F=S.getEventListener,n0=S.pageSelectedHandler,a0=S.href,T=S.extraAriaContext,j=S.pageLabelBuilder,P=S.rel,E=S.ariaLabel||"Page "+K+(T?" "+T:""),J=null;return i0&&(J="page",E=S.ariaLabel||"Page "+K+" is your current page",B=B!==void 0?B+" "+G:G,V!==void 0?U!==void 0&&(V=V+" "+U):V=U),c().createElement("li",{className:B},c().createElement("a",u({rel:P,role:a0?void 0:"button",className:V,href:a0,tabIndex:i0?"-1":"0","aria-label":E,"aria-current":J,onKeyPress:n0},F(n0)),j(K)))};f.propTypes={pageSelectedHandler:p().func.isRequired,selected:p().bool.isRequired,pageClassName:p().string,pageLinkClassName:p().string,activeClassName:p().string,activeLinkClassName:p().string,extraAriaContext:p().string,href:p().string,ariaLabel:p().string,page:p().number.isRequired,getEventListener:p().func.isRequired,pageLabelBuilder:p().func.isRequired,rel:p().string};const b=f;function M(){return M=Object.assign?Object.assign.bind():function(S){for(var B=1;B<arguments.length;B++){var V=arguments[B];for(var K in V)Object.prototype.hasOwnProperty.call(V,K)&&(S[K]=V[K])}return S},M.apply(this,arguments)}var z=function(S){var B=S.breakLabel,V=S.breakAriaLabel,K=S.breakClassName,i0=S.breakLinkClassName,G=S.breakHandler,U=S.getEventListener,F=K||"break";return c().createElement("li",{className:F},c().createElement("a",M({className:i0,role:"button",tabIndex:"0","aria-label":V,onKeyPress:G},U(G)),B))};z.propTypes={breakLabel:p().oneOfType([p().string,p().node]),breakAriaLabel:p().string,breakClassName:p().string,breakLinkClassName:p().string,breakHandler:p().func.isRequired,getEventListener:p().func.isRequired};const h=z;function m(S){var B=arguments.length>1&&arguments[1]!==void 0?arguments[1]:"";return S??B}function O(S){return O=typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?function(B){return typeof B}:function(B){return B&&typeof Symbol=="function"&&B.constructor===Symbol&&B!==Symbol.prototype?"symbol":typeof B},O(S)}function A(){return A=Object.assign?Object.assign.bind():function(S){for(var B=1;B<arguments.length;B++){var V=arguments[B];for(var K in V)Object.prototype.hasOwnProperty.call(V,K)&&(S[K]=V[K])}return S},A.apply(this,arguments)}function v(S,B){for(var V=0;V<B.length;V++){var K=B[V];K.enumerable=K.enumerable||!1,K.configurable=!0,"value"in K&&(K.writable=!0),Object.defineProperty(S,K.key,K)}}function x(S,B){return x=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(V,K){return V.__proto__=K,V},x(S,B)}function W(S,B){if(B&&(O(B)==="object"||typeof B=="function"))return B;if(B!==void 0)throw new TypeError("Derived constructors may only return object or undefined");return q(S)}function q(S){if(S===void 0)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return S}function _(S){return _=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(B){return B.__proto__||Object.getPrototypeOf(B)},_(S)}function N(S,B,V){return B in S?Object.defineProperty(S,B,{value:V,enumerable:!0,configurable:!0,writable:!0}):S[B]=V,S}var L=function(S){(function(F,n0){if(typeof n0!="function"&&n0!==null)throw new TypeError("Super expression must either be null or a function");F.prototype=Object.create(n0&&n0.prototype,{constructor:{value:F,writable:!0,configurable:!0}}),Object.defineProperty(F,"prototype",{writable:!1}),n0&&x(F,n0)})(U,S);var B,V,K,i0,G=(K=U,i0=function(){if(typeof Reflect>"u"||!Reflect.construct||Reflect.construct.sham)return!1;if(typeof Proxy=="function")return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],function(){})),!0}catch{return!1}}(),function(){var F,n0=_(K);if(i0){var a0=_(this).constructor;F=Reflect.construct(n0,arguments,a0)}else F=n0.apply(this,arguments);return W(this,F)});function U(F){var n0,a0;return function(T,j){if(!(T instanceof j))throw new TypeError("Cannot call a class as a function")}(this,U),N(q(n0=G.call(this,F)),"handlePreviousPage",function(T){var j=n0.state.selected;n0.handleClick(T,null,j>0?j-1:void 0,{isPrevious:!0})}),N(q(n0),"handleNextPage",function(T){var j=n0.state.selected,P=n0.props.pageCount;n0.handleClick(T,null,j<P-1?j+1:void 0,{isNext:!0})}),N(q(n0),"handlePageSelected",function(T,j){if(n0.state.selected===T)return n0.callActiveCallback(T),void n0.handleClick(j,null,void 0,{isActive:!0});n0.handleClick(j,null,T)}),N(q(n0),"handlePageChange",function(T){n0.state.selected!==T&&(n0.setState({selected:T}),n0.callCallback(T))}),N(q(n0),"getEventListener",function(T){return N({},n0.props.eventListener,T)}),N(q(n0),"handleClick",function(T,j,P){var E=arguments.length>3&&arguments[3]!==void 0?arguments[3]:{},J=E.isPrevious,M0=J!==void 0&&J,O0=E.isNext,W0=O0!==void 0&&O0,x0=E.isBreak,X0=x0!==void 0&&x0,e0=E.isActive,l0=e0!==void 0&&e0;T.preventDefault?T.preventDefault():T.returnValue=!1;var g0=n0.state.selected,d0=n0.props.onClick,A0=P;if(d0){var m0=d0({index:j,selected:g0,nextSelectedPage:P,event:T,isPrevious:M0,isNext:W0,isBreak:X0,isActive:l0});if(m0===!1)return;Number.isInteger(m0)&&(A0=m0)}A0!==void 0&&n0.handlePageChange(A0)}),N(q(n0),"handleBreakClick",function(T,j){var P=n0.state.selected;n0.handleClick(j,T,P<T?n0.getForwardJump():n0.getBackwardJump(),{isBreak:!0})}),N(q(n0),"callCallback",function(T){n0.props.onPageChange!==void 0&&typeof n0.props.onPageChange=="function"&&n0.props.onPageChange({selected:T})}),N(q(n0),"callActiveCallback",function(T){n0.props.onPageActive!==void 0&&typeof n0.props.onPageActive=="function"&&n0.props.onPageActive({selected:T})}),N(q(n0),"getElementPageRel",function(T){var j=n0.state.selected,P=n0.props,E=P.nextPageRel,J=P.prevPageRel,M0=P.selectedPageRel;return j-1===T?J:j===T?M0:j+1===T?E:void 0}),N(q(n0),"pagination",function(){var T=[],j=n0.props,P=j.pageRangeDisplayed,E=j.pageCount,J=j.marginPagesDisplayed,M0=j.breakLabel,O0=j.breakClassName,W0=j.breakLinkClassName,x0=j.breakAriaLabels,X0=n0.state.selected;if(E<=P)for(var e0=0;e0<E;e0++)T.push(n0.getPageElement(e0));else{var l0=P/2,g0=P-l0;X0>E-P/2?l0=P-(g0=E-X0):X0<P/2&&(g0=P-(l0=X0));var d0,A0,m0=function(r1){return n0.getPageElement(r1)},H0=[];for(d0=0;d0<E;d0++){var s1=d0+1;if(s1<=J)H0.push({type:"page",index:d0,display:m0(d0)});else if(s1>E-J)H0.push({type:"page",index:d0,display:m0(d0)});else if(d0>=X0-l0&&d0<=X0+(X0===0&&P>1?g0-1:g0))H0.push({type:"page",index:d0,display:m0(d0)});else if(M0&&H0.length>0&&H0[H0.length-1].display!==A0&&(P>0||J>0)){var J0=d0<X0?x0.backward:x0.forward;A0=c().createElement(h,{key:d0,breakAriaLabel:J0,breakLabel:M0,breakClassName:O0,breakLinkClassName:W0,breakHandler:n0.handleBreakClick.bind(null,d0),getEventListener:n0.getEventListener}),H0.push({type:"break",index:d0,display:A0})}}H0.forEach(function(r1,W1){var Y1=r1;r1.type==="break"&&H0[W1-1]&&H0[W1-1].type==="page"&&H0[W1+1]&&H0[W1+1].type==="page"&&H0[W1+1].index-H0[W1-1].index<=2&&(Y1={type:"page",index:r1.index,display:m0(r1.index)}),T.push(Y1.display)})}return T}),F.initialPage!==void 0&&F.forcePage!==void 0&&console.warn("(react-paginate): Both initialPage (".concat(F.initialPage,") and forcePage (").concat(F.forcePage,") props are provided, which is discouraged.")+` Use exclusively forcePage prop for a controlled component.
-See https://reactjs.org/docs/forms.html#controlled-components`),a0=F.initialPage?F.initialPage:F.forcePage?F.forcePage:0,n0.state={selected:a0},n0}return B=U,(V=[{key:"componentDidMount",value:function(){var F=this.props,n0=F.initialPage,a0=F.disableInitialCallback,T=F.extraAriaContext,j=F.pageCount,P=F.forcePage;n0===void 0||a0||this.callCallback(n0),T&&console.warn("DEPRECATED (react-paginate): The extraAriaContext prop is deprecated. You should now use the ariaLabelBuilder instead."),Number.isInteger(j)||console.warn("(react-paginate): The pageCount prop value provided is not an integer (".concat(j,"). Did you forget a Math.ceil()?")),n0!==void 0&&n0>j-1&&console.warn("(react-paginate): The initialPage prop provided is greater than the maximum page index from pageCount prop (".concat(n0," > ").concat(j-1,").")),P!==void 0&&P>j-1&&console.warn("(react-paginate): The forcePage prop provided is greater than the maximum page index from pageCount prop (".concat(P," > ").concat(j-1,")."))}},{key:"componentDidUpdate",value:function(F){this.props.forcePage!==void 0&&this.props.forcePage!==F.forcePage&&(this.props.forcePage>this.props.pageCount-1&&console.warn("(react-paginate): The forcePage prop provided is greater than the maximum page index from pageCount prop (".concat(this.props.forcePage," > ").concat(this.props.pageCount-1,").")),this.setState({selected:this.props.forcePage})),Number.isInteger(F.pageCount)&&!Number.isInteger(this.props.pageCount)&&console.warn("(react-paginate): The pageCount prop value provided is not an integer (".concat(this.props.pageCount,"). Did you forget a Math.ceil()?"))}},{key:"getForwardJump",value:function(){var F=this.state.selected,n0=this.props,a0=n0.pageCount,T=F+n0.pageRangeDisplayed;return T>=a0?a0-1:T}},{key:"getBackwardJump",value:function(){var F=this.state.selected-this.props.pageRangeDisplayed;return F<0?0:F}},{key:"getElementHref",value:function(F){var n0=this.props,a0=n0.hrefBuilder,T=n0.pageCount,j=n0.hrefAllControls;if(a0)return j||F>=0&&F<T?a0(F+1,T,this.state.selected):void 0}},{key:"ariaLabelBuilder",value:function(F){var n0=F===this.state.selected;if(this.props.ariaLabelBuilder&&F>=0&&F<this.props.pageCount){var a0=this.props.ariaLabelBuilder(F+1,n0);return this.props.extraAriaContext&&!n0&&(a0=a0+" "+this.props.extraAriaContext),a0}}},{key:"getPageElement",value:function(F){var n0=this.state.selected,a0=this.props,T=a0.pageClassName,j=a0.pageLinkClassName,P=a0.activeClassName,E=a0.activeLinkClassName,J=a0.extraAriaContext,M0=a0.pageLabelBuilder;return c().createElement(b,{key:F,pageSelectedHandler:this.handlePageSelected.bind(null,F),selected:n0===F,rel:this.getElementPageRel(F),pageClassName:T,pageLinkClassName:j,activeClassName:P,activeLinkClassName:E,extraAriaContext:J,href:this.getElementHref(F),ariaLabel:this.ariaLabelBuilder(F),page:F+1,pageLabelBuilder:M0,getEventListener:this.getEventListener})}},{key:"render",value:function(){var F=this.props.renderOnZeroPageCount;if(this.props.pageCount===0&&F!==void 0)return F&&F(this.props);var n0=this.props,a0=n0.disabledClassName,T=n0.disabledLinkClassName,j=n0.pageCount,P=n0.className,E=n0.containerClassName,J=n0.previousLabel,M0=n0.previousClassName,O0=n0.previousLinkClassName,W0=n0.previousAriaLabel,x0=n0.prevRel,X0=n0.nextLabel,e0=n0.nextClassName,l0=n0.nextLinkClassName,g0=n0.nextAriaLabel,d0=n0.nextRel,A0=this.state.selected,m0=A0===0,H0=A0===j-1,s1="".concat(m(M0)).concat(m0?" ".concat(m(a0)):""),J0="".concat(m(e0)).concat(H0?" ".concat(m(a0)):""),r1="".concat(m(O0)).concat(m0?" ".concat(m(T)):""),W1="".concat(m(l0)).concat(H0?" ".concat(m(T)):""),Y1=m0?"true":"false",I0=H0?"true":"false";return c().createElement("ul",{className:P||E,role:"navigation","aria-label":"Pagination"},c().createElement("li",{className:s1},c().createElement("a",A({className:r1,href:this.getElementHref(A0-1),tabIndex:m0?"-1":"0",role:"button",onKeyPress:this.handlePreviousPage,"aria-disabled":Y1,"aria-label":W0,rel:x0},this.getEventListener(this.handlePreviousPage)),J)),this.pagination(),c().createElement("li",{className:J0},c().createElement("a",A({className:W1,href:this.getElementHref(A0+1),tabIndex:H0?"-1":"0",role:"button",onKeyPress:this.handleNextPage,"aria-disabled":I0,"aria-label":g0,rel:d0},this.getEventListener(this.handleNextPage)),X0)))}}])&&v(B.prototype,V),Object.defineProperty(B,"prototype",{writable:!1}),U}(i.Component);N(L,"propTypes",{pageCount:p().number.isRequired,pageRangeDisplayed:p().number,marginPagesDisplayed:p().number,previousLabel:p().node,previousAriaLabel:p().string,prevPageRel:p().string,prevRel:p().string,nextLabel:p().node,nextAriaLabel:p().string,nextPageRel:p().string,nextRel:p().string,breakLabel:p().oneOfType([p().string,p().node]),breakAriaLabels:p().shape({forward:p().string,backward:p().string}),hrefBuilder:p().func,hrefAllControls:p().bool,onPageChange:p().func,onPageActive:p().func,onClick:p().func,initialPage:p().number,forcePage:p().number,disableInitialCallback:p().bool,containerClassName:p().string,className:p().string,pageClassName:p().string,pageLinkClassName:p().string,pageLabelBuilder:p().func,activeClassName:p().string,activeLinkClassName:p().string,previousClassName:p().string,nextClassName:p().string,previousLinkClassName:p().string,nextLinkClassName:p().string,disabledClassName:p().string,disabledLinkClassName:p().string,breakClassName:p().string,breakLinkClassName:p().string,extraAriaContext:p().string,ariaLabelBuilder:p().func,eventListener:p().string,renderOnZeroPageCount:p().func,selectedPageRel:p().string}),N(L,"defaultProps",{pageRangeDisplayed:2,marginPagesDisplayed:3,activeClassName:"selected",previousLabel:"Previous",previousClassName:"previous",previousAriaLabel:"Previous page",prevPageRel:"prev",prevRel:"prev",nextLabel:"Next",nextClassName:"next",nextAriaLabel:"Next page",nextPageRel:"next",nextRel:"next",breakLabel:"...",breakAriaLabels:{forward:"Jump forward",backward:"Jump backward"},disabledClassName:"disabled",disableInitialCallback:!1,pageLabelBuilder:function(S){return S},eventListener:"onClick",renderOnZeroPageCount:void 0,selectedPageRel:"canonical",hrefAllControls:!1});const k=L})(),s})())})(VX);var wg0=VX.exports;const cm=Kn(wg0),Ck=e=>({type:m9,payload:e}),mw=()=>({saveListToStorage:(r,a)=>{sessionStorage.set(r,JSON.stringify(a))},updateDataListInStorage:(r,a)=>{sessionStorage.setItem(r,JSON.stringify(a))},getDataListInStorage:r=>{const a=sessionStorage.getItem(r);return a?JSON.parse(a):[]}}),Z2=()=>{const{state:e,dispatch:t}=Ht(),{token:n}=Po(),{updateDataListInStorage:r}=mw(),{user:a}=Ar(),{handleIsExpired:o}=Ut(),[s,i]=y.useState(!1),{previousPath:c}=el(),l=Re(),p=async z=>{let h=JSON.parse(localStorage.getItem("token"));const m=n||h,O=await fetch(`${H1}/follow?page=${z}&size=50`,{method:"GET",headers:{Authorization:`Bearer ${m}`}});if(!O.ok)throw O.status===401&&o(!1),new Error("Network response was not ok");return O.json()},u=async()=>{if(i(!0),a||localStorage.getItem("user"))try{const z=await p(1),h=z.maxPages,m=z.maxRecords;sessionStorage.setItem("totalConfFollow",JSON.stringify(m)),sessionStorage.setItem("totalPagesFollow",JSON.stringify(h)),r("listFollow",z.data),t(Ck(z.data));for(let O=2;O<=h;O++){const A=await p(O);t(Ck(A.data))}}catch{i(!1)}i(!1)},f=async z=>{if(i(!0),a||localStorage.getItem("user")){let h=JSON.parse(localStorage.getItem("token"));const m=n||h;try{const O=await fetch(`${H1}/follow`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${m}`},body:JSON.stringify({cfp_id:z})});if(i(!1),O.ok)return u(),!0;throw O.status===401&&o(!1),new Error(O.message)}catch(O){return console.error("Error:",O),!1}}else alert("Log in before continuing, please!"),localStorage.setItem("previousPath",c),localStorage.setItem("lastVisitedPage",c),l("/login")},b=async z=>{i(!0);try{const h=await fetch(`${H1}/follow`,{method:"DELETE",headers:{"Content-Type":"application/json",Authorization:`Bearer ${n}`},body:JSON.stringify({cfp_id:z})});return i(!1),h.ok?(u(),!0):(h.status===401&&o(!1),!1)}catch(h){console.error("Error:",h)}},M=async z=>{const h=q0(),m=h.clone().add(1,"month");return await z.map(A=>({...A})).filter(A=>{const v=A.organizations.some(W=>{if(W.status!=="new")return!1;const q=q0(W.start_date);return q.isAfter(h)&&q.isBefore(m)}),x=A.importantDates.some(W=>{if(W.status!=="new")return!1;const q=q0(W.date_value);return q.isAfter(h)&&q.isBefore(m)});return v||x})};return{loading:s,listFollowed:e.listFollowed,getListFollowedConferences:u,followConference:f,unfollowConference:b,getUpcomingConferences:M}},uu=e=>({type:g9,payload:e}),GX=(e,t,n)=>({type:v9,payload:{label:t,keywords:n,loading:!1,filterList:e}}),Nr=e=>e?e.charAt(0).toUpperCase()+e.slice(1):"N/I",Rg0=e=>e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/\b\w/g,t=>t.toUpperCase()),_g0={continent_code:"AS",continent_name:"Asia",country_code2:"AE",country_code3:"ARE",country_name:"United Arab Emirates",country_name_full:"United Arab Emirates",iso3:"784"},Sg0={continent_code:"AS",continent_name:"Asia",country_code2:"AF",country_code3:"AFG",country_name:"Afghanistan",country_name_full:"Islamic Republic of Afghanistan",iso3:"004"},Ng0={continent_code:"SA",continent_name:"South America",country_code2:"AR",country_code3:"ARG",country_name:"Argentina",country_name_full:"Argentine Republic",iso3:"032"},Lg0={continent_code:"EU",continent_name:"Europe",country_code2:"AT",country_code3:"AUT",country_name:"Austria",country_name_full:"Republic of Austria",iso3:"040"},kg0={continent_code:"OC",continent_name:"Oceania",country_code2:"AU",country_code3:"AUS",country_name:"Australia",country_name_full:"Commonwealth of Australia",iso3:"036"},Cg0={continent_code:"EU",continent_name:"Europe",country_code2:"AX",country_code3:"ALA",country_name:"Åland Islands",country_name_full:"Åland Islands",iso3:"248"},Eg0={continent_code:"AS",continent_name:"Asia",country_code2:"BD",country_code3:"BGD",country_name:"Bangladesh",country_name_full:"People's Republic of Bangladesh",iso3:"050"},Tg0={continent_code:"EU",continent_name:"Europe",country_code2:"BE",country_code3:"BEL",country_name:"Belgium",country_name_full:"Kingdom of Belgium",iso3:"056"},Dg0={continent_code:"AS",continent_name:"Asia",country_code2:"BN",country_code3:"BRN",country_name:"Brunei",country_name_full:"Brunei Darussalam",iso3:"096"},Pg0={continent_code:"SA",continent_name:"South America",country_code2:"BO",country_code3:"BOL",country_name:"Bolivia",country_name_full:"Plurinational State of Bolivia",iso3:"068"},Bg0={continent_code:"SA",continent_name:"South America",country_code2:"BR",country_code3:"BRA",country_name:"Brazil",country_name_full:"Federative Republic of Brazil",iso3:"076"},Fg0={continent_code:"NA",continent_name:"North America",country_code2:"BS",country_code3:"BHS",country_name:"Bahamas",country_name_full:"Commonwealth of the Bahamas",iso3:"044"},Ig0={continent_code:"AS",continent_name:"Asia",country_code2:"BT",country_code3:"BTN",country_name:"Bhutan",country_name_full:"Kingdom of Bhutan",iso3:"064"},jg0={continent_code:"AF",continent_name:"Africa",country_code2:"BW",country_code3:"BWA",country_name:"Botswana",country_name_full:"Republic of Botswana",iso3:"072"},Xg0={continent_code:"EU",continent_name:"Europe",country_code2:"BY",country_code3:"BLR",country_name:"Belarus",country_name_full:"Republic of Belarus",iso3:"112"},$g0={continent_code:"NA",continent_name:"North America",country_code2:"BZ",country_code3:"BLZ",country_name:"Belize",country_name_full:"Belize",iso3:"084"},Hg0={continent_code:"NA",continent_name:"North America",country_code2:"CA",country_code3:"CAN",country_name:"Canada",country_name_full:"Canada",iso3:"124"},Ug0={continent_code:"AF",continent_name:"Africa",country_code2:"CD",country_code3:"COD",country_name:"Congo",country_name_full:"Democratic Republic of the Congo",iso3:"180"},Yg0={continent_code:"AF",continent_name:"Africa",country_code2:"CG",country_code3:"COG",country_name:"Congo",country_name_full:"Republic of the Congo",iso3:"178"},Vg0={continent_code:"EU",continent_name:"Europe",country_code2:"CH",country_code3:"CHE",country_name:"Switzerland",country_name_full:"Swiss Confederation",iso3:"756"},Gg0={continent_code:"OC",continent_name:"Oceania",country_code2:"CK",country_code3:"COK",country_name:"Cook Islands",country_name_full:"Cook Islands",iso3:"184"},Kg0={continent_code:"SA",continent_name:"South America",country_code2:"CL",country_code3:"CHL",country_name:"Chile",country_name_full:"Republic of Chile",iso3:"152"},Jg0={continent_code:"AF",continent_name:"Africa",country_code2:"CM",country_code3:"CMR",country_name:"Cameroon",country_name_full:"Republic of Cameroon",iso3:"120"},Qg0={continent_code:"AS",continent_name:"Asia",country_code2:"CN",country_code3:"CHN",country_name:"China",country_name_full:"People's Republic of China",iso3:"156"},Zg0={continent_code:"SA",continent_name:"South America",country_code2:"CO",country_code3:"COL",country_name:"Colombia",country_name_full:"Republic of Colombia",iso3:"170"},e40={continent_code:"NA",continent_name:"North America",country_code2:"CR",country_code3:"CRI",country_name:"Costa Rica",country_name_full:"Republic of Costa Rica",iso3:"188"},t40={continent_code:"NA",continent_name:"North America",country_code2:"CU",country_code3:"CUB",country_name:"Cuba",country_name_full:"Republic of Cuba",iso3:"192"},n40={continent_code:"AS",continent_name:"Asia",country_code2:"CY",country_code3:"CYP",country_name:"Cyprus",country_name_full:"Republic of Cyprus",iso3:"196"},r40={continent_code:"EU",continent_name:"Europe",country_code2:"DE",country_code3:"DEU",country_name:"Germany",country_name_full:"Federal Republic of Germany",iso3:"276"},a40={continent_code:"EU",continent_name:"Europe",country_code2:"DK",country_code3:"DNK",country_name:"Denmark",country_name_full:"Kingdom of Denmark",iso3:"208"},o40={continent_code:"NA",continent_name:"North America",country_code2:"DM",country_code3:"DMA",country_name:"Dominica",country_name_full:"Commonwealth of Dominica",iso3:"212"},s40={continent_code:"AF",continent_name:"Africa",country_code2:"DZ",country_code3:"DZA",country_name:"Algeria",country_name_full:"People's Democratic Republic of Algeria",iso3:"012"},i40={continent_code:"SA",continent_name:"South America",country_code2:"EC",country_code3:"ECU",country_name:"Ecuador",country_name_full:"Republic of Ecuador",iso3:"218"},c40={continent_code:"EU",continent_name:"Europe",country_code2:"EE",country_code3:"EST",country_name:"Estonia",country_name_full:"Republic of Estonia",iso3:"233"},l40={continent_code:"AF",continent_name:"Africa",country_code2:"EG",country_code3:"EGY",country_name:"Egypt",country_name_full:"Arab Republic of Egypt",iso3:"818"},p40={continent_code:"AF",continent_name:"Africa",country_code2:"EH",country_code3:"ESH",country_name:"Western Sahara",country_name_full:"Western Sahara",iso3:"732"},u40={continent_code:"EU",continent_name:"Europe",country_code2:"ES",country_code3:"ESP",country_name:"Spain",country_name_full:"Kingdom of Spain",iso3:"724"},d40={continent_code:"EU",continent_name:"Europe",country_code2:"FI",country_code3:"FIN",country_name:"Finland",country_name_full:"Republic of Finland",iso3:"246"},f40={continent_code:"OC",continent_name:"Oceania",country_code2:"FJ",country_code3:"FJI",country_name:"Fiji",country_name_full:"Republic of Fiji",iso3:"242"},b40={continent_code:"EU",continent_name:"Europe",country_code2:"FR",country_code3:"FRA",country_name:"France",country_name_full:"French Republic",iso3:"250"},M40={continent_code:"NA",continent_name:"North America",country_code2:"GD",country_code3:"GRD",country_name:"Grenada",country_name_full:"Grenada",iso3:"308"},z40={continent_code:"AS",continent_name:"Asia",country_code2:"GE",country_code3:"GEO",country_name:"Georgia",country_name_full:"Georgia",iso3:"268"},h40={continent_code:"SA",continent_name:"South America",country_code2:"GF",country_code3:"GUF",country_name:"French Guiana",country_name_full:"French Guiana",iso3:"254"},O40={continent_code:"AF",continent_name:"Africa",country_code2:"GH",country_code3:"GHA",country_name:"Ghana",country_name_full:"Republic of Ghana",iso3:"288"},m40={continent_code:"NA",continent_name:"North America",country_code2:"GL",country_code3:"GRL",country_name:"Greenland",country_name_full:"Greenland",iso3:"304"},A40={continent_code:"EU",continent_name:"Europe",country_code2:"GR",country_code3:"GRC",country_name:"Greece",country_name_full:"Hellenic Republic Greece",iso3:"300"},g40={continent_code:"AS",continent_name:"Asia",country_code2:"HK",country_code3:"HKG",country_name:"Hong Kong",country_name_full:"Hong Kong Special Administrative Region of China",iso3:"344"},v40={continent_code:"NA",continent_name:"North America",country_code2:"HN",country_code3:"HND",country_name:"Honduras",country_name_full:"Republic of Honduras",iso3:"340"},y40={continent_code:"EU",continent_name:"Europe",country_code2:"HR",country_code3:"HRV",country_name:"Croatia",country_name_full:"Republic of Croatia",iso3:"191"},q40={continent_code:"NA",continent_name:"North America",country_code2:"HT",country_code3:"HTI",country_name:"Haiti",country_name_full:"Republic of Haiti",iso3:"332"},x40={continent_code:"EU",continent_name:"Europe",country_code2:"HU",country_code3:"HUN",country_name:"Hungary",country_name_full:"Hungary",iso3:"348"},W40={continent_code:"AS",continent_name:"Asia",country_code2:"ID",country_code3:"IDN",country_name:"Indonesia",country_name_full:"Republic of Indonesia",iso3:"360"},w40={continent_code:"EU",continent_name:"Europe",country_code2:"IE",country_code3:"IRL",country_name:"Ireland",country_name_full:"Ireland",iso3:"372"},R40={continent_code:"AS",continent_name:"Asia",country_code2:"IL",country_code3:"ISR",country_name:"Israel",country_name_full:"State of Israel",iso3:"376"},_40={continent_code:"EU",continent_name:"Europe",country_code2:"IM",country_code3:"IMN",country_name:"Isle of Man",country_name_full:"Isle of Man",iso3:"833"},S40={continent_code:"AS",continent_name:"Asia",country_code2:"IN",country_code3:"IND",country_name:"India",country_name_full:"Republic of India",iso3:"356"},N40={continent_code:"AS",continent_name:"Asia",country_code2:"IQ",country_code3:"IRQ",country_name:"Iraq",country_name_full:"Republic of Iraq",iso3:"368"},L40={continent_code:"AS",continent_name:"Asia",country_code2:"IR",country_code3:"IRN",country_name:"Iran",country_name_full:"Islamic Republic of Iran",iso3:"364"},k40={continent_code:"EU",continent_name:"Europe",country_code2:"IS",country_code3:"ISL",country_name:"Iceland",country_name_full:"Republic of Iceland",iso3:"352"},C40={continent_code:"EU",continent_name:"Europe",country_code2:"IT",country_code3:"ITA",country_name:"Italy",country_name_full:"Italian Republic",iso3:"380"},E40={continent_code:"EU",continent_name:"Europe",country_code2:"JE",country_code3:"JEY",country_name:"Jersey",country_name_full:"Bailiwick of Jersey",iso3:"832"},T40={continent_code:"NA",continent_name:"North America",country_code2:"JM",country_code3:"JAM",country_name:"Jamaica",country_name_full:"Jamaica",iso3:"388"},D40={continent_code:"AS",continent_name:"Asia",country_code2:"JO",country_code3:"JOR",country_name:"Jordan",country_name_full:"Hashemite Kingdom of Jordan",iso3:"400"},P40={continent_code:"AS",continent_name:"Asia",country_code2:"JP",country_code3:"JPN",country_name:"Japan",country_name_full:"Japan",iso3:"392"},B40={continent_code:"AF",continent_name:"Africa",country_code2:"KE",country_code3:"KEN",country_name:"Kenya",country_name_full:"Republic of Kenya",iso3:"404"},F40={continent_code:"AS",continent_name:"Asia",country_code2:"KH",country_code3:"KHM",country_name:"Cambodia",country_name_full:"Kingdom of Cambodia",iso3:"116"},I40={continent_code:"AF",continent_name:"Africa",country_code2:"KM",country_code3:"COM",country_name:"Comoros",country_name_full:"Union of the Comoros",iso3:"174"},j40={continent_code:"AS",continent_name:"Asia",country_code2:"KP",country_code3:"PRK",country_name:"Korea",country_name_full:"Democratic People's Republic of Korea",iso3:"408"},X40={continent_code:"AS",continent_name:"Asia",country_code2:"KR",country_code3:"KOR",country_name:"Korea",country_name_full:"Republic of Korea",iso3:"410"},$40={continent_code:"AS",continent_name:"Asia",country_code2:"KW",country_code3:"KWT",country_name:"Kuwait",country_name_full:"State of Kuwait",iso3:"414"},H40={continent_code:"AS",continent_name:"Asia",country_code2:"KZ",country_code3:"KAZ",country_name:"Kazakhstan",country_name_full:"Republic of Kazakhstan",iso3:"398"},U40={continent_code:"AS",continent_name:"Asia",country_code2:"LA",country_code3:"LAO",country_name:"Lao",country_name_full:"Lao People's Democratic Republic",iso3:"418"},Y40={continent_code:"AS",continent_name:"Asia",country_code2:"LB",country_code3:"LBN",country_name:"Lebanon",country_name_full:"Lebanese Republic",iso3:"422"},V40={continent_code:"AS",continent_name:"Asia",country_code2:"LK",country_code3:"LKA",country_name:"Sri Lanka",country_name_full:"Democratic Socialist Republic of Sri Lanka",iso3:"144"},G40={continent_code:"AF",continent_name:"Africa",country_code2:"LR",country_code3:"LBR",country_name:"Liberia",country_name_full:"Republic of Liberia",iso3:"430"},K40={continent_code:"EU",continent_name:"Europe",country_code2:"LT",country_code3:"LTU",country_name:"Lithuania",country_name_full:"Republic of Lithuania",iso3:"440"},J40={continent_code:"EU",continent_name:"Europe",country_code2:"LU",country_code3:"LUX",country_name:"Luxembourg",country_name_full:"Grand Duchy of Luxembourg",iso3:"442"},Q40={continent_code:"AF",continent_name:"Africa",country_code2:"LY",country_code3:"LBY",country_name:"Libya",country_name_full:"Libya",iso3:"434"},Z40={continent_code:"AF",continent_name:"Africa",country_code2:"MA",country_code3:"MAR",country_name:"Morocco",country_name_full:"Kingdom of Morocco",iso3:"504"},ev0={continent_code:"EU",continent_name:"Europe",country_code2:"MC",country_code3:"MCO",country_name:"Monaco",country_name_full:"Principality of Monaco",iso3:"492"},tv0={continent_code:"EU",continent_name:"Europe",country_code2:"MD",country_code3:"MDA",country_name:"Moldova",country_name_full:"Republic of Moldova",iso3:"498"},nv0={continent_code:"AF",continent_name:"Africa",country_code2:"MG",country_code3:"MDG",country_name:"Madagascar",country_name_full:"Republic of Madagascar",iso3:"450"},rv0={continent_code:"OC",continent_name:"Oceania",country_code2:"MH",country_code3:"MHL",country_name:"Marshall Islands",country_name_full:"Republic of the Marshall Islands",iso3:"584"},av0={continent_code:"EU",continent_name:"Europe",country_code2:"MK",country_code3:"MKD",country_name:"Macedonia",country_name_full:"Republic of Macedonia",iso3:"807"},ov0={continent_code:"AF",continent_name:"Africa",country_code2:"ML",country_code3:"MLI",country_name:"Mali",country_name_full:"Republic of Mali",iso3:"466"},sv0={continent_code:"AS",continent_name:"Asia",country_code2:"MM",country_code3:"MMR",country_name:"Myanmar",country_name_full:"Republic of the Union of Myanmar",iso3:"104"},iv0={continent_code:"AS",continent_name:"Asia",country_code2:"MN",country_code3:"MNG",country_name:"Mongolia",country_name_full:"Mongolia",iso3:"496"},cv0={continent_code:"AS",continent_name:"Asia",country_code2:"MO",country_code3:"MAC",country_name:"Macao",country_name_full:"Macao Special Administrative Region of China",iso3:"446"},lv0={continent_code:"OC",continent_name:"Oceania",country_code2:"MP",country_code3:"MNP",country_name:"Northern Mariana Islands",country_name_full:"Commonwealth of the Northern Mariana Islands",iso3:"580"},pv0={continent_code:"NA",continent_name:"North America",country_code2:"MQ",country_code3:"MTQ",country_name:"Martinique",country_name_full:"Martinique",iso3:"474"},uv0={continent_code:"AF",continent_name:"Africa",country_code2:"MR",country_code3:"MRT",country_name:"Mauritania",country_name_full:"Islamic Republic of Mauritania",iso3:"478"},dv0={continent_code:"NA",continent_name:"North America",country_code2:"MS",country_code3:"MSR",country_name:"Montserrat",country_name_full:"Montserrat",iso3:"500"},fv0={continent_code:"EU",continent_name:"Europe",country_code2:"MT",country_code3:"MLT",country_name:"Malta",country_name_full:"Republic of Malta",iso3:"470"},bv0={continent_code:"AF",continent_name:"Africa",country_code2:"MU",country_code3:"MUS",country_name:"Mauritius",country_name_full:"Republic of Mauritius",iso3:"480"},Mv0={continent_code:"AS",continent_name:"Asia",country_code2:"MV",country_code3:"MDV",country_name:"Maldives",country_name_full:"Republic of Maldives",iso3:"462"},zv0={continent_code:"AF",continent_name:"Africa",country_code2:"MW",country_code3:"MWI",country_name:"Malawi",country_name_full:"Republic of Malawi",iso3:"454"},hv0={continent_code:"NA",continent_name:"North America",country_code2:"MX",country_code3:"MEX",country_name:"Mexico",country_name_full:"United Mexican States",iso3:"484"},Ov0={continent_code:"AS",continent_name:"Asia",country_code2:"MY",country_code3:"MYS",country_name:"Malaysia",country_name_full:"Malaysia",iso3:"458"},mv0={continent_code:"AF",continent_name:"Africa",country_code2:"MZ",country_code3:"MOZ",country_name:"Mozambique",country_name_full:"Republic of Mozambique",iso3:"508"},Av0={continent_code:"AF",continent_name:"Africa",country_code2:"NA",country_code3:"NAM",country_name:"Namibia",country_name_full:"Republic of Namibia",iso3:"516"},gv0={continent_code:"AF",continent_name:"Africa",country_code2:"NE",country_code3:"NER",country_name:"Niger",country_name_full:"Republic of Niger",iso3:"562"},vv0={continent_code:"AF",continent_name:"Africa",country_code2:"NG",country_code3:"NGA",country_name:"Nigeria",country_name_full:"Federal Republic of Nigeria",iso3:"566"},yv0={continent_code:"NA",continent_name:"North America",country_code2:"NI",country_code3:"NIC",country_name:"Nicaragua",country_name_full:"Republic of Nicaragua",iso3:"558"},qv0={continent_code:"EU",continent_name:"Europe",country_code2:"NL",country_code3:"NLD",country_name:"Netherlands",country_name_full:"Kingdom of the Netherlands",iso3:"528"},xv0={continent_code:"EU",continent_name:"Europe",country_code2:"NO",country_code3:"NOR",country_name:"Norway",country_name_full:"Kingdom of Norway",iso3:"578"},Wv0={continent_code:"AS",continent_name:"Asia",country_code2:"NP",country_code3:"NPL",country_name:"Nepal",country_name_full:"Federal Democratic Republic of Nepal",iso3:"524"},wv0={continent_code:"OC",continent_name:"Oceania",country_code2:"NZ",country_code3:"NZL",country_name:"New Zealand",country_name_full:"New Zealand",iso3:"554"},Rv0={continent_code:"AS",continent_name:"Asia",country_code2:"OM",country_code3:"OMN",country_name:"Oman",country_name_full:"Sultanate of Oman",iso3:"512"},_v0={continent_code:"NA",continent_name:"North America",country_code2:"PA",country_code3:"PAN",country_name:"Panama",country_name_full:"Republic of Panama",iso3:"591"},Sv0={continent_code:"SA",continent_name:"South America",country_code2:"PE",country_code3:"PER",country_name:"Peru",country_name_full:"Republic of Peru",iso3:"604"},Nv0={continent_code:"AS",continent_name:"Asia",country_code2:"PH",country_code3:"PHL",country_name:"Philippines",country_name_full:"Republic of the Philippines",iso3:"608"},Lv0={continent_code:"AS",continent_name:"Asia",country_code2:"PK",country_code3:"PAK",country_name:"Pakistan",country_name_full:"Islamic Republic of Pakistan",iso3:"586"},kv0={continent_code:"EU",continent_name:"Europe",country_code2:"PL",country_code3:"POL",country_name:"Poland",country_name_full:"Republic of Poland",iso3:"616"},Cv0={continent_code:"EU",continent_name:"Europe",country_code2:"PT",country_code3:"PRT",country_name:"Portugal",country_name_full:"Portuguese Republic",iso3:"620"},Ev0={continent_code:"OC",continent_name:"Oceania",country_code2:"PW",country_code3:"PLW",country_name:"Palau",country_name_full:"Republic of Palau",iso3:"585"},Tv0={continent_code:"SA",continent_name:"South America",country_code2:"PY",country_code3:"PRY",country_name:"Paraguay",country_name_full:"Republic of Paraguay",iso3:"600"},Dv0={continent_code:"AS",continent_name:"Asia",country_code2:"QA",country_code3:"QAT",country_name:"Qatar",country_name_full:"State of Qatar",iso3:"634"},Pv0={continent_code:"EU",continent_name:"Europe",country_code2:"RO",country_code3:"ROU",country_name:"Romania",country_name_full:"Romania",iso3:"642"},Bv0={continent_code:"EU",continent_name:"Europe",country_code2:"RS",country_code3:"SRB",country_name:"Serbia",country_name_full:"Republic of Serbia",iso3:"688"},Fv0={continent_code:"EU",continent_name:"Europe",country_code2:"RU",country_code3:"RUS",country_name:"Russian",country_name_full:"Russian Federation",iso3:"643"},Iv0={continent_code:"AS",continent_name:"Asia",country_code2:"SA",country_code3:"SAU",country_name:"Saudi Arabia",country_name_full:"Kingdom of Saudi Arabia",iso3:"682"},jv0={continent_code:"OC",continent_name:"Oceania",country_code2:"SB",country_code3:"SLB",country_name:"Solomon Islands",country_name_full:"Solomon Islands",iso3:"090"},Xv0={continent_code:"AF",continent_name:"Africa",country_code2:"SD",country_code3:"SDN",country_name:"Sudan",country_name_full:"Republic of Sudan",iso3:"729"},$v0={continent_code:"EU",continent_name:"Europe",country_code2:"SE",country_code3:"SWE",country_name:"Sweden",country_name_full:"Kingdom of Sweden",iso3:"752"},Hv0={continent_code:"EU",continent_name:"Europe",country_code2:"UK",country_code3:"GB",country_name:"United Kingdom",country_name_full:"United Kingdom of Great Britain & Northern Ireland",iso3:"752"},Uv0={continent_code:"AS",continent_name:"Asia",country_code2:"SG",country_code3:"SGP",country_name:"Singapore",country_name_full:"Republic of Singapore",iso3:"702"},Yv0={continent_code:"EU",continent_name:"Europe",country_code2:"SI",country_code3:"SVN",country_name:"Slovenia",country_name_full:"Republic of Slovenia",iso3:"705"},Vv0={continent_code:"EU",continent_name:"Europe",country_code2:"SK",country_code3:"SVK",country_name:"Slovakia (Slovak Republic)",country_name_full:"Slovakia (Slovak Republic)",iso3:"703"},Gv0={continent_code:"AF",continent_name:"Africa",country_code2:"SL",country_code3:"SLE",country_name:"Sierra Leone",country_name_full:"Republic of Sierra Leone",iso3:"694"},Kv0={continent_code:"EU",continent_name:"Europe",country_code2:"SM",country_code3:"SMR",country_name:"San Marino",country_name_full:"Republic of San Marino",iso3:"674"},Jv0={continent_code:"AF",continent_name:"Africa",country_code2:"SN",country_code3:"SEN",country_name:"Senegal",country_name_full:"Republic of Senegal",iso3:"686"},Qv0={continent_code:"AF",continent_name:"Africa",country_code2:"SO",country_code3:"SOM",country_name:"Somalia",country_name_full:"Somali Republic",iso3:"706"},Zv0={continent_code:"SA",continent_name:"South America",country_code2:"SR",country_code3:"SUR",country_name:"Suriname",country_name_full:"Republic of Suriname",iso3:"740"},e50={continent_code:"AF",continent_name:"Africa",country_code2:"SS",country_code3:"SSD",country_name:"South Sudan",country_name_full:"Republic of South Sudan",iso3:"728"},t50={continent_code:"NA",continent_name:"North America",country_code2:"SV",country_code3:"SLV",country_name:"El Salvador",country_name_full:"Republic of El Salvador",iso3:"222"},n50={continent_code:"AF",continent_name:"Africa",country_code2:"SZ",country_code3:"SWZ",country_name:"Swaziland",country_name_full:"Kingdom of Swaziland",iso3:"748"},r50={continent_code:"AF",continent_name:"Africa",country_code2:"TG",country_code3:"TGO",country_name:"Togo",country_name_full:"Togolese Republic",iso3:"768"},a50={continent_code:"AS",continent_name:"Asia",country_code2:"TH",country_code3:"THA",country_name:"Thailand",country_name_full:"Kingdom of Thailand",iso3:"764"},o50={continent_code:"AS",continent_name:"Asia",country_code2:"TJ",country_code3:"TJK",country_name:"Tajikistan",country_name_full:"Republic of Tajikistan",iso3:"762"},s50={continent_code:"AS",continent_name:"Asia",country_code2:"TL",country_code3:"TLS",country_name:"Timor-Leste",country_name_full:"Democratic Republic of Timor-Leste",iso3:"626"},i50={continent_code:"AF",continent_name:"Africa",country_code2:"TN",country_code3:"TUN",country_name:"Tunisia",country_name_full:"Tunisian Republic",iso3:"788"},c50={continent_code:"OC",continent_name:"Oceania",country_code2:"TO",country_code3:"TON",country_name:"Tonga",country_name_full:"Kingdom of Tonga",iso3:"776"},l50={continent_code:"AS",continent_name:"Asia",country_code2:"TR",country_code3:"TUR",country_name:"Turkey",country_name_full:"Republic of Turkey",iso3:"792"},p50={continent_code:"AS",continent_name:"Asia",country_code2:"TW",country_code3:"TWN",country_name:"Taiwan",country_name_full:"Taiwan, Province of China",iso3:"158"},u50={continent_code:"EU",continent_name:"Europe",country_code2:"UA",country_code3:"UKR",country_name:"Ukraine",country_name_full:"Ukraine",iso3:"804"},d50={continent_code:"NA",continent_name:"North America",country_code2:"US",country_code3:"USA",country_name:"United States of America",country_name_full:"United States of America",iso3:"840"},f50={continent_code:"SA",continent_name:"South America",country_code2:"UY",country_code3:"URY",country_name:"Uruguay",country_name_full:"Eastern Republic of Uruguay",iso3:"858"},b50={continent_code:"AS",continent_name:"Asia",country_code2:"UZ",country_code3:"UZB",country_name:"Uzbekistan",country_name_full:"Republic of Uzbekistan",iso3:"860"},M50={continent_code:"SA",continent_name:"South America",country_code2:"VE",country_code3:"VEN",country_name:"Venezuela",country_name_full:"Bolivarian Republic of Venezuela",iso3:"862"},z50={continent_code:"NA",continent_name:"North America",country_code2:"VG",country_code3:"VGB",country_name:"British Virgin Islands",country_name_full:"British Virgin Islands",iso3:"092"},h50={continent_code:"AS",continent_name:"Asia",country_code2:"VN",country_code3:"VNM",country_name:"Vietnam",country_name_full:"Việt Nam",iso3:"704"},O50={continent_code:"OC",continent_name:"Oceania",country_code2:"VU",country_code3:"VUT",country_name:"Vanuatu",country_name_full:"Republic of Vanuatu",iso3:"548"},m50={continent_code:"OC",continent_name:"Oceania",country_code2:"WS",country_code3:"WSM",country_name:"Samoa",country_name_full:"Independent State of Samoa",iso3:"882"},A50={continent_code:"AS",continent_name:"Asia",country_code2:"YE",country_code3:"YEM",country_name:"Yemen",country_name_full:"Yemen",iso3:"887"},g50={continent_code:"AF",continent_name:"Africa",country_code2:"ZA",country_code3:"ZAF",country_name:"South Africa",country_name_full:"Republic of South Africa",iso3:"710"},v50={continent_code:"AF",continent_name:"Africa",country_code2:"ZM",country_code3:"ZMB",country_name:"Zambia",country_name_full:"Republic of Zambia",iso3:"894"},y50={continent_code:"AF",continent_name:"Africa",country_code2:"ZW",country_code3:"ZWE",country_name:"Zimbabwe",country_name_full:"Republic of Zimbabwe",iso3:"716"},Xr={AE:_g0,AF:Sg0,AR:Ng0,AT:Lg0,AU:kg0,AX:Cg0,BD:Eg0,BE:Tg0,BN:Dg0,BO:Pg0,BR:Bg0,BS:Fg0,BT:Ig0,BW:jg0,BY:Xg0,BZ:$g0,CA:Hg0,CD:Ug0,CG:Yg0,CH:Vg0,CK:Gg0,CL:Kg0,CM:Jg0,CN:Qg0,CO:Zg0,CR:e40,CU:t40,CY:n40,DE:r40,DK:a40,DM:o40,DZ:s40,EC:i40,EE:c40,EG:l40,EH:p40,ES:u40,FI:d40,FJ:f40,FR:b40,GD:M40,GE:z40,GF:h40,GH:O40,GL:m40,GR:A40,HK:g40,HN:v40,HR:y40,HT:q40,HU:x40,ID:W40,IE:w40,IL:R40,IM:_40,IN:S40,IQ:N40,IR:L40,IS:k40,IT:C40,JE:E40,JM:T40,JO:D40,JP:P40,KE:B40,KH:F40,KM:I40,KP:j40,KR:X40,KW:$40,KZ:H40,LA:U40,LB:Y40,LK:V40,LR:G40,LT:K40,LU:J40,LY:Q40,MA:Z40,MC:ev0,MD:tv0,MG:nv0,MH:rv0,MK:av0,ML:ov0,MM:sv0,MN:iv0,MO:cv0,MP:lv0,MQ:pv0,MR:uv0,MS:dv0,MT:fv0,MU:bv0,MV:Mv0,MW:zv0,MX:hv0,MY:Ov0,MZ:mv0,NA:Av0,NE:gv0,NG:vv0,NI:yv0,NL:qv0,NO:xv0,NP:Wv0,NZ:wv0,OM:Rv0,PA:_v0,PE:Sv0,PH:Nv0,PK:Lv0,PL:kv0,PT:Cv0,PW:Ev0,PY:Tv0,QA:Dv0,RO:Pv0,RS:Bv0,RU:Fv0,SA:Iv0,SB:jv0,SD:Xv0,SE:$v0,GB:Hv0,SG:Uv0,SI:Yv0,SK:Vv0,SL:Gv0,SM:Kv0,SN:Jv0,SO:Qv0,SR:Zv0,SS:e50,SV:t50,SZ:n50,TG:r50,TH:a50,TJ:o50,TL:s50,TN:i50,TO:c50,TR:l50,TW:p50,UA:u50,US:d50,UY:f50,UZ:b50,VE:M50,VG:z50,VN:h50,VU:O50,WS:m50,YE:A50,ZA:g50,ZM:v50,ZW:y50},Ln=()=>{const{state:e,dispatch:t}=Ht(),{listFollowed:n}=Z2(),{postedConferences:r}=sl(),[a,o]=y.useState(!1),[s,i]=y.useState(1),c=ya(),l=v=>{const x=v.filter(_=>/^[A-Za-z]$/i.test(_)).sort(),W=v.filter(_=>!/^[A-Za-z]$/i.test(_)&&isNaN(_)).sort();return[...x,...W]},p=async v=>{const x=["source","acronym","rank","region","type"];if(!e.filterOptions[v])if(x.includes(v)){if(v==="acronym")try{const _=await(await fetch(`${H1}/conf/${v}`,{method:"GET",headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*"}})).json(),N=l(_.data);t(uu({[v]:Array.from(new Set(N))}))}catch(q){console.error(`Error fetching data for ${v}:`,q)}else if(v==="rank")t(uu({[v]:["A*","A","B","C"]}));else if(v==="source")t(uu({[v]:["CONFHUB","CORE2021","CORE2023"]}));else if(v==="region"){let q=["Local","National","Asia","South America","Europe","Oceania","North America","Africa"];t(uu({[v]:q}))}else v==="type"&&t(uu({[v]:["Online","Offline","Hybrid"]}));o(!0)}else try{const _=await(await fetch(`${H1}/${v}`)).json(),N=l(_.data);t(uu({[v]:Array.from(new Set(N))}))}catch(q){console.error(`Error fetching data for ${v}:`,q)}o(!1)},u=(v,x,W)=>{x==="submissionDate"||x==="conferenceDate"?t({type:"ADD_FILTER_DATE",payload:{label:x,keyword:W,filter:v}}):e[v][x].includes(W[0])?f(x,W[0],v):t(GX(v,x,W))},f=(v,x,W)=>{const q={...e[W],[v]:e[W][v].filter(_=>_!==x)};t({type:"REMOVE_FILTER",payload:{updatedList:q,fromFilter:W}})},b=v=>{if(e[v]){const x=Object.fromEntries(Object.keys(e[v]).map(W=>[W,[]]));t({type:"CLEAR_FILTERS",payload:{updatedList:x,fromFilter:v}})}},M=v=>{const W=v.split("(")[0].trim(),q=sessionStorage.getItem("dataFilters");if(!q)return 0;const N=JSON.parse(q)[W]||[];let L=0;if(c.pathname==="/followed"){const S=new Set(n.map(B=>B.id));L=N.filter(B=>S.has(B.id)).length}else if(c.pathname==="/yourconferences"){const S=new Set(r.map(B=>B.id));L=N.filter(B=>S.has(B.id)).length}return`${W} (${L})`},z=v=>{const x=/\((\d+)\)/,W=v.match(x);return W?W[1]:0},h=v=>{let x=JSON.parse(sessionStorage.getItem("keywordFilter"))||{},W=0;return v.forEach(q=>{x[q.label]&&(W+=parseInt(x[q.label],10))}),W},m=v=>{const x={};return Object.keys(e.optionsSelected).forEach(W=>{const q=e.optionsSelected[W].filter(_=>v.includes(_));q.length>0&&(x[W]=q)}),x};function O(v){if(v in Xr)return Xr[v].country_name;for(const x in Xr)if(Xr[x].country_code2===v||Xr[x].country_code3===v)return Xr[x].country_name;return null}const A=()=>{const v={};for(const x in e.optionsSelected)if(Object.prototype.hasOwnProperty.call(e.optionsSelected,x)){const W=e.optionsSelected[x];W&&W.length>0&&(v[x]=W.join(","))}return v};return{optionsSelected:e.optionsSelected,optionsSelectedAdmin:e.optionsSelectedAdmin,optionsSelectedFollow:e.optionsSelectedFollow,optionsSelectedOwn:e.optionsSelectedOwn,filterOptions:e.filterOptions,page:s,loading:a,setPage:i,getOptionsFilter:p,addKeywords:u,deleteKeyword:f,clearKeywords:b,getKeyword:M,extractQuantity:z,getTotalConf:h,updateOptionsSelectedFromParams:m,getCountryName:O,filterAndAddToParams:A}},KX=({onSelect:e,options:t})=>{const{t:n}=p1(),[r,a]=y.useState("random"),o=s=>{a(s),e(s)};return d.jsxs(it,{children:[d.jsxs(it.Toggle,{className:"bg-transparent border-primary-normal text-dropdown-toggle fs-6",children:[d.jsxs("span",{className:"fw-semibold",children:[n("sort_by"),":"]})," ",`  ${n(r)}`||"random"]}),d.jsx(it.Menu,{children:t&&d.jsx(d.Fragment,{children:t.map(s=>d.jsx(it.Item,{onClick:()=>o(s),className:"fs-6",children:n(s)},s))})})]})},il=e=>typeof e!="object"||e===null?[]:Object.entries(e).map(([t,n])=>Array.isArray(n)&&n.some(a=>a!=null&&a!=="")),q50=e=>{if(il(e).some(r=>r===!0)){const r=Object.values(e),a=[].concat(...r);return Array.from(new Set(a.map(JSON.stringify))).map(JSON.parse)}else return[]},x50=(e,t)=>Object.keys(e).find(r=>e[r].some(a=>a.includes(t)))||null,Aw=e=>{const t=new Date,n=new Date(e);if(n<t)return!1;const r=new Date(t.getFullYear(),t.getMonth()+1,t.getDate());return n<=r},W50=e=>{const t=new Date;return e.sort((n,r)=>{const a=n.organizations.find(p=>p.status==="new"&&p.start_date),o=r.organizations.find(p=>p.status==="new"&&p.start_date);if(!a)return 1;if(!o)return-1;const s=new Date(a.start_date),i=new Date(o.start_date),c=s<t,l=i<t;return c&&l||c&&!l?1:!c&&l?-1:s-i===0?n.id-r.id:s-i}),e},w50=e=>e.sort((t,n)=>{const r=t.information.name.toLowerCase(),a=n.information.name.toLowerCase();return r<a?-1:r>a?1:t.id-n.id}),R50=e=>e.sort((t,n)=>{const r=new Date(t.createdAt);return new Date(n.createdAt)-r}),_50=e=>{if(il(e).some(r=>r===!0)){const r=Object.values(e),a=[].concat(...r),o={};return a.forEach(c=>{const l=JSON.stringify(c);o[l]=(o[l]||0)+1}),a.sort((c,l)=>{const p=o[JSON.stringify(c)],u=o[JSON.stringify(l)];return p===u?c.information.name.localeCompare(l.information.name):u-p}).filter((c,l,p)=>p.findIndex(u=>u.id===c.id)===l)}else return[]},S50=(e,t)=>[...e].sort((r,a)=>{const o=t.findIndex(i=>i.id===r.id),s=t.findIndex(i=>i.id===a.id);return o!==-1&&s===-1?-1:o===-1&&s!==-1?1:0}),JX=(e,t)=>{if(il(t).some(a=>a===!0)||t.length>0)switch(e){case"nameAz":return w50(t);case"upcoming":return W50(t);case"latest":return R50(t);case"random":return _50(t);default:return t}else return[]},gw=`Full papers submission deadline
-Submission
-Abstract registration deadline
-Paper submission deadline
+See https://reactjs.org/docs/forms.html#controlled-components`),a0=F.initialPage?F.initialPage:F.forcePage?F.forcePage:0,n0.state={selected:a0},n0}return B=U,(V=[{key:"componentDidMount",value:function(){var F=this.props,n0=F.initialPage,a0=F.disableInitialCallback,T=F.extraAriaContext,j=F.pageCount,P=F.forcePage;n0===void 0||a0||this.callCallback(n0),T&&console.warn("DEPRECATED (react-paginate): The extraAriaContext prop is deprecated. You should now use the ariaLabelBuilder instead."),Number.isInteger(j)||console.warn("(react-paginate): The pageCount prop value provided is not an integer (".concat(j,"). Did you forget a Math.ceil()?")),n0!==void 0&&n0>j-1&&console.warn("(react-paginate): The initialPage prop provided is greater than the maximum page index from pageCount prop (".concat(n0," > ").concat(j-1,").")),P!==void 0&&P>j-1&&console.warn("(react-paginate): The forcePage prop provided is greater than the maximum page index from pageCount prop (".concat(P," > ").concat(j-1,")."))}},{key:"componentDidUpdate",value:function(F){this.props.forcePage!==void 0&&this.props.forcePage!==F.forcePage&&(this.props.forcePage>this.props.pageCount-1&&console.warn("(react-paginate): The forcePage prop provided is greater than the maximum page index from pageCount prop (".concat(this.props.forcePage," > ").concat(this.props.pageCount-1,").")),this.setState({selected:this.props.forcePage})),Number.isInteger(F.pageCount)&&!Number.isInteger(this.props.pageCount)&&console.warn("(react-paginate): The pageCount prop value provided is not an integer (".concat(this.props.pageCount,"). Did you forget a Math.ceil()?"))}},{key:"getForwardJump",value:function(){var F=this.state.selected,n0=this.props,a0=n0.pageCount,T=F+n0.pageRangeDisplayed;return T>=a0?a0-1:T}},{key:"getBackwardJump",value:function(){var F=this.state.selected-this.props.pageRangeDisplayed;return F<0?0:F}},{key:"getElementHref",value:function(F){var n0=this.props,a0=n0.hrefBuilder,T=n0.pageCount,j=n0.hrefAllControls;if(a0)return j||F>=0&&F<T?a0(F+1,T,this.state.selected):void 0}},{key:"ariaLabelBuilder",value:function(F){var n0=F===this.state.selected;if(this.props.ariaLabelBuilder&&F>=0&&F<this.props.pageCount){var a0=this.props.ariaLabelBuilder(F+1,n0);return this.props.extraAriaContext&&!n0&&(a0=a0+" "+this.props.extraAriaContext),a0}}},{key:"getPageElement",value:function(F){var n0=this.state.selected,a0=this.props,T=a0.pageClassName,j=a0.pageLinkClassName,P=a0.activeClassName,E=a0.activeLinkClassName,J=a0.extraAriaContext,M0=a0.pageLabelBuilder;return c().createElement(b,{key:F,pageSelectedHandler:this.handlePageSelected.bind(null,F),selected:n0===F,rel:this.getElementPageRel(F),pageClassName:T,pageLinkClassName:j,activeClassName:P,activeLinkClassName:E,extraAriaContext:J,href:this.getElementHref(F),ariaLabel:this.ariaLabelBuilder(F),page:F+1,pageLabelBuilder:M0,getEventListener:this.getEventListener})}},{key:"render",value:function(){var F=this.props.renderOnZeroPageCount;if(this.props.pageCount===0&&F!==void 0)return F&&F(this.props);var n0=this.props,a0=n0.disabledClassName,T=n0.disabledLinkClassName,j=n0.pageCount,P=n0.className,E=n0.containerClassName,J=n0.previousLabel,M0=n0.previousClassName,O0=n0.previousLinkClassName,W0=n0.previousAriaLabel,x0=n0.prevRel,X0=n0.nextLabel,e0=n0.nextClassName,l0=n0.nextLinkClassName,g0=n0.nextAriaLabel,d0=n0.nextRel,A0=this.state.selected,m0=A0===0,H0=A0===j-1,s1="".concat(m(M0)).concat(m0?" ".concat(m(a0)):""),J0="".concat(m(e0)).concat(H0?" ".concat(m(a0)):""),r1="".concat(m(O0)).concat(m0?" ".concat(m(T)):""),W1="".concat(m(l0)).concat(H0?" ".concat(m(T)):""),Y1=m0?"true":"false",I0=H0?"true":"false";return c().createElement("ul",{className:P||E,role:"navigation","aria-label":"Pagination"},c().createElement("li",{className:s1},c().createElement("a",A({className:r1,href:this.getElementHref(A0-1),tabIndex:m0?"-1":"0",role:"button",onKeyPress:this.handlePreviousPage,"aria-disabled":Y1,"aria-label":W0,rel:x0},this.getEventListener(this.handlePreviousPage)),J)),this.pagination(),c().createElement("li",{className:J0},c().createElement("a",A({className:W1,href:this.getElementHref(A0+1),tabIndex:H0?"-1":"0",role:"button",onKeyPress:this.handleNextPage,"aria-disabled":I0,"aria-label":g0,rel:d0},this.getEventListener(this.handleNextPage)),X0)))}}])&&v(B.prototype,V),Object.defineProperty(B,"prototype",{writable:!1}),U}(i.Component);N(L,"propTypes",{pageCount:p().number.isRequired,pageRangeDisplayed:p().number,marginPagesDisplayed:p().number,previousLabel:p().node,previousAriaLabel:p().string,prevPageRel:p().string,prevRel:p().string,nextLabel:p().node,nextAriaLabel:p().string,nextPageRel:p().string,nextRel:p().string,breakLabel:p().oneOfType([p().string,p().node]),breakAriaLabels:p().shape({forward:p().string,backward:p().string}),hrefBuilder:p().func,hrefAllControls:p().bool,onPageChange:p().func,onPageActive:p().func,onClick:p().func,initialPage:p().number,forcePage:p().number,disableInitialCallback:p().bool,containerClassName:p().string,className:p().string,pageClassName:p().string,pageLinkClassName:p().string,pageLabelBuilder:p().func,activeClassName:p().string,activeLinkClassName:p().string,previousClassName:p().string,nextClassName:p().string,previousLinkClassName:p().string,nextLinkClassName:p().string,disabledClassName:p().string,disabledLinkClassName:p().string,breakClassName:p().string,breakLinkClassName:p().string,extraAriaContext:p().string,ariaLabelBuilder:p().func,eventListener:p().string,renderOnZeroPageCount:p().func,selectedPageRel:p().string}),N(L,"defaultProps",{pageRangeDisplayed:2,marginPagesDisplayed:3,activeClassName:"selected",previousLabel:"Previous",previousClassName:"previous",previousAriaLabel:"Previous page",prevPageRel:"prev",prevRel:"prev",nextLabel:"Next",nextClassName:"next",nextAriaLabel:"Next page",nextPageRel:"next",nextRel:"next",breakLabel:"...",breakAriaLabels:{forward:"Jump forward",backward:"Jump backward"},disabledClassName:"disabled",disableInitialCallback:!1,pageLabelBuilder:function(S){return S},eventListener:"onClick",renderOnZeroPageCount:void 0,selectedPageRel:"canonical",hrefAllControls:!1});const k=L})(),s})())})(VX);var wg0=VX.exports;const cm=Kn(wg0),Ck=e=>({type:m9,payload:e}),mw=()=>({saveListToStorage:(r,a)=>{sessionStorage.set(r,JSON.stringify(a))},updateDataListInStorage:(r,a)=>{sessionStorage.setItem(r,JSON.stringify(a))},getDataListInStorage:r=>{const a=sessionStorage.getItem(r);return a?JSON.parse(a):[]}}),Z2=()=>{const{state:e,dispatch:t}=Ht(),{token:n}=Po(),{updateDataListInStorage:r}=mw(),{user:a}=Ar(),{handleIsExpired:o}=Ut(),[s,i]=y.useState(!1),{previousPath:c}=el(),l=Re(),p=async z=>{let h=JSON.parse(localStorage.getItem("token"));const m=n||h,O=await fetch(`${H1}/follow?page=${z}&size=50`,{method:"GET",headers:{Authorization:`Bearer ${m}`}});if(!O.ok)throw O.status===401&&o(!1),new Error("Network response was not ok");return O.json()},u=async()=>{if(i(!0),a||localStorage.getItem("user"))try{const z=await p(1),h=z.maxPages,m=z.maxRecords;sessionStorage.setItem("totalConfFollow",JSON.stringify(m)),sessionStorage.setItem("totalPagesFollow",JSON.stringify(h)),r("listFollow",z.data),t(Ck(z.data));for(let O=2;O<=h;O++){const A=await p(O);t(Ck(A.data))}}catch{i(!1)}i(!1)},f=async z=>{if(i(!0),a||localStorage.getItem("user")){let h=JSON.parse(localStorage.getItem("token"));const m=n||h;try{const O=await fetch(`${H1}/follow`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${m}`},body:JSON.stringify({cfp_id:z})});if(i(!1),O.ok)return u(),!0;throw O.status===401&&o(!1),new Error(O.message)}catch(O){return console.error("Error:",O),!1}}else alert("Log in before continuing, please!"),localStorage.setItem("previousPath",c),localStorage.setItem("lastVisitedPage",c),l("/login")},b=async z=>{i(!0);try{const h=await fetch(`${H1}/follow`,{method:"DELETE",headers:{"Content-Type":"application/json",Authorization:`Bearer ${n}`},body:JSON.stringify({cfp_id:z})});return i(!1),h.ok?(u(),!0):(h.status===401&&o(!1),!1)}catch(h){console.error("Error:",h)}},M=async z=>{const h=q0(),m=h.clone().add(1,"month");return await z.map(A=>({...A})).filter(A=>{const v=A.organizations.some(W=>{if(W.status!=="new")return!1;const q=q0(W.start_date);return q.isAfter(h)&&q.isBefore(m)}),x=A.importantDates.some(W=>{if(W.status!=="new")return!1;const q=q0(W.date_value);return q.isAfter(h)&&q.isBefore(m)});return v||x})};return{loading:s,listFollowed:e.listFollowed,getListFollowedConferences:u,followConference:f,unfollowConference:b,getUpcomingConferences:M}},uu=e=>({type:g9,payload:e}),GX=(e,t,n)=>({type:v9,payload:{label:t,keywords:n,loading:!1,filterList:e}}),Nr=e=>e?e.charAt(0).toUpperCase()+e.slice(1):"N/I",Rg0=e=>e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/\b\w/g,t=>t.toUpperCase()),_g0={continent_code:"AS",continent_name:"Asia",country_code2:"AE",country_code3:"ARE",country_name:"United Arab Emirates",country_name_full:"United Arab Emirates",iso3:"784"},Sg0={continent_code:"AS",continent_name:"Asia",country_code2:"AF",country_code3:"AFG",country_name:"Afghanistan",country_name_full:"Islamic Republic of Afghanistan",iso3:"004"},Ng0={continent_code:"SA",continent_name:"South America",country_code2:"AR",country_code3:"ARG",country_name:"Argentina",country_name_full:"Argentine Republic",iso3:"032"},Lg0={continent_code:"EU",continent_name:"Europe",country_code2:"AT",country_code3:"AUT",country_name:"Austria",country_name_full:"Republic of Austria",iso3:"040"},kg0={continent_code:"OC",continent_name:"Oceania",country_code2:"AU",country_code3:"AUS",country_name:"Australia",country_name_full:"Commonwealth of Australia",iso3:"036"},Cg0={continent_code:"EU",continent_name:"Europe",country_code2:"AX",country_code3:"ALA",country_name:"Åland Islands",country_name_full:"Åland Islands",iso3:"248"},Eg0={continent_code:"AS",continent_name:"Asia",country_code2:"BD",country_code3:"BGD",country_name:"Bangladesh",country_name_full:"People's Republic of Bangladesh",iso3:"050"},Tg0={continent_code:"EU",continent_name:"Europe",country_code2:"BE",country_code3:"BEL",country_name:"Belgium",country_name_full:"Kingdom of Belgium",iso3:"056"},Dg0={continent_code:"AS",continent_name:"Asia",country_code2:"BN",country_code3:"BRN",country_name:"Brunei",country_name_full:"Brunei Darussalam",iso3:"096"},Pg0={continent_code:"SA",continent_name:"South America",country_code2:"BO",country_code3:"BOL",country_name:"Bolivia",country_name_full:"Plurinational State of Bolivia",iso3:"068"},Bg0={continent_code:"SA",continent_name:"South America",country_code2:"BR",country_code3:"BRA",country_name:"Brazil",country_name_full:"Federative Republic of Brazil",iso3:"076"},Fg0={continent_code:"NA",continent_name:"North America",country_code2:"BS",country_code3:"BHS",country_name:"Bahamas",country_name_full:"Commonwealth of the Bahamas",iso3:"044"},Ig0={continent_code:"AS",continent_name:"Asia",country_code2:"BT",country_code3:"BTN",country_name:"Bhutan",country_name_full:"Kingdom of Bhutan",iso3:"064"},jg0={continent_code:"AF",continent_name:"Africa",country_code2:"BW",country_code3:"BWA",country_name:"Botswana",country_name_full:"Republic of Botswana",iso3:"072"},Xg0={continent_code:"EU",continent_name:"Europe",country_code2:"BY",country_code3:"BLR",country_name:"Belarus",country_name_full:"Republic of Belarus",iso3:"112"},$g0={continent_code:"NA",continent_name:"North America",country_code2:"BZ",country_code3:"BLZ",country_name:"Belize",country_name_full:"Belize",iso3:"084"},Hg0={continent_code:"NA",continent_name:"North America",country_code2:"CA",country_code3:"CAN",country_name:"Canada",country_name_full:"Canada",iso3:"124"},Ug0={continent_code:"AF",continent_name:"Africa",country_code2:"CD",country_code3:"COD",country_name:"Congo",country_name_full:"Democratic Republic of the Congo",iso3:"180"},Yg0={continent_code:"AF",continent_name:"Africa",country_code2:"CG",country_code3:"COG",country_name:"Congo",country_name_full:"Republic of the Congo",iso3:"178"},Vg0={continent_code:"EU",continent_name:"Europe",country_code2:"CH",country_code3:"CHE",country_name:"Switzerland",country_name_full:"Swiss Confederation",iso3:"756"},Gg0={continent_code:"OC",continent_name:"Oceania",country_code2:"CK",country_code3:"COK",country_name:"Cook Islands",country_name_full:"Cook Islands",iso3:"184"},Kg0={continent_code:"SA",continent_name:"South America",country_code2:"CL",country_code3:"CHL",country_name:"Chile",country_name_full:"Republic of Chile",iso3:"152"},Jg0={continent_code:"AF",continent_name:"Africa",country_code2:"CM",country_code3:"CMR",country_name:"Cameroon",country_name_full:"Republic of Cameroon",iso3:"120"},Qg0={continent_code:"AS",continent_name:"Asia",country_code2:"CN",country_code3:"CHN",country_name:"China",country_name_full:"People's Republic of China",iso3:"156"},Zg0={continent_code:"SA",continent_name:"South America",country_code2:"CO",country_code3:"COL",country_name:"Colombia",country_name_full:"Republic of Colombia",iso3:"170"},e40={continent_code:"NA",continent_name:"North America",country_code2:"CR",country_code3:"CRI",country_name:"Costa Rica",country_name_full:"Republic of Costa Rica",iso3:"188"},t40={continent_code:"NA",continent_name:"North America",country_code2:"CU",country_code3:"CUB",country_name:"Cuba",country_name_full:"Republic of Cuba",iso3:"192"},n40={continent_code:"AS",continent_name:"Asia",country_code2:"CY",country_code3:"CYP",country_name:"Cyprus",country_name_full:"Republic of Cyprus",iso3:"196"},r40={continent_code:"EU",continent_name:"Europe",country_code2:"DE",country_code3:"DEU",country_name:"Germany",country_name_full:"Federal Republic of Germany",iso3:"276"},a40={continent_code:"EU",continent_name:"Europe",country_code2:"DK",country_code3:"DNK",country_name:"Denmark",country_name_full:"Kingdom of Denmark",iso3:"208"},o40={continent_code:"NA",continent_name:"North America",country_code2:"DM",country_code3:"DMA",country_name:"Dominica",country_name_full:"Commonwealth of Dominica",iso3:"212"},s40={continent_code:"AF",continent_name:"Africa",country_code2:"DZ",country_code3:"DZA",country_name:"Algeria",country_name_full:"People's Democratic Republic of Algeria",iso3:"012"},i40={continent_code:"SA",continent_name:"South America",country_code2:"EC",country_code3:"ECU",country_name:"Ecuador",country_name_full:"Republic of Ecuador",iso3:"218"},c40={continent_code:"EU",continent_name:"Europe",country_code2:"EE",country_code3:"EST",country_name:"Estonia",country_name_full:"Republic of Estonia",iso3:"233"},l40={continent_code:"AF",continent_name:"Africa",country_code2:"EG",country_code3:"EGY",country_name:"Egypt",country_name_full:"Arab Republic of Egypt",iso3:"818"},p40={continent_code:"AF",continent_name:"Africa",country_code2:"EH",country_code3:"ESH",country_name:"Western Sahara",country_name_full:"Western Sahara",iso3:"732"},u40={continent_code:"EU",continent_name:"Europe",country_code2:"ES",country_code3:"ESP",country_name:"Spain",country_name_full:"Kingdom of Spain",iso3:"724"},d40={continent_code:"EU",continent_name:"Europe",country_code2:"FI",country_code3:"FIN",country_name:"Finland",country_name_full:"Republic of Finland",iso3:"246"},f40={continent_code:"OC",continent_name:"Oceania",country_code2:"FJ",country_code3:"FJI",country_name:"Fiji",country_name_full:"Republic of Fiji",iso3:"242"},b40={continent_code:"EU",continent_name:"Europe",country_code2:"FR",country_code3:"FRA",country_name:"France",country_name_full:"French Republic",iso3:"250"},M40={continent_code:"NA",continent_name:"North America",country_code2:"GD",country_code3:"GRD",country_name:"Grenada",country_name_full:"Grenada",iso3:"308"},z40={continent_code:"AS",continent_name:"Asia",country_code2:"GE",country_code3:"GEO",country_name:"Georgia",country_name_full:"Georgia",iso3:"268"},h40={continent_code:"SA",continent_name:"South America",country_code2:"GF",country_code3:"GUF",country_name:"French Guiana",country_name_full:"French Guiana",iso3:"254"},O40={continent_code:"AF",continent_name:"Africa",country_code2:"GH",country_code3:"GHA",country_name:"Ghana",country_name_full:"Republic of Ghana",iso3:"288"},m40={continent_code:"NA",continent_name:"North America",country_code2:"GL",country_code3:"GRL",country_name:"Greenland",country_name_full:"Greenland",iso3:"304"},A40={continent_code:"EU",continent_name:"Europe",country_code2:"GR",country_code3:"GRC",country_name:"Greece",country_name_full:"Hellenic Republic Greece",iso3:"300"},g40={continent_code:"AS",continent_name:"Asia",country_code2:"HK",country_code3:"HKG",country_name:"Hong Kong",country_name_full:"Hong Kong Special Administrative Region of China",iso3:"344"},v40={continent_code:"NA",continent_name:"North America",country_code2:"HN",country_code3:"HND",country_name:"Honduras",country_name_full:"Republic of Honduras",iso3:"340"},y40={continent_code:"EU",continent_name:"Europe",country_code2:"HR",country_code3:"HRV",country_name:"Croatia",country_name_full:"Republic of Croatia",iso3:"191"},q40={continent_code:"NA",continent_name:"North America",country_code2:"HT",country_code3:"HTI",country_name:"Haiti",country_name_full:"Republic of Haiti",iso3:"332"},x40={continent_code:"EU",continent_name:"Europe",country_code2:"HU",country_code3:"HUN",country_name:"Hungary",country_name_full:"Hungary",iso3:"348"},W40={continent_code:"AS",continent_name:"Asia",country_code2:"ID",country_code3:"IDN",country_name:"Indonesia",country_name_full:"Republic of Indonesia",iso3:"360"},w40={continent_code:"EU",continent_name:"Europe",country_code2:"IE",country_code3:"IRL",country_name:"Ireland",country_name_full:"Ireland",iso3:"372"},R40={continent_code:"AS",continent_name:"Asia",country_code2:"IL",country_code3:"ISR",country_name:"Israel",country_name_full:"State of Israel",iso3:"376"},_40={continent_code:"EU",continent_name:"Europe",country_code2:"IM",country_code3:"IMN",country_name:"Isle of Man",country_name_full:"Isle of Man",iso3:"833"},S40={continent_code:"AS",continent_name:"Asia",country_code2:"IN",country_code3:"IND",country_name:"India",country_name_full:"Republic of India",iso3:"356"},N40={continent_code:"AS",continent_name:"Asia",country_code2:"IQ",country_code3:"IRQ",country_name:"Iraq",country_name_full:"Republic of Iraq",iso3:"368"},L40={continent_code:"AS",continent_name:"Asia",country_code2:"IR",country_code3:"IRN",country_name:"Iran",country_name_full:"Islamic Republic of Iran",iso3:"364"},k40={continent_code:"EU",continent_name:"Europe",country_code2:"IS",country_code3:"ISL",country_name:"Iceland",country_name_full:"Republic of Iceland",iso3:"352"},C40={continent_code:"EU",continent_name:"Europe",country_code2:"IT",country_code3:"ITA",country_name:"Italy",country_name_full:"Italian Republic",iso3:"380"},E40={continent_code:"EU",continent_name:"Europe",country_code2:"JE",country_code3:"JEY",country_name:"Jersey",country_name_full:"Bailiwick of Jersey",iso3:"832"},T40={continent_code:"NA",continent_name:"North America",country_code2:"JM",country_code3:"JAM",country_name:"Jamaica",country_name_full:"Jamaica",iso3:"388"},D40={continent_code:"AS",continent_name:"Asia",country_code2:"JO",country_code3:"JOR",country_name:"Jordan",country_name_full:"Hashemite Kingdom of Jordan",iso3:"400"},P40={continent_code:"AS",continent_name:"Asia",country_code2:"JP",country_code3:"JPN",country_name:"Japan",country_name_full:"Japan",iso3:"392"},B40={continent_code:"AF",continent_name:"Africa",country_code2:"KE",country_code3:"KEN",country_name:"Kenya",country_name_full:"Republic of Kenya",iso3:"404"},F40={continent_code:"AS",continent_name:"Asia",country_code2:"KH",country_code3:"KHM",country_name:"Cambodia",country_name_full:"Kingdom of Cambodia",iso3:"116"},I40={continent_code:"AF",continent_name:"Africa",country_code2:"KM",country_code3:"COM",country_name:"Comoros",country_name_full:"Union of the Comoros",iso3:"174"},j40={continent_code:"AS",continent_name:"Asia",country_code2:"KP",country_code3:"PRK",country_name:"Korea",country_name_full:"Democratic People's Republic of Korea",iso3:"408"},X40={continent_code:"AS",continent_name:"Asia",country_code2:"KR",country_code3:"KOR",country_name:"Korea",country_name_full:"Republic of Korea",iso3:"410"},$40={continent_code:"AS",continent_name:"Asia",country_code2:"KW",country_code3:"KWT",country_name:"Kuwait",country_name_full:"State of Kuwait",iso3:"414"},H40={continent_code:"AS",continent_name:"Asia",country_code2:"KZ",country_code3:"KAZ",country_name:"Kazakhstan",country_name_full:"Republic of Kazakhstan",iso3:"398"},U40={continent_code:"AS",continent_name:"Asia",country_code2:"LA",country_code3:"LAO",country_name:"Lao",country_name_full:"Lao People's Democratic Republic",iso3:"418"},Y40={continent_code:"AS",continent_name:"Asia",country_code2:"LB",country_code3:"LBN",country_name:"Lebanon",country_name_full:"Lebanese Republic",iso3:"422"},V40={continent_code:"AS",continent_name:"Asia",country_code2:"LK",country_code3:"LKA",country_name:"Sri Lanka",country_name_full:"Democratic Socialist Republic of Sri Lanka",iso3:"144"},G40={continent_code:"AF",continent_name:"Africa",country_code2:"LR",country_code3:"LBR",country_name:"Liberia",country_name_full:"Republic of Liberia",iso3:"430"},K40={continent_code:"EU",continent_name:"Europe",country_code2:"LT",country_code3:"LTU",country_name:"Lithuania",country_name_full:"Republic of Lithuania",iso3:"440"},J40={continent_code:"EU",continent_name:"Europe",country_code2:"LU",country_code3:"LUX",country_name:"Luxembourg",country_name_full:"Grand Duchy of Luxembourg",iso3:"442"},Q40={continent_code:"AF",continent_name:"Africa",country_code2:"LY",country_code3:"LBY",country_name:"Libya",country_name_full:"Libya",iso3:"434"},Z40={continent_code:"AF",continent_name:"Africa",country_code2:"MA",country_code3:"MAR",country_name:"Morocco",country_name_full:"Kingdom of Morocco",iso3:"504"},ev0={continent_code:"EU",continent_name:"Europe",country_code2:"MC",country_code3:"MCO",country_name:"Monaco",country_name_full:"Principality of Monaco",iso3:"492"},tv0={continent_code:"EU",continent_name:"Europe",country_code2:"MD",country_code3:"MDA",country_name:"Moldova",country_name_full:"Republic of Moldova",iso3:"498"},nv0={continent_code:"AF",continent_name:"Africa",country_code2:"MG",country_code3:"MDG",country_name:"Madagascar",country_name_full:"Republic of Madagascar",iso3:"450"},rv0={continent_code:"OC",continent_name:"Oceania",country_code2:"MH",country_code3:"MHL",country_name:"Marshall Islands",country_name_full:"Republic of the Marshall Islands",iso3:"584"},av0={continent_code:"EU",continent_name:"Europe",country_code2:"MK",country_code3:"MKD",country_name:"Macedonia",country_name_full:"Republic of Macedonia",iso3:"807"},ov0={continent_code:"AF",continent_name:"Africa",country_code2:"ML",country_code3:"MLI",country_name:"Mali",country_name_full:"Republic of Mali",iso3:"466"},sv0={continent_code:"AS",continent_name:"Asia",country_code2:"MM",country_code3:"MMR",country_name:"Myanmar",country_name_full:"Republic of the Union of Myanmar",iso3:"104"},iv0={continent_code:"AS",continent_name:"Asia",country_code2:"MN",country_code3:"MNG",country_name:"Mongolia",country_name_full:"Mongolia",iso3:"496"},cv0={continent_code:"AS",continent_name:"Asia",country_code2:"MO",country_code3:"MAC",country_name:"Macao",country_name_full:"Macao Special Administrative Region of China",iso3:"446"},lv0={continent_code:"OC",continent_name:"Oceania",country_code2:"MP",country_code3:"MNP",country_name:"Northern Mariana Islands",country_name_full:"Commonwealth of the Northern Mariana Islands",iso3:"580"},pv0={continent_code:"NA",continent_name:"North America",country_code2:"MQ",country_code3:"MTQ",country_name:"Martinique",country_name_full:"Martinique",iso3:"474"},uv0={continent_code:"AF",continent_name:"Africa",country_code2:"MR",country_code3:"MRT",country_name:"Mauritania",country_name_full:"Islamic Republic of Mauritania",iso3:"478"},dv0={continent_code:"NA",continent_name:"North America",country_code2:"MS",country_code3:"MSR",country_name:"Montserrat",country_name_full:"Montserrat",iso3:"500"},fv0={continent_code:"EU",continent_name:"Europe",country_code2:"MT",country_code3:"MLT",country_name:"Malta",country_name_full:"Republic of Malta",iso3:"470"},bv0={continent_code:"AF",continent_name:"Africa",country_code2:"MU",country_code3:"MUS",country_name:"Mauritius",country_name_full:"Republic of Mauritius",iso3:"480"},Mv0={continent_code:"AS",continent_name:"Asia",country_code2:"MV",country_code3:"MDV",country_name:"Maldives",country_name_full:"Republic of Maldives",iso3:"462"},zv0={continent_code:"AF",continent_name:"Africa",country_code2:"MW",country_code3:"MWI",country_name:"Malawi",country_name_full:"Republic of Malawi",iso3:"454"},hv0={continent_code:"NA",continent_name:"North America",country_code2:"MX",country_code3:"MEX",country_name:"Mexico",country_name_full:"United Mexican States",iso3:"484"},Ov0={continent_code:"AS",continent_name:"Asia",country_code2:"MY",country_code3:"MYS",country_name:"Malaysia",country_name_full:"Malaysia",iso3:"458"},mv0={continent_code:"AF",continent_name:"Africa",country_code2:"MZ",country_code3:"MOZ",country_name:"Mozambique",country_name_full:"Republic of Mozambique",iso3:"508"},Av0={continent_code:"AF",continent_name:"Africa",country_code2:"NA",country_code3:"NAM",country_name:"Namibia",country_name_full:"Republic of Namibia",iso3:"516"},gv0={continent_code:"AF",continent_name:"Africa",country_code2:"NE",country_code3:"NER",country_name:"Niger",country_name_full:"Republic of Niger",iso3:"562"},vv0={continent_code:"AF",continent_name:"Africa",country_code2:"NG",country_code3:"NGA",country_name:"Nigeria",country_name_full:"Federal Republic of Nigeria",iso3:"566"},yv0={continent_code:"NA",continent_name:"North America",country_code2:"NI",country_code3:"NIC",country_name:"Nicaragua",country_name_full:"Republic of Nicaragua",iso3:"558"},qv0={continent_code:"EU",continent_name:"Europe",country_code2:"NL",country_code3:"NLD",country_name:"Netherlands",country_name_full:"Kingdom of the Netherlands",iso3:"528"},xv0={continent_code:"EU",continent_name:"Europe",country_code2:"NO",country_code3:"NOR",country_name:"Norway",country_name_full:"Kingdom of Norway",iso3:"578"},Wv0={continent_code:"AS",continent_name:"Asia",country_code2:"NP",country_code3:"NPL",country_name:"Nepal",country_name_full:"Federal Democratic Republic of Nepal",iso3:"524"},wv0={continent_code:"OC",continent_name:"Oceania",country_code2:"NZ",country_code3:"NZL",country_name:"New Zealand",country_name_full:"New Zealand",iso3:"554"},Rv0={continent_code:"AS",continent_name:"Asia",country_code2:"OM",country_code3:"OMN",country_name:"Oman",country_name_full:"Sultanate of Oman",iso3:"512"},_v0={continent_code:"NA",continent_name:"North America",country_code2:"PA",country_code3:"PAN",country_name:"Panama",country_name_full:"Republic of Panama",iso3:"591"},Sv0={continent_code:"SA",continent_name:"South America",country_code2:"PE",country_code3:"PER",country_name:"Peru",country_name_full:"Republic of Peru",iso3:"604"},Nv0={continent_code:"AS",continent_name:"Asia",country_code2:"PH",country_code3:"PHL",country_name:"Philippines",country_name_full:"Republic of the Philippines",iso3:"608"},Lv0={continent_code:"AS",continent_name:"Asia",country_code2:"PK",country_code3:"PAK",country_name:"Pakistan",country_name_full:"Islamic Republic of Pakistan",iso3:"586"},kv0={continent_code:"EU",continent_name:"Europe",country_code2:"PL",country_code3:"POL",country_name:"Poland",country_name_full:"Republic of Poland",iso3:"616"},Cv0={continent_code:"EU",continent_name:"Europe",country_code2:"PT",country_code3:"PRT",country_name:"Portugal",country_name_full:"Portuguese Republic",iso3:"620"},Ev0={continent_code:"OC",continent_name:"Oceania",country_code2:"PW",country_code3:"PLW",country_name:"Palau",country_name_full:"Republic of Palau",iso3:"585"},Tv0={continent_code:"SA",continent_name:"South America",country_code2:"PY",country_code3:"PRY",country_name:"Paraguay",country_name_full:"Republic of Paraguay",iso3:"600"},Dv0={continent_code:"AS",continent_name:"Asia",country_code2:"QA",country_code3:"QAT",country_name:"Qatar",country_name_full:"State of Qatar",iso3:"634"},Pv0={continent_code:"EU",continent_name:"Europe",country_code2:"RO",country_code3:"ROU",country_name:"Romania",country_name_full:"Romania",iso3:"642"},Bv0={continent_code:"EU",continent_name:"Europe",country_code2:"RS",country_code3:"SRB",country_name:"Serbia",country_name_full:"Republic of Serbia",iso3:"688"},Fv0={continent_code:"EU",continent_name:"Europe",country_code2:"RU",country_code3:"RUS",country_name:"Russian",country_name_full:"Russian Federation",iso3:"643"},Iv0={continent_code:"AS",continent_name:"Asia",country_code2:"SA",country_code3:"SAU",country_name:"Saudi Arabia",country_name_full:"Kingdom of Saudi Arabia",iso3:"682"},jv0={continent_code:"OC",continent_name:"Oceania",country_code2:"SB",country_code3:"SLB",country_name:"Solomon Islands",country_name_full:"Solomon Islands",iso3:"090"},Xv0={continent_code:"AF",continent_name:"Africa",country_code2:"SD",country_code3:"SDN",country_name:"Sudan",country_name_full:"Republic of Sudan",iso3:"729"},$v0={continent_code:"EU",continent_name:"Europe",country_code2:"SE",country_code3:"SWE",country_name:"Sweden",country_name_full:"Kingdom of Sweden",iso3:"752"},Hv0={continent_code:"EU",continent_name:"Europe",country_code2:"UK",country_code3:"GB",country_name:"United Kingdom",country_name_full:"United Kingdom of Great Britain & Northern Ireland",iso3:"752"},Uv0={continent_code:"AS",continent_name:"Asia",country_code2:"SG",country_code3:"SGP",country_name:"Singapore",country_name_full:"Republic of Singapore",iso3:"702"},Yv0={continent_code:"EU",continent_name:"Europe",country_code2:"SI",country_code3:"SVN",country_name:"Slovenia",country_name_full:"Republic of Slovenia",iso3:"705"},Vv0={continent_code:"EU",continent_name:"Europe",country_code2:"SK",country_code3:"SVK",country_name:"Slovakia (Slovak Republic)",country_name_full:"Slovakia (Slovak Republic)",iso3:"703"},Gv0={continent_code:"AF",continent_name:"Africa",country_code2:"SL",country_code3:"SLE",country_name:"Sierra Leone",country_name_full:"Republic of Sierra Leone",iso3:"694"},Kv0={continent_code:"EU",continent_name:"Europe",country_code2:"SM",country_code3:"SMR",country_name:"San Marino",country_name_full:"Republic of San Marino",iso3:"674"},Jv0={continent_code:"AF",continent_name:"Africa",country_code2:"SN",country_code3:"SEN",country_name:"Senegal",country_name_full:"Republic of Senegal",iso3:"686"},Qv0={continent_code:"AF",continent_name:"Africa",country_code2:"SO",country_code3:"SOM",country_name:"Somalia",country_name_full:"Somali Republic",iso3:"706"},Zv0={continent_code:"SA",continent_name:"South America",country_code2:"SR",country_code3:"SUR",country_name:"Suriname",country_name_full:"Republic of Suriname",iso3:"740"},e50={continent_code:"AF",continent_name:"Africa",country_code2:"SS",country_code3:"SSD",country_name:"South Sudan",country_name_full:"Republic of South Sudan",iso3:"728"},t50={continent_code:"NA",continent_name:"North America",country_code2:"SV",country_code3:"SLV",country_name:"El Salvador",country_name_full:"Republic of El Salvador",iso3:"222"},n50={continent_code:"AF",continent_name:"Africa",country_code2:"SZ",country_code3:"SWZ",country_name:"Swaziland",country_name_full:"Kingdom of Swaziland",iso3:"748"},r50={continent_code:"AF",continent_name:"Africa",country_code2:"TG",country_code3:"TGO",country_name:"Togo",country_name_full:"Togolese Republic",iso3:"768"},a50={continent_code:"AS",continent_name:"Asia",country_code2:"TH",country_code3:"THA",country_name:"Thailand",country_name_full:"Kingdom of Thailand",iso3:"764"},o50={continent_code:"AS",continent_name:"Asia",country_code2:"TJ",country_code3:"TJK",country_name:"Tajikistan",country_name_full:"Republic of Tajikistan",iso3:"762"},s50={continent_code:"AS",continent_name:"Asia",country_code2:"TL",country_code3:"TLS",country_name:"Timor-Leste",country_name_full:"Democratic Republic of Timor-Leste",iso3:"626"},i50={continent_code:"AF",continent_name:"Africa",country_code2:"TN",country_code3:"TUN",country_name:"Tunisia",country_name_full:"Tunisian Republic",iso3:"788"},c50={continent_code:"OC",continent_name:"Oceania",country_code2:"TO",country_code3:"TON",country_name:"Tonga",country_name_full:"Kingdom of Tonga",iso3:"776"},l50={continent_code:"AS",continent_name:"Asia",country_code2:"TR",country_code3:"TUR",country_name:"Turkey",country_name_full:"Republic of Turkey",iso3:"792"},p50={continent_code:"AS",continent_name:"Asia",country_code2:"TW",country_code3:"TWN",country_name:"Taiwan",country_name_full:"Taiwan, Province of China",iso3:"158"},u50={continent_code:"EU",continent_name:"Europe",country_code2:"UA",country_code3:"UKR",country_name:"Ukraine",country_name_full:"Ukraine",iso3:"804"},d50={continent_code:"NA",continent_name:"North America",country_code2:"US",country_code3:"USA",country_name:"United States of America",country_name_full:"United States of America",iso3:"840"},f50={continent_code:"SA",continent_name:"South America",country_code2:"UY",country_code3:"URY",country_name:"Uruguay",country_name_full:"Eastern Republic of Uruguay",iso3:"858"},b50={continent_code:"AS",continent_name:"Asia",country_code2:"UZ",country_code3:"UZB",country_name:"Uzbekistan",country_name_full:"Republic of Uzbekistan",iso3:"860"},M50={continent_code:"SA",continent_name:"South America",country_code2:"VE",country_code3:"VEN",country_name:"Venezuela",country_name_full:"Bolivarian Republic of Venezuela",iso3:"862"},z50={continent_code:"NA",continent_name:"North America",country_code2:"VG",country_code3:"VGB",country_name:"British Virgin Islands",country_name_full:"British Virgin Islands",iso3:"092"},h50={continent_code:"AS",continent_name:"Asia",country_code2:"VN",country_code3:"VNM",country_name:"Vietnam",country_name_full:"Việt Nam",iso3:"704"},O50={continent_code:"OC",continent_name:"Oceania",country_code2:"VU",country_code3:"VUT",country_name:"Vanuatu",country_name_full:"Republic of Vanuatu",iso3:"548"},m50={continent_code:"OC",continent_name:"Oceania",country_code2:"WS",country_code3:"WSM",country_name:"Samoa",country_name_full:"Independent State of Samoa",iso3:"882"},A50={continent_code:"AS",continent_name:"Asia",country_code2:"YE",country_code3:"YEM",country_name:"Yemen",country_name_full:"Yemen",iso3:"887"},g50={continent_code:"AF",continent_name:"Africa",country_code2:"ZA",country_code3:"ZAF",country_name:"South Africa",country_name_full:"Republic of South Africa",iso3:"710"},v50={continent_code:"AF",continent_name:"Africa",country_code2:"ZM",country_code3:"ZMB",country_name:"Zambia",country_name_full:"Republic of Zambia",iso3:"894"},y50={continent_code:"AF",continent_name:"Africa",country_code2:"ZW",country_code3:"ZWE",country_name:"Zimbabwe",country_name_full:"Republic of Zimbabwe",iso3:"716"},Xr={AE:_g0,AF:Sg0,AR:Ng0,AT:Lg0,AU:kg0,AX:Cg0,BD:Eg0,BE:Tg0,BN:Dg0,BO:Pg0,BR:Bg0,BS:Fg0,BT:Ig0,BW:jg0,BY:Xg0,BZ:$g0,CA:Hg0,CD:Ug0,CG:Yg0,CH:Vg0,CK:Gg0,CL:Kg0,CM:Jg0,CN:Qg0,CO:Zg0,CR:e40,CU:t40,CY:n40,DE:r40,DK:a40,DM:o40,DZ:s40,EC:i40,EE:c40,EG:l40,EH:p40,ES:u40,FI:d40,FJ:f40,FR:b40,GD:M40,GE:z40,GF:h40,GH:O40,GL:m40,GR:A40,HK:g40,HN:v40,HR:y40,HT:q40,HU:x40,ID:W40,IE:w40,IL:R40,IM:_40,IN:S40,IQ:N40,IR:L40,IS:k40,IT:C40,JE:E40,JM:T40,JO:D40,JP:P40,KE:B40,KH:F40,KM:I40,KP:j40,KR:X40,KW:$40,KZ:H40,LA:U40,LB:Y40,LK:V40,LR:G40,LT:K40,LU:J40,LY:Q40,MA:Z40,MC:ev0,MD:tv0,MG:nv0,MH:rv0,MK:av0,ML:ov0,MM:sv0,MN:iv0,MO:cv0,MP:lv0,MQ:pv0,MR:uv0,MS:dv0,MT:fv0,MU:bv0,MV:Mv0,MW:zv0,MX:hv0,MY:Ov0,MZ:mv0,NA:Av0,NE:gv0,NG:vv0,NI:yv0,NL:qv0,NO:xv0,NP:Wv0,NZ:wv0,OM:Rv0,PA:_v0,PE:Sv0,PH:Nv0,PK:Lv0,PL:kv0,PT:Cv0,PW:Ev0,PY:Tv0,QA:Dv0,RO:Pv0,RS:Bv0,RU:Fv0,SA:Iv0,SB:jv0,SD:Xv0,SE:$v0,GB:Hv0,SG:Uv0,SI:Yv0,SK:Vv0,SL:Gv0,SM:Kv0,SN:Jv0,SO:Qv0,SR:Zv0,SS:e50,SV:t50,SZ:n50,TG:r50,TH:a50,TJ:o50,TL:s50,TN:i50,TO:c50,TR:l50,TW:p50,UA:u50,US:d50,UY:f50,UZ:b50,VE:M50,VG:z50,VN:h50,VU:O50,WS:m50,YE:A50,ZA:g50,ZM:v50,ZW:y50},Ln=()=>{const{state:e,dispatch:t}=Ht(),{listFollowed:n}=Z2(),{postedConferences:r}=sl(),[a,o]=y.useState(!1),[s,i]=y.useState(1),c=ya(),l=v=>{const x=v.filter(_=>/^[A-Za-z]$/i.test(_)).sort(),W=v.filter(_=>!/^[A-Za-z]$/i.test(_)&&isNaN(_)).sort();return[...x,...W]},p=async v=>{const x=["source","acronym","rank","region","type"];if(!e.filterOptions[v])if(x.includes(v)){if(v==="acronym")try{const _=await(await fetch(`${H1}/conf/${v}`,{method:"GET",headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*"}})).json(),N=l(_.data);t(uu({[v]:Array.from(new Set(N))}))}catch(q){console.error(`Error fetching data for ${v}:`,q)}else if(v==="rank")t(uu({[v]:["A*","A","B","C"]}));else if(v==="source")t(uu({[v]:["CONFHUB","CORE2021","CORE2023"]}));else if(v==="region"){let q=["Local","National","Asia","South America","Europe","Oceania","North America","Africa"];t(uu({[v]:q}))}else v==="type"&&t(uu({[v]:["Online","Offline","Hybrid"]}));o(!0)}else try{const _=await(await fetch(`${H1}/${v}`)).json(),N=l(_.data);t(uu({[v]:Array.from(new Set(N))}))}catch(q){console.error(`Error fetching data for ${v}:`,q)}o(!1)},u=(v,x,W)=>{x==="submissionDate"||x==="conferenceDate"?t({type:"ADD_FILTER_DATE",payload:{label:x,keyword:W,filter:v}}):e[v][x].includes(W[0])?f(x,W[0],v):t(GX(v,x,W))},f=(v,x,W)=>{const q={...e[W],[v]:e[W][v].filter(_=>_!==x)};t({type:"REMOVE_FILTER",payload:{updatedList:q,fromFilter:W}})},b=v=>{if(e[v]){const x=Object.fromEntries(Object.keys(e[v]).map(W=>[W,[]]));t({type:"CLEAR_FILTERS",payload:{updatedList:x,fromFilter:v}})}},M=v=>{const W=v.split("(")[0].trim(),q=sessionStorage.getItem("dataFilters");if(!q)return 0;const N=JSON.parse(q)[W]||[];let L=0;if(c.pathname==="/followed"){const S=new Set(n.map(B=>B.id));L=N.filter(B=>S.has(B.id)).length}else if(c.pathname==="/yourconferences"){const S=new Set(r.map(B=>B.id));L=N.filter(B=>S.has(B.id)).length}return`${W} (${L})`},z=v=>{const x=/\((\d+)\)/,W=v.match(x);return W?W[1]:0},h=v=>{let x=JSON.parse(sessionStorage.getItem("keywordFilter"))||{},W=0;return v.forEach(q=>{x[q.label]&&(W+=parseInt(x[q.label],10))}),W},m=v=>{const x={};return Object.keys(e.optionsSelected).forEach(W=>{const q=e.optionsSelected[W].filter(_=>v.includes(_));q.length>0&&(x[W]=q)}),x};function O(v){if(v in Xr)return Xr[v].country_name;for(const x in Xr)if(Xr[x].country_code2===v||Xr[x].country_code3===v)return Xr[x].country_name;return null}const A=()=>{const v={};for(const x in e.optionsSelected)if(Object.prototype.hasOwnProperty.call(e.optionsSelected,x)){const W=e.optionsSelected[x];W&&W.length>0&&(v[x]=W.join(","))}return v};return{optionsSelected:e.optionsSelected,optionsSelectedAdmin:e.optionsSelectedAdmin,optionsSelectedFollow:e.optionsSelectedFollow,optionsSelectedOwn:e.optionsSelectedOwn,filterOptions:e.filterOptions,page:s,loading:a,setPage:i,getOptionsFilter:p,addKeywords:u,deleteKeyword:f,clearKeywords:b,getKeyword:M,extractQuantity:z,getTotalConf:h,updateOptionsSelectedFromParams:m,getCountryName:O,filterAndAddToParams:A}},KX=({onSelect:e,options:t})=>{const{t:n}=p1(),[r,a]=y.useState("random"),o=s=>{a(s),e(s)};return d.jsxs(it,{children:[d.jsxs(it.Toggle,{className:"bg-transparent border-primary-normal text-dropdown-toggle fs-6",children:[d.jsxs("span",{className:"fw-semibold",children:[n("sort_by"),":"]})," ",`  ${n(r)}`||"random"]}),d.jsx(it.Menu,{children:t&&d.jsx(d.Fragment,{children:t.map(s=>d.jsx(it.Item,{onClick:()=>o(s),className:"fs-6",children:n(s)},s))})})]})},il=e=>typeof e!="object"||e===null?[]:Object.entries(e).map(([t,n])=>Array.isArray(n)&&n.some(a=>a!=null&&a!=="")),q50=e=>{if(il(e).some(r=>r===!0)){const r=Object.values(e),a=[].concat(...r);return Array.from(new Set(a.map(JSON.stringify))).map(JSON.parse)}else return[]},x50=(e,t)=>Object.keys(e).find(r=>e[r].some(a=>a.includes(t)))||null,Aw=e=>{const t=new Date,n=new Date(e);if(n<t)return!1;const r=new Date(t.getFullYear(),t.getMonth()+1,t.getDate());return n<=r},W50=e=>{const t=new Date;return e.sort((n,r)=>{const a=n.organizations.find(p=>p.status==="new"&&p.start_date),o=r.organizations.find(p=>p.status==="new"&&p.start_date);if(!a)return 1;if(!o)return-1;const s=new Date(a.start_date),i=new Date(o.start_date),c=s<t,l=i<t;return c&&l||c&&!l?1:!c&&l?-1:s-i===0?n.id-r.id:s-i}),e},w50=e=>e.sort((t,n)=>{const r=t.information.name.toLowerCase(),a=n.information.name.toLowerCase();return r<a?-1:r>a?1:t.id-n.id}),R50=e=>e.sort((t,n)=>{const r=new Date(t.createdAt);return new Date(n.createdAt)-r}),_50=e=>{if(il(e).some(r=>r===!0)){const r=Object.values(e),a=[].concat(...r),o={};return a.forEach(c=>{const l=JSON.stringify(c);o[l]=(o[l]||0)+1}),a.sort((c,l)=>{const p=o[JSON.stringify(c)],u=o[JSON.stringify(l)];return p===u?c.information.name.localeCompare(l.information.name):u-p}).filter((c,l,p)=>p.findIndex(u=>u.id===c.id)===l)}else return[]},S50=(e,t)=>[...e].sort((r,a)=>{const o=t.findIndex(i=>i.id===r.id),s=t.findIndex(i=>i.id===a.id);return o!==-1&&s===-1?-1:o===-1&&s!==-1?1:0}),JX=(e,t)=>{if(il(t).some(a=>a===!0)||t.length>0)switch(e){case"nameAz":return w50(t);case"upcoming":return W50(t);case"latest":return R50(t);case"random":return _50(t);default:return t}else return[]},gw=`Submission
 Paper Submission
-Paper Registration and Abstract
-June cycle - Submission
-November cycle - Submission
-ROUND 1 - Paper submission
-ROUND 1 - Revised paper submission
-ROUND 2 - Paper submission
-ROUND 2 - Revised paper submission
-ROUND 3 - Paper submission
-ROUND 3 - Revised paper submission
-ROUND 4 - Paper submission
-ROUND 4 - Revised paper submission
-Abstract Submission
-Full paper submission
-Abstract submission
-Early registration deadline
-Poster submission deadline
-Revision deadline
-Paper Registration Deadline
-Paper Submission Deadline
-Abstract and title registration
-Paper submission
-Full Paper Submission
-Short Abstract Submission and Paper Registration
-July Round Submissions Due
-February Round - Revisions Due
-February Round Submissions Due
-Abstract Deadline
-Paper Deadline
-Paper submission deadline (Main Track)
-Registration Deadline for Authors
-Abstract submission deadline
-Full paper submission deadline
-Submission form deadline
-Paper deadline
-Upload deadline
-Revised paper submitted by authors for final review
-Final version deadline
-Full Papers - abstracts due
-Full Papers - manuscripts due
-Short Papers & Application Notes - abstracts due
-Short Papers & Application Notes - manuscripts due
-OOPSLA 2024 R1 Submission
-R1 Submission of Revisions
-OOPSLA 2024 R2 Submission
-R2 Submission of Revisions
 Abstracts due
 Full papers due
-Submission deadline (papers and posters)
-Revised version deadline
-Deadline to register abstracts
-Submission deadline (no extensions)
-Submission Deadline, First Call
-Submission Deadline, Second Call
-PhD Colloquium Abstracts
-Proposal submission deadline
-First draft due
-Second draft due
-STOC Abstract Submission Deadline
-STOC Paper Submission Deadline
-Early Registration Deadline
-Submission Deadline
+Full Paper Submission
+Abstract registration deadline
+Paper submission deadline
+First Review Cycle - Paper submission deadline
+Second Review Cycle - Paper submission deadline
 JULY 2023 CYCLE - New paper submissions
 JULY 2023 CYCLE- Resubmission of papers that received a Minor Revision recommendation
 JULY 2023 CYCLE - Earliest resubmission of papers that received a Major Revision recommendation
@@ -1035,591 +978,622 @@ JANUARY 2024 CYCLE - New paper submissions
 JANUARY 2024 CYCLE- Earliest resubmission of papers that received a Minor Revision recommendation
 JANUARY 2024 CYCLE - Earliest resubmission of papers that received a Major Revision recommendation
 JANUARY 2024 CYCLE - Latest resubmission of paper that received a Major Revision recommendation
+Abstract submission deadline
+Author responses due
+Paper Registration and Abstract
+Journal Track Abstract Submission
+Journal Track Full Paper Submission
+Work-in-Progress and Late Breaking Tracks Paper Submission
+Journal track Revised Paper Submission
+OOPSLA 2024 R1 Submission
+R1 Submission of Revisions
+OOPSLA 2024 R2 Submission
+R2 Submission of Revisions
+First deadline - Submission Deadline
+Second deadline - Submission Deadline
+Full papers submission deadline
+Abstract Submission
+June cycle - Submission
+November cycle - Submission
 Full papers and Applied Research papers abstract deadline
 Full papers and Applied Research papers submission deadline
 Short papers, Demo papers, and Resource papers abstract deadline
 Short papers, Demo papers, and Resource papers submission deadline
+July Round Submissions Due
+February Round - Revisions Due
+February Round Submissions Due
+Abstract Deadline
+Paper Deadline
+Abstract Registration
+[FULL] Abstract submission deadline
+[FULL] Paper submission deadline
+[SHORT] Abstract submission deadline
+[SHORT] Paper submission deadline
 Full paper abstracts
+Full paper submission
+Abstract submission
+Paper submission
+Paper registration
+Revised manuscript submissions (major revisions only)
 Papers Due
-Papers due
-Author responses due
-First Review Cycle - Paper submission deadline
-Second Review Cycle - Paper submission deadline
+Abstracts
+Full Paper Deadline
+Paper submission deadline (Main Track)
+Paper Submission Deadline
+Registration Deadline for Authors
+Full paper submission deadline
+Submission form deadline
+Paper deadline
+Upload deadline
+Revised paper submitted by authors for final review
+Submission deadline
+Revised version deadline
 FIRST SUBMISSION CYCLE - First cycle abstract deadline
 FIRST SUBMISSION CYCLE - Full paper submission deadline
 SECOND SUBMISSION CYCLE - Second cycle abstract deadline
 SECOND SUBMISSION CYCLE - Full paper submission deadline
+Deadline to register abstracts
+Submission deadline (no extensions)
+Submission Deadline, First Call
+Submission Deadline, Second Call
+PhD Colloquium Abstracts
+Proposal submission deadline
+First draft due
+Second draft due
 Abstract Due Date (Papers Only)
 Round One Due Date
 Round Two Due Date
+ROUND 1 - Paper submission
+ROUND 1 - Revised paper submission
+ROUND 2 - Paper submission
+ROUND 2 - Revised paper submission
+ROUND 3 - Paper submission
+ROUND 3 - Revised paper submission
+ROUND 4 - Paper submission
+ROUND 4 - Revised paper submission
 First Wave Submissions - Abstract and Title Submission
 First Wave Submissions - Submission Deadline
 First Wave Submissions - Resubmit Contributions Invited for Revision
 Second Wave Submissions - Abstract and Title Submission
 Second Wave Submissions - Submission Deadline
 Second Wave Submissions - Resubmit Contributions Invited for Revision
+Submission of track proposals
+Submission of regular papers and SRC research abstracts
+Full Papers - abstracts due
+Full Papers - manuscripts due
+Short Papers & Application Notes - abstracts due
+Short Papers & Application Notes - manuscripts due
+Abstract Registration Deadline
+Abstract and full paper
+Revised papers due
+STOC Abstract Submission Deadline
+STOC Paper Submission Deadline
+Early Registration Deadline
+Abstract due
+Papers due (Paper PDF)
+Materials due
 Paper Abstracts Due
 Papers (all materials) Due
 Posters and Demos Due
 Revised Papers and Posters/Demos recommended from Paper Track Due
-Research Track - Abstract submission
-Research Track - Paper submission
-Journal Track Abstract Submission
-Journal Track Full Paper Submission
-Work-in-Progress and Late Breaking Tracks Paper Submission
-Journal track Revised Paper Submission
-Abstract Registration
+Submission Deadline
+The submission deadline
+Artifact Deadline
+Revised Submission Deadline
+Early registration deadline
+Poster submission deadline
+Revision deadline
+Papers due
+Paper Registration Deadline
+Abstract and title registration
 FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Full Paper Submission
 FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Shepherded Submissions Due
 SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Full Paper Submission
 SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Shepherded Submissions Due
-Abstracts
-Full Paper Deadline
-Abstract and full paper
-Revised papers due
-Abstract due
-Papers due (Paper PDF)
-Materials due
-Artifact Deadline
-Revised Submission Deadline
+Short Abstract Submission and Paper Registration
+Research Track - Abstract submission
+Research Track - Paper submission
 Early paper submission deadline
 Regular paper submission deadline
-First deadline - Submission Deadline
-Second deadline - Submission Deadline
-[FULL] Abstract submission deadline
-[FULL] Paper submission deadline
-[SHORT] Abstract submission deadline
-[SHORT] Paper submission deadline
-Paper registration
-Revised manuscript submissions (major revisions only)
-Submission of track proposals
-Submission of regular papers and SRC research abstracts
-Abstract Registration Deadline
-Paper Submissions
 Abstracts of full papers submission
 Full papers submission
 Short presentations submission
+Main Conference Submission Site Opens
+AbstractSubmissionDeadline
+Main Conference Paper Submission Deadline
+Main Conference Full Paper Submission Deadline
+Paper Submissions
+Mandatory abstract submission
+Submissions open
+Submissions close
+Special Session proposal deadline
+Paper update deadline (PDF only)
+Regular Papers - Paper Submission
+Position Papers - Paper Submission
+Submission Deadline (1st CFP – new date)
 spring - paper-registration deadline
 spring - full submission
 summer - paper-registration deadline
 summer - full submission
 fall - paper-registration deadline
 fall - full submission
-Open Call
-Submission deadline (Extended)
-Submissions open
-Submissions close
-Submission Deadline (1st CFP – new date)
 Paper Submission Deadline *
-Submission deadline
-Deadline for submission of abstracts
-Affiliated events submission deadline
-Artifact submission deadline
-Mandatory abstract submission
-Regular Papers - Paper Submission
-Position Papers - Paper Submission
 Submission open
 Paper (both full- and short) and Poster submission deadline
-Deadline for special sessions and tutorial proposals
-Deadline for paper/abstract submission
-Deadline for upload of revised submissions
-Deadline for presenter registration
-Main Conference Submission Site Opens
-AbstractSubmissionDeadline
-Main Conference Paper Submission Deadline
-Main Conference Full Paper Submission Deadline
-Submission close
-Abstract Submission Deadline
-Supplementary Material Submission
-Doctoral Consortium Submission Open
-Doctoral Consortium Submission Close
-Standard papers submission
-Deadline for Extended abstract submission
+Full Paper Submission deadline
+Deadline for Abstract
+Deadline for PDF uploading
 1st Round Deadline - Paper Submission Deadline
 2nd Round Deadline - Paper Submission Deadline
 Full Papers Submission
-submission deadline and bidding period begins
-Long papers - Submission deadline
-Late Breaking Abstract Deadline
+Submission close
 Submission registration deadline
 Supplementary material deadline
 Demo paper submission deadline
 submissions must be received by
+Submission deadline (all papers are submitted to ARR)
+Open Call
+submission deadline and bidding period begins
+Deadline for submission of abstracts
 1st Round Paper Submission Deadline
 2nd Round Paper Submission Deadline
-Research Paper - Full Paper Deadline
-Artifact submission
-Special Session proposal deadline
-Paper update deadline (PDF only)
-Full Paper Submission deadline
-Paper Submissions Due
-Revisions due
-Deadline for Abstract
-Deadline for PDF uploading
-Submission deadline (all papers are submitted to ARR)
 Submission of full-length papers
+Research Paper - Full Paper Deadline
+Paper Submissions Due
+Deadline for special sessions and tutorial proposals
+Deadline for paper/abstract submission
+Deadline for upload of revised submissions
+Deadline for presenter registration
 Paper submissions due
+Long papers - Submission deadline
+Submission deadline (Extended)
+Abstract Submission Deadline
+Late Breaking Abstract Deadline
+Supplementary Material Submission
+Doctoral Consortium Submission Open
+Doctoral Consortium Submission Close
+Revisions due
+Standard papers submission
+Deadline for Extended abstract submission
 Deadline for article submission
 Deadline for informal presentations submission
 PAPER SUBMISSION DEADLINE
 SUBMISSION OF REVISED PAPERS
+Artifact submission
+Deadline for submitting full papers
 Paper submission deadline (incl. supp. material)
-Paper & abstract submission
-Title and Abstract deadline
-Paper and Pictorial Submission deadline
-Full papers, abstracts, and panels submission deadline
+Deadline of Abstract Submission
 Deadline for paper submission
+Paper & abstract submission
+Submission deadline (long & short papers)
+Abstracts (voluntary)
+Full submission deadline
 Full Paper submission
+Submission Due Date
 Position paper submission
 Paper Submission Due
-abstract deadline (firm)
-full paper deadline (firm)
-abstracts
-full papers
-New submissions close
-Extended abstract submission due
-Re-submissions due (accept with changes)
-Deadline for submitting full papers
 submission deadline for all contributions
-Full paper (track A) and extended abstract (track B) submission
-Scientific paper submission with rebuttal procedure
-Deadline for revised papers in the rebuttal procedure
-Scientific paper submission without rebuttal procedure
-Submission Due Date
-Paper Submission due
-Submission deadline for abstracts
-Papers are due
-Abstract submission (deadline)
-Full paper submission (deadline)
-Abstracts for full and short papers
-Full papers and short papers
-Revisions due for submissions with conditional accept decisions
 Full Paper submission deadline
 Paper Submission deadline
 Abstract Submission Round 1 (Full and Short Paper)
 Abstract + Paper Submission Round 1 (Full and Short Papers)
 Abstract + Paper Submission Round 2 (Short Papers only)
-Submission of short and full papers
-Paper submission deadline (via ARR)
+Paper Submission due
+Second call - submission deadline
+abstract deadline (firm)
+full paper deadline (firm)
+Submission deadline for abstracts
+Papers are due
+abstracts
+full papers
+Title and Abstract deadline
+Paper and Pictorial Submission deadline
+New submissions close
+Full papers, abstracts, and panels submission deadline
+Abstract submission (deadline)
+Full paper submission (deadline)
+Full paper (track A) and extended abstract (track B) submission
+Abstracts for full and short papers
+Full papers and short papers
+Revisions due for submissions with conditional accept decisions
 ARR submission deadline (long & short papers)
-Round 1 - Paper submissions
-Round 2 - Paper submissions
-Round 3 - Paper submissions
+Extended abstract submission due
+Re-submissions due (accept with changes)
+Submission of short and full papers
+Scientific paper submission with rebuttal procedure
+Deadline for revised papers in the rebuttal procedure
+Scientific paper submission without rebuttal procedure
 Deadline for abstract submission
 Deadline for full paper submission
-Deadline of Abstract Submission
-Second call - submission deadline
+Paper submission deadline (via ARR)
+Deadline for Abstract Submission
 Abstract deadline
+Call for proceedings closes
+Revised paper deadline
+Full paper abstract submission
+Submission Deadline (Round 1)
+Submission of Revisions (Round 1)
+Submission Deadline (Round 2)
+Submission of Revisions (Round 2)
+R1 Submission
+R2 Submission
+Deadline for improved paper version (for PC review) 
+Deadline for initial paper submission
+Submission of the full version
+Mandatory submission of an abstract
+Submission Deadline (extended)
 First Thematic Paper Submission
+Submission extended deadline
+1st phase - Full paper submission
+2nd phase - Full paper submission
+Spring - Full paper submissions due
+Fall - Full paper submissions due
+Full paper submissions
+Abstract submissions (recommended)
 Research paper first submission round - Paper submission
 Research paper first submission round - Revised paper submission
 Research paper second submission round - Paper submission
 Research paper second submission round - Revised paper submission
 Research paper third submission round - Paper submission
 Research paper third submission round - Revised paper submission
-Regular & Challenge paper submission due
-Spring cycle - paper submission deadline
-Fall cycle - paper submission deadline
-Winter cycle - paper submission deadline
-First round paper submission (extended to)
-Round 2 - Paper submission (extended to)
-Paper/Poster Submission Deadline
-First submission round
-Abstract submission to second round
-Second submission round
-Submission Deadline (Round 1)
-Submission of Revisions (Round 1)
-Submission Deadline (Round 2)
-Submission of Revisions (Round 2)
-Submission extended deadline
+Abstract submission (mandatory)
 Paper abstract submission
-Revised version
-Regular & Poster Papers due
-Submissions due
-Revised submissions due
-Conference/Invited Session Paper Submission
-Submission of Papers for Regular, Demo and Special Sessions
-Abstract submissions
-Full manuscript submissions (double-blind)
-Full paper submissions
-Abstract submissions (recommended)
-Regular papers - Paper Submission
-Position papers - Paper Submission
-Papers must be submitted electronically via the submission server, and received by
-Research Track Submission Deadline
-Extended to
-First deadline - Paper submission deadline
-Second deadline - Paper submission deadline
-Third deadline - Paper submission deadline
-Abstract Submission Deadline (optional)
-Submission of drafts
-Submission via EDAS
-R1 Submission
-R2 Submission
-Deadline for Abstract Submission
-Submission of the full version
-Mandatory submission of an abstract
-Submission Deadline (extended)
-1st phase - Full paper submission
-2nd phase - Full paper submission
-Cycle 1 - Submission
-Cycle 2 - Submission
-First submission - Paper Deadline
-Second submission - Paper Deadline
-Full research papers
-all paper types submission (except posters)
-paper abstract submission
-Electronic submission of full papers
-Abstract/Paper Submission
-Full Paper Submissions Due
-Abstract Submissions Due
-Abstracts/Full-Text Paper Submission Deadline
-Due for new draft submissions
-Due for final submission – new or revision
-Manuscript Submission Deadline
-Paper registration deadline
-Full paper abstract submission
-Deadline for improved paper version (for PC review) 
-Deadline for initial paper submission
-Spring - Full paper submissions due
-Fall - Full paper submissions due
-ESOP, FASE, FoSSaCS artifact submission deadline
-Submission of scientific contributions (full paper up to 8 pages) deadline
-Paper Draft Submission Deadline
-Full Paper Submission Due
-Paper submission due
-Abstract Due
-Full Paper Due
+Deadline for the submission of abstracts
 The Preliminary Full and WIP Paper Deadline
 Revised paper submission Deadline
-Short Paper submission deadline
-Final Paper Submission
-Paper Submission Deadline - EXTENDED
-Call for proceedings closes
-Revised paper deadline
-Deadline for the submission of abstracts
-Submission of Regular, Special Session, Industrial, BMI Workshop Papers, and Workshop and Tutorial Proposals
-Technical Papers due
-Extended submission deadline for all papers (Full paper, Short paper, Discussion paper)
-Submission of papers
-Submission of title, abstract, and authors
-Abstract submission (mandatory)
+ESOP, FASE, FoSSaCS artifact submission deadline
 Submission of Full Papers
 abstract submission
 paper submission
 revised paper submission
+Cycle 1 - Submission
+Cycle 2 - Submission
+First submission - Paper Deadline
+Second submission - Paper Deadline
+Revised version
+Regular papers - Paper Submission
+Position papers - Paper Submission
+Full research papers
+Submission Deadline (2nd CFP)
+all paper types submission (except posters)
+paper abstract submission
+Regular & Challenge paper submission due
+Submission of scientific contributions (full paper up to 8 pages) deadline
+Spring cycle - paper submission deadline
+Fall cycle - paper submission deadline
+Winter cycle - paper submission deadline
+Short Paper submission deadline
+Regular & Poster Papers due
+Papers must be submitted electronically via the submission server, and received by
+Research Track Submission Deadline
+Extended to
+Submission of Regular, Special Session, Industrial, BMI Workshop Papers, and Workshop and Tutorial Proposals
+Submissions due
+Revised submissions due
+Technical Papers due
+First deadline - Paper submission deadline
+Second deadline - Paper submission deadline
+Third deadline - Paper submission deadline
+Paper Draft Submission Deadline
+Extended submission deadline for all papers (Full paper, Short paper, Discussion paper)
+Full Paper Submission Due
+First round paper submission (extended to)
+Round 2 - Paper submission (extended to)
+Abstract Submission Deadline (optional)
+Electronic submission of full papers
+Paper/Poster Submission Deadline
+Paper submission due
 Full Papers due
+Abstract Due
+Full Paper Due
+Final Paper Submission
+Conference/Invited Session Paper Submission
+Abstract/Paper Submission
 Title and Abstract submission deadline
 Full paper upload and editing closed
+Full Paper Submissions Due
+Abstract Submissions Due
+Paper Submission Deadline - EXTENDED
+Abstracts/Full-Text Paper Submission Deadline
 Regular & Special Session Paper Submission Deadline
+Submission of papers
+Submission of drafts
 Regular Paper Submissions (including Special Sessions)
+Submission via EDAS
+Due for new draft submissions
+Due for final submission – new or revision
+Submission of Papers for Regular, Demo and Special Sessions
 Papers Submission
+First submission round
+Abstract submission to second round
+Second submission round
+Manuscript Submission Deadline
+Submission of title, abstract, and authors
+Abstract submissions
+Full manuscript submissions (double-blind)
 Paper Abstract Due
 All Paper/Poster Submissions Due
-Titles and Short Abstracts Due
-Full Papers Due
-Paper Submissions Deadline
-Abstract submission (optional)
-Paper Abstract Registration
-Optional Abstract Submission
-Artifact Submission	
-Full and short paper abstracts due
-Full and short paper full submissions due
-Paper submission (firm deadline, including research/short/industry/journal-first papers)
-Paper Abstract submission
-Paper first submission
-Paper final submission
-Deadline for submissions
-Deadline for updates to submitted papers
-Abstract submission (MANDATORY)
-Paper submission for second review cycle
-Research Track - Submission deadline
-Submission of contributions
-Tech track proposals deadline Closes earlier if capacity is reached
-Abstract Submissions Close
-Full Paper Submissions Close
-Deadline
-First submission deadline - Submission
-Second submission deadline - Submission
-Regular - Paper Submission
-Position - Paper Submission
-Abstracts - Paper Submission
+Deadline for Paper submission
+Papers Due (Abstract)
+Papers Due (Final)
+Manuscript Due
 Paper abstract submission deadline
-Full submission deadline
+Full Paper Submissions
+Paper Abstract
+Full Paper Submission Deadline
 Conference track - Abstracts due
 Conference track - Papers due
 Conference track - Revisions due (2nd round)
-All papers submission
-Submissions
-Submission of papers in accordance with Springer guidelines
-Abstracts - Abstract Submission
-Final submissions due (long, short and position papers)
-Manuscript Due
-Full Paper Submission Deadline
+Extended Paper Submission Deadline
+Conference paper submission deadline
+Abstracts Due
+Submissions Due
+Paper abstract deadline
+Titles and Short Abstracts Due
+Full Papers Due
+Abstracts only
+Abstract submission (MANDATORY)
+Paper submission for second review cycle
+Paper Submissions Deadline
 Round 1 - Paper registration
 Round 1 - Submission
 Round 1 - Rebuttal and Revision submission
 Round 2 - Paper registration
 Round 2 - Submission
+Research Track - Submission deadline
 Volunteers registration submissions open
+Papers Submission (Main Conference)
+Submission of contributions
+Submissions (Full paper, Main Track)
 Submission site opens
-Submission of Paper
-Journal Track: Abstract Submission
-Journal Track: Full Paper Submission
-Journal track: Revised Paper Submission
-Abstract/paper registration deadline
-Paper submission due (new deadline)
-Paper submission for the conferences (DEXA/DaWaK/EGOVIS)
-Full Paper Submissions
-Papers Due (Abstract)
-Papers Due (Final)
-Conference paper submission deadline
+Abstract submission (optional)
+Conference Track submission
 "Early bird" submission deadline
 "Late" submission deadline
+Submission is due
+Paper Abstract Registration
+Full Paper Submission Date
 Papers submitted in
+Electronic papers due
+Optional Abstract Submission
+Artifact Submission	
+Tech track proposals deadline Closes earlier if capacity is reached
+All papers submission
+Full and short paper abstracts due
+Full and short paper full submissions due
+Technical Papers: Submission Deadline
+Submissions
 Submission deadline --- abstract and title
 Submission deadline --- full paper
 Submission of Abstract
-Submission Deadline for Academic Stream
-Full Papers
-Main track abstract submission deadline
-Main track paper submission deadline
-Abstracts Track - Abstract Submission
-Deadline for abstract and paper submission
-Deadline for Extended Abstracts
-Deadline for Full Paper
-Papers (Full/Short) Submission
-Full version of the paper uploaded for revision
-Paper Abstract
-Paper abstract deadline
+Submission of Paper
 Titles, abstracts, and authors due
 “Conditional Accept” revisions due
+Paper submission (firm deadline, including research/short/industry/journal-first papers)
+Abstract Submissions Close
+Full Paper Submissions Close
+Paper Abstract submission
+Paper first submission
+Paper final submission
+Deadline
+Submission Deadline for Academic Stream
+Full Technical Papers Sought by
 Main Track Submission Deadline
 Submission of Regular Papers
 Revised Paper Upload Deadline
+Full Papers
+Main track abstract submission deadline
+Main track paper submission deadline
+Abstracts - Abstract Submission
+Deadline for submissions
+First submission deadline - Submission
+Second submission deadline - Submission
 Deadline for submission of papers
+Submission of papers in accordance with Springer guidelines
+Deadline for updates to submitted papers
+Extended Submission Deadline
 Main Track (round 1) - Full Paper Submission deadline
 Main Track (round 2) - Full Paper Submission deadline
+Journal Track: Abstract Submission
+Journal Track: Full Paper Submission
+Journal track: Revised Paper Submission
+Full paper abstract
 Paper Submission Due Date
+Final submissions due (long, short and position papers)
+Abstract/paper registration deadline
+Deadline for abstract and paper submission
+Paper submission due (new deadline)
+Deadline for Extended Abstracts
+Full paper abstracts submission
+Deadline for Full Paper
 Papers submission deadline
-Regular Paper Due
-Conference Track submission
-Technical Papers: Submission Deadline
-Full Technical Papers Sought by
+Papers (Full/Short) Submission
 Research Papers 1st Round - Submission Deadline
 Research Papers 1st Round Revision - Submission Deadline
 Research Papers 2nd Round - Submission Deadline
 Research Papers 2nd Round Revision - Submission Deadline
+Paper submission for the conferences (DEXA/DaWaK/EGOVIS)
 Abstract submission due
-Deadline for Paper submission
-Extended Paper Submission Deadline
-Abstracts Due
-Submissions Due
-Abstracts only
-Submissions (Full paper, Main Track)
-Submission is due
-Full Paper Submission Date
-Full paper abstracts submission
-Deadline (Maintrack and Special Sessions)
+Full version of the paper uploaded for revision
+Regular Paper Due
 Title+abstract submission
-Full paper deadline
-Resubmission deadline
-Abstract 
-Full Paper
+Deadline (Maintrack and Special Sessions)
+Paper submission (extended)
+Deadlines for submissions
 Winter deadline - abstract submission deadline
 Winter deadline - Paper submission deadline
 Summer deadline - abstract submission deadline
 Summer deadline - Paper submission deadline
-Abstract
-Abstract Submission (extended)
-Paper Submission (extended)
 Papers Submission Due
 Final date to submit a Conference Paper
 New Deadline
-Revised Submission
-Conference paper/ submission deadline
-Paper submission (extended)
-Deadlines for submissions
+Abstract
 Technical Paper/Tutorial Proposals/PhD Symposium Paper due
+Abstract Submission (extended)
+Paper Submission (extended)
 Paper Submission (double-blind)
-Deadline to resubmit revised paper
-First cycle - Full paper submission
-Second cycle - Full paper submission
-Full papers
-Regular Paper Submission
-Final papers due
-Revised final papers due
-The closing date for paper submissions
-Full Paper revised submission
+Full paper deadline
+Resubmission deadline
+Revised Submission
 Submission of revised papers
 Final version submission
 Paper Submission 1st round
 Paper Submission 2nd round
+Regular Paper Submission
+Deadline for submission of Full Papers
+Deadline to resubmit revised paper
+First cycle - Full paper submission
+Second cycle - Full paper submission
+Conference paper/ submission deadline
+The closing date for paper submissions
+Full papers
+Full Paper revised submission
+Abstract 
+Full Paper
+Submission deadline (full, short)
+Full / Short Submission Deadline
+Submission date
+Submission deadline for regular papers, main/application tracks
+Revision deadline (when needed)
+Main Conference Papers - Submission Deadline
+Submission Due
+extended paper submission deadline
 	Abstract submission deadline in Research and Applied Data Science tracks
 Paper submission deadline in Research and Applied Data Science tracks
 Submission of revised papers in Research and Applied Data Science tracks
 Final deadline for full paper submission
-Submission of Papers
-Submission deadline - for regular papers
-Paper submissions
-Extended deadline
-ToSC, Volume 2024, Issue 1 - Submission deadline
-ToSC, Volume 2024, Issue 2 - Submission deadline
-ToSC, Volume 2024, Issue 3 - Submission deadline
-ToSC, Volume 2024, Issue 4 - Submission deadline
-Deadline for paper registration (abstract submission)
-Final submissions due
-Submissions deadline
-Papers Submission Deadline
-Acceptance notification
-LNAI Submission deadline EXTENDED
-Full and Short paper submission
-Abstract registration
-Deadline for papers submission
-Submission deadline for Full Papers
-Submission deadline for Short Papers
-Full paper submission due
-Abstract (mandatory)
-Artifact Abstract Submission
-Paper Registration and Submission
-Final deadline
-The submission deadline
-Summer cycle - Paper submission deadline
-Summer cycle - Resubmission of Major Revision papers, Minor Revision decision
-Fall cycle - Paper submission deadline
-Fall cycle - Resubmission of Major Revision papers, Minor Revision decision
-Submissions due for Contributed Papers
-Submissions due for Invited Papers
-full paper submission
-Full / Short Submission Deadline
-Submission date
-extended paper submission deadline
 Paper Registration and Abstract Deadline
+Full-paper submission
+Position Papers  - Paper Submission
+Submission of Full-Length Papers
+LNAI Submission deadline EXTENDED
+Regular and Special Session Paper Submission
+Full and Short paper submission
+Title / Abstract registration
+Submission of Papers
+Abstract Submission for the first round
+Full Paper submission for the first round
+Revision/Rebuttal submission deadline for the first round
+Second-round Paper submission deadline
+Abstract registration
+Title and abstract registration
+Full Paper Registration (title, abstract, and author list)
 RTNS 1st Round - Abstract Deadline
 RTNS 1st Round - Submission Deadline
 RTNS 2nd Round - Abstract Deadline
 RTNS 2nd Round - Submission Deadline
 RTNS 3rd Round - Abstract Deadline
 RTNS 3rd Round - Submission Deadline
-Deadline for submission
-Submission of full Papers
-Early paper submissions due
-Regular paper abstract submissions due
-Regular paper submissions due
-Deadline for Abstract Submission for review
-Submission deadline (Round 1)
-Submission deadline (Round 2 and Major Revisions)
-Submission of Full Paper
-Acceptance Notice*
-Abstracts and meta-data
-Papers deadline
-Revised version due
-Technical Papers
-Art Papers
-Art and Media Galleries
-Submission deadline for regular papers, main/application tracks
-Revision deadline (when needed)
-Regular and Special Session Paper Submission
-Full Paper Registration (title, abstract, and author list)
-Regular Papers Deadline
-Late-Breaking Short Papers
-Games & Demos Deadline
-Doctoral Consortium Deadline
-Paper submission (formatted full text)
-Paper Submission (First Round)
-Paper Submission (Second Round)
-Paper submission for main tracks (final deadline)
-Revised papers according to the reviews
-Paper Registration Deadline Extended
-Submission deadline Deadline Extended
-Deadline for revised submissions
-Extended Deadline for Paper Submission due
-Papers submissions
-Paper submission deadline (cycle 1)
-Paper submission deadline (cycle 2)
-Regular paper submission due
-Submission due
-For all submission categories pre-submission of title and descriptive abstract
-For all submission categories. Full version
-authors needs to submit their papers by
-Paper or Panel Proposal Submission Deadline
-The 1st Round - Full paper submission
-The 2nd Round - Full paper submission
-Early-Decision Due Date
-Regular Due Date
-Notifications of acceptance
-Submission deadline (full, short)
-Full-paper submission
-Position Papers  - Paper Submission
-Submission of Full-Length Papers
-Title / Abstract registration
-First Cycle: Submissions Deadline
-Second Cycle: Submissions Deadline
-deadline for abstract submission (intention to participate)
-submission deadline : First Version of Paper (Full-text)
-Submission deadline for full papers and extended abstracts
-Workshop Papers Submission Date
-Paper submission for the 1st round
-Paper submission for the 2nd round
-Submission deadline (long & short papers)
-Abstract (optional)
-Complete paper submissions due
-Abstract registrations due
-EXTENDED SUBMISSION deadline
-Submission Due
-Title and abstract registration
-Paper Abstract Submission
-Normal Submission deadline
-Short paper submission deadline
-Submission of Special Session proposals
-Submission of papers by authors
-Initial submission deadline
-Final submission deadline
-Upload by
-Register by
-Updated paper
-Deadline for submission of minisymposium proposals
-Deadline for submission of minisymposium speaker abstracts
-Full Paper /Blue Sky Idea Submission Deadline
-Regular and Short papers due
-Mandatory Paper Registration Deadline
-Summer Deadline - Paper submissions due
-Fall Deadline - Paper submissions due
-Winter Deadline - Paper submissions due
-Submission deadline (extended)
-Submission of abstract (recommended)
-Submission of long, short and demo papers
+Conference abstracts submission
+Conference papers submission
 Submission of short contributions
 Submission opening for journal track papers
 Submission deadline for journal track papers
 Submission deadline for tutorial and workshop proposals
 Submission deadline for industrial track papers, work-in-progress papers
-Abstract and paper submission deadline
-Revised Versions Due
 Abstracts submission deadline
+Full Papers submission deadline
+Deadline for submission
+Submission of full Papers
+Early paper submissions due
+Regular paper abstract submissions due
+Regular paper submissions due
+First Cycle: Submissions Deadline
+Second Cycle: Submissions Deadline
+Deadline for papers submission
+Regular Papers Deadline
+Late-Breaking Short Papers
+Games & Demos Deadline
+Doctoral Consortium Deadline
+deadline for abstract submission (intention to participate)
+submission deadline : First Version of Paper (Full-text)
+Submission of title and abstract
+Submission deadline for Full Papers
+Submission deadline for Short Papers
+Paper submission (formatted full text)
+Normal Submission deadline
+Abstract and paper submission deadline
+Deadline for proposal submission for special sessions, workshops and tutorials
+Deadline for paper and extended abstracts submission
+Title and abstract submission
+Short paper submission deadline
+Submission deadline for full papers and extended abstracts
+Submission of Special Session Proposals
+Regular/Special Session Paper Submission
+Deadline for Abstract Submission for review
+Revised Versions Due
+Paper Submission (First Round)
+Paper Submission (Second Round)
+Submission deadline - for regular papers
+Abstract (mandatory)
+Full papers must be submitted via EasyChair by
+Artifact Abstract Submission
+Paper Registration and Submission
 Papers/oral communications submission deadline
 Final Submission
 1st Round: Abstract Deadline
 1st Round: Paper Submission
 2nd Round: Abstract Submission
 2nd Round: New and Revised (from 1st Round) Paper Submission
+Submission deadline (Round 1)
+Submission deadline (Round 2 and Major Revisions)
+Paper submission for main tracks (final deadline)
+Revised papers according to the reviews
+Paper submissions
 Symposium paper submission deadline
 Proposals for mini-courses and invited sessions
 Invited session full papers and extended abstracts
 Contributed session full papers and extended abstracts
+Extended deadline
+Paper Registration Deadline Extended
+Submission deadline Deadline Extended
+Submission of Special Session proposals
+Submission of papers by authors
+Full paper submission due
+Workshop Papers Submission Date
+ToSC, Volume 2024, Issue 1 - Submission deadline
+ToSC, Volume 2024, Issue 2 - Submission deadline
+ToSC, Volume 2024, Issue 3 - Submission deadline
+ToSC, Volume 2024, Issue 4 - Submission deadline
+Deadline for paper registration (abstract submission)
 Abstract submission due date
 Paper submission due date
+Submission due date
+Deadline for revised submissions
+Initial submission deadline
+Final submission deadline
+Abstract submissions (optional)
+Submission deadline for full, short, and position papers
 Paper submission (including invited papers to Replicability Track)
 Paper registration (with abstract, including invited papers to Replicability Track)
+Deadline for Paper Submission due
+Final submissions due
 New paper submission deadline
+Papers submissions
+Submissions deadline
+Submission of Full Paper
 Summer submission website - Paper submission
 Summer submission website - Registration of abstract
 Fall submission website - Paper submission
 Fall submission website - Registration of abstract
 Winter submission website - Paper submission
 Winter submission website - Registration of abstract
+Main Conference Paper Submission
+Acceptance Notice*
+Paper submission for the 1st round
+Paper submission for the 2nd round
+Upload by
+Register by
+Papers Submission Deadline
+Abstracts and meta-data
+Papers deadline
+Submission deadline for ARR
+Commitment deadline for NAACL
+Revised submission
 Paper due
 Revision submission
+Paper review due
+Updated paper
 General deadline
 Demonstrations deadline
 Submission of Abstracts
@@ -1627,44 +1601,57 @@ Issue 1 - Paper submission deadline
 Issue 2 - Paper submission deadline
 Issue 3 - Paper submission deadline
 Issue 4 - Paper submission deadline
-Deadline for Submission
-Paper submission Due
-Paper submission (no extensions)
-Main Conference Papers - Submission Deadline
-Abstract Submission for the first round
-Full Paper submission for the first round
-Revision/Rebuttal submission deadline for the first round
-Second-round Paper submission deadline
-Conference abstracts submission
-Conference papers submission
-Full Papers submission deadline
-Submission of title and abstract
-Extended Submission Deadline
-Deadline for proposal submission for special sessions, workshops and tutorials
-Deadline for paper and extended abstracts submission
-Title and abstract submission
-Submission of Special Session Proposals
-Regular/Special Session Paper Submission
-Submission due date (extended)
-Submission deadline for full, short, and position papers
-Main Conference Paper Submission
-Submission deadline for ARR
-Commitment deadline for NAACL
-Revised submission
-Paper review due
+Abstract (optional)
+Final deadline
+Paper submission deadline (cycle 1)
+Paper submission deadline (cycle 2)
 Paper/Poster Submission
+Deadline for submission of minisymposium proposals
+Deadline for submission of minisymposium speaker abstracts
+Full Paper /Blue Sky Idea Submission Deadline
+Regular paper submission due
+Deadline for Submission
+Regular and Short papers due
+Submission due
+Revised version due
 Spring deadline - Paper titles and abstracts due
 Spring deadline - Full paper submissions due
 Fall deadline - Paper titles and abstracts due
 Fall deadline - Full paper submissions due
 First Deadline - Paper Submission Deadline
 Second Deadline - Paper Submission Deadline 
+Mandatory Paper Registration Deadline
+For all submission categories pre-submission of title and descriptive abstract
+For all submission categories. Full version
+authors needs to submit their papers by
+Abstract registrations due
+Summer cycle - Paper submission deadline
+Summer cycle - Resubmission of Major Revision papers, Minor Revision decision
+Fall cycle - Paper submission deadline
+Fall cycle - Resubmission of Major Revision papers, Minor Revision decision
+Summer Deadline - Paper submissions due
+Fall Deadline - Paper submissions due
+Winter Deadline - Paper submissions due
+Complete paper submissions due
+Paper or Panel Proposal Submission Deadline
+Technical Papers
+Art Papers
+Art and Media Galleries
+Submissions due for Contributed Papers
+Submissions due for Invited Papers
+Paper submission Due
+Paper submission (no extensions)
+Early-Decision Due Date
+Regular Due Date
 TCHES Volume 2024/1 - Submission deadline
 TCHES Volume 2024/2 - Submission deadline
 TCHES Volume 2024/3 - Submission deadline
 TCHES Volume 2024/4 - Submission deadline
+EXTENDED SUBMISSION deadline
+Submission deadline (extended)
 First Call for Proposals
-Final Call for Proposals`;function Ek(e){const t=new Date(e),n=("0"+t.getDate()).slice(-2),r=("0"+(t.getMonth()+1)).slice(-2);return`${t.getFullYear()}-${r}-${n}`}const mv=e=>{const t=new Set,n=gw.split(`
+Final Call for Proposals
+Submission of draft papers (2000-5000 words) and extended abstracts (600-2000 words)`;function Ek(e){const t=new Date(e),n=("0"+t.getDate()).slice(-2),r=("0"+(t.getMonth()+1)).slice(-2);return`${t.getFullYear()}-${r}-${n}`}const mv=e=>{const t=new Set,n=gw.split(`
 `);for(const r of n){const a=r.split();for(const o of a)t.add(o.trim().toLowerCase())}for(const r of e){const a=r.date_type.trim().toLowerCase().split();for(const o of a)if(t.has(o)&&r.status==="new")return q0(r.date_value).format("YYYY/MM/DD")}return null};function An({onReload:e,size:t}){const[n,r]=y.useState(!1),[a,o]=y.useState(0);y.useEffect(()=>{const i=setTimeout(()=>{o(c=>c+1)},3e3);return()=>{clearTimeout(i)}},[a]),y.useEffect(()=>{a>=30&&r(!0)},[a]);const s=()=>{o(0),r(!1),e()};return d.jsx("div",{className:"text-center",children:n?d.jsx("div",{children:d.jsx(B0,{className:"bg-transparent border-0",onClick:s,children:"Reload"})}):d.jsx(br,{animation:"border",size:t})})}const ZM=({show:e,onClose:t,onConfirm:n,status:r,loading:a,isConfirm:o,countdown:s,onModalClick:i,message:c})=>{const{t:l}=p1(),p=y.useRef(null);return d.jsx(J1,{show:e,onHide:u=>t(u),centered:!0,children:d.jsxs("div",{ref:p,children:[d.jsxs(J1.Body,{onClick:u=>u.stopPropagation(),children:[d.jsxs("div",{className:"d-flex justify-content-between align-items-center py-2 mb-3",children:[d.jsx(J1.Title,{className:"text-center w-100 text-danger ps-5",children:`${l("delete")} ${l("conference")}`}),d.jsx(B0,{variant:"secondary",onClick:t,className:"bg-transparent border-0",children:d.jsx(j0,{icon:gW,className:"text-secondary fs-3"})})]}),d.jsx("p",{className:"fs-5 fw-bold",children:l("confirm_delete")}),d.jsx("p",{children:l("thisActionIsPermanent")})]}),d.jsx(J1.Footer,{children:o&&!a?d.jsx(d.Fragment,{children:r?d.jsx("div",{className:r?"text-success":"text-danger",children:r&&d.jsxs("div",{children:[d.jsx("span",{className:"text-success",children:l("success")}),". ",l("closing_countdown",{countdown:s})]})}):d.jsxs("div",{className:"text-danger",children:[d.jsx("span",{children:c}),"."]})}):d.jsxs(eo,{className:"w-100",children:[d.jsx(B0,{className:"bg-secondary border-light me-2 rounded",onClick:t,children:l("cancel")}),d.jsx(B0,{className:"bg-red-normal border-danger ms-2  rounded",onClick:n,children:a?d.jsx(An,{}):`${l("delete")}`})]})})]})})};function ws(e){"@babel/helpers - typeof";return ws=typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?function(t){return typeof t}:function(t){return t&&typeof Symbol=="function"&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},ws(e)}function N50(e,t){if(ws(e)!="object"||!e)return e;var n=e[Symbol.toPrimitive];if(n!==void 0){var r=n.call(e,t||"default");if(ws(r)!="object")return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return(t==="string"?String:Number)(e)}function QX(e){var t=N50(e,"string");return ws(t)=="symbol"?t:t+""}function Ao(e,t,n){return t=QX(t),t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function Tk(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(a){return Object.getOwnPropertyDescriptor(e,a).enumerable})),n.push.apply(n,r)}return n}function f1(e){for(var t=1;t<arguments.length;t++){var n=arguments[t]!=null?arguments[t]:{};t%2?Tk(Object(n),!0).forEach(function(r){Ao(e,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):Tk(Object(n)).forEach(function(r){Object.defineProperty(e,r,Object.getOwnPropertyDescriptor(n,r))})}return e}function ZX(e){if(Array.isArray(e))return e}function L50(e,t){var n=e==null?null:typeof Symbol<"u"&&e[Symbol.iterator]||e["@@iterator"];if(n!=null){var r,a,o,s,i=[],c=!0,l=!1;try{if(o=(n=n.call(e)).next,t===0){if(Object(n)!==n)return;c=!1}else for(;!(c=(r=o.call(n)).done)&&(i.push(r.value),i.length!==t);c=!0);}catch(p){l=!0,a=p}finally{try{if(!c&&n.return!=null&&(s=n.return(),Object(s)!==s))return}finally{if(l)throw a}}return i}}function bq(e,t){(t==null||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function vw(e,t){if(e){if(typeof e=="string")return bq(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);if(n==="Object"&&e.constructor&&(n=e.constructor.name),n==="Map"||n==="Set")return Array.from(e);if(n==="Arguments"||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return bq(e,t)}}function e$(){throw new TypeError(`Invalid attempt to destructure non-iterable instance.
 In order to be iterable, non-array objects must have a [Symbol.iterator]() method.`)}function Rn(e,t){return ZX(e)||L50(e,t)||vw(e,t)||e$()}function gn(e,t){if(e==null)return{};var n=j2(e,t),r,a;if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(e);for(a=0;a<o.length;a++)r=o[a],!(t.indexOf(r)>=0)&&Object.prototype.propertyIsEnumerable.call(e,r)&&(n[r]=e[r])}return n}var k50=["defaultInputValue","defaultMenuIsOpen","defaultValue","inputValue","menuIsOpen","onChange","onInputChange","onMenuClose","onMenuOpen","value"];function C50(e){var t=e.defaultInputValue,n=t===void 0?"":t,r=e.defaultMenuIsOpen,a=r===void 0?!1:r,o=e.defaultValue,s=o===void 0?null:o,i=e.inputValue,c=e.menuIsOpen,l=e.onChange,p=e.onInputChange,u=e.onMenuClose,f=e.onMenuOpen,b=e.value,M=gn(e,k50),z=y.useState(i!==void 0?i:n),h=Rn(z,2),m=h[0],O=h[1],A=y.useState(c!==void 0?c:a),v=Rn(A,2),x=v[0],W=v[1],q=y.useState(b!==void 0?b:s),_=Rn(q,2),N=_[0],L=_[1],k=y.useCallback(function(U,F){typeof l=="function"&&l(U,F),L(U)},[l]),S=y.useCallback(function(U,F){var n0;typeof p=="function"&&(n0=p(U,F)),O(n0!==void 0?n0:U)},[p]),B=y.useCallback(function(){typeof f=="function"&&f(),W(!0)},[f]),V=y.useCallback(function(){typeof u=="function"&&u(),W(!1)},[u]),K=i!==void 0?i:m,i0=c!==void 0?c:x,G=b!==void 0?b:N;return f1(f1({},M),{},{inputValue:K,menuIsOpen:i0,onChange:k,onInputChange:S,onMenuClose:V,onMenuOpen:B,value:G})}function vn(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function Dk(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,QX(r.key),r)}}function yn(e,t,n){return t&&Dk(e.prototype,t),n&&Dk(e,n),Object.defineProperty(e,"prototype",{writable:!1}),e}function vr(e,t){if(typeof t!="function"&&t!==null)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),Object.defineProperty(e,"prototype",{writable:!1}),t&&C3(e,t)}function g2(e){return g2=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(n){return n.__proto__||Object.getPrototypeOf(n)},g2(e)}function yw(){try{var e=!Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],function(){}))}catch{}return(yw=function(){return!!e})()}function t$(e){if(e===void 0)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function n$(e,t){if(t&&(ws(t)==="object"||typeof t=="function"))return t;if(t!==void 0)throw new TypeError("Derived constructors may only return object or undefined");return t$(e)}function E50(e){var t=yw();return function(){var r=g2(e),a;if(t){var o=g2(this).constructor;a=Reflect.construct(r,arguments,o)}else a=r.apply(this,arguments);return n$(this,a)}}function T50(e){if(Array.isArray(e))return bq(e)}function r$(e){if(typeof Symbol<"u"&&e[Symbol.iterator]!=null||e["@@iterator"]!=null)return Array.from(e)}function D50(){throw new TypeError(`Invalid attempt to spread non-iterable instance.
 In order to be iterable, non-array objects must have a [Symbol.iterator]() method.`)}function Ql(e){return T50(e)||r$(e)||vw(e)||D50()}function P50(e){if(e.sheet)return e.sheet;for(var t=0;t<document.styleSheets.length;t++)if(document.styleSheets[t].ownerNode===e)return document.styleSheets[t]}function B50(e){var t=document.createElement("style");return t.setAttribute("data-emotion",e.key),e.nonce!==void 0&&t.setAttribute("nonce",e.nonce),t.appendChild(document.createTextNode("")),t.setAttribute("data-s",""),t}var F50=function(){function e(n){var r=this;this._insertTag=function(a){var o;r.tags.length===0?r.insertionPoint?o=r.insertionPoint.nextSibling:r.prepend?o=r.container.firstChild:o=r.before:o=r.tags[r.tags.length-1].nextSibling,r.container.insertBefore(a,o),r.tags.push(a)},this.isSpeedy=n.speedy===void 0?!0:n.speedy,this.tags=[],this.ctr=0,this.nonce=n.nonce,this.key=n.key,this.container=n.container,this.prepend=n.prepend,this.insertionPoint=n.insertionPoint,this.before=null}var t=e.prototype;return t.hydrate=function(r){r.forEach(this._insertTag)},t.insert=function(r){this.ctr%(this.isSpeedy?65e3:1)===0&&this._insertTag(B50(this));var a=this.tags[this.tags.length-1];if(this.isSpeedy){var o=P50(a);try{o.insertRule(r,o.cssRules.length)}catch{}}else a.appendChild(document.createTextNode(r));this.ctr++},t.flush=function(){this.tags.forEach(function(r){return r.parentNode&&r.parentNode.removeChild(r)}),this.tags=[],this.ctr=0},e}(),nr="-ms-",lm="-moz-",ke="-webkit-",a$="comm",qw="rule",xw="decl",I50="@import",o$="@keyframes",j50="@layer",X50=Math.abs,VA=String.fromCharCode,$50=Object.assign;function H50(e,t){return $n(e,0)^45?(((t<<2^$n(e,0))<<2^$n(e,1))<<2^$n(e,2))<<2^$n(e,3):0}function s$(e){return e.trim()}function U50(e,t){return(e=t.exec(e))?e[0]:e}function Ce(e,t,n){return e.replace(t,n)}function Mq(e,t){return e.indexOf(t)}function $n(e,t){return e.charCodeAt(t)|0}function Jb(e,t,n){return e.slice(t,n)}function ts(e){return e.length}function Ww(e){return e.length}function Bh(e,t){return t.push(e),e}function Y50(e,t){return e.map(t).join("")}var GA=1,v2=1,i$=0,ta=0,ln=0,ed="";function KA(e,t,n,r,a,o,s){return{value:e,root:t,parent:n,type:r,props:a,children:o,line:GA,column:v2,length:s,return:""}}function Fd(e,t){return $50(KA("",null,null,"",null,null,0),e,{length:-e.length},t)}function V50(){return ln}function G50(){return ln=ta>0?$n(ed,--ta):0,v2--,ln===10&&(v2=1,GA--),ln}function Ma(){return ln=ta<i$?$n(ed,ta++):0,v2++,ln===10&&(v2=1,GA++),ln}function Os(){return $n(ed,ta)}function kO(){return ta}function ez(e,t){return Jb(ed,e,t)}function Qb(e){switch(e){case 0:case 9:case 10:case 13:case 32:return 5;case 33:case 43:case 44:case 47:case 62:case 64:case 126:case 59:case 123:case 125:return 4;case 58:return 3;case 34:case 39:case 40:case 91:return 2;case 41:case 93:return 1}return 0}function c$(e){return GA=v2=1,i$=ts(ed=e),ta=0,[]}function l$(e){return ed="",e}function CO(e){return s$(ez(ta-1,zq(e===91?e+2:e===40?e+1:e)))}function K50(e){for(;(ln=Os())&&ln<33;)Ma();return Qb(e)>2||Qb(ln)>3?"":" "}function J50(e,t){for(;--t&&Ma()&&!(ln<48||ln>102||ln>57&&ln<65||ln>70&&ln<97););return ez(e,kO()+(t<6&&Os()==32&&Ma()==32))}function zq(e){for(;Ma();)switch(ln){case e:return ta;case 34:case 39:e!==34&&e!==39&&zq(ln);break;case 40:e===41&&zq(e);break;case 92:Ma();break}return ta}function Q50(e,t){for(;Ma()&&e+ln!==57;)if(e+ln===84&&Os()===47)break;return"/*"+ez(t,ta-1)+"*"+VA(e===47?e:Ma())}function Z50(e){for(;!Qb(Os());)Ma();return ez(e,ta)}function ey0(e){return l$(EO("",null,null,null,[""],e=c$(e),0,[0],e))}function EO(e,t,n,r,a,o,s,i,c){for(var l=0,p=0,u=s,f=0,b=0,M=0,z=1,h=1,m=1,O=0,A="",v=a,x=o,W=r,q=A;h;)switch(M=O,O=Ma()){case 40:if(M!=108&&$n(q,u-1)==58){Mq(q+=Ce(CO(O),"&","&\f"),"&\f")!=-1&&(m=-1);break}case 34:case 39:case 91:q+=CO(O);break;case 9:case 10:case 13:case 32:q+=K50(M);break;case 92:q+=J50(kO()-1,7);continue;case 47:switch(Os()){case 42:case 47:Bh(ty0(Q50(Ma(),kO()),t,n),c);break;default:q+="/"}break;case 123*z:i[l++]=ts(q)*m;case 125*z:case 59:case 0:switch(O){case 0:case 125:h=0;case 59+p:m==-1&&(q=Ce(q,/\f/g,"")),b>0&&ts(q)-u&&Bh(b>32?Bk(q+";",r,n,u-1):Bk(Ce(q," ","")+";",r,n,u-2),c);break;case 59:q+=";";default:if(Bh(W=Pk(q,t,n,l,p,a,i,A,v=[],x=[],u),o),O===123)if(p===0)EO(q,t,W,W,v,o,u,i,x);else switch(f===99&&$n(q,3)===110?100:f){case 100:case 108:case 109:case 115:EO(e,W,W,r&&Bh(Pk(e,W,W,0,0,a,i,A,a,v=[],u),x),a,x,u,i,r?v:x);break;default:EO(q,W,W,W,[""],x,0,i,x)}}l=p=b=0,z=m=1,A=q="",u=s;break;case 58:u=1+ts(q),b=M;default:if(z<1){if(O==123)--z;else if(O==125&&z++==0&&G50()==125)continue}switch(q+=VA(O),O*z){case 38:m=p>0?1:(q+="\f",-1);break;case 44:i[l++]=(ts(q)-1)*m,m=1;break;case 64:Os()===45&&(q+=CO(Ma())),f=Os(),p=u=ts(A=q+=Z50(kO())),O++;break;case 45:M===45&&ts(q)==2&&(z=0)}}return o}function Pk(e,t,n,r,a,o,s,i,c,l,p){for(var u=a-1,f=a===0?o:[""],b=Ww(f),M=0,z=0,h=0;M<r;++M)for(var m=0,O=Jb(e,u+1,u=X50(z=s[M])),A=e;m<b;++m)(A=s$(z>0?f[m]+" "+O:Ce(O,/&\f/g,f[m])))&&(c[h++]=A);return KA(e,t,n,a===0?qw:i,c,l,p)}function ty0(e,t,n){return KA(e,t,n,a$,VA(V50()),Jb(e,2,-2),0)}function Bk(e,t,n,r){return KA(e,t,n,xw,Jb(e,0,r),Jb(e,r+1,-1),r)}function n2(e,t){for(var n="",r=Ww(e),a=0;a<r;a++)n+=t(e[a],a,e,t)||"";return n}function ny0(e,t,n,r){switch(e.type){case j50:if(e.children.length)break;case I50:case xw:return e.return=e.return||e.value;case a$:return"";case o$:return e.return=e.value+"{"+n2(e.children,r)+"}";case qw:e.value=e.props.join(",")}return ts(n=n2(e.children,r))?e.return=e.value+"{"+n+"}":""}function ry0(e){var t=Ww(e);return function(n,r,a,o){for(var s="",i=0;i<t;i++)s+=e[i](n,r,a,o)||"";return s}}function ay0(e){return function(t){t.root||(t=t.return)&&e(t)}}function oy0(e){var t=Object.create(null);return function(n){return t[n]===void 0&&(t[n]=e(n)),t[n]}}var sy0=function(t,n,r){for(var a=0,o=0;a=o,o=Os(),a===38&&o===12&&(n[r]=1),!Qb(o);)Ma();return ez(t,ta)},iy0=function(t,n){var r=-1,a=44;do switch(Qb(a)){case 0:a===38&&Os()===12&&(n[r]=1),t[r]+=sy0(ta-1,n,r);break;case 2:t[r]+=CO(a);break;case 4:if(a===44){t[++r]=Os()===58?"&\f":"",n[r]=t[r].length;break}default:t[r]+=VA(a)}while(a=Ma());return t},cy0=function(t,n){return l$(iy0(c$(t),n))},Fk=new WeakMap,ly0=function(t){if(!(t.type!=="rule"||!t.parent||t.length<1)){for(var n=t.value,r=t.parent,a=t.column===r.column&&t.line===r.line;r.type!=="rule";)if(r=r.parent,!r)return;if(!(t.props.length===1&&n.charCodeAt(0)!==58&&!Fk.get(r))&&!a){Fk.set(t,!0);for(var o=[],s=cy0(n,o),i=r.props,c=0,l=0;c<s.length;c++)for(var p=0;p<i.length;p++,l++)t.props[l]=o[c]?s[c].replace(/&\f/g,i[p]):i[p]+" "+s[c]}}},py0=function(t){if(t.type==="decl"){var n=t.value;n.charCodeAt(0)===108&&n.charCodeAt(2)===98&&(t.return="",t.value="")}};function p$(e,t){switch(H50(e,t)){case 5103:return ke+"print-"+e+e;case 5737:case 4201:case 3177:case 3433:case 1641:case 4457:case 2921:case 5572:case 6356:case 5844:case 3191:case 6645:case 3005:case 6391:case 5879:case 5623:case 6135:case 4599:case 4855:case 4215:case 6389:case 5109:case 5365:case 5621:case 3829:return ke+e+e;case 5349:case 4246:case 4810:case 6968:case 2756:return ke+e+lm+e+nr+e+e;case 6828:case 4268:return ke+e+nr+e+e;case 6165:return ke+e+nr+"flex-"+e+e;case 5187:return ke+e+Ce(e,/(\w+).+(:[^]+)/,ke+"box-$1$2"+nr+"flex-$1$2")+e;case 5443:return ke+e+nr+"flex-item-"+Ce(e,/flex-|-self/,"")+e;case 4675:return ke+e+nr+"flex-line-pack"+Ce(e,/align-content|flex-|-self/,"")+e;case 5548:return ke+e+nr+Ce(e,"shrink","negative")+e;case 5292:return ke+e+nr+Ce(e,"basis","preferred-size")+e;case 6060:return ke+"box-"+Ce(e,"-grow","")+ke+e+nr+Ce(e,"grow","positive")+e;case 4554:return ke+Ce(e,/([^-])(transform)/g,"$1"+ke+"$2")+e;case 6187:return Ce(Ce(Ce(e,/(zoom-|grab)/,ke+"$1"),/(image-set)/,ke+"$1"),e,"")+e;case 5495:case 3959:return Ce(e,/(image-set\([^]*)/,ke+"$1$`$1");case 4968:return Ce(Ce(e,/(.+:)(flex-)?(.*)/,ke+"box-pack:$3"+nr+"flex-pack:$3"),/s.+-b[^;]+/,"justify")+ke+e+e;case 4095:case 3583:case 4068:case 2532:return Ce(e,/(.+)-inline(.+)/,ke+"$1$2")+e;case 8116:case 7059:case 5753:case 5535:case 5445:case 5701:case 4933:case 4677:case 5533:case 5789:case 5021:case 4765:if(ts(e)-1-t>6)switch($n(e,t+1)){case 109:if($n(e,t+4)!==45)break;case 102:return Ce(e,/(.+:)(.+)-([^]+)/,"$1"+ke+"$2-$3$1"+lm+($n(e,t+3)==108?"$3":"$2-$3"))+e;case 115:return~Mq(e,"stretch")?p$(Ce(e,"stretch","fill-available"),t)+e:e}break;case 4949:if($n(e,t+1)!==115)break;case 6444:switch($n(e,ts(e)-3-(~Mq(e,"!important")&&10))){case 107:return Ce(e,":",":"+ke)+e;case 101:return Ce(e,/(.+:)([^;!]+)(;|!.+)?/,"$1"+ke+($n(e,14)===45?"inline-":"")+"box$3$1"+ke+"$2$3$1"+nr+"$2box$3")+e}break;case 5936:switch($n(e,t+11)){case 114:return ke+e+nr+Ce(e,/[svh]\w+-[tblr]{2}/,"tb")+e;case 108:return ke+e+nr+Ce(e,/[svh]\w+-[tblr]{2}/,"tb-rl")+e;case 45:return ke+e+nr+Ce(e,/[svh]\w+-[tblr]{2}/,"lr")+e}return ke+e+nr+e+e}return e}var uy0=function(t,n,r,a){if(t.length>-1&&!t.return)switch(t.type){case xw:t.return=p$(t.value,t.length);break;case o$:return n2([Fd(t,{value:Ce(t.value,"@","@"+ke)})],a);case qw:if(t.length)return Y50(t.props,function(o){switch(U50(o,/(::plac\w+|:read-\w+)/)){case":read-only":case":read-write":return n2([Fd(t,{props:[Ce(o,/:(read-\w+)/,":"+lm+"$1")]})],a);case"::placeholder":return n2([Fd(t,{props:[Ce(o,/:(plac\w+)/,":"+ke+"input-$1")]}),Fd(t,{props:[Ce(o,/:(plac\w+)/,":"+lm+"$1")]}),Fd(t,{props:[Ce(o,/:(plac\w+)/,nr+"input-$1")]})],a)}return""})}},dy0=[uy0],fy0=function(t){var n=t.key;if(n==="css"){var r=document.querySelectorAll("style[data-emotion]:not([data-s])");Array.prototype.forEach.call(r,function(z){var h=z.getAttribute("data-emotion");h.indexOf(" ")!==-1&&(document.head.appendChild(z),z.setAttribute("data-s",""))})}var a=t.stylisPlugins||dy0,o={},s,i=[];s=t.container||document.head,Array.prototype.forEach.call(document.querySelectorAll('style[data-emotion^="'+n+' "]'),function(z){for(var h=z.getAttribute("data-emotion").split(" "),m=1;m<h.length;m++)o[h[m]]=!0;i.push(z)});var c,l=[ly0,py0];{var p,u=[ny0,ay0(function(z){p.insert(z)})],f=ry0(l.concat(a,u)),b=function(h){return n2(ey0(h),f)};c=function(h,m,O,A){p=O,b(h?h+"{"+m.styles+"}":m.styles),A&&(M.inserted[m.name]=!0)}}var M={key:n,sheet:new F50({key:n,container:s,nonce:t.nonce,speedy:t.speedy,prepend:t.prepend,insertionPoint:t.insertionPoint}),nonce:t.nonce,inserted:o,registered:{},insert:c};return M.sheet.hydrate(i),M},u$={exports:{}},Ge={};/** @license React v16.13.1
@@ -1677,804 +1664,839 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
  */var kn=typeof Symbol=="function"&&Symbol.for,ww=kn?Symbol.for("react.element"):60103,Rw=kn?Symbol.for("react.portal"):60106,JA=kn?Symbol.for("react.fragment"):60107,QA=kn?Symbol.for("react.strict_mode"):60108,ZA=kn?Symbol.for("react.profiler"):60114,eg=kn?Symbol.for("react.provider"):60109,tg=kn?Symbol.for("react.context"):60110,_w=kn?Symbol.for("react.async_mode"):60111,ng=kn?Symbol.for("react.concurrent_mode"):60111,rg=kn?Symbol.for("react.forward_ref"):60112,ag=kn?Symbol.for("react.suspense"):60113,by0=kn?Symbol.for("react.suspense_list"):60120,og=kn?Symbol.for("react.memo"):60115,sg=kn?Symbol.for("react.lazy"):60116,My0=kn?Symbol.for("react.block"):60121,zy0=kn?Symbol.for("react.fundamental"):60117,hy0=kn?Symbol.for("react.responder"):60118,Oy0=kn?Symbol.for("react.scope"):60119;function xa(e){if(typeof e=="object"&&e!==null){var t=e.$$typeof;switch(t){case ww:switch(e=e.type,e){case _w:case ng:case JA:case ZA:case QA:case ag:return e;default:switch(e=e&&e.$$typeof,e){case tg:case rg:case sg:case og:case eg:return e;default:return t}}case Rw:return t}}}function d$(e){return xa(e)===ng}Ge.AsyncMode=_w;Ge.ConcurrentMode=ng;Ge.ContextConsumer=tg;Ge.ContextProvider=eg;Ge.Element=ww;Ge.ForwardRef=rg;Ge.Fragment=JA;Ge.Lazy=sg;Ge.Memo=og;Ge.Portal=Rw;Ge.Profiler=ZA;Ge.StrictMode=QA;Ge.Suspense=ag;Ge.isAsyncMode=function(e){return d$(e)||xa(e)===_w};Ge.isConcurrentMode=d$;Ge.isContextConsumer=function(e){return xa(e)===tg};Ge.isContextProvider=function(e){return xa(e)===eg};Ge.isElement=function(e){return typeof e=="object"&&e!==null&&e.$$typeof===ww};Ge.isForwardRef=function(e){return xa(e)===rg};Ge.isFragment=function(e){return xa(e)===JA};Ge.isLazy=function(e){return xa(e)===sg};Ge.isMemo=function(e){return xa(e)===og};Ge.isPortal=function(e){return xa(e)===Rw};Ge.isProfiler=function(e){return xa(e)===ZA};Ge.isStrictMode=function(e){return xa(e)===QA};Ge.isSuspense=function(e){return xa(e)===ag};Ge.isValidElementType=function(e){return typeof e=="string"||typeof e=="function"||e===JA||e===ng||e===ZA||e===QA||e===ag||e===by0||typeof e=="object"&&e!==null&&(e.$$typeof===sg||e.$$typeof===og||e.$$typeof===eg||e.$$typeof===tg||e.$$typeof===rg||e.$$typeof===zy0||e.$$typeof===hy0||e.$$typeof===Oy0||e.$$typeof===My0)};Ge.typeOf=xa;u$.exports=Ge;var my0=u$.exports,f$=my0,Ay0={$$typeof:!0,render:!0,defaultProps:!0,displayName:!0,propTypes:!0},gy0={$$typeof:!0,compare:!0,defaultProps:!0,displayName:!0,propTypes:!0,type:!0},b$={};b$[f$.ForwardRef]=Ay0;b$[f$.Memo]=gy0;var vy0=!0;function yy0(e,t,n){var r="";return n.split(" ").forEach(function(a){e[a]!==void 0?t.push(e[a]+";"):r+=a+" "}),r}var M$=function(t,n,r){var a=t.key+"-"+n.name;(r===!1||vy0===!1)&&t.registered[a]===void 0&&(t.registered[a]=n.styles)},qy0=function(t,n,r){M$(t,n,r);var a=t.key+"-"+n.name;if(t.inserted[n.name]===void 0){var o=n;do t.insert(n===o?"."+a:"",o,t.sheet,!0),o=o.next;while(o!==void 0)}};function xy0(e){for(var t=0,n,r=0,a=e.length;a>=4;++r,a-=4)n=e.charCodeAt(r)&255|(e.charCodeAt(++r)&255)<<8|(e.charCodeAt(++r)&255)<<16|(e.charCodeAt(++r)&255)<<24,n=(n&65535)*1540483477+((n>>>16)*59797<<16),n^=n>>>24,t=(n&65535)*1540483477+((n>>>16)*59797<<16)^(t&65535)*1540483477+((t>>>16)*59797<<16);switch(a){case 3:t^=(e.charCodeAt(r+2)&255)<<16;case 2:t^=(e.charCodeAt(r+1)&255)<<8;case 1:t^=e.charCodeAt(r)&255,t=(t&65535)*1540483477+((t>>>16)*59797<<16)}return t^=t>>>13,t=(t&65535)*1540483477+((t>>>16)*59797<<16),((t^t>>>15)>>>0).toString(36)}var Wy0={animationIterationCount:1,aspectRatio:1,borderImageOutset:1,borderImageSlice:1,borderImageWidth:1,boxFlex:1,boxFlexGroup:1,boxOrdinalGroup:1,columnCount:1,columns:1,flex:1,flexGrow:1,flexPositive:1,flexShrink:1,flexNegative:1,flexOrder:1,gridRow:1,gridRowEnd:1,gridRowSpan:1,gridRowStart:1,gridColumn:1,gridColumnEnd:1,gridColumnSpan:1,gridColumnStart:1,msGridRow:1,msGridRowSpan:1,msGridColumn:1,msGridColumnSpan:1,fontWeight:1,lineHeight:1,opacity:1,order:1,orphans:1,tabSize:1,widows:1,zIndex:1,zoom:1,WebkitLineClamp:1,fillOpacity:1,floodOpacity:1,stopOpacity:1,strokeDasharray:1,strokeDashoffset:1,strokeMiterlimit:1,strokeOpacity:1,strokeWidth:1},wy0=/[A-Z]|^ms/g,Ry0=/_EMO_([^_]+?)_([^]*?)_EMO_/g,z$=function(t){return t.charCodeAt(1)===45},Ik=function(t){return t!=null&&typeof t!="boolean"},Av=oy0(function(e){return z$(e)?e:e.replace(wy0,"-$&").toLowerCase()}),jk=function(t,n){switch(t){case"animation":case"animationName":if(typeof n=="string")return n.replace(Ry0,function(r,a,o){return ns={name:a,styles:o,next:ns},a})}return Wy0[t]!==1&&!z$(t)&&typeof n=="number"&&n!==0?n+"px":n};function Zb(e,t,n){if(n==null)return"";if(n.__emotion_styles!==void 0)return n;switch(typeof n){case"boolean":return"";case"object":{if(n.anim===1)return ns={name:n.name,styles:n.styles,next:ns},n.name;if(n.styles!==void 0){var r=n.next;if(r!==void 0)for(;r!==void 0;)ns={name:r.name,styles:r.styles,next:ns},r=r.next;var a=n.styles+";";return a}return _y0(e,t,n)}case"function":{if(e!==void 0){var o=ns,s=n(e);return ns=o,Zb(e,t,s)}break}}return n}function _y0(e,t,n){var r="";if(Array.isArray(n))for(var a=0;a<n.length;a++)r+=Zb(e,t,n[a])+";";else for(var o in n){var s=n[o];if(typeof s!="object")Ik(s)&&(r+=Av(o)+":"+jk(o,s)+";");else if(Array.isArray(s)&&typeof s[0]=="string"&&t==null)for(var i=0;i<s.length;i++)Ik(s[i])&&(r+=Av(o)+":"+jk(o,s[i])+";");else{var c=Zb(e,t,s);switch(o){case"animation":case"animationName":{r+=Av(o)+":"+c+";";break}default:r+=o+"{"+c+"}"}}}return r}var Xk=/label:\s*([^\s;\n{]+)\s*(;|$)/g,ns,h$=function(t,n,r){if(t.length===1&&typeof t[0]=="object"&&t[0]!==null&&t[0].styles!==void 0)return t[0];var a=!0,o="";ns=void 0;var s=t[0];s==null||s.raw===void 0?(a=!1,o+=Zb(r,n,s)):o+=s[0];for(var i=1;i<t.length;i++)o+=Zb(r,n,t[i]),a&&(o+=s[i]);Xk.lastIndex=0;for(var c="",l;(l=Xk.exec(o))!==null;)c+="-"+l[1];var p=xy0(o)+c;return{name:p,styles:o,next:ns}},Sy0=function(t){return t()},Ny0=Kf.useInsertionEffect?Kf.useInsertionEffect:!1,Ly0=Ny0||Sy0,Sw={}.hasOwnProperty,O$=y.createContext(typeof HTMLElement<"u"?fy0({key:"css"}):null);O$.Provider;var ky0=function(t){return y.forwardRef(function(n,r){var a=y.useContext(O$);return t(n,a,r)})},Cy0=y.createContext({}),hq="__EMOTION_TYPE_PLEASE_DO_NOT_USE__",Ey0=function(t,n){var r={};for(var a in n)Sw.call(n,a)&&(r[a]=n[a]);return r[hq]=t,r},Ty0=function(t){var n=t.cache,r=t.serialized,a=t.isStringTag;return M$(n,r,a),Ly0(function(){return qy0(n,r,a)}),null},Dy0=ky0(function(e,t,n){var r=e.css;typeof r=="string"&&t.registered[r]!==void 0&&(r=t.registered[r]);var a=e[hq],o=[r],s="";typeof e.className=="string"?s=yy0(t.registered,o,e.className):e.className!=null&&(s=e.className+" ");var i=h$(o,void 0,y.useContext(Cy0));s+=t.key+"-"+i.name;var c={};for(var l in e)Sw.call(e,l)&&l!=="css"&&l!==hq&&(c[l]=e[l]);return c.ref=n,c.className=s,y.createElement(y.Fragment,null,y.createElement(Ty0,{cache:t,serialized:i,isStringTag:typeof a=="string"}),y.createElement(a,c))}),Py0=Dy0,F1=function(t,n){var r=arguments;if(n==null||!Sw.call(n,"css"))return y.createElement.apply(void 0,r);var a=r.length,o=new Array(a);o[0]=Py0,o[1]=Ey0(t,n);for(var s=2;s<a;s++)o[s]=r[s];return y.createElement.apply(null,o)};function Nw(){for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];return h$(t)}var By0=function(){var t=Nw.apply(void 0,arguments),n="animation-"+t.name;return{name:n,styles:"@keyframes "+n+"{"+t.styles+"}",anim:1,toString:function(){return"_EMO_"+this.name+"_"+this.styles+"_EMO_"}}};function Fy0(e,t){return t||(t=e.slice(0)),Object.freeze(Object.defineProperties(e,{raw:{value:Object.freeze(t)}}))}const y2=Math.min,Zl=Math.max,pm=Math.round,Fh=Math.floor,jc=e=>({x:e,y:e}),Iy0={left:"right",right:"left",bottom:"top",top:"bottom"},jy0={start:"end",end:"start"};function Xy0(e,t,n){return Zl(e,y2(t,n))}function ig(e,t){return typeof e=="function"?e(t):e}function q2(e){return e.split("-")[0]}function tz(e){return e.split("-")[1]}function $y0(e){return e==="x"?"y":"x"}function Lw(e){return e==="y"?"height":"width"}function kw(e){return["top","bottom"].includes(q2(e))?"y":"x"}function Cw(e){return $y0(kw(e))}function Hy0(e,t,n){n===void 0&&(n=!1);const r=tz(e),a=Cw(e),o=Lw(a);let s=a==="x"?r===(n?"end":"start")?"right":"left":r==="start"?"bottom":"top";return t.reference[o]>t.floating[o]&&(s=um(s)),[s,um(s)]}function Uy0(e){const t=um(e);return[Oq(e),t,Oq(t)]}function Oq(e){return e.replace(/start|end/g,t=>jy0[t])}function Yy0(e,t,n){const r=["left","right"],a=["right","left"],o=["top","bottom"],s=["bottom","top"];switch(e){case"top":case"bottom":return n?t?a:r:t?r:a;case"left":case"right":return t?o:s;default:return[]}}function Vy0(e,t,n,r){const a=tz(e);let o=Yy0(q2(e),n==="start",r);return a&&(o=o.map(s=>s+"-"+a),t&&(o=o.concat(o.map(Oq)))),o}function um(e){return e.replace(/left|right|bottom|top/g,t=>Iy0[t])}function Gy0(e){return{top:0,right:0,bottom:0,left:0,...e}}function m$(e){return typeof e!="number"?Gy0(e):{top:e,right:e,bottom:e,left:e}}function dm(e){return{...e,top:e.y,left:e.x,right:e.x+e.width,bottom:e.y+e.height}}function $k(e,t,n){let{reference:r,floating:a}=e;const o=kw(t),s=Cw(t),i=Lw(s),c=q2(t),l=o==="y",p=r.x+r.width/2-a.width/2,u=r.y+r.height/2-a.height/2,f=r[i]/2-a[i]/2;let b;switch(c){case"top":b={x:p,y:r.y-a.height};break;case"bottom":b={x:p,y:r.y+r.height};break;case"right":b={x:r.x+r.width,y:u};break;case"left":b={x:r.x-a.width,y:u};break;default:b={x:r.x,y:r.y}}switch(tz(t)){case"start":b[s]-=f*(n&&l?-1:1);break;case"end":b[s]+=f*(n&&l?-1:1);break}return b}const Ky0=async(e,t,n)=>{const{placement:r="bottom",strategy:a="absolute",middleware:o=[],platform:s}=n,i=o.filter(Boolean),c=await(s.isRTL==null?void 0:s.isRTL(t));let l=await s.getElementRects({reference:e,floating:t,strategy:a}),{x:p,y:u}=$k(l,r,c),f=r,b={},M=0;for(let z=0;z<i.length;z++){const{name:h,fn:m}=i[z],{x:O,y:A,data:v,reset:x}=await m({x:p,y:u,initialPlacement:r,placement:f,strategy:a,middlewareData:b,rects:l,platform:s,elements:{reference:e,floating:t}});p=O??p,u=A??u,b={...b,[h]:{...b[h],...v}},x&&M<=50&&(M++,typeof x=="object"&&(x.placement&&(f=x.placement),x.rects&&(l=x.rects===!0?await s.getElementRects({reference:e,floating:t,strategy:a}):x.rects),{x:p,y:u}=$k(l,f,c)),z=-1)}return{x:p,y:u,placement:f,strategy:a,middlewareData:b}};async function Jy0(e,t){var n;t===void 0&&(t={});const{x:r,y:a,platform:o,rects:s,elements:i,strategy:c}=e,{boundary:l="clippingAncestors",rootBoundary:p="viewport",elementContext:u="floating",altBoundary:f=!1,padding:b=0}=ig(t,e),M=m$(b),h=i[f?u==="floating"?"reference":"floating":u],m=dm(await o.getClippingRect({element:(n=await(o.isElement==null?void 0:o.isElement(h)))==null||n?h:h.contextElement||await(o.getDocumentElement==null?void 0:o.getDocumentElement(i.floating)),boundary:l,rootBoundary:p,strategy:c})),O=u==="floating"?{...s.floating,x:r,y:a}:s.reference,A=await(o.getOffsetParent==null?void 0:o.getOffsetParent(i.floating)),v=await(o.isElement==null?void 0:o.isElement(A))?await(o.getScale==null?void 0:o.getScale(A))||{x:1,y:1}:{x:1,y:1},x=dm(o.convertOffsetParentRelativeRectToViewportRelativeRect?await o.convertOffsetParentRelativeRectToViewportRelativeRect({elements:i,rect:O,offsetParent:A,strategy:c}):O);return{top:(m.top-x.top+M.top)/v.y,bottom:(x.bottom-m.bottom+M.bottom)/v.y,left:(m.left-x.left+M.left)/v.x,right:(x.right-m.right+M.right)/v.x}}const Qy0=e=>({name:"arrow",options:e,async fn(t){const{x:n,y:r,placement:a,rects:o,platform:s,elements:i,middlewareData:c}=t,{element:l,padding:p=0}=ig(e,t)||{};if(l==null)return{};const u=m$(p),f={x:n,y:r},b=Cw(a),M=Lw(b),z=await s.getDimensions(l),h=b==="y",m=h?"top":"left",O=h?"bottom":"right",A=h?"clientHeight":"clientWidth",v=o.reference[M]+o.reference[b]-f[b]-o.floating[M],x=f[b]-o.reference[b],W=await(s.getOffsetParent==null?void 0:s.getOffsetParent(l));let q=W?W[A]:0;(!q||!await(s.isElement==null?void 0:s.isElement(W)))&&(q=i.floating[A]||o.floating[M]);const _=v/2-x/2,N=q/2-z[M]/2-1,L=y2(u[m],N),k=y2(u[O],N),S=L,B=q-z[M]-k,V=q/2-z[M]/2+_,K=Xy0(S,V,B),i0=!c.arrow&&tz(a)!=null&&V!==K&&o.reference[M]/2-(V<S?L:k)-z[M]/2<0,G=i0?V<S?V-S:V-B:0;return{[b]:f[b]+G,data:{[b]:K,centerOffset:V-K-G,...i0&&{alignmentOffset:G}},reset:i0}}}),Zy0=function(e){return e===void 0&&(e={}),{name:"flip",options:e,async fn(t){var n,r;const{placement:a,middlewareData:o,rects:s,initialPlacement:i,platform:c,elements:l}=t,{mainAxis:p=!0,crossAxis:u=!0,fallbackPlacements:f,fallbackStrategy:b="bestFit",fallbackAxisSideDirection:M="none",flipAlignment:z=!0,...h}=ig(e,t);if((n=o.arrow)!=null&&n.alignmentOffset)return{};const m=q2(a),O=q2(i)===i,A=await(c.isRTL==null?void 0:c.isRTL(l.floating)),v=f||(O||!z?[um(i)]:Uy0(i));!f&&M!=="none"&&v.push(...Vy0(i,z,M,A));const x=[i,...v],W=await Jy0(t,h),q=[];let _=((r=o.flip)==null?void 0:r.overflows)||[];if(p&&q.push(W[m]),u){const S=Hy0(a,s,A);q.push(W[S[0]],W[S[1]])}if(_=[..._,{placement:a,overflows:q}],!q.every(S=>S<=0)){var N,L;const S=(((N=o.flip)==null?void 0:N.index)||0)+1,B=x[S];if(B)return{data:{index:S,overflows:_},reset:{placement:B}};let V=(L=_.filter(K=>K.overflows[0]<=0).sort((K,i0)=>K.overflows[1]-i0.overflows[1])[0])==null?void 0:L.placement;if(!V)switch(b){case"bestFit":{var k;const K=(k=_.map(i0=>[i0.placement,i0.overflows.filter(G=>G>0).reduce((G,U)=>G+U,0)]).sort((i0,G)=>i0[1]-G[1])[0])==null?void 0:k[0];K&&(V=K);break}case"initialPlacement":V=i;break}if(a!==V)return{reset:{placement:V}}}return{}}}};async function eq0(e,t){const{placement:n,platform:r,elements:a}=e,o=await(r.isRTL==null?void 0:r.isRTL(a.floating)),s=q2(n),i=tz(n),c=kw(n)==="y",l=["left","top"].includes(s)?-1:1,p=o&&c?-1:1,u=ig(t,e);let{mainAxis:f,crossAxis:b,alignmentAxis:M}=typeof u=="number"?{mainAxis:u,crossAxis:0,alignmentAxis:null}:{mainAxis:0,crossAxis:0,alignmentAxis:null,...u};return i&&typeof M=="number"&&(b=i==="end"?M*-1:M),c?{x:b*p,y:f*l}:{x:f*l,y:b*p}}const tq0=function(e){return{name:"offset",options:e,async fn(t){var n,r;const{x:a,y:o,placement:s,middlewareData:i}=t,c=await eq0(t,e);return s===((n=i.offset)==null?void 0:n.placement)&&(r=i.arrow)!=null&&r.alignmentOffset?{}:{x:a+c.x,y:o+c.y,data:{...c,placement:s}}}}};function Xc(e){return A$(e)?(e.nodeName||"").toLowerCase():"#document"}function za(e){var t;return(e==null||(t=e.ownerDocument)==null?void 0:t.defaultView)||window}function Fi(e){var t;return(t=(A$(e)?e.ownerDocument:e.document)||window.document)==null?void 0:t.documentElement}function A$(e){return e instanceof Node||e instanceof za(e).Node}function fa(e){return e instanceof Element||e instanceof za(e).Element}function Rs(e){return e instanceof HTMLElement||e instanceof za(e).HTMLElement}function Hk(e){return typeof ShadowRoot>"u"?!1:e instanceof ShadowRoot||e instanceof za(e).ShadowRoot}function nz(e){const{overflow:t,overflowX:n,overflowY:r,display:a}=Ka(e);return/auto|scroll|overlay|hidden|clip/.test(t+r+n)&&!["inline","contents"].includes(a)}function nq0(e){return["table","td","th"].includes(Xc(e))}function Ew(e){const t=Tw(),n=Ka(e);return n.transform!=="none"||n.perspective!=="none"||(n.containerType?n.containerType!=="normal":!1)||!t&&(n.backdropFilter?n.backdropFilter!=="none":!1)||!t&&(n.filter?n.filter!=="none":!1)||["transform","perspective","filter"].some(r=>(n.willChange||"").includes(r))||["paint","layout","strict","content"].some(r=>(n.contain||"").includes(r))}function rq0(e){let t=x2(e);for(;Rs(t)&&!cg(t);){if(Ew(t))return t;t=x2(t)}return null}function Tw(){return typeof CSS>"u"||!CSS.supports?!1:CSS.supports("-webkit-backdrop-filter","none")}function cg(e){return["html","body","#document"].includes(Xc(e))}function Ka(e){return za(e).getComputedStyle(e)}function lg(e){return fa(e)?{scrollLeft:e.scrollLeft,scrollTop:e.scrollTop}:{scrollLeft:e.pageXOffset,scrollTop:e.pageYOffset}}function x2(e){if(Xc(e)==="html")return e;const t=e.assignedSlot||e.parentNode||Hk(e)&&e.host||Fi(e);return Hk(t)?t.host:t}function g$(e){const t=x2(e);return cg(t)?e.ownerDocument?e.ownerDocument.body:e.body:Rs(t)&&nz(t)?t:g$(t)}function eM(e,t,n){var r;t===void 0&&(t=[]),n===void 0&&(n=!0);const a=g$(e),o=a===((r=e.ownerDocument)==null?void 0:r.body),s=za(a);return o?t.concat(s,s.visualViewport||[],nz(a)?a:[],s.frameElement&&n?eM(s.frameElement):[]):t.concat(a,eM(a,[],n))}function v$(e){const t=Ka(e);let n=parseFloat(t.width)||0,r=parseFloat(t.height)||0;const a=Rs(e),o=a?e.offsetWidth:n,s=a?e.offsetHeight:r,i=pm(n)!==o||pm(r)!==s;return i&&(n=o,r=s),{width:n,height:r,$:i}}function Dw(e){return fa(e)?e:e.contextElement}function r2(e){const t=Dw(e);if(!Rs(t))return jc(1);const n=t.getBoundingClientRect(),{width:r,height:a,$:o}=v$(t);let s=(o?pm(n.width):n.width)/r,i=(o?pm(n.height):n.height)/a;return(!s||!Number.isFinite(s))&&(s=1),(!i||!Number.isFinite(i))&&(i=1),{x:s,y:i}}const aq0=jc(0);function y$(e){const t=za(e);return!Tw()||!t.visualViewport?aq0:{x:t.visualViewport.offsetLeft,y:t.visualViewport.offsetTop}}function oq0(e,t,n){return t===void 0&&(t=!1),!n||t&&n!==za(e)?!1:t}function Ap(e,t,n,r){t===void 0&&(t=!1),n===void 0&&(n=!1);const a=e.getBoundingClientRect(),o=Dw(e);let s=jc(1);t&&(r?fa(r)&&(s=r2(r)):s=r2(e));const i=oq0(o,n,r)?y$(o):jc(0);let c=(a.left+i.x)/s.x,l=(a.top+i.y)/s.y,p=a.width/s.x,u=a.height/s.y;if(o){const f=za(o),b=r&&fa(r)?za(r):r;let M=f,z=M.frameElement;for(;z&&r&&b!==M;){const h=r2(z),m=z.getBoundingClientRect(),O=Ka(z),A=m.left+(z.clientLeft+parseFloat(O.paddingLeft))*h.x,v=m.top+(z.clientTop+parseFloat(O.paddingTop))*h.y;c*=h.x,l*=h.y,p*=h.x,u*=h.y,c+=A,l+=v,M=za(z),z=M.frameElement}}return dm({width:p,height:u,x:c,y:l})}const sq0=[":popover-open",":modal"];function q$(e){return sq0.some(t=>{try{return e.matches(t)}catch{return!1}})}function iq0(e){let{elements:t,rect:n,offsetParent:r,strategy:a}=e;const o=a==="fixed",s=Fi(r),i=t?q$(t.floating):!1;if(r===s||i&&o)return n;let c={scrollLeft:0,scrollTop:0},l=jc(1);const p=jc(0),u=Rs(r);if((u||!u&&!o)&&((Xc(r)!=="body"||nz(s))&&(c=lg(r)),Rs(r))){const f=Ap(r);l=r2(r),p.x=f.x+r.clientLeft,p.y=f.y+r.clientTop}return{width:n.width*l.x,height:n.height*l.y,x:n.x*l.x-c.scrollLeft*l.x+p.x,y:n.y*l.y-c.scrollTop*l.y+p.y}}function cq0(e){return Array.from(e.getClientRects())}function x$(e){return Ap(Fi(e)).left+lg(e).scrollLeft}function lq0(e){const t=Fi(e),n=lg(e),r=e.ownerDocument.body,a=Zl(t.scrollWidth,t.clientWidth,r.scrollWidth,r.clientWidth),o=Zl(t.scrollHeight,t.clientHeight,r.scrollHeight,r.clientHeight);let s=-n.scrollLeft+x$(e);const i=-n.scrollTop;return Ka(r).direction==="rtl"&&(s+=Zl(t.clientWidth,r.clientWidth)-a),{width:a,height:o,x:s,y:i}}function pq0(e,t){const n=za(e),r=Fi(e),a=n.visualViewport;let o=r.clientWidth,s=r.clientHeight,i=0,c=0;if(a){o=a.width,s=a.height;const l=Tw();(!l||l&&t==="fixed")&&(i=a.offsetLeft,c=a.offsetTop)}return{width:o,height:s,x:i,y:c}}function uq0(e,t){const n=Ap(e,!0,t==="fixed"),r=n.top+e.clientTop,a=n.left+e.clientLeft,o=Rs(e)?r2(e):jc(1),s=e.clientWidth*o.x,i=e.clientHeight*o.y,c=a*o.x,l=r*o.y;return{width:s,height:i,x:c,y:l}}function Uk(e,t,n){let r;if(t==="viewport")r=pq0(e,n);else if(t==="document")r=lq0(Fi(e));else if(fa(t))r=uq0(t,n);else{const a=y$(e);r={...t,x:t.x-a.x,y:t.y-a.y}}return dm(r)}function W$(e,t){const n=x2(e);return n===t||!fa(n)||cg(n)?!1:Ka(n).position==="fixed"||W$(n,t)}function dq0(e,t){const n=t.get(e);if(n)return n;let r=eM(e,[],!1).filter(i=>fa(i)&&Xc(i)!=="body"),a=null;const o=Ka(e).position==="fixed";let s=o?x2(e):e;for(;fa(s)&&!cg(s);){const i=Ka(s),c=Ew(s);!c&&i.position==="fixed"&&(a=null),(o?!c&&!a:!c&&i.position==="static"&&!!a&&["absolute","fixed"].includes(a.position)||nz(s)&&!c&&W$(e,s))?r=r.filter(p=>p!==s):a=i,s=x2(s)}return t.set(e,r),r}function fq0(e){let{element:t,boundary:n,rootBoundary:r,strategy:a}=e;const s=[...n==="clippingAncestors"?dq0(t,this._c):[].concat(n),r],i=s[0],c=s.reduce((l,p)=>{const u=Uk(t,p,a);return l.top=Zl(u.top,l.top),l.right=y2(u.right,l.right),l.bottom=y2(u.bottom,l.bottom),l.left=Zl(u.left,l.left),l},Uk(t,i,a));return{width:c.right-c.left,height:c.bottom-c.top,x:c.left,y:c.top}}function bq0(e){const{width:t,height:n}=v$(e);return{width:t,height:n}}function Mq0(e,t,n){const r=Rs(t),a=Fi(t),o=n==="fixed",s=Ap(e,!0,o,t);let i={scrollLeft:0,scrollTop:0};const c=jc(0);if(r||!r&&!o)if((Xc(t)!=="body"||nz(a))&&(i=lg(t)),r){const u=Ap(t,!0,o,t);c.x=u.x+t.clientLeft,c.y=u.y+t.clientTop}else a&&(c.x=x$(a));const l=s.left+i.scrollLeft-c.x,p=s.top+i.scrollTop-c.y;return{x:l,y:p,width:s.width,height:s.height}}function Yk(e,t){return!Rs(e)||Ka(e).position==="fixed"?null:t?t(e):e.offsetParent}function w$(e,t){const n=za(e);if(!Rs(e)||q$(e))return n;let r=Yk(e,t);for(;r&&nq0(r)&&Ka(r).position==="static";)r=Yk(r,t);return r&&(Xc(r)==="html"||Xc(r)==="body"&&Ka(r).position==="static"&&!Ew(r))?n:r||rq0(e)||n}const zq0=async function(e){const t=this.getOffsetParent||w$,n=this.getDimensions;return{reference:Mq0(e.reference,await t(e.floating),e.strategy),floating:{x:0,y:0,...await n(e.floating)}}};function hq0(e){return Ka(e).direction==="rtl"}const R$={convertOffsetParentRelativeRectToViewportRelativeRect:iq0,getDocumentElement:Fi,getClippingRect:fq0,getOffsetParent:w$,getElementRects:zq0,getClientRects:cq0,getDimensions:bq0,getScale:r2,isElement:fa,isRTL:hq0};function Oq0(e,t){let n=null,r;const a=Fi(e);function o(){var i;clearTimeout(r),(i=n)==null||i.disconnect(),n=null}function s(i,c){i===void 0&&(i=!1),c===void 0&&(c=1),o();const{left:l,top:p,width:u,height:f}=e.getBoundingClientRect();if(i||t(),!u||!f)return;const b=Fh(p),M=Fh(a.clientWidth-(l+u)),z=Fh(a.clientHeight-(p+f)),h=Fh(l),O={rootMargin:-b+"px "+-M+"px "+-z+"px "+-h+"px",threshold:Zl(0,y2(1,c))||1};let A=!0;function v(x){const W=x[0].intersectionRatio;if(W!==c){if(!A)return s();W?s(!1,W):r=setTimeout(()=>{s(!1,1e-7)},100)}A=!1}try{n=new IntersectionObserver(v,{...O,root:a.ownerDocument})}catch{n=new IntersectionObserver(v,O)}n.observe(e)}return s(!0),o}function _$(e,t,n,r){r===void 0&&(r={});const{ancestorScroll:a=!0,ancestorResize:o=!0,elementResize:s=typeof ResizeObserver=="function",layoutShift:i=typeof IntersectionObserver=="function",animationFrame:c=!1}=r,l=Dw(e),p=a||o?[...l?eM(l):[],...eM(t)]:[];p.forEach(m=>{a&&m.addEventListener("scroll",n,{passive:!0}),o&&m.addEventListener("resize",n)});const u=l&&i?Oq0(l,n):null;let f=-1,b=null;s&&(b=new ResizeObserver(m=>{let[O]=m;O&&O.target===l&&b&&(b.unobserve(t),cancelAnimationFrame(f),f=requestAnimationFrame(()=>{var A;(A=b)==null||A.observe(t)})),n()}),l&&!c&&b.observe(l),b.observe(t));let M,z=c?Ap(e):null;c&&h();function h(){const m=Ap(e);z&&(m.x!==z.x||m.y!==z.y||m.width!==z.width||m.height!==z.height)&&n(),z=m,M=requestAnimationFrame(h)}return n(),()=>{var m;p.forEach(O=>{a&&O.removeEventListener("scroll",n),o&&O.removeEventListener("resize",n)}),u==null||u(),(m=b)==null||m.disconnect(),b=null,c&&cancelAnimationFrame(M)}}const mq0=Zy0,Vk=Qy0,Aq0=(e,t,n)=>{const r=new Map,a={platform:R$,...n},o={...a.platform,_c:r};return Ky0(e,t,{...a,platform:o})};var mq=y.useLayoutEffect,gq0=["className","clearValue","cx","getStyles","getClassNames","getValue","hasValue","isMulti","isRtl","options","selectOption","selectProps","setValue","theme"],fm=function(){};function vq0(e,t){return t?t[0]==="-"?e+t:e+"__"+t:e}function yq0(e,t){for(var n=arguments.length,r=new Array(n>2?n-2:0),a=2;a<n;a++)r[a-2]=arguments[a];var o=[].concat(r);if(t&&e)for(var s in t)t.hasOwnProperty(s)&&t[s]&&o.push("".concat(vq0(e,s)));return o.filter(function(i){return i}).map(function(i){return String(i).trim()}).join(" ")}var Gk=function(t){return Lq0(t)?t.filter(Boolean):ws(t)==="object"&&t!==null?[t]:[]},S$=function(t){t.className,t.clearValue,t.cx,t.getStyles,t.getClassNames,t.getValue,t.hasValue,t.isMulti,t.isRtl,t.options,t.selectOption,t.selectProps,t.setValue,t.theme;var n=gn(t,gq0);return f1({},n)},jt=function(t,n,r){var a=t.cx,o=t.getStyles,s=t.getClassNames,i=t.className;return{css:o(n,t),className:a(r??{},s(n,t),i)}};function pg(e){return[document.documentElement,document.body,window].indexOf(e)>-1}function qq0(e){return pg(e)?window.innerHeight:e.clientHeight}function N$(e){return pg(e)?window.pageYOffset:e.scrollTop}function bm(e,t){if(pg(e)){window.scrollTo(0,t);return}e.scrollTop=t}function xq0(e){var t=getComputedStyle(e),n=t.position==="absolute",r=/(auto|scroll)/;if(t.position==="fixed")return document.documentElement;for(var a=e;a=a.parentElement;)if(t=getComputedStyle(a),!(n&&t.position==="static")&&r.test(t.overflow+t.overflowY+t.overflowX))return a;return document.documentElement}function Wq0(e,t,n,r){return n*((e=e/r-1)*e*e+1)+t}function Ih(e,t){var n=arguments.length>2&&arguments[2]!==void 0?arguments[2]:200,r=arguments.length>3&&arguments[3]!==void 0?arguments[3]:fm,a=N$(e),o=t-a,s=10,i=0;function c(){i+=s;var l=Wq0(i,a,o,n);bm(e,l),i<n?window.requestAnimationFrame(c):r(e)}c()}function Kk(e,t){var n=e.getBoundingClientRect(),r=t.getBoundingClientRect(),a=t.offsetHeight/3;r.bottom+a>n.bottom?bm(e,Math.min(t.offsetTop+t.clientHeight-e.offsetHeight+a,e.scrollHeight)):r.top-a<n.top&&bm(e,Math.max(t.offsetTop-a,0))}function wq0(e){var t=e.getBoundingClientRect();return{bottom:t.bottom,height:t.height,left:t.left,right:t.right,top:t.top,width:t.width}}function Jk(){try{return document.createEvent("TouchEvent"),!0}catch{return!1}}function Rq0(){try{return/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)}catch{return!1}}var L$=!1,_q0={get passive(){return L$=!0}},jh=typeof window<"u"?window:{};jh.addEventListener&&jh.removeEventListener&&(jh.addEventListener("p",fm,_q0),jh.removeEventListener("p",fm,!1));var Sq0=L$;function Nq0(e){return e!=null}function Lq0(e){return Array.isArray(e)}function Xh(e,t,n){return e?t:n}var kq0=function(t){for(var n=arguments.length,r=new Array(n>1?n-1:0),a=1;a<n;a++)r[a-1]=arguments[a];var o=Object.entries(t).filter(function(s){var i=Rn(s,1),c=i[0];return!r.includes(c)});return o.reduce(function(s,i){var c=Rn(i,2),l=c[0],p=c[1];return s[l]=p,s},{})},Cq0=["children","innerProps"],Eq0=["children","innerProps"];function Tq0(e){var t=e.maxHeight,n=e.menuEl,r=e.minHeight,a=e.placement,o=e.shouldScroll,s=e.isFixedPosition,i=e.controlHeight,c=xq0(n),l={placement:"bottom",maxHeight:t};if(!n||!n.offsetParent)return l;var p=c.getBoundingClientRect(),u=p.height,f=n.getBoundingClientRect(),b=f.bottom,M=f.height,z=f.top,h=n.offsetParent.getBoundingClientRect(),m=h.top,O=s?window.innerHeight:qq0(c),A=N$(c),v=parseInt(getComputedStyle(n).marginBottom,10),x=parseInt(getComputedStyle(n).marginTop,10),W=m-x,q=O-z,_=W+A,N=u-A-z,L=b-O+A+v,k=A+z-x,S=160;switch(a){case"auto":case"bottom":if(q>=M)return{placement:"bottom",maxHeight:t};if(N>=M&&!s)return o&&Ih(c,L,S),{placement:"bottom",maxHeight:t};if(!s&&N>=r||s&&q>=r){o&&Ih(c,L,S);var B=s?q-v:N-v;return{placement:"bottom",maxHeight:B}}if(a==="auto"||s){var V=t,K=s?W:_;return K>=r&&(V=Math.min(K-v-i,t)),{placement:"top",maxHeight:V}}if(a==="bottom")return o&&bm(c,L),{placement:"bottom",maxHeight:t};break;case"top":if(W>=M)return{placement:"top",maxHeight:t};if(_>=M&&!s)return o&&Ih(c,k,S),{placement:"top",maxHeight:t};if(!s&&_>=r||s&&W>=r){var i0=t;return(!s&&_>=r||s&&W>=r)&&(i0=s?W-x:_-x),o&&Ih(c,k,S),{placement:"top",maxHeight:i0}}return{placement:"bottom",maxHeight:t};default:throw new Error('Invalid placement provided "'.concat(a,'".'))}return l}function Dq0(e){var t={bottom:"top",top:"bottom"};return e?t[e]:"bottom"}var k$=function(t){return t==="auto"?"bottom":t},Pq0=function(t,n){var r,a=t.placement,o=t.theme,s=o.borderRadius,i=o.spacing,c=o.colors;return f1((r={label:"menu"},Ao(r,Dq0(a),"100%"),Ao(r,"position","absolute"),Ao(r,"width","100%"),Ao(r,"zIndex",1),r),n?{}:{backgroundColor:c.neutral0,borderRadius:s,boxShadow:"0 0 0 1px hsla(0, 0%, 0%, 0.1), 0 4px 11px hsla(0, 0%, 0%, 0.1)",marginBottom:i.menuGutter,marginTop:i.menuGutter})},C$=y.createContext(null),Bq0=function(t){var n=t.children,r=t.minMenuHeight,a=t.maxMenuHeight,o=t.menuPlacement,s=t.menuPosition,i=t.menuShouldScrollIntoView,c=t.theme,l=y.useContext(C$)||{},p=l.setPortalPlacement,u=y.useRef(null),f=y.useState(a),b=Rn(f,2),M=b[0],z=b[1],h=y.useState(null),m=Rn(h,2),O=m[0],A=m[1],v=c.spacing.controlHeight;return mq(function(){var x=u.current;if(x){var W=s==="fixed",q=i&&!W,_=Tq0({maxHeight:a,menuEl:x,minHeight:r,placement:o,shouldScroll:q,isFixedPosition:W,controlHeight:v});z(_.maxHeight),A(_.placement),p==null||p(_.placement)}},[a,o,s,i,r,p,v]),n({ref:u,placerProps:f1(f1({},t),{},{placement:O||k$(o),maxHeight:M})})},Fq0=function(t){var n=t.children,r=t.innerRef,a=t.innerProps;return F1("div",A1({},jt(t,"menu",{menu:!0}),{ref:r},a),n)},Iq0=Fq0,jq0=function(t,n){var r=t.maxHeight,a=t.theme.spacing.baseUnit;return f1({maxHeight:r,overflowY:"auto",position:"relative",WebkitOverflowScrolling:"touch"},n?{}:{paddingBottom:a,paddingTop:a})},Xq0=function(t){var n=t.children,r=t.innerProps,a=t.innerRef,o=t.isMulti;return F1("div",A1({},jt(t,"menuList",{"menu-list":!0,"menu-list--is-multi":o}),{ref:a},r),n)},E$=function(t,n){var r=t.theme,a=r.spacing.baseUnit,o=r.colors;return f1({textAlign:"center"},n?{}:{color:o.neutral40,padding:"".concat(a*2,"px ").concat(a*3,"px")})},$q0=E$,Hq0=E$,Uq0=function(t){var n=t.children,r=n===void 0?"No options":n,a=t.innerProps,o=gn(t,Cq0);return F1("div",A1({},jt(f1(f1({},o),{},{children:r,innerProps:a}),"noOptionsMessage",{"menu-notice":!0,"menu-notice--no-options":!0}),a),r)},Yq0=function(t){var n=t.children,r=n===void 0?"Loading...":n,a=t.innerProps,o=gn(t,Eq0);return F1("div",A1({},jt(f1(f1({},o),{},{children:r,innerProps:a}),"loadingMessage",{"menu-notice":!0,"menu-notice--loading":!0}),a),r)},Vq0=function(t){var n=t.rect,r=t.offset,a=t.position;return{left:n.left,position:a,top:r,width:n.width,zIndex:1}},Gq0=function(t){var n=t.appendTo,r=t.children,a=t.controlElement,o=t.innerProps,s=t.menuPlacement,i=t.menuPosition,c=y.useRef(null),l=y.useRef(null),p=y.useState(k$(s)),u=Rn(p,2),f=u[0],b=u[1],M=y.useMemo(function(){return{setPortalPlacement:b}},[]),z=y.useState(null),h=Rn(z,2),m=h[0],O=h[1],A=y.useCallback(function(){if(a){var q=wq0(a),_=i==="fixed"?0:window.pageYOffset,N=q[f]+_;(N!==(m==null?void 0:m.offset)||q.left!==(m==null?void 0:m.rect.left)||q.width!==(m==null?void 0:m.rect.width))&&O({offset:N,rect:q})}},[a,i,f,m==null?void 0:m.offset,m==null?void 0:m.rect.left,m==null?void 0:m.rect.width]);mq(function(){A()},[A]);var v=y.useCallback(function(){typeof l.current=="function"&&(l.current(),l.current=null),a&&c.current&&(l.current=_$(a,c.current,A,{elementResize:"ResizeObserver"in window}))},[a,A]);mq(function(){v()},[v]);var x=y.useCallback(function(q){c.current=q,v()},[v]);if(!n&&i!=="fixed"||!m)return null;var W=F1("div",A1({ref:x},jt(f1(f1({},t),{},{offset:m.offset,position:i,rect:m.rect}),"menuPortal",{"menu-portal":!0}),o),r);return F1(C$.Provider,{value:M},n?RM.createPortal(W,n):W)},Kq0=function(t){var n=t.isDisabled,r=t.isRtl;return{label:"container",direction:r?"rtl":void 0,pointerEvents:n?"none":void 0,position:"relative"}},Jq0=function(t){var n=t.children,r=t.innerProps,a=t.isDisabled,o=t.isRtl;return F1("div",A1({},jt(t,"container",{"--is-disabled":a,"--is-rtl":o}),r),n)},Qq0=function(t,n){var r=t.theme.spacing,a=t.isMulti,o=t.hasValue,s=t.selectProps.controlShouldRenderValue;return f1({alignItems:"center",display:a&&o&&s?"flex":"grid",flex:1,flexWrap:"wrap",WebkitOverflowScrolling:"touch",position:"relative",overflow:"hidden"},n?{}:{padding:"".concat(r.baseUnit/2,"px ").concat(r.baseUnit*2,"px")})},Zq0=function(t){var n=t.children,r=t.innerProps,a=t.isMulti,o=t.hasValue;return F1("div",A1({},jt(t,"valueContainer",{"value-container":!0,"value-container--is-multi":a,"value-container--has-value":o}),r),n)},ex0=function(){return{alignItems:"center",alignSelf:"stretch",display:"flex",flexShrink:0}},tx0=function(t){var n=t.children,r=t.innerProps;return F1("div",A1({},jt(t,"indicatorsContainer",{indicators:!0}),r),n)},Qk,nx0=["size"],rx0=["innerProps","isRtl","size"],ax0={name:"8mmkcg",styles:"display:inline-block;fill:currentColor;line-height:1;stroke:currentColor;stroke-width:0"},T$=function(t){var n=t.size,r=gn(t,nx0);return F1("svg",A1({height:n,width:n,viewBox:"0 0 20 20","aria-hidden":"true",focusable:"false",css:ax0},r))},Pw=function(t){return F1(T$,A1({size:20},t),F1("path",{d:"M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"}))},D$=function(t){return F1(T$,A1({size:20},t),F1("path",{d:"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"}))},P$=function(t,n){var r=t.isFocused,a=t.theme,o=a.spacing.baseUnit,s=a.colors;return f1({label:"indicatorContainer",display:"flex",transition:"color 150ms"},n?{}:{color:r?s.neutral60:s.neutral20,padding:o*2,":hover":{color:r?s.neutral80:s.neutral40}})},ox0=P$,sx0=function(t){var n=t.children,r=t.innerProps;return F1("div",A1({},jt(t,"dropdownIndicator",{indicator:!0,"dropdown-indicator":!0}),r),n||F1(D$,null))},ix0=P$,cx0=function(t){var n=t.children,r=t.innerProps;return F1("div",A1({},jt(t,"clearIndicator",{indicator:!0,"clear-indicator":!0}),r),n||F1(Pw,null))},lx0=function(t,n){var r=t.isDisabled,a=t.theme,o=a.spacing.baseUnit,s=a.colors;return f1({label:"indicatorSeparator",alignSelf:"stretch",width:1},n?{}:{backgroundColor:r?s.neutral10:s.neutral20,marginBottom:o*2,marginTop:o*2})},px0=function(t){var n=t.innerProps;return F1("span",A1({},n,jt(t,"indicatorSeparator",{"indicator-separator":!0})))},ux0=By0(Qk||(Qk=Fy0([`
   0%, 80%, 100% { opacity: 0; }
   40% { opacity: 1; }
-`]))),dx0=function(t,n){var r=t.isFocused,a=t.size,o=t.theme,s=o.colors,i=o.spacing.baseUnit;return f1({label:"loadingIndicator",display:"flex",transition:"color 150ms",alignSelf:"center",fontSize:a,lineHeight:1,marginRight:a,textAlign:"center",verticalAlign:"middle"},n?{}:{color:r?s.neutral60:s.neutral20,padding:i*2})},gv=function(t){var n=t.delay,r=t.offset;return F1("span",{css:Nw({animation:"".concat(ux0," 1s ease-in-out ").concat(n,"ms infinite;"),backgroundColor:"currentColor",borderRadius:"1em",display:"inline-block",marginLeft:r?"1em":void 0,height:"1em",verticalAlign:"top",width:"1em"},"","")})},fx0=function(t){var n=t.innerProps,r=t.isRtl,a=t.size,o=a===void 0?4:a,s=gn(t,rx0);return F1("div",A1({},jt(f1(f1({},s),{},{innerProps:n,isRtl:r,size:o}),"loadingIndicator",{indicator:!0,"loading-indicator":!0}),n),F1(gv,{delay:0,offset:r}),F1(gv,{delay:160,offset:!0}),F1(gv,{delay:320,offset:!r}))},bx0=function(t,n){var r=t.isDisabled,a=t.isFocused,o=t.theme,s=o.colors,i=o.borderRadius,c=o.spacing;return f1({label:"control",alignItems:"center",cursor:"default",display:"flex",flexWrap:"wrap",justifyContent:"space-between",minHeight:c.controlHeight,outline:"0 !important",position:"relative",transition:"all 100ms"},n?{}:{backgroundColor:r?s.neutral5:s.neutral0,borderColor:r?s.neutral10:a?s.primary:s.neutral20,borderRadius:i,borderStyle:"solid",borderWidth:1,boxShadow:a?"0 0 0 1px ".concat(s.primary):void 0,"&:hover":{borderColor:a?s.primary:s.neutral30}})},Mx0=function(t){var n=t.children,r=t.isDisabled,a=t.isFocused,o=t.innerRef,s=t.innerProps,i=t.menuIsOpen;return F1("div",A1({ref:o},jt(t,"control",{control:!0,"control--is-disabled":r,"control--is-focused":a,"control--menu-is-open":i}),s,{"aria-disabled":r||void 0}),n)},zx0=Mx0,hx0=["data"],Ox0=function(t,n){var r=t.theme.spacing;return n?{}:{paddingBottom:r.baseUnit*2,paddingTop:r.baseUnit*2}},mx0=function(t){var n=t.children,r=t.cx,a=t.getStyles,o=t.getClassNames,s=t.Heading,i=t.headingProps,c=t.innerProps,l=t.label,p=t.theme,u=t.selectProps;return F1("div",A1({},jt(t,"group",{group:!0}),c),F1(s,A1({},i,{selectProps:u,theme:p,getStyles:a,getClassNames:o,cx:r}),l),F1("div",null,n))},Ax0=function(t,n){var r=t.theme,a=r.colors,o=r.spacing;return f1({label:"group",cursor:"default",display:"block"},n?{}:{color:a.neutral40,fontSize:"75%",fontWeight:500,marginBottom:"0.25em",paddingLeft:o.baseUnit*3,paddingRight:o.baseUnit*3,textTransform:"uppercase"})},gx0=function(t){var n=S$(t);n.data;var r=gn(n,hx0);return F1("div",A1({},jt(t,"groupHeading",{"group-heading":!0}),r))},vx0=mx0,yx0=["innerRef","isDisabled","isHidden","inputClassName"],qx0=function(t,n){var r=t.isDisabled,a=t.value,o=t.theme,s=o.spacing,i=o.colors;return f1(f1({visibility:r?"hidden":"visible",transform:a?"translateZ(0)":""},xx0),n?{}:{margin:s.baseUnit/2,paddingBottom:s.baseUnit/2,paddingTop:s.baseUnit/2,color:i.neutral80})},B$={gridArea:"1 / 2",font:"inherit",minWidth:"2px",border:0,margin:0,outline:0,padding:0},xx0={flex:"1 1 auto",display:"inline-grid",gridArea:"1 / 1 / 2 / 3",gridTemplateColumns:"0 min-content","&:after":f1({content:'attr(data-value) " "',visibility:"hidden",whiteSpace:"pre"},B$)},Wx0=function(t){return f1({label:"input",color:"inherit",background:0,opacity:t?0:1,width:"100%"},B$)},wx0=function(t){var n=t.cx,r=t.value,a=S$(t),o=a.innerRef,s=a.isDisabled,i=a.isHidden,c=a.inputClassName,l=gn(a,yx0);return F1("div",A1({},jt(t,"input",{"input-container":!0}),{"data-value":r||""}),F1("input",A1({className:n({input:!0},c),ref:o,style:Wx0(i),disabled:s},l)))},Rx0=wx0,_x0=function(t,n){var r=t.theme,a=r.spacing,o=r.borderRadius,s=r.colors;return f1({label:"multiValue",display:"flex",minWidth:0},n?{}:{backgroundColor:s.neutral10,borderRadius:o/2,margin:a.baseUnit/2})},Sx0=function(t,n){var r=t.theme,a=r.borderRadius,o=r.colors,s=t.cropWithEllipsis;return f1({overflow:"hidden",textOverflow:s||s===void 0?"ellipsis":void 0,whiteSpace:"nowrap"},n?{}:{borderRadius:a/2,color:o.neutral80,fontSize:"85%",padding:3,paddingLeft:6})},Nx0=function(t,n){var r=t.theme,a=r.spacing,o=r.borderRadius,s=r.colors,i=t.isFocused;return f1({alignItems:"center",display:"flex"},n?{}:{borderRadius:o/2,backgroundColor:i?s.dangerLight:void 0,paddingLeft:a.baseUnit,paddingRight:a.baseUnit,":hover":{backgroundColor:s.dangerLight,color:s.danger}})},F$=function(t){var n=t.children,r=t.innerProps;return F1("div",r,n)},Lx0=F$,kx0=F$;function Cx0(e){var t=e.children,n=e.innerProps;return F1("div",A1({role:"button"},n),t||F1(Pw,{size:14}))}var Ex0=function(t){var n=t.children,r=t.components,a=t.data,o=t.innerProps,s=t.isDisabled,i=t.removeProps,c=t.selectProps,l=r.Container,p=r.Label,u=r.Remove;return F1(l,{data:a,innerProps:f1(f1({},jt(t,"multiValue",{"multi-value":!0,"multi-value--is-disabled":s})),o),selectProps:c},F1(p,{data:a,innerProps:f1({},jt(t,"multiValueLabel",{"multi-value__label":!0})),selectProps:c},n),F1(u,{data:a,innerProps:f1(f1({},jt(t,"multiValueRemove",{"multi-value__remove":!0})),{},{"aria-label":"Remove ".concat(n||"option")},i),selectProps:c}))},Tx0=Ex0,Dx0=function(t,n){var r=t.isDisabled,a=t.isFocused,o=t.isSelected,s=t.theme,i=s.spacing,c=s.colors;return f1({label:"option",cursor:"default",display:"block",fontSize:"inherit",width:"100%",userSelect:"none",WebkitTapHighlightColor:"rgba(0, 0, 0, 0)"},n?{}:{backgroundColor:o?c.primary:a?c.primary25:"transparent",color:r?c.neutral20:o?c.neutral0:"inherit",padding:"".concat(i.baseUnit*2,"px ").concat(i.baseUnit*3,"px"),":active":{backgroundColor:r?void 0:o?c.primary:c.primary50}})},Px0=function(t){var n=t.children,r=t.isDisabled,a=t.isFocused,o=t.isSelected,s=t.innerRef,i=t.innerProps;return F1("div",A1({},jt(t,"option",{option:!0,"option--is-disabled":r,"option--is-focused":a,"option--is-selected":o}),{ref:s,"aria-disabled":r},i),n)},Bx0=Px0,Fx0=function(t,n){var r=t.theme,a=r.spacing,o=r.colors;return f1({label:"placeholder",gridArea:"1 / 1 / 2 / 3"},n?{}:{color:o.neutral50,marginLeft:a.baseUnit/2,marginRight:a.baseUnit/2})},Ix0=function(t){var n=t.children,r=t.innerProps;return F1("div",A1({},jt(t,"placeholder",{placeholder:!0}),r),n)},jx0=Ix0,Xx0=function(t,n){var r=t.isDisabled,a=t.theme,o=a.spacing,s=a.colors;return f1({label:"singleValue",gridArea:"1 / 1 / 2 / 3",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"},n?{}:{color:r?s.neutral40:s.neutral80,marginLeft:o.baseUnit/2,marginRight:o.baseUnit/2})},$x0=function(t){var n=t.children,r=t.isDisabled,a=t.innerProps;return F1("div",A1({},jt(t,"singleValue",{"single-value":!0,"single-value--is-disabled":r}),a),n)},Hx0=$x0,Ux0={ClearIndicator:cx0,Control:zx0,DropdownIndicator:sx0,DownChevron:D$,CrossIcon:Pw,Group:vx0,GroupHeading:gx0,IndicatorsContainer:tx0,IndicatorSeparator:px0,Input:Rx0,LoadingIndicator:fx0,Menu:Iq0,MenuList:Xq0,MenuPortal:Gq0,LoadingMessage:Yq0,NoOptionsMessage:Uq0,MultiValue:Tx0,MultiValueContainer:Lx0,MultiValueLabel:kx0,MultiValueRemove:Cx0,Option:Bx0,Placeholder:jx0,SelectContainer:Jq0,SingleValue:Hx0,ValueContainer:Zq0},Yx0=function(t){return f1(f1({},Ux0),t.components)},Zk=Number.isNaN||function(t){return typeof t=="number"&&t!==t};function Vx0(e,t){return!!(e===t||Zk(e)&&Zk(t))}function Gx0(e,t){if(e.length!==t.length)return!1;for(var n=0;n<e.length;n++)if(!Vx0(e[n],t[n]))return!1;return!0}function Bw(e,t){t===void 0&&(t=Gx0);var n=null;function r(){for(var a=[],o=0;o<arguments.length;o++)a[o]=arguments[o];if(n&&n.lastThis===this&&t(a,n.lastArgs))return n.lastResult;var s=e.apply(this,a);return n={lastResult:s,lastArgs:a,lastThis:this},s}return r.clear=function(){n=null},r}var Kx0={name:"7pg0cj-a11yText",styles:"label:a11yText;z-index:9999;border:0;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0;white-space:nowrap"},Jx0=function(t){return F1("span",A1({css:Kx0},t))},e8=Jx0,Qx0={guidance:function(t){var n=t.isSearchable,r=t.isMulti,a=t.tabSelectsValue,o=t.context,s=t.isInitialFocus;switch(o){case"menu":return"Use Up and Down to choose options, press Enter to select the currently focused option, press Escape to exit the menu".concat(a?", press Tab to select the option and exit the menu":"",".");case"input":return s?"".concat(t["aria-label"]||"Select"," is focused ").concat(n?",type to refine list":"",", press Down to open the menu, ").concat(r?" press left to focus selected values":""):"";case"value":return"Use left and right to toggle between focused values, press Backspace to remove the currently focused value";default:return""}},onChange:function(t){var n=t.action,r=t.label,a=r===void 0?"":r,o=t.labels,s=t.isDisabled;switch(n){case"deselect-option":case"pop-value":case"remove-value":return"option ".concat(a,", deselected.");case"clear":return"All selected options have been cleared.";case"initial-input-focus":return"option".concat(o.length>1?"s":""," ").concat(o.join(","),", selected.");case"select-option":return s?"option ".concat(a," is disabled. Select another option."):"option ".concat(a,", selected.");default:return""}},onFocus:function(t){var n=t.context,r=t.focused,a=t.options,o=t.label,s=o===void 0?"":o,i=t.selectValue,c=t.isDisabled,l=t.isSelected,p=t.isAppleDevice,u=function(z,h){return z&&z.length?"".concat(z.indexOf(h)+1," of ").concat(z.length):""};if(n==="value"&&i)return"value ".concat(s," focused, ").concat(u(i,r),".");if(n==="menu"&&p){var f=c?" disabled":"",b="".concat(l?" selected":"").concat(f);return"".concat(s).concat(b,", ").concat(u(a,r),".")}return""},onFilter:function(t){var n=t.inputValue,r=t.resultsMessage;return"".concat(r).concat(n?" for search term "+n:"",".")}},Zx0=function(t){var n=t.ariaSelection,r=t.focusedOption,a=t.focusedValue,o=t.focusableOptions,s=t.isFocused,i=t.selectValue,c=t.selectProps,l=t.id,p=t.isAppleDevice,u=c.ariaLiveMessages,f=c.getOptionLabel,b=c.inputValue,M=c.isMulti,z=c.isOptionDisabled,h=c.isSearchable,m=c.menuIsOpen,O=c.options,A=c.screenReaderStatus,v=c.tabSelectsValue,x=c.isLoading,W=c["aria-label"],q=c["aria-live"],_=y.useMemo(function(){return f1(f1({},Qx0),u||{})},[u]),N=y.useMemo(function(){var K="";if(n&&_.onChange){var i0=n.option,G=n.options,U=n.removedValue,F=n.removedValues,n0=n.value,a0=function(O0){return Array.isArray(O0)?null:O0},T=U||i0||a0(n0),j=T?f(T):"",P=G||F||void 0,E=P?P.map(f):[],J=f1({isDisabled:T&&z(T,i),label:j,labels:E},n);K=_.onChange(J)}return K},[n,_,z,i,f]),L=y.useMemo(function(){var K="",i0=r||a,G=!!(r&&i&&i.includes(r));if(i0&&_.onFocus){var U={focused:i0,label:f(i0),isDisabled:z(i0,i),isSelected:G,options:o,context:i0===r?"menu":"value",selectValue:i,isAppleDevice:p};K=_.onFocus(U)}return K},[r,a,f,z,_,o,i,p]),k=y.useMemo(function(){var K="";if(m&&O.length&&!x&&_.onFilter){var i0=A({count:o.length});K=_.onFilter({inputValue:b,resultsMessage:i0})}return K},[o,b,m,_,O,A,x]),S=(n==null?void 0:n.action)==="initial-input-focus",B=y.useMemo(function(){var K="";if(_.guidance){var i0=a?"value":m?"menu":"input";K=_.guidance({"aria-label":W,context:i0,isDisabled:r&&z(r,i),isMulti:M,isSearchable:h,tabSelectsValue:v,isInitialFocus:S})}return K},[W,r,a,M,z,h,m,_,i,v,S]),V=F1(y.Fragment,null,F1("span",{id:"aria-selection"},N),F1("span",{id:"aria-focused"},L),F1("span",{id:"aria-results"},k),F1("span",{id:"aria-guidance"},B));return F1(y.Fragment,null,F1(e8,{id:l},S&&V),F1(e8,{"aria-live":q,"aria-atomic":"false","aria-relevant":"additions text",role:"log"},s&&!S&&V))},e60=Zx0,Aq=[{base:"A",letters:"AⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ"},{base:"AA",letters:"Ꜳ"},{base:"AE",letters:"ÆǼǢ"},{base:"AO",letters:"Ꜵ"},{base:"AU",letters:"Ꜷ"},{base:"AV",letters:"ꜸꜺ"},{base:"AY",letters:"Ꜽ"},{base:"B",letters:"BⒷＢḂḄḆɃƂƁ"},{base:"C",letters:"CⒸＣĆĈĊČÇḈƇȻꜾ"},{base:"D",letters:"DⒹＤḊĎḌḐḒḎĐƋƊƉꝹ"},{base:"DZ",letters:"ǱǄ"},{base:"Dz",letters:"ǲǅ"},{base:"E",letters:"EⒺＥÈÉÊỀẾỄỂẼĒḔḖĔĖËẺĚȄȆẸỆȨḜĘḘḚƐƎ"},{base:"F",letters:"FⒻＦḞƑꝻ"},{base:"G",letters:"GⒼＧǴĜḠĞĠǦĢǤƓꞠꝽꝾ"},{base:"H",letters:"HⒽＨĤḢḦȞḤḨḪĦⱧⱵꞍ"},{base:"I",letters:"IⒾＩÌÍÎĨĪĬİÏḮỈǏȈȊỊĮḬƗ"},{base:"J",letters:"JⒿＪĴɈ"},{base:"K",letters:"KⓀＫḰǨḲĶḴƘⱩꝀꝂꝄꞢ"},{base:"L",letters:"LⓁＬĿĹĽḶḸĻḼḺŁȽⱢⱠꝈꝆꞀ"},{base:"LJ",letters:"Ǉ"},{base:"Lj",letters:"ǈ"},{base:"M",letters:"MⓂＭḾṀṂⱮƜ"},{base:"N",letters:"NⓃＮǸŃÑṄŇṆŅṊṈȠƝꞐꞤ"},{base:"NJ",letters:"Ǌ"},{base:"Nj",letters:"ǋ"},{base:"O",letters:"OⓄＯÒÓÔỒỐỖỔÕṌȬṎŌṐṒŎȮȰÖȪỎŐǑȌȎƠỜỚỠỞỢỌỘǪǬØǾƆƟꝊꝌ"},{base:"OI",letters:"Ƣ"},{base:"OO",letters:"Ꝏ"},{base:"OU",letters:"Ȣ"},{base:"P",letters:"PⓅＰṔṖƤⱣꝐꝒꝔ"},{base:"Q",letters:"QⓆＱꝖꝘɊ"},{base:"R",letters:"RⓇＲŔṘŘȐȒṚṜŖṞɌⱤꝚꞦꞂ"},{base:"S",letters:"SⓈＳẞŚṤŜṠŠṦṢṨȘŞⱾꞨꞄ"},{base:"T",letters:"TⓉＴṪŤṬȚŢṰṮŦƬƮȾꞆ"},{base:"TZ",letters:"Ꜩ"},{base:"U",letters:"UⓊＵÙÚÛŨṸŪṺŬÜǛǗǕǙỦŮŰǓȔȖƯỪỨỮỬỰỤṲŲṶṴɄ"},{base:"V",letters:"VⓋＶṼṾƲꝞɅ"},{base:"VY",letters:"Ꝡ"},{base:"W",letters:"WⓌＷẀẂŴẆẄẈⱲ"},{base:"X",letters:"XⓍＸẊẌ"},{base:"Y",letters:"YⓎＹỲÝŶỸȲẎŸỶỴƳɎỾ"},{base:"Z",letters:"ZⓏＺŹẐŻŽẒẔƵȤⱿⱫꝢ"},{base:"a",letters:"aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ"},{base:"aa",letters:"ꜳ"},{base:"ae",letters:"æǽǣ"},{base:"ao",letters:"ꜵ"},{base:"au",letters:"ꜷ"},{base:"av",letters:"ꜹꜻ"},{base:"ay",letters:"ꜽ"},{base:"b",letters:"bⓑｂḃḅḇƀƃɓ"},{base:"c",letters:"cⓒｃćĉċčçḉƈȼꜿↄ"},{base:"d",letters:"dⓓｄḋďḍḑḓḏđƌɖɗꝺ"},{base:"dz",letters:"ǳǆ"},{base:"e",letters:"eⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ"},{base:"f",letters:"fⓕｆḟƒꝼ"},{base:"g",letters:"gⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ"},{base:"h",letters:"hⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ"},{base:"hv",letters:"ƕ"},{base:"i",letters:"iⓘｉìíîĩīĭïḯỉǐȉȋịįḭɨı"},{base:"j",letters:"jⓙｊĵǰɉ"},{base:"k",letters:"kⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ"},{base:"l",letters:"lⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇ"},{base:"lj",letters:"ǉ"},{base:"m",letters:"mⓜｍḿṁṃɱɯ"},{base:"n",letters:"nⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ"},{base:"nj",letters:"ǌ"},{base:"o",letters:"oⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔꝋꝍɵ"},{base:"oi",letters:"ƣ"},{base:"ou",letters:"ȣ"},{base:"oo",letters:"ꝏ"},{base:"p",letters:"pⓟｐṕṗƥᵽꝑꝓꝕ"},{base:"q",letters:"qⓠｑɋꝗꝙ"},{base:"r",letters:"rⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ"},{base:"s",letters:"sⓢｓßśṥŝṡšṧṣṩșşȿꞩꞅẛ"},{base:"t",letters:"tⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ"},{base:"tz",letters:"ꜩ"},{base:"u",letters:"uⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ"},{base:"v",letters:"vⓥｖṽṿʋꝟʌ"},{base:"vy",letters:"ꝡ"},{base:"w",letters:"wⓦｗẁẃŵẇẅẘẉⱳ"},{base:"x",letters:"xⓧｘẋẍ"},{base:"y",letters:"yⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ"},{base:"z",letters:"zⓩｚźẑżžẓẕƶȥɀⱬꝣ"}],t60=new RegExp("["+Aq.map(function(e){return e.letters}).join("")+"]","g"),I$={};for(var vv=0;vv<Aq.length;vv++)for(var yv=Aq[vv],qv=0;qv<yv.letters.length;qv++)I$[yv.letters[qv]]=yv.base;var j$=function(t){return t.replace(t60,function(n){return I$[n]})},n60=Bw(j$),t8=function(t){return t.replace(/^\s+|\s+$/g,"")},r60=function(t){return"".concat(t.label," ").concat(t.value)},a60=function(t){return function(n,r){if(n.data.__isNew__)return!0;var a=f1({ignoreCase:!0,ignoreAccents:!0,stringify:r60,trim:!0,matchFrom:"any"},t),o=a.ignoreCase,s=a.ignoreAccents,i=a.stringify,c=a.trim,l=a.matchFrom,p=c?t8(r):r,u=c?t8(i(n)):i(n);return o&&(p=p.toLowerCase(),u=u.toLowerCase()),s&&(p=n60(p),u=j$(u)),l==="start"?u.substr(0,p.length)===p:u.indexOf(p)>-1}},o60=["innerRef"];function s60(e){var t=e.innerRef,n=gn(e,o60),r=kq0(n,"onExited","in","enter","exit","appear");return F1("input",A1({ref:t},r,{css:Nw({label:"dummyInput",background:0,border:0,caretColor:"transparent",fontSize:"inherit",gridArea:"1 / 1 / 2 / 3",outline:0,padding:0,width:1,color:"transparent",left:-100,opacity:0,position:"relative",transform:"scale(.01)"},"","")}))}var i60=function(t){t.cancelable&&t.preventDefault(),t.stopPropagation()};function c60(e){var t=e.isEnabled,n=e.onBottomArrive,r=e.onBottomLeave,a=e.onTopArrive,o=e.onTopLeave,s=y.useRef(!1),i=y.useRef(!1),c=y.useRef(0),l=y.useRef(null),p=y.useCallback(function(h,m){if(l.current!==null){var O=l.current,A=O.scrollTop,v=O.scrollHeight,x=O.clientHeight,W=l.current,q=m>0,_=v-x-A,N=!1;_>m&&s.current&&(r&&r(h),s.current=!1),q&&i.current&&(o&&o(h),i.current=!1),q&&m>_?(n&&!s.current&&n(h),W.scrollTop=v,N=!0,s.current=!0):!q&&-m>A&&(a&&!i.current&&a(h),W.scrollTop=0,N=!0,i.current=!0),N&&i60(h)}},[n,r,a,o]),u=y.useCallback(function(h){p(h,h.deltaY)},[p]),f=y.useCallback(function(h){c.current=h.changedTouches[0].clientY},[]),b=y.useCallback(function(h){var m=c.current-h.changedTouches[0].clientY;p(h,m)},[p]),M=y.useCallback(function(h){if(h){var m=Sq0?{passive:!1}:!1;h.addEventListener("wheel",u,m),h.addEventListener("touchstart",f,m),h.addEventListener("touchmove",b,m)}},[b,f,u]),z=y.useCallback(function(h){h&&(h.removeEventListener("wheel",u,!1),h.removeEventListener("touchstart",f,!1),h.removeEventListener("touchmove",b,!1))},[b,f,u]);return y.useEffect(function(){if(t){var h=l.current;return M(h),function(){z(h)}}},[t,M,z]),function(h){l.current=h}}var n8=["boxSizing","height","overflow","paddingRight","position"],r8={boxSizing:"border-box",overflow:"hidden",position:"relative",height:"100%"};function a8(e){e.preventDefault()}function o8(e){e.stopPropagation()}function s8(){var e=this.scrollTop,t=this.scrollHeight,n=e+this.offsetHeight;e===0?this.scrollTop=1:n===t&&(this.scrollTop=e-1)}function i8(){return"ontouchstart"in window||navigator.maxTouchPoints}var c8=!!(typeof window<"u"&&window.document&&window.document.createElement),Id=0,du={capture:!1,passive:!1};function l60(e){var t=e.isEnabled,n=e.accountForScrollbars,r=n===void 0?!0:n,a=y.useRef({}),o=y.useRef(null),s=y.useCallback(function(c){if(c8){var l=document.body,p=l&&l.style;if(r&&n8.forEach(function(M){var z=p&&p[M];a.current[M]=z}),r&&Id<1){var u=parseInt(a.current.paddingRight,10)||0,f=document.body?document.body.clientWidth:0,b=window.innerWidth-f+u||0;Object.keys(r8).forEach(function(M){var z=r8[M];p&&(p[M]=z)}),p&&(p.paddingRight="".concat(b,"px"))}l&&i8()&&(l.addEventListener("touchmove",a8,du),c&&(c.addEventListener("touchstart",s8,du),c.addEventListener("touchmove",o8,du))),Id+=1}},[r]),i=y.useCallback(function(c){if(c8){var l=document.body,p=l&&l.style;Id=Math.max(Id-1,0),r&&Id<1&&n8.forEach(function(u){var f=a.current[u];p&&(p[u]=f)}),l&&i8()&&(l.removeEventListener("touchmove",a8,du),c&&(c.removeEventListener("touchstart",s8,du),c.removeEventListener("touchmove",o8,du)))}},[r]);return y.useEffect(function(){if(t){var c=o.current;return s(c),function(){i(c)}}},[t,s,i]),function(c){o.current=c}}var p60=function(t){var n=t.target;return n.ownerDocument.activeElement&&n.ownerDocument.activeElement.blur()},u60={name:"1kfdb0e",styles:"position:fixed;left:0;bottom:0;right:0;top:0"};function d60(e){var t=e.children,n=e.lockEnabled,r=e.captureEnabled,a=r===void 0?!0:r,o=e.onBottomArrive,s=e.onBottomLeave,i=e.onTopArrive,c=e.onTopLeave,l=c60({isEnabled:a,onBottomArrive:o,onBottomLeave:s,onTopArrive:i,onTopLeave:c}),p=l60({isEnabled:n}),u=function(b){l(b),p(b)};return F1(y.Fragment,null,n&&F1("div",{onClick:p60,css:u60}),t(u))}var f60={name:"1a0ro4n-requiredInput",styles:"label:requiredInput;opacity:0;pointer-events:none;position:absolute;bottom:0;left:0;right:0;width:100%"},b60=function(t){var n=t.name,r=t.onFocus;return F1("input",{required:!0,name:n,tabIndex:-1,"aria-hidden":"true",onFocus:r,css:f60,value:"",onChange:function(){}})},M60=b60;function Fw(e){var t;return typeof window<"u"&&window.navigator!=null?e.test(((t=window.navigator.userAgentData)===null||t===void 0?void 0:t.platform)||window.navigator.platform):!1}function z60(){return Fw(/^iPhone/i)}function X$(){return Fw(/^Mac/i)}function h60(){return Fw(/^iPad/i)||X$()&&navigator.maxTouchPoints>1}function O60(){return z60()||h60()}function m60(){return X$()||O60()}var A60=function(t){return t.label},g60=function(t){return t.label},v60=function(t){return t.value},y60=function(t){return!!t.isDisabled},q60={clearIndicator:ix0,container:Kq0,control:bx0,dropdownIndicator:ox0,group:Ox0,groupHeading:Ax0,indicatorsContainer:ex0,indicatorSeparator:lx0,input:qx0,loadingIndicator:dx0,loadingMessage:Hq0,menu:Pq0,menuList:jq0,menuPortal:Vq0,multiValue:_x0,multiValueLabel:Sx0,multiValueRemove:Nx0,noOptionsMessage:$q0,option:Dx0,placeholder:Fx0,singleValue:Xx0,valueContainer:Qq0},x60={primary:"#2684FF",primary75:"#4C9AFF",primary50:"#B2D4FF",primary25:"#DEEBFF",danger:"#DE350B",dangerLight:"#FFBDAD",neutral0:"hsl(0, 0%, 100%)",neutral5:"hsl(0, 0%, 95%)",neutral10:"hsl(0, 0%, 90%)",neutral20:"hsl(0, 0%, 80%)",neutral30:"hsl(0, 0%, 70%)",neutral40:"hsl(0, 0%, 60%)",neutral50:"hsl(0, 0%, 50%)",neutral60:"hsl(0, 0%, 40%)",neutral70:"hsl(0, 0%, 30%)",neutral80:"hsl(0, 0%, 20%)",neutral90:"hsl(0, 0%, 10%)"},W60=4,$$=4,w60=38,R60=$$*2,_60={baseUnit:$$,controlHeight:w60,menuGutter:R60},xv={borderRadius:W60,colors:x60,spacing:_60},S60={"aria-live":"polite",backspaceRemovesValue:!0,blurInputOnSelect:Jk(),captureMenuScroll:!Jk(),classNames:{},closeMenuOnSelect:!0,closeMenuOnScroll:!1,components:{},controlShouldRenderValue:!0,escapeClearsValue:!1,filterOption:a60(),formatGroupLabel:A60,getOptionLabel:g60,getOptionValue:v60,isDisabled:!1,isLoading:!1,isMulti:!1,isRtl:!1,isSearchable:!0,isOptionDisabled:y60,loadingMessage:function(){return"Loading..."},maxMenuHeight:300,minMenuHeight:140,menuIsOpen:!1,menuPlacement:"bottom",menuPosition:"absolute",menuShouldBlockScroll:!1,menuShouldScrollIntoView:!Rq0(),noOptionsMessage:function(){return"No options"},openMenuOnFocus:!1,openMenuOnClick:!0,options:[],pageSize:5,placeholder:"Select...",screenReaderStatus:function(t){var n=t.count;return"".concat(n," result").concat(n!==1?"s":""," available")},styles:{},tabIndex:0,tabSelectsValue:!0,unstyled:!1};function l8(e,t,n,r){var a=Y$(e,t,n),o=V$(e,t,n),s=U$(e,t),i=Mm(e,t);return{type:"option",data:t,isDisabled:a,isSelected:o,label:s,value:i,index:r}}function TO(e,t){return e.options.map(function(n,r){if("options"in n){var a=n.options.map(function(s,i){return l8(e,s,t,i)}).filter(function(s){return u8(e,s)});return a.length>0?{type:"group",data:n,options:a,index:r}:void 0}var o=l8(e,n,t,r);return u8(e,o)?o:void 0}).filter(Nq0)}function H$(e){return e.reduce(function(t,n){return n.type==="group"?t.push.apply(t,Ql(n.options.map(function(r){return r.data}))):t.push(n.data),t},[])}function p8(e,t){return e.reduce(function(n,r){return r.type==="group"?n.push.apply(n,Ql(r.options.map(function(a){return{data:a.data,id:"".concat(t,"-").concat(r.index,"-").concat(a.index)}}))):n.push({data:r.data,id:"".concat(t,"-").concat(r.index)}),n},[])}function N60(e,t){return H$(TO(e,t))}function u8(e,t){var n=e.inputValue,r=n===void 0?"":n,a=t.data,o=t.isSelected,s=t.label,i=t.value;return(!K$(e)||!o)&&G$(e,{label:s,value:i,data:a},r)}function L60(e,t){var n=e.focusedValue,r=e.selectValue,a=r.indexOf(n);if(a>-1){var o=t.indexOf(n);if(o>-1)return n;if(a<t.length)return t[a]}return null}function k60(e,t){var n=e.focusedOption;return n&&t.indexOf(n)>-1?n:t[0]}var Wv=function(t,n){var r,a=(r=t.find(function(o){return o.data===n}))===null||r===void 0?void 0:r.id;return a||null},U$=function(t,n){return t.getOptionLabel(n)},Mm=function(t,n){return t.getOptionValue(n)};function Y$(e,t,n){return typeof e.isOptionDisabled=="function"?e.isOptionDisabled(t,n):!1}function V$(e,t,n){if(n.indexOf(t)>-1)return!0;if(typeof e.isOptionSelected=="function")return e.isOptionSelected(t,n);var r=Mm(e,t);return n.some(function(a){return Mm(e,a)===r})}function G$(e,t,n){return e.filterOption?e.filterOption(t,n):!0}var K$=function(t){var n=t.hideSelectedOptions,r=t.isMulti;return n===void 0?r:n},C60=1,J$=function(e){vr(n,e);var t=E50(n);function n(r){var a;if(vn(this,n),a=t.call(this,r),a.state={ariaSelection:null,focusedOption:null,focusedOptionId:null,focusableOptionsWithIds:[],focusedValue:null,inputIsHidden:!1,isFocused:!1,selectValue:[],clearFocusValueOnUpdate:!1,prevWasFocused:!1,inputIsHiddenAfterUpdate:void 0,prevProps:void 0,instancePrefix:""},a.blockOptionHover=!1,a.isComposing=!1,a.commonProps=void 0,a.initialTouchX=0,a.initialTouchY=0,a.openAfterFocus=!1,a.scrollToFocusedOptionOnUpdate=!1,a.userIsDragging=void 0,a.isAppleDevice=m60(),a.controlRef=null,a.getControlRef=function(c){a.controlRef=c},a.focusedOptionRef=null,a.getFocusedOptionRef=function(c){a.focusedOptionRef=c},a.menuListRef=null,a.getMenuListRef=function(c){a.menuListRef=c},a.inputRef=null,a.getInputRef=function(c){a.inputRef=c},a.focus=a.focusInput,a.blur=a.blurInput,a.onChange=function(c,l){var p=a.props,u=p.onChange,f=p.name;l.name=f,a.ariaOnChange(c,l),u(c,l)},a.setValue=function(c,l,p){var u=a.props,f=u.closeMenuOnSelect,b=u.isMulti,M=u.inputValue;a.onInputChange("",{action:"set-value",prevInputValue:M}),f&&(a.setState({inputIsHiddenAfterUpdate:!b}),a.onMenuClose()),a.setState({clearFocusValueOnUpdate:!0}),a.onChange(c,{action:l,option:p})},a.selectOption=function(c){var l=a.props,p=l.blurInputOnSelect,u=l.isMulti,f=l.name,b=a.state.selectValue,M=u&&a.isOptionSelected(c,b),z=a.isOptionDisabled(c,b);if(M){var h=a.getOptionValue(c);a.setValue(b.filter(function(m){return a.getOptionValue(m)!==h}),"deselect-option",c)}else if(!z)u?a.setValue([].concat(Ql(b),[c]),"select-option",c):a.setValue(c,"select-option");else{a.ariaOnChange(c,{action:"select-option",option:c,name:f});return}p&&a.blurInput()},a.removeValue=function(c){var l=a.props.isMulti,p=a.state.selectValue,u=a.getOptionValue(c),f=p.filter(function(M){return a.getOptionValue(M)!==u}),b=Xh(l,f,f[0]||null);a.onChange(b,{action:"remove-value",removedValue:c}),a.focusInput()},a.clearValue=function(){var c=a.state.selectValue;a.onChange(Xh(a.props.isMulti,[],null),{action:"clear",removedValues:c})},a.popValue=function(){var c=a.props.isMulti,l=a.state.selectValue,p=l[l.length-1],u=l.slice(0,l.length-1),f=Xh(c,u,u[0]||null);a.onChange(f,{action:"pop-value",removedValue:p})},a.getFocusedOptionId=function(c){return Wv(a.state.focusableOptionsWithIds,c)},a.getFocusableOptionsWithIds=function(){return p8(TO(a.props,a.state.selectValue),a.getElementId("option"))},a.getValue=function(){return a.state.selectValue},a.cx=function(){for(var c=arguments.length,l=new Array(c),p=0;p<c;p++)l[p]=arguments[p];return yq0.apply(void 0,[a.props.classNamePrefix].concat(l))},a.getOptionLabel=function(c){return U$(a.props,c)},a.getOptionValue=function(c){return Mm(a.props,c)},a.getStyles=function(c,l){var p=a.props.unstyled,u=q60[c](l,p);u.boxSizing="border-box";var f=a.props.styles[c];return f?f(u,l):u},a.getClassNames=function(c,l){var p,u;return(p=(u=a.props.classNames)[c])===null||p===void 0?void 0:p.call(u,l)},a.getElementId=function(c){return"".concat(a.state.instancePrefix,"-").concat(c)},a.getComponents=function(){return Yx0(a.props)},a.buildCategorizedOptions=function(){return TO(a.props,a.state.selectValue)},a.getCategorizedOptions=function(){return a.props.menuIsOpen?a.buildCategorizedOptions():[]},a.buildFocusableOptions=function(){return H$(a.buildCategorizedOptions())},a.getFocusableOptions=function(){return a.props.menuIsOpen?a.buildFocusableOptions():[]},a.ariaOnChange=function(c,l){a.setState({ariaSelection:f1({value:c},l)})},a.onMenuMouseDown=function(c){c.button===0&&(c.stopPropagation(),c.preventDefault(),a.focusInput())},a.onMenuMouseMove=function(c){a.blockOptionHover=!1},a.onControlMouseDown=function(c){if(!c.defaultPrevented){var l=a.props.openMenuOnClick;a.state.isFocused?a.props.menuIsOpen?c.target.tagName!=="INPUT"&&c.target.tagName!=="TEXTAREA"&&a.onMenuClose():l&&a.openMenu("first"):(l&&(a.openAfterFocus=!0),a.focusInput()),c.target.tagName!=="INPUT"&&c.target.tagName!=="TEXTAREA"&&c.preventDefault()}},a.onDropdownIndicatorMouseDown=function(c){if(!(c&&c.type==="mousedown"&&c.button!==0)&&!a.props.isDisabled){var l=a.props,p=l.isMulti,u=l.menuIsOpen;a.focusInput(),u?(a.setState({inputIsHiddenAfterUpdate:!p}),a.onMenuClose()):a.openMenu("first"),c.preventDefault()}},a.onClearIndicatorMouseDown=function(c){c&&c.type==="mousedown"&&c.button!==0||(a.clearValue(),c.preventDefault(),a.openAfterFocus=!1,c.type==="touchend"?a.focusInput():setTimeout(function(){return a.focusInput()}))},a.onScroll=function(c){typeof a.props.closeMenuOnScroll=="boolean"?c.target instanceof HTMLElement&&pg(c.target)&&a.props.onMenuClose():typeof a.props.closeMenuOnScroll=="function"&&a.props.closeMenuOnScroll(c)&&a.props.onMenuClose()},a.onCompositionStart=function(){a.isComposing=!0},a.onCompositionEnd=function(){a.isComposing=!1},a.onTouchStart=function(c){var l=c.touches,p=l&&l.item(0);p&&(a.initialTouchX=p.clientX,a.initialTouchY=p.clientY,a.userIsDragging=!1)},a.onTouchMove=function(c){var l=c.touches,p=l&&l.item(0);if(p){var u=Math.abs(p.clientX-a.initialTouchX),f=Math.abs(p.clientY-a.initialTouchY),b=5;a.userIsDragging=u>b||f>b}},a.onTouchEnd=function(c){a.userIsDragging||(a.controlRef&&!a.controlRef.contains(c.target)&&a.menuListRef&&!a.menuListRef.contains(c.target)&&a.blurInput(),a.initialTouchX=0,a.initialTouchY=0)},a.onControlTouchEnd=function(c){a.userIsDragging||a.onControlMouseDown(c)},a.onClearIndicatorTouchEnd=function(c){a.userIsDragging||a.onClearIndicatorMouseDown(c)},a.onDropdownIndicatorTouchEnd=function(c){a.userIsDragging||a.onDropdownIndicatorMouseDown(c)},a.handleInputChange=function(c){var l=a.props.inputValue,p=c.currentTarget.value;a.setState({inputIsHiddenAfterUpdate:!1}),a.onInputChange(p,{action:"input-change",prevInputValue:l}),a.props.menuIsOpen||a.onMenuOpen()},a.onInputFocus=function(c){a.props.onFocus&&a.props.onFocus(c),a.setState({inputIsHiddenAfterUpdate:!1,isFocused:!0}),(a.openAfterFocus||a.props.openMenuOnFocus)&&a.openMenu("first"),a.openAfterFocus=!1},a.onInputBlur=function(c){var l=a.props.inputValue;if(a.menuListRef&&a.menuListRef.contains(document.activeElement)){a.inputRef.focus();return}a.props.onBlur&&a.props.onBlur(c),a.onInputChange("",{action:"input-blur",prevInputValue:l}),a.onMenuClose(),a.setState({focusedValue:null,isFocused:!1})},a.onOptionHover=function(c){if(!(a.blockOptionHover||a.state.focusedOption===c)){var l=a.getFocusableOptions(),p=l.indexOf(c);a.setState({focusedOption:c,focusedOptionId:p>-1?a.getFocusedOptionId(c):null})}},a.shouldHideSelectedOptions=function(){return K$(a.props)},a.onValueInputFocus=function(c){c.preventDefault(),c.stopPropagation(),a.focus()},a.onKeyDown=function(c){var l=a.props,p=l.isMulti,u=l.backspaceRemovesValue,f=l.escapeClearsValue,b=l.inputValue,M=l.isClearable,z=l.isDisabled,h=l.menuIsOpen,m=l.onKeyDown,O=l.tabSelectsValue,A=l.openMenuOnFocus,v=a.state,x=v.focusedOption,W=v.focusedValue,q=v.selectValue;if(!z&&!(typeof m=="function"&&(m(c),c.defaultPrevented))){switch(a.blockOptionHover=!0,c.key){case"ArrowLeft":if(!p||b)return;a.focusValue("previous");break;case"ArrowRight":if(!p||b)return;a.focusValue("next");break;case"Delete":case"Backspace":if(b)return;if(W)a.removeValue(W);else{if(!u)return;p?a.popValue():M&&a.clearValue()}break;case"Tab":if(a.isComposing||c.shiftKey||!h||!O||!x||A&&a.isOptionSelected(x,q))return;a.selectOption(x);break;case"Enter":if(c.keyCode===229)break;if(h){if(!x||a.isComposing)return;a.selectOption(x);break}return;case"Escape":h?(a.setState({inputIsHiddenAfterUpdate:!1}),a.onInputChange("",{action:"menu-close",prevInputValue:b}),a.onMenuClose()):M&&f&&a.clearValue();break;case" ":if(b)return;if(!h){a.openMenu("first");break}if(!x)return;a.selectOption(x);break;case"ArrowUp":h?a.focusOption("up"):a.openMenu("last");break;case"ArrowDown":h?a.focusOption("down"):a.openMenu("first");break;case"PageUp":if(!h)return;a.focusOption("pageup");break;case"PageDown":if(!h)return;a.focusOption("pagedown");break;case"Home":if(!h)return;a.focusOption("first");break;case"End":if(!h)return;a.focusOption("last");break;default:return}c.preventDefault()}},a.state.instancePrefix="react-select-"+(a.props.instanceId||++C60),a.state.selectValue=Gk(r.value),r.menuIsOpen&&a.state.selectValue.length){var o=a.getFocusableOptionsWithIds(),s=a.buildFocusableOptions(),i=s.indexOf(a.state.selectValue[0]);a.state.focusableOptionsWithIds=o,a.state.focusedOption=s[i],a.state.focusedOptionId=Wv(o,s[i])}return a}return yn(n,[{key:"componentDidMount",value:function(){this.startListeningComposition(),this.startListeningToTouch(),this.props.closeMenuOnScroll&&document&&document.addEventListener&&document.addEventListener("scroll",this.onScroll,!0),this.props.autoFocus&&this.focusInput(),this.props.menuIsOpen&&this.state.focusedOption&&this.menuListRef&&this.focusedOptionRef&&Kk(this.menuListRef,this.focusedOptionRef)}},{key:"componentDidUpdate",value:function(a){var o=this.props,s=o.isDisabled,i=o.menuIsOpen,c=this.state.isFocused;(c&&!s&&a.isDisabled||c&&i&&!a.menuIsOpen)&&this.focusInput(),c&&s&&!a.isDisabled?this.setState({isFocused:!1},this.onMenuClose):!c&&!s&&a.isDisabled&&this.inputRef===document.activeElement&&this.setState({isFocused:!0}),this.menuListRef&&this.focusedOptionRef&&this.scrollToFocusedOptionOnUpdate&&(Kk(this.menuListRef,this.focusedOptionRef),this.scrollToFocusedOptionOnUpdate=!1)}},{key:"componentWillUnmount",value:function(){this.stopListeningComposition(),this.stopListeningToTouch(),document.removeEventListener("scroll",this.onScroll,!0)}},{key:"onMenuOpen",value:function(){this.props.onMenuOpen()}},{key:"onMenuClose",value:function(){this.onInputChange("",{action:"menu-close",prevInputValue:this.props.inputValue}),this.props.onMenuClose()}},{key:"onInputChange",value:function(a,o){this.props.onInputChange(a,o)}},{key:"focusInput",value:function(){this.inputRef&&this.inputRef.focus()}},{key:"blurInput",value:function(){this.inputRef&&this.inputRef.blur()}},{key:"openMenu",value:function(a){var o=this,s=this.state,i=s.selectValue,c=s.isFocused,l=this.buildFocusableOptions(),p=a==="first"?0:l.length-1;if(!this.props.isMulti){var u=l.indexOf(i[0]);u>-1&&(p=u)}this.scrollToFocusedOptionOnUpdate=!(c&&this.menuListRef),this.setState({inputIsHiddenAfterUpdate:!1,focusedValue:null,focusedOption:l[p],focusedOptionId:this.getFocusedOptionId(l[p])},function(){return o.onMenuOpen()})}},{key:"focusValue",value:function(a){var o=this.state,s=o.selectValue,i=o.focusedValue;if(this.props.isMulti){this.setState({focusedOption:null});var c=s.indexOf(i);i||(c=-1);var l=s.length-1,p=-1;if(s.length){switch(a){case"previous":c===0?p=0:c===-1?p=l:p=c-1;break;case"next":c>-1&&c<l&&(p=c+1);break}this.setState({inputIsHidden:p!==-1,focusedValue:s[p]})}}}},{key:"focusOption",value:function(){var a=arguments.length>0&&arguments[0]!==void 0?arguments[0]:"first",o=this.props.pageSize,s=this.state.focusedOption,i=this.getFocusableOptions();if(i.length){var c=0,l=i.indexOf(s);s||(l=-1),a==="up"?c=l>0?l-1:i.length-1:a==="down"?c=(l+1)%i.length:a==="pageup"?(c=l-o,c<0&&(c=0)):a==="pagedown"?(c=l+o,c>i.length-1&&(c=i.length-1)):a==="last"&&(c=i.length-1),this.scrollToFocusedOptionOnUpdate=!0,this.setState({focusedOption:i[c],focusedValue:null,focusedOptionId:this.getFocusedOptionId(i[c])})}}},{key:"getTheme",value:function(){return this.props.theme?typeof this.props.theme=="function"?this.props.theme(xv):f1(f1({},xv),this.props.theme):xv}},{key:"getCommonProps",value:function(){var a=this.clearValue,o=this.cx,s=this.getStyles,i=this.getClassNames,c=this.getValue,l=this.selectOption,p=this.setValue,u=this.props,f=u.isMulti,b=u.isRtl,M=u.options,z=this.hasValue();return{clearValue:a,cx:o,getStyles:s,getClassNames:i,getValue:c,hasValue:z,isMulti:f,isRtl:b,options:M,selectOption:l,selectProps:u,setValue:p,theme:this.getTheme()}}},{key:"hasValue",value:function(){var a=this.state.selectValue;return a.length>0}},{key:"hasOptions",value:function(){return!!this.getFocusableOptions().length}},{key:"isClearable",value:function(){var a=this.props,o=a.isClearable,s=a.isMulti;return o===void 0?s:o}},{key:"isOptionDisabled",value:function(a,o){return Y$(this.props,a,o)}},{key:"isOptionSelected",value:function(a,o){return V$(this.props,a,o)}},{key:"filterOption",value:function(a,o){return G$(this.props,a,o)}},{key:"formatOptionLabel",value:function(a,o){if(typeof this.props.formatOptionLabel=="function"){var s=this.props.inputValue,i=this.state.selectValue;return this.props.formatOptionLabel(a,{context:o,inputValue:s,selectValue:i})}else return this.getOptionLabel(a)}},{key:"formatGroupLabel",value:function(a){return this.props.formatGroupLabel(a)}},{key:"startListeningComposition",value:function(){document&&document.addEventListener&&(document.addEventListener("compositionstart",this.onCompositionStart,!1),document.addEventListener("compositionend",this.onCompositionEnd,!1))}},{key:"stopListeningComposition",value:function(){document&&document.removeEventListener&&(document.removeEventListener("compositionstart",this.onCompositionStart),document.removeEventListener("compositionend",this.onCompositionEnd))}},{key:"startListeningToTouch",value:function(){document&&document.addEventListener&&(document.addEventListener("touchstart",this.onTouchStart,!1),document.addEventListener("touchmove",this.onTouchMove,!1),document.addEventListener("touchend",this.onTouchEnd,!1))}},{key:"stopListeningToTouch",value:function(){document&&document.removeEventListener&&(document.removeEventListener("touchstart",this.onTouchStart),document.removeEventListener("touchmove",this.onTouchMove),document.removeEventListener("touchend",this.onTouchEnd))}},{key:"renderInput",value:function(){var a=this.props,o=a.isDisabled,s=a.isSearchable,i=a.inputId,c=a.inputValue,l=a.tabIndex,p=a.form,u=a.menuIsOpen,f=a.required,b=this.getComponents(),M=b.Input,z=this.state,h=z.inputIsHidden,m=z.ariaSelection,O=this.commonProps,A=i||this.getElementId("input"),v=f1(f1(f1({"aria-autocomplete":"list","aria-expanded":u,"aria-haspopup":!0,"aria-errormessage":this.props["aria-errormessage"],"aria-invalid":this.props["aria-invalid"],"aria-label":this.props["aria-label"],"aria-labelledby":this.props["aria-labelledby"],"aria-required":f,role:"combobox","aria-activedescendant":this.isAppleDevice?void 0:this.state.focusedOptionId||""},u&&{"aria-controls":this.getElementId("listbox")}),!s&&{"aria-readonly":!0}),this.hasValue()?(m==null?void 0:m.action)==="initial-input-focus"&&{"aria-describedby":this.getElementId("live-region")}:{"aria-describedby":this.getElementId("placeholder")});return s?y.createElement(M,A1({},O,{autoCapitalize:"none",autoComplete:"off",autoCorrect:"off",id:A,innerRef:this.getInputRef,isDisabled:o,isHidden:h,onBlur:this.onInputBlur,onChange:this.handleInputChange,onFocus:this.onInputFocus,spellCheck:"false",tabIndex:l,form:p,type:"text",value:c},v)):y.createElement(s60,A1({id:A,innerRef:this.getInputRef,onBlur:this.onInputBlur,onChange:fm,onFocus:this.onInputFocus,disabled:o,tabIndex:l,inputMode:"none",form:p,value:""},v))}},{key:"renderPlaceholderOrValue",value:function(){var a=this,o=this.getComponents(),s=o.MultiValue,i=o.MultiValueContainer,c=o.MultiValueLabel,l=o.MultiValueRemove,p=o.SingleValue,u=o.Placeholder,f=this.commonProps,b=this.props,M=b.controlShouldRenderValue,z=b.isDisabled,h=b.isMulti,m=b.inputValue,O=b.placeholder,A=this.state,v=A.selectValue,x=A.focusedValue,W=A.isFocused;if(!this.hasValue()||!M)return m?null:y.createElement(u,A1({},f,{key:"placeholder",isDisabled:z,isFocused:W,innerProps:{id:this.getElementId("placeholder")}}),O);if(h)return v.map(function(_,N){var L=_===x,k="".concat(a.getOptionLabel(_),"-").concat(a.getOptionValue(_));return y.createElement(s,A1({},f,{components:{Container:i,Label:c,Remove:l},isFocused:L,isDisabled:z,key:k,index:N,removeProps:{onClick:function(){return a.removeValue(_)},onTouchEnd:function(){return a.removeValue(_)},onMouseDown:function(B){B.preventDefault()}},data:_}),a.formatOptionLabel(_,"value"))});if(m)return null;var q=v[0];return y.createElement(p,A1({},f,{data:q,isDisabled:z}),this.formatOptionLabel(q,"value"))}},{key:"renderClearIndicator",value:function(){var a=this.getComponents(),o=a.ClearIndicator,s=this.commonProps,i=this.props,c=i.isDisabled,l=i.isLoading,p=this.state.isFocused;if(!this.isClearable()||!o||c||!this.hasValue()||l)return null;var u={onMouseDown:this.onClearIndicatorMouseDown,onTouchEnd:this.onClearIndicatorTouchEnd,"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:u,isFocused:p}))}},{key:"renderLoadingIndicator",value:function(){var a=this.getComponents(),o=a.LoadingIndicator,s=this.commonProps,i=this.props,c=i.isDisabled,l=i.isLoading,p=this.state.isFocused;if(!o||!l)return null;var u={"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:u,isDisabled:c,isFocused:p}))}},{key:"renderIndicatorSeparator",value:function(){var a=this.getComponents(),o=a.DropdownIndicator,s=a.IndicatorSeparator;if(!o||!s)return null;var i=this.commonProps,c=this.props.isDisabled,l=this.state.isFocused;return y.createElement(s,A1({},i,{isDisabled:c,isFocused:l}))}},{key:"renderDropdownIndicator",value:function(){var a=this.getComponents(),o=a.DropdownIndicator;if(!o)return null;var s=this.commonProps,i=this.props.isDisabled,c=this.state.isFocused,l={onMouseDown:this.onDropdownIndicatorMouseDown,onTouchEnd:this.onDropdownIndicatorTouchEnd,"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:l,isDisabled:i,isFocused:c}))}},{key:"renderMenu",value:function(){var a=this,o=this.getComponents(),s=o.Group,i=o.GroupHeading,c=o.Menu,l=o.MenuList,p=o.MenuPortal,u=o.LoadingMessage,f=o.NoOptionsMessage,b=o.Option,M=this.commonProps,z=this.state.focusedOption,h=this.props,m=h.captureMenuScroll,O=h.inputValue,A=h.isLoading,v=h.loadingMessage,x=h.minMenuHeight,W=h.maxMenuHeight,q=h.menuIsOpen,_=h.menuPlacement,N=h.menuPosition,L=h.menuPortalTarget,k=h.menuShouldBlockScroll,S=h.menuShouldScrollIntoView,B=h.noOptionsMessage,V=h.onMenuScrollToTop,K=h.onMenuScrollToBottom;if(!q)return null;var i0=function(j,P){var E=j.type,J=j.data,M0=j.isDisabled,O0=j.isSelected,W0=j.label,x0=j.value,X0=z===J,e0=M0?void 0:function(){return a.onOptionHover(J)},l0=M0?void 0:function(){return a.selectOption(J)},g0="".concat(a.getElementId("option"),"-").concat(P),d0={id:g0,onClick:l0,onMouseMove:e0,onMouseOver:e0,tabIndex:-1,role:"option","aria-selected":a.isAppleDevice?void 0:O0};return y.createElement(b,A1({},M,{innerProps:d0,data:J,isDisabled:M0,isSelected:O0,key:g0,label:W0,type:E,value:x0,isFocused:X0,innerRef:X0?a.getFocusedOptionRef:void 0}),a.formatOptionLabel(j.data,"menu"))},G;if(this.hasOptions())G=this.getCategorizedOptions().map(function(T){if(T.type==="group"){var j=T.data,P=T.options,E=T.index,J="".concat(a.getElementId("group"),"-").concat(E),M0="".concat(J,"-heading");return y.createElement(s,A1({},M,{key:J,data:j,options:P,Heading:i,headingProps:{id:M0,data:T.data},label:a.formatGroupLabel(T.data)}),T.options.map(function(O0){return i0(O0,"".concat(E,"-").concat(O0.index))}))}else if(T.type==="option")return i0(T,"".concat(T.index))});else if(A){var U=v({inputValue:O});if(U===null)return null;G=y.createElement(u,M,U)}else{var F=B({inputValue:O});if(F===null)return null;G=y.createElement(f,M,F)}var n0={minMenuHeight:x,maxMenuHeight:W,menuPlacement:_,menuPosition:N,menuShouldScrollIntoView:S},a0=y.createElement(Bq0,A1({},M,n0),function(T){var j=T.ref,P=T.placerProps,E=P.placement,J=P.maxHeight;return y.createElement(c,A1({},M,n0,{innerRef:j,innerProps:{onMouseDown:a.onMenuMouseDown,onMouseMove:a.onMenuMouseMove},isLoading:A,placement:E}),y.createElement(d60,{captureEnabled:m,onTopArrive:V,onBottomArrive:K,lockEnabled:k},function(M0){return y.createElement(l,A1({},M,{innerRef:function(W0){a.getMenuListRef(W0),M0(W0)},innerProps:{role:"listbox","aria-multiselectable":M.isMulti,id:a.getElementId("listbox")},isLoading:A,maxHeight:J,focusedOption:z}),G)}))});return L||N==="fixed"?y.createElement(p,A1({},M,{appendTo:L,controlElement:this.controlRef,menuPlacement:_,menuPosition:N}),a0):a0}},{key:"renderFormField",value:function(){var a=this,o=this.props,s=o.delimiter,i=o.isDisabled,c=o.isMulti,l=o.name,p=o.required,u=this.state.selectValue;if(p&&!this.hasValue()&&!i)return y.createElement(M60,{name:l,onFocus:this.onValueInputFocus});if(!(!l||i))if(c)if(s){var f=u.map(function(z){return a.getOptionValue(z)}).join(s);return y.createElement("input",{name:l,type:"hidden",value:f})}else{var b=u.length>0?u.map(function(z,h){return y.createElement("input",{key:"i-".concat(h),name:l,type:"hidden",value:a.getOptionValue(z)})}):y.createElement("input",{name:l,type:"hidden",value:""});return y.createElement("div",null,b)}else{var M=u[0]?this.getOptionValue(u[0]):"";return y.createElement("input",{name:l,type:"hidden",value:M})}}},{key:"renderLiveRegion",value:function(){var a=this.commonProps,o=this.state,s=o.ariaSelection,i=o.focusedOption,c=o.focusedValue,l=o.isFocused,p=o.selectValue,u=this.getFocusableOptions();return y.createElement(e60,A1({},a,{id:this.getElementId("live-region"),ariaSelection:s,focusedOption:i,focusedValue:c,isFocused:l,selectValue:p,focusableOptions:u,isAppleDevice:this.isAppleDevice}))}},{key:"render",value:function(){var a=this.getComponents(),o=a.Control,s=a.IndicatorsContainer,i=a.SelectContainer,c=a.ValueContainer,l=this.props,p=l.className,u=l.id,f=l.isDisabled,b=l.menuIsOpen,M=this.state.isFocused,z=this.commonProps=this.getCommonProps();return y.createElement(i,A1({},z,{className:p,innerProps:{id:u,onKeyDown:this.onKeyDown},isDisabled:f,isFocused:M}),this.renderLiveRegion(),y.createElement(o,A1({},z,{innerRef:this.getControlRef,innerProps:{onMouseDown:this.onControlMouseDown,onTouchEnd:this.onControlTouchEnd},isDisabled:f,isFocused:M,menuIsOpen:b}),y.createElement(c,A1({},z,{isDisabled:f}),this.renderPlaceholderOrValue(),this.renderInput()),y.createElement(s,A1({},z,{isDisabled:f}),this.renderClearIndicator(),this.renderLoadingIndicator(),this.renderIndicatorSeparator(),this.renderDropdownIndicator())),this.renderMenu(),this.renderFormField())}}],[{key:"getDerivedStateFromProps",value:function(a,o){var s=o.prevProps,i=o.clearFocusValueOnUpdate,c=o.inputIsHiddenAfterUpdate,l=o.ariaSelection,p=o.isFocused,u=o.prevWasFocused,f=o.instancePrefix,b=a.options,M=a.value,z=a.menuIsOpen,h=a.inputValue,m=a.isMulti,O=Gk(M),A={};if(s&&(M!==s.value||b!==s.options||z!==s.menuIsOpen||h!==s.inputValue)){var v=z?N60(a,O):[],x=z?p8(TO(a,O),"".concat(f,"-option")):[],W=i?L60(o,O):null,q=k60(o,v),_=Wv(x,q);A={selectValue:O,focusedOption:q,focusedOptionId:_,focusableOptionsWithIds:x,focusedValue:W,clearFocusValueOnUpdate:!1}}var N=c!=null&&a!==s?{inputIsHidden:c,inputIsHiddenAfterUpdate:void 0}:{},L=l,k=p&&u;return p&&!k&&(L={value:Xh(m,O,O[0]||null),options:O,action:"initial-input-focus"},k=!u),(l==null?void 0:l.action)==="initial-input-focus"&&(L=null),f1(f1(f1({},A),N),{},{prevProps:a,ariaSelection:L,prevWasFocused:k})}}]),n}(y.Component);J$.defaultProps=S60;var E60=y.forwardRef(function(e,t){var n=C50(e);return y.createElement(J$,A1({ref:t},n))}),rz=E60;const T60=({conference:e,show:t,onClose:n,onUpdatePost:r,onModalClick:a})=>{const{t:o}=p1(),{windowWidth:s}=Ee(),{loading:i,updatePost:c}=sl(),[l,p]=y.useState(""),[u,f]=y.useState(!1),[b,M]=y.useState(""),{filterOptions:z,getOptionsFilter:h}=Ln(),[m,O]=y.useState(),[A,v]=y.useState(!1),[x,W]=y.useState("1"),[q,_]=y.useState(!1),[N,L]=y.useState(3),[k,S]=y.useState({callForPaper:e.callForPaper||"",link:e.information.link||"",rank:e.information.rank||"N/I",fieldsOfResearch:Array.from(new Set(e.information.fieldOfResearch))||[],organizations:e.organizations.length>0?e.organizations.filter(P=>P.status==="new").map(P=>({name:P.name??"",type:P.type??"",location:P.location??"",start_date:P.start_date??"",end_date:P.end_date??""})):[{name:"",type:"",location:"",start_date:"",end_date:""}],importantDates:e.importantDates.length>0?e.importantDates.filter(P=>P.status==="new").map(P=>({date_type:P.date_type??"",date_value:P.date_value??""})):[{date_type:"",date_value:""}]}),[B,V]=y.useState(Array.from(new Set(e.information.fieldOfResearch)).map(P=>({value:P,label:Nr(P)})));y.useEffect(()=>{(!z.rank||!z.for)&&h("for")},[z]);const K=(P,E)=>{S({...k,[P]:E})},i0=(P,E,J)=>{const M0={...k},O0={...M0.organizations[P]};if(O0[E]=J,M0.organizations[P]=O0,E==="end_date"||E==="start_date"){const W0=k.organizations[P].start_date,x0=k.organizations[P].end_date;W0&&x0&&new Date(x0)<new Date(W0)?_(!0):_(!1)}M0.organizations[P]=O0,S(M0)},G=(P,E,J)=>{const M0=[...k.importantDates];M0[P][E]=J,S({...k,importantDates:M0})},U=()=>{const P=[...k.importantDates,{date_type:"",date_value:""}];S({...k,importantDates:P})},F=P=>{const E=[...k.importantDates];E.splice(P,1),S({...k,importantDates:E})},n0=[...Array.from(new Set(e.information.fieldOfResearch)).map(P=>({value:P,label:P})),...z.for.map(P=>({value:P,label:P}))],a0=P=>{V(P),S({...k,fieldsOfResearch:P.map(E=>E.value)})},T=async P=>{a(P),O(!0);const E=k.organizations.some((O0,W0)=>k.organizations.findIndex((x0,X0)=>x0.name===O0.name&&X0!==W0)!==-1),J={},M0=k.importantDates.some(O0=>J[O0.date_type]?!0:(J[O0.date_type]=!0,!1));if(v(E),E)M("Organization name must be unique!"),W(2);else if(M0)M("Date type must be unique!"),W(3);else{const O0=[...k.organizations],W0=[...k.importantDates],x0=k.organizations.filter(g0=>g0.name!==""||g0.type!==""||g0.location!==""||g0.start_date!==""||g0.end_date!==""),X0=k.importantDates.filter(g0=>g0.date_type!==""||g0.date_value!==""),e0={...k,organizations:x0,importantDates:X0},l0=await c(e0,e.id);if(p(l0.message),f(l0.status),r(),l0.status){r();const g0=setInterval(()=>{L(d0=>d0===0?(clearInterval(g0),n(P),0):d0-1)},1e3)}else S({...k,organizations:O0,importantDates:W0})}},j=P=>{W(P)};return d.jsxs(J1,{show:t,onHide:n,size:"lg",centered:!0,scrollable:!0,fullscreen:"sm-down",children:[d.jsx(J1.Body,{onClick:P=>P.stopPropagation(),style:{maxHeight:"80vh",overflowY:"auto"},className:"pt-3",children:d.jsxs("div",{style:{minHeight:"500px"},children:[d.jsxs("div",{className:"d-flex justify-content-between align-items-center py-2 mb-3",children:[d.jsx(J1.Title,{className:"text-center w-100 text-skyblue-dark ps-5",children:`${o("update")} ${o("conference").toLowerCase()}`}),d.jsx(B0,{variant:"secondary",onClick:n,className:"bg-transparent border-0",children:d.jsx(j0,{icon:gW,className:"text-secondary fs-3"})})]}),d.jsx("div",{className:"w-100 py-2"}),d.jsx(_0,{children:d.jsxs(iW,{activeKey:x,transition:vi,fill:!0,onSelect:j,className:"fs-5 text-nowrap",children:[d.jsxs(Pl,{eventKey:"1",title:o("information"),className:"mx-4 pt-5",tabClassName:"custom-tab-update",children:[d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("name"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:e.information.name,disabled:!0})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("acronym"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:e.information.acronym,disabled:!0})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsx(_0.Label,{column:!0,sm:"3",children:"Link: "}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:k.link,onChange:P=>K("link",P.target.value)})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[" ",o("field_of_research"),": "]}),d.jsx(v0,{children:d.jsx(rz,{options:n0,value:B,isMulti:!0,onChange:a0,menuPosition:"fixed"})})]})]}),d.jsxs(Pl,{eventKey:"2",title:o("organization"),className:"mx-4",tabClassName:"custom-tab-update",children:[k.organizations.map((P,E)=>d.jsxs("div",{className:"mt-5",children:[d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("type"),": "]}),d.jsx(v0,{children:d.jsxs(_0.Select,{value:P.type,onChange:J=>i0(E,"type",J.target.value),children:[d.jsxs("option",{value:"",children:[`${o("select")} ${o("type").toLowerCase()}`,"..."]}),d.jsx("option",{value:"online",children:"Online"}),d.jsx("option",{value:"offline",children:"Offline"}),d.jsx("option",{value:"hybrid",children:"Hybrid"})]})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("location"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:P.location,onChange:J=>i0(E,"location",J.target.value),placeholder:`${o("enter_location_organization")}`})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("start_date"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"date",value:P.start_date,onChange:J=>i0(E,"start_date",J.target.value),className:q?"border-danger":""})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("end_date"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"date",value:P.end_date,onChange:J=>i0(E,"end_date",J.target.value),className:q?"border-danger":""})})]})]},E)),m&&b!==""&&d.jsx("p",{className:"text-center text-warning",children:b})]}),d.jsxs(Pl,{eventKey:"3",title:o("important_dates"),className:"mx-4",tabClassName:"custom-tab-update",children:[d.jsx("div",{className:"w-100 d-flex justify-content-end",children:d.jsx(B0,{variant:"secondary",className:"mt-3 text-end bg-skyblue-dark border-0",onClick:U,children:`${o("add_more_date")}`})}),k.importantDates.map((P,E)=>d.jsxs(_0.Group,{as:G0,className:"my-3 d-flex w-100",children:[d.jsxs(v0,{sm:"6",children:[d.jsxs("div",{className:"d-flex justify-content-between align-items-center",children:[d.jsxs(_0.Label,{children:[o("date_type"),":"]}),s<=768&&d.jsx(B0,{variant:"danger",onClick:()=>F(E),className:"bg-transparent border-0",title:"Delete this date",children:d.jsx(j0,{icon:Tb,className:"text-danger"})})]}),d.jsx(_0.Control,{type:"text",value:P.date_type,onChange:J=>G(E,"date_type",J.target.value),placeholder:o("enter_date_description")})]}),d.jsxs(v0,{children:[d.jsxs(_0.Label,{children:[o("date"),":"]}),d.jsx(_0.Control,{type:"date",value:P.date_value,onChange:J=>G(E,"date_value",J.target.value)})]}),s>768&&d.jsx(v0,{sm:"1",className:"d-flex align-items-end",children:d.jsx(B0,{variant:"danger",onClick:()=>F(E),className:"bg-transparent border-0",title:"Delete this date",children:d.jsx(j0,{icon:Tb,className:"text-danger"})})})]},E)),m&&b!==""&&d.jsx("p",{className:"text-center text-warning",children:b})]}),d.jsx(Pl,{eventKey:"4",title:"Call For Paper",className:"mx-4",tabClassName:"custom-tab-update",children:d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsx(_0.Label,{column:!0,sm:"3",children:"Call for paper: "}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",as:"textarea",rows:s>768?14:22,value:k.callForPaper,onChange:P=>K("callForPaper",P.target.value)})})]})})]})})]})}),m&&!u&&l!==""&&d.jsx("p",{className:"text-danger text-center",children:l}),d.jsx(J1.Footer,{className:"d-flex justify-content-center w-100 text-center",children:u&&l!==""?d.jsx("div",{className:u?"text-success":"text-danger",children:u&&d.jsxs("div",{children:[d.jsx("span",{className:"text-success",children:o("success")}),". ",o("closing_countdown",{countdown:N})]})}):d.jsxs(eo,{children:[d.jsx(B0,{onClick:n,className:"bg-secondary border-light px-5 mx-3 rounded text-light",children:o("cancel")}),d.jsx(B0,{onClick:T,className:"bg-blue-normal border-light px-4 mx-3 rounded d-flex",children:i?d.jsx(An,{onReload:T,size:"sm"}):d.jsxs("div",{children:[d.jsx(j0,{icon:TA,className:"me-2"}),o("update")]})})]})})]})},D60=({conference:e})=>{const{t}=p1(),[n,r]=y.useState(!1),[a,o]=y.useState(!1),[s,i]=y.useState(""),[c,l]=y.useState(!1),{loading:p,deletePost:u,getPostedConferences:f}=sl(),[b,M]=y.useState(3),[z,h]=y.useState(!1),m=W=>{W.stopPropagation(),o(!1),l(null),i(""),M(3)},O=async W=>{W.stopPropagation(),h(!0);const q=await u(e==null?void 0:e.id);if(l(q.status),i(q.message),q.status){f();const _=setInterval(()=>{M(N=>N===0?(clearInterval(_),m(W),0):N-1)},1e3)}},A=W=>{W.stopPropagation(),r(!0)},v=W=>{W.stopPropagation(),r(!1)},x=W=>{W.stopPropagation(),o(!0)};return d.jsxs(d.Fragment,{children:[d.jsx(ZM,{show:a,onClose:m,onConfirm:O,modalTitle:"conference",message:s,status:c,loading:p,countdown:b,isConfirm:z}),n&&d.jsx(T60,{conference:e,show:n,onClose:v,onUpdatePost:f,onModalClick:A}),d.jsxs(eo,{className:"text-end p-0",children:[d.jsx(B0,{onClick:A,className:"bg-teal-normal border-0 rounded mx-2 px-3",children:t("update")}),d.jsx(B0,{onClick:x,className:"bg-danger border-0 rounded mx-2 px-3 ",children:t("delete")})]})]})},P60="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAtCAYAAAAk09IpAAAAAXNSR0IB2cksfwAAAgRJREFUWIXtmE9u01AQh795dSw2oBzB3CAbpMeq5gTkBvYN4kVcVcj5J1ggASLcoLlBbtCwQdnBEcINsmtFUg+Lkipp8kxa4paFv+2M3/v0Zjb+CWu8eJM2jo74rKINQeqUjKJzURmzWAym74czWRVs9yQCPStbYBcC8+WSVwJgT5NAfe/7Q7xGATMDoDWv+cgiAIEBMMjxI4sA4AGooY5uFoyfB9+yTz/Luthm7RAj5xt3lnXZfahkXFQyLioZF5WMi0rGRSXjopJxUcm4qGRcVDIuKhkXlYyL/0rG+9cDbNYORcxrRENVfqyylgeVsVk7RKSHEOrqR11o4Ndi20nPUB1N332clCYTJkn94qkXIxIBDWejECMS2146IWc0ffthrxBqL5kwSeqXz/zWBXlypxxHCRFC2017KAMWi0nRCK+Tq156jhKuF4yfB/mlPEckUtGDhEnrGR6eF9yORJwvo7/MGHM9CkFcbX+adYLwFUwEGrjaBKkjxPi1GGVrn9wyRTuxLqEM1ha1bztpjNEIlbDwW2Gr7hxTgeRc0C9PzHI46Q/nrj7bPw3Il32QaJ9z7ygjM8hHf5PYJaVXy6aIaRWNcD+Z7VHcG9tJYxVtCbJzBXbKKMwNjDTX8SEktqSydoghvj3CDZl99+FgUjd7ZY5vRmi77f7L7KRZ9uWFYp00/g2bV8uj63QeuwAAAABJRU5ErkJggg==",B60="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAAAAXNSR0IB2cksfwAAAURJREFUWIXt2E9OwkAYhvHnm9Y9R+AGcgNxL9KujQFuoCcAbwAnqIquW//EuLM3UG/AEbpVYMaFGknkMwWDTcw8y8lk8su7HGGhvXTclED64lwDpMbmm4iQv8ynJ/dxbyKfp/s3l32sG/wBYCnq1U53BSBKk4Y1W48VQQBwQm4ALGG3SgiAOJoGQALZrhoDYKoGLOYxWh6j5TFaHqPlMVoeo+UxWh6j5TFaHqPlMVoeo+UxWv8N4wqsGznLMTD5zUvh2gRHjuMqYHaaxb3i43gYpUnDEh5haK/6+yUA7euLB+doliAUWM4sZLfxYf7TzShNanOCyASmU+7tkpivFaaLK5QuSpO6JRxgZAeor4FxBZbRDJPdxQdPqwK0Wul5V1vrG+Z9BTcKmOXrrFC2ZWsJQCsbp+J4NsyGmwRotdJxZALTeQMTkYByMCND8QAAAABJRU5ErkJggg==",F60=e=>({type:y9,payload:e}),I60=`Final Camera-ready Submission of Regular, Special Session, Industrial, BMI Workshop, and Workshop and Tutorial Papers\r
-Main Conference Camera-ready Paper Submission and Author/Presenter Registration\r
-1st Call - Submission of camera-ready or final versions of the accepted papers\r
-2nd Call -Submission of camera-ready or final versions of the accepted papers\r
-Final Paper (Camera Ready) Submission & Early Bird Registration Deadline\r
-Issue 4 - Camera-ready deadline for accepted papers and minor revisions\r
-Issue 2 - Camera-ready deadline for accepted papers and minor revisions\r
-Issue 1 - Camera-ready deadline for accepted papers and minor revisions\r
-Issue 3 - Camera-ready deadline for accepted papers and minor revisions\r
-Final Camera-Ready Manuscript and IEEE Copyright Form submission\r
-Camera-ready Papers Due (Research, In-Use, and Resource Tracks)\r
-All tracks (full paper, LB, WiP, Special Session): Camera ready\r
-SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Camera Ready Due\r
-Final Camera-Ready Submission and Early Registration (1st CFP)\r
-Camera-ready (Full, Applied, Short, Demo and Resource papers)\r
-FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Camera Ready Due\r
-Journal Special Issue (Springer’s IJPP) submission deadline\r
-Deadline for final camera-ready version of accepted papers\r
-Camera ready and Author Registration (all but workshops)\r
-final camera-ready copies of accepted papers will be due\r
-Final Paper Submission Deadline (including workshops)\r
-Final versions of full papers and short presentations\r
-Last day to upload ALL files to the virtual platform\r
-Deadline for camera-ready version of accepted paper\r
-Submission of Camera-Ready Papers and Registration\r
-Camera-ready papers (Round 2 and Major Revisions)\r
-Deadline for volunteers registration submissions.\r
-Registration deadline and final paper submission\r
-Camera ready submissions and copyright forms due\r
-Position  Papers - Camera Ready and Registration\r
-Final proceedings version of accepted papers due\r
-Deadline for Camera Ready Manuscript Submission\r
-Submission of revised final papers for Springer\r
-Camera ready deadline for main conference track\r
-amera-ready copies and authors registration due\r
-Position Papers - Camera Ready and Registration\r
-[FULL and SHORT] Camera-ready version deadline\r
-Camera-ready versions of the conference papers\r
-Regular Papers - Camera Ready and Registration\r
-Fall Deadline - Final paper files due for Fall\r
-Camera-ready copy deadline for all paper types\r
-Camera-ready papers due (long & short papers)\r
-Authors electronically submit fully corrected\r
-Camera ready (accepted major revision papers)\r
-Submission of camera ready Paper and payment\r
-Camera-ready submission for the second round\r
-Main Track (round 1) - Camera-ready deadline\r
-Main Track (round 2) - Camera-ready deadline\r
-Deadline for submitting camera-ready papers\r
-Camera-ready version, registration, payment\r
-Final “camera-ready” papers for proceedings\r
-Camera-ready submission for the first round\r
-Camera-ready paper and author registration\r
-Final, revised, and camera-ready paper due\r
-Camera-ready copies of accepted papers/SRC\r
-Conference track - Camera-ready papers due\r
-Camera-ready, poster, and video submission\r
-Final Submissions Due (for accepted work)\r
-Camera-ready version, author registration\r
-Second submission deadline - Camera-ready\r
-Submission deadline for the final version\r
-Paper Submission for Accepted Manuscript\r
-Position - Camera Ready and Registration\r
-Deadline for conference version of paper\r
-First submission deadline - Camera-ready\r
-Camera-ready papers & abstracts deadline\r
-Camera-Ready Version/Author Registration\r
-final camera-ready paper submission due\r
-Camera-ready deadline for accepted work\r
-Regular - Camera Ready and Registration\r
-Second Deadline - Camera-Ready Copy Due\r
-Winter deadline - Camera-ready deadline\r
-TCHES Volume 2024/3 - Final version due\r
-Second deadline - Camera-ready deadline\r
-TCHES Volume 2024/2 - Final version due\r
-Summer deadline - Camera-ready deadline\r
-Camera-ready Papers Deadline (extended)\r
-TCHES Volume 2024/1 - Final version due\r
-Camera ready (directly accepted papers)\r
-Spring Deadline - Final paper files due\r
-TCHES Volume 2024/4 - Final version due\r
-Final manuscript submission for website\r
-First deadline - Camera-ready deadline\r
-Research Paper - Camera-Ready Deadline\r
-Camera-Ready Files Submission Deadline\r
-Final camera-ready submission deadline\r
-Camera-ready papers/end of shepherding\r
-Position Camera Ready and Registration\r
-Deadline for Final Camera-Ready Papers\r
-Accepted submissions due in final form\r
-Camera-ready Paper Submission Due Date\r
-Camera Ready Version of Paper for Book\r
-Camera-Ready Papers, Posters and Demos\r
-First Deadline - Camera-Ready Copy Due\r
-Camera-ready papers for the 1st round\r
-Camera Ready Papers - Main Conference\r
-Regular Paper camera-ready submission\r
-Regular Paper Camera-ready Submission\r
-Second Cycle: Camera-ready Submission\r
-Registration and Final manuscript due\r
-Regular Camera Ready and Registration\r
-Camera Ready Version and Registration\r
-Final versions of accepted papers due\r
-Final version of LNAI accepted papers\r
-Camera-ready deadline for Full Papers\r
-2nd Round Deadline - Camera Ready Due\r
-Camera-ready papers for the 2nd round\r
-Camera Ready Deadline (Late-Breaking)\r
-Camera-ready manuscript for SPAR book\r
-Final Recent Results Paper Submission\r
-Camera-Ready Submission (Full papers)\r
-Research Track - Camera-ready version\r
-Final Paper (Camera Ready) Submission\r
-1st Round Deadline - Camera Ready Due\r
-Camera Ready Submission/Registration\r
-Second submission - Camera-ready Due\r
-Camera-Ready and author registration\r
-First Cycle: Camera-ready Submission\r
-Camera-ready papers and registration\r
-Camera ready version for proceedings\r
-Summer cycle - Camera Ready deadline\r
-Final paper submission, registration\r
-Submission of camera-ready versions\r
-Proceedings Files & PPTs/Videos Due\r
-First submission - Camera-ready Due\r
-Short paper notification to authors\r
-Camera-ready for Accepted Paper Due\r
-Fall cycle - Camera Ready deadline\r
-Final post-proceedings version due\r
-Camera Ready & Author Registration\r
-Publication-ready submissions due\r
-Submission of Camera-Ready Papers\r
-Camera-ready version (Main Track)\r
-Final Camera-Ready Paper Delivery\r
-Final version submission deadline\r
-Decisions communicated to authors\r
-Submission of camera-ready papers\r
-Camera Ready Final Manuscript Due\r
-Deadline for camera-ready papers\r
-USB-only proceedings version due\r
-Full paper camera-ready deadline\r
-Accepted Camera-ready papers due\r
-Camera-ready Submission Deadline\r
-Camera-ready submission deadline\r
-Camera Ready Copy (CRC) deadline\r
-Submission of Camera Ready Paper\r
-Camera Ready Papers/Registration\r
-End of “early bird” registration\r
-Camera-Ready Submission Deadline\r
-Pre-proceedings version deadline\r
-Camera Ready Submission Deadline\r
-Camera ready version submission\r
-Short paper camera-ready copies\r
-Deadline for Paper camera-ready\r
-Final Print Ready Papers due by\r
-Final Paper Submission Deadline\r
-Camera-ready paper due Deadline\r
-Final Manuscript (Camera Ready)\r
-Second cycle - Camera ready due\r
-Registration/Camera Ready Paper\r
-Full paper camera-ready copies\r
-Final Regular Paper Submission\r
-Fall - Camera-ready submission\r
-camera ready papers submission\r
-Camera ready copy – All papers\r
-Spring - Camera-ready deadline\r
-First cycle - Camera ready due\r
-Registration & Final Paper Due\r
-Summer - Final paper files due\r
-Upload Final Publication Files\r
-Winter - Final paper files due\r
-Camera ready and copyright due\r
-Camera-ready Paper Submissions\r
-Final versions for proceedings\r
-On-line publication available\r
-Final Camera-ready Submission\r
-Camera-ready Paper Submission\r
-Final accepted manuscript due\r
-Final version for proceedings\r
-Final “camera-ready” versions\r
-November cycle - Camera Ready\r
-Camera-ready version deadline\r
-Camera-ready paper submission\r
-Conference paper camera-ready\r
-Camera Ready Paper submission\r
-Final camera-ready papers due\r
-Camera Ready and Registration\r
-Camera ready paper submission\r
-Camera-ready papers (Round 1)\r
-Upload of camera-ready papers\r
-Camera-ready (for all tracks)\r
-Final STOC Papers Version Due\r
-Camera-Ready Paper Submission\r
-Final pre-proceedings papers\r
-The 1st Round - Camera Ready\r
-Conference pre-final version\r
-Camera-ready full papers due\r
-The 2nd Round - Camera Ready\r
-Final Manuscripts Submission\r
-Fall - Final paper files due\r
-2nd phase - Camera-ready due\r
-Camera ready manuscripts due\r
-Proceedings version deadline\r
-1st phase - Camera-ready due\r
-Submission of final version\r
-Paper camera-ready deadline\r
-Final Camera-Ready Deadline\r
-Final version of papers due\r
-Camera-Ready Manuscript due\r
-Camera Ready & Registration\r
-Final Paper Submission Date\r
-Camera-Ready Paper Deadline\r
-Camera Ready Copy Deadline\r
-Deadline for Final Version\r
-Submission of camera-ready\r
-Notification of acceptance\r
-Publication-Ready deadline\r
-Camera-ready Papers Upload\r
-Final Manuscript Deadline\r
-Camera-ready versions due\r
-Camera-ready paper upload\r
-June cycle - Camera Ready\r
-Deadline for camera ready\r
-Camera-ready Paper Upload\r
-Deadline for camera-ready\r
-Final proceedings version\r
-Camera-ready Submissions\r
-Camera-Ready Version Due\r
-Final camera ready paper\r
-FINAL VERSION SUBMISSION\r
-Camera ready manuscripts\r
-Final version submission\r
-Camera Ready version due\r
-All Rounds: Camera Ready\r
-Camera-ready Submission:\r
-Camera-ready version due\r
-Final Version Submission\r
-Final copy of papers due\r
-Camera ready version due\r
-Conference paper version\r
-Camera-ready submissions\r
-Camera-ready copies due\r
-Camera-Ready Submission\r
-Camera ready submission\r
-Camera-Ready Papers due\r
-Revised manuscripts due\r
-Camera-ready manuscript\r
-Camera-ready submission\r
-Camera ready copies due\r
-Camera Ready papers due\r
-conference papers ready\r
-Final version of papers\r
-Notification to Authors\r
-Camera Ready Papers Due\r
-Camera-ready Submission\r
-Camera-ready papers due\r
-Camera Ready Submission\r
-Early bird registration\r
-Proceedings version due\r
-Acceptance notification\r
-Camera Ready (for all)\r
-Final paper submission\r
-final version deadline\r
-Camera-ready Paper Due\r
-Camera-Ready Deadline:\r
-Final paper upload due\r
-Camera-ready paper due\r
-Final version deadline\r
-Final Paper Submission\r
-Camera-Ready Deadline\r
-Final Manuscript Due:\r
-Final Manuscripts Due\r
-Camera ready deadline\r
-camera ready deadline\r
-Camera-ready copy due\r
-Camera-Ready Copy Due\r
-Final paper files due\r
-spring - camera-ready\r
-Camera-ready version:\r
-Camera-ready versions\r
-Camera-ready deadline\r
-summer - camera-ready\r
-Camera Ready Deadline\r
-Camera-ready Deadline\r
-camera-ready deadline\r
-Full paper submission\r
-Camera-ready version\r
-Final Paper Due Date\r
-Camera ready version\r
-Camera Ready Version\r
-Final paper deadline\r
-Camera-ready Version\r
-Final Manuscript Due\r
-Final manuscript due\r
-Final Paper Deadline\r
-Camera-Ready Version\r
-Papers camera ready\r
-camera-ready papers\r
-R1 Camera Ready Due\r
-Camera-Ready papers\r
-Camera-ready Papers\r
-Final paper version\r
-Camera-Ready Papers\r
-fall - camera-ready\r
-Camera ready papers\r
-R2 Camera Ready Due\r
-Paper final version\r
-Camera Ready Papers\r
-Camera-ready copies\r
-Camera-ready papers\r
-Papers camera-ready\r
-Paper Camera-ready\r
-Final Camera Ready\r
-2nd - Camera ready\r
-Final versions due\r
-Camera ready Paper\r
-3rd - Camera ready\r
-Camera-ready paper\r
-Camera-Ready Paper\r
-1st - Camera ready\r
-Final Submissions:\r
-Camera-ready Copyn\r
-Camera Ready Paper\r
-Camera-ready copy\r
-Final version due\r
-Camera-ready Copy\r
-Extended deadline\r
-Camera ready Date\r
-Camera Ready Copy\r
-Camera ready copy\r
-Final Manuscript:\r
-Final Version Due\r
-Camera-Ready Due\r
-Camera Ready Due\r
-Camera-ready due\r
-Camera ready due\r
-Camera-ready Due\r
-Camera Ready due\r
-Final Papers Due\r
-Final papers due\r
-Final submission\r
-Final Manuscript\r
-Camera ready on\r
-Final Paper Due\r
-Final version:\r
-Final copy due\r
-Final versions\r
-Final Versions\r
-Final Version\r
-Camera Ready:\r
-FINAL VERSION\r
-Camera-ready:\r
-Final version\r
-Camera-ready\r
-Camera ready\r
-Camera Ready\r
-Camera-Ready\r
-camera ready\r
-Reviews Due\r
-Final Paper`,j60=`First round notification for journal-track papers, and notification of acceptance for all other types of submissions\r
-Research paper second submission round - Notification of accept/reject for revised submission\r
-SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Notifications of Decisions of Shepherded Papers\r
-Research paper first submission round - Notification of accept/reject for revised submission\r
-Research paper third submission round - Notification of accept/reject for revised submission\r
-FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Notifications of Decisions of Shepherded Papers\r
-Acceptance Notification of Regular, Special Session, Industrial and BMI Workshop Papers\r
-Research paper second submission round - Notification of accept/revise/reject\r
-Notifications given (accept with minor revisions/revise and resubmit/reject)\r
-Research paper third submission round - Notification of accept/revise/reject\r
-Research paper first submission round - Notification of accept/revise/reject\r
-Review by International Programme Committee and Notification of Acceptance\r
-Notification of acceptance for special sessions, workshops and tutorials\r
-Paper Notification (Full, Applied, Short, Demo and Resource papers)\r
-Paper acceptance cut-off date for inclusion in ECSCW 2024 Program\r
-SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Author Notification\r
-1st notification for papers submitted in the rebuttal procedure\r
-Notification for the Replicability Track Expression of Interest\r
-Authors will be notified of the decision and get final reviews\r
-FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Author Notification\r
-Acceptance notifications for full, short, and industry papers\r
-Second Wave Submissions - 1st Round Reviews and Notifications\r
-Final notification for all papers (with or without Rebuttal)\r
-Notification of review outcomes for second round submissions\r
-Second Review Cycle - Notification of early-rejection papers\r
-Final notification of Acceptance or Rejection after Rebuttal\r
-Paper, invited session and mini-course decision notification\r
-First Wave Submissions - 1st Round Reviews and Notifications\r
-Notification of review outcomes for first round submissions\r
-Notification of acceptance for paper and extended abstracts\r
-First Review Cycle - Notification of early-rejection papers\r
-Notification of Acceptance: Tutorial and Workshop Proposal\r
-Research Papers 2nd Round Revision - Author Notification\r
-Decisions sent to authors (conditional accept or reject)\r
-Research Papers 1st Round Revision - Author Notification\r
-Notification Round 2 (Short + Journal First Papers only)\r
-Notification of pre-acceptance, peer reviewers’ comments\r
-Notification of acceptance/rejection of track proposals\r
-Work-in-Progress and Late Breaking Tracks: Notification\r
-Final Author Notification for Papers, Posters and Demos\r
-(Conditional) Acceptance notification for proceedings*\r
-Announcement of review results and workshop acceptance\r
-Summer cycle - Author notification for Major Revision\r
-Notifications (Research, In-Use, and Resource Tracks)\r
-Short Papers & Application Notes - acceptance notice\r
-ROUND 1 - Notification of accept/reject/review again\r
-ROUND 4 - Notification of accept/reject/review again\r
-“Conditional Accept” revisions approval notification\r
-ROUND 2 - Notification of accept/reject/review again\r
-ROUND 3 - Notification of accept/reject/review again\r
-Short and Demo/Hybrid experience Papers Notification\r
-notification to Authors and opening of registrations\r
-Technical Paper acceptance decisions sent to authors\r
-Review release for full, short, and industry papers\r
-Main Conference Papers - Notification of Acceptance\r
-Paper Acceptance Notification (including workshops)\r
-Authors’ Notification on the review process results\r
-Fall cycle - Author notification for Major Revision\r
-Conference track - Final notifications (2nd round)\r
-Authors notified of decision regarding submission\r
-Second-round reviews sent to authors for feedback\r
-SECOND SUBMISSION CYCLE - Reviews sent to authors\r
-Notification of acceptance for extended abstracts\r
-1st Round: Notification (Accept/Revision/Reject)\r
-Notification of acceptance (long & short papers)\r
-FIRST SUBMISSION CYCLE - Reviews sent to authors\r
-Workshop, Fast Abstract, SRS papers notification\r
-February Round - Final Decisions Sent to Authors\r
-Cycle 1 - Notification (accept/reject/revision)\r
-Research Papers 2nd Round - Author Notification\r
-Research Papers 1st Round - Author Notification\r
-Cycle 2 - Notification (accept/reject/revision)\r
-Regular and Special Session Paper Notification\r
-Final decision notifications (Accept / Reject)\r
-Final acceptance notification for proceedings*\r
-ROUND 4 -  Final notification of accept/reject\r
-Notification of acceptance for standard papers\r
-Second Wave Submissions - 2nd Round Decisions\r
-Notification of Acceptance for Regular Papers\r
-Notification of final acceptance or rejection\r
-Notification of Acceptance for Recent Results\r
-Notification of results of first review cycle\r
-ROUND 1 - Final notification of accept/reject\r
-ROUND 2 - Final notification of accept/reject\r
-ROUND 3 - Final notification of accept/reject\r
-Notifications for Late Breaking Short Papers\r
-Notification to Authors (1st CFP – new date)\r
-Acceptance notification for the second round\r
-Paper acceptance/rejection notification date\r
-Notification of acceptance for the 1st round\r
-February Round Notifications Sent to Authors\r
-Main Track (round 2) - Notification deadline\r
-Main Track (round 1) - Notification deadline\r
-Winter deadline - Notification of acceptance\r
-First Wave Submissions - 2nd Round Decisions\r
-Conference track - Notifications (1st round)\r
-Summer deadline - Notification of acceptance\r
-Acceptance notification for the first round\r
-November cycle - Notification of Acceptance\r
-Acceptance notification (all but workshops)\r
-Authors notifications and courses selection\r
-Notification Round 1 (Full and Short Paper)\r
-Doctoral Consortium Acceptance Notification\r
-Notification of Special Session Acceptance\r
-Notification of acceptance for Full Papers\r
-Notification (Round 2 and Major Revisions)\r
-November cycle - Early reject notification\r
-Notification of paper acceptance/rejection\r
-Notification of acceptance will be sent by\r
-Author Notification of Acceptance Decision\r
-First notification of acceptance/rejection\r
-Notification of acceptance for shepherding\r
-Final notification (artifact submissions)\r
-Paper notification (Full, Short, BNI, DS)\r
-Second Review Cycle - Author notification\r
-Conference papers acceptance notification\r
-2nd Round Deadline - Author Notification​\r
-Second Deadline - Acceptance notification\r
-Second submission deadline - Notification\r
-Notification of Regular Papers Acceptance\r
-Second Deadline - Acceptance Notification\r
-Artifact notification ESOP, FASE, FoSSaCS\r
-1st Round Deadline - Author Notification​\r
-author notification for all contributions\r
-Spring Deadline - Notification to authors\r
-First Review Cycle - Author notification\r
-First Deadline - Acceptance notification\r
-Third Deadline - Acceptance notification\r
-Notification of SRC acceptance/rejection\r
-First submission deadline - Notification\r
-Second call - Notification of acceptance\r
-First Deadline - Acceptance Notification\r
-Long papers - Notification of acceptance\r
-Final notification after rebuttal phase\r
-Notification of acceptance (Main Track)\r
-Fall Deadline - Notification to authors\r
-Journal track: First Round Notification\r
-The 2nd Round - Acceptance Notification\r
-The 1st Round - Acceptance Notification\r
-June cycle - Notification of Acceptance\r
-Announcement of Accepted Manuscript IDs\r
-Second submission - Author Notification\r
-First call - Notification of acceptance\r
-Notification of acceptance or rejection\r
-Notification of provisional acceptance\r
-Notification of Acceptance or Rebuttal\r
-First submission - Author Notification\r
-1st Round - Notification of Acceptance\r
-June cycle - Early reject notification\r
-2nd Round - Notification of Acceptance\r
-Position Papers - Authors Notification\r
-Reviews completed and Authors notified\r
-Full papers notification of acceptance\r
-Second cycle - Notification to authors\r
-Second round reviews and notifications\r
-SECOND SUBMISSION CYCLE - Notification\r
-1st Call - Notifications of acceptance\r
-Notifications of Acceptance to Authors\r
-Notification of acceptance/shepherding\r
-2nd Call - Notifications of acceptance\r
-Paper notification for the main track\r
-Regular Papers - Authors Notification\r
-Full Paper notification of acceptance\r
-Second Cycle: Acceptance Notification\r
-LNAI Acceptance notification EXTENDED\r
-First-round decisions sent to authors\r
-First round reviews and notifications\r
-FIRST SUBMISSION CYCLE - Notification\r
-Special Session Proposal Notification\r
-First cycle - Notification to authors\r
-Second deadline - Author Notification\r
-Workshop Paper Decision Notification\r
-Research Paper - Author Notification\r
-Notification of acceptance/rejection\r
-Round 1 - Notification of acceptance\r
-2nd Round Deadline - Early Rejection\r
-Research Track - Author notification\r
-1st Round Deadline - Early Rejection\r
-First deadline - Author Notification\r
-Notification of Acceptance/Rejection\r
-First Cycle: Acceptance Notification\r
-Main Conference Author Notification\r
-2nd phase - Notification to authors\r
-Late Breaking Abstract Notification\r
-Notification of acceptance deadline\r
-Preliminary Notification to Authors\r
-Short paper notification to authors\r
-Short paper acceptance notification\r
-R1 Author Notification of Revisions\r
-Conditional Acceptance Notification\r
-Notification of Acceptance of Paper\r
-R2 Author Notification of Revisions\r
-Acceptance / Rejection Notification\r
-Full papers acceptance notification\r
-1st phase - Notification to authors\r
-TCHES Volume 2024/4 - Notification\r
-Winter cycle - author notification\r
-TCHES Volume 2024/1 - Notification\r
-Notification of Phase 1 rejections\r
-First stage decision notifications\r
-Round 1 - Notifications to authors\r
-Acceptance/rejection notifications\r
-Round 2 - Notifications to authors\r
-TCHES Volume 2024/2 - Notification\r
-TCHES Volume 2024/3 - Notification\r
-Tech track acceptance notification\r
-Full paper notification to authors\r
-Full paper acceptance notification\r
-Round One Notification to Authors*\r
-Summer cycle - Author notification\r
-Summer - Early reject notification\r
-Winter - Early reject notification\r
-Spring cycle - author notification\r
-Notifications to Authors 2nd round\r
-Notifications to Authors 1st round\r
-Author notification of acceptance\r
-Long and Short paper notification\r
-Notification of selection results\r
-Notification of poster acceptance\r
-Paper accept/reject notifications\r
-Presenters notified of acceptance\r
-Acceptance/Rejection Notification\r
-Second Notification of Acceptance\r
-Paper Notification (Second Round)\r
-Round Two Notification to Authors\r
-Spring - Notification to authors\r
-Notification of paper acceptance\r
-Fall cycle - author notification\r
-USB-only acceptance notification\r
-Notification of Paper Acceptance\r
-Notification of Reviewing Result\r
-First Notification of Acceptance\r
-Notification of Paper acceptance\r
-Fall cycle - Author notification\r
-Summer - Notification to authors\r
-Workshop acceptance notification\r
-Papers (Full/Short) Notification\r
-Workshop Acceptance Notification\r
-Paper Notification (First Round)\r
-Notification for major revisions\r
-Winter - Notification to authors\r
-Fall - Early reject notification\r
-second review cycle notification\r
-Abstract Acceptance Notification\r
-Short presentations notification\r
-Notification of final acceptance\r
-Preliminary author notification\r
-Reviews are released to authors\r
-Notification to authors - Paper\r
-Final decisions sent to authors\r
-Notification of Paper Decisions\r
-first review cycle notification\r
-Position - Authors Notification\r
-Full Papers - acceptance notice\r
-Notification of papers accepted\r
-Initial reviews sent to authors\r
-Notification of acceptance date\r
-Regular Paper Reviews to Author\r
-Decisions submitted to authors\r
-Poster acceptance notification\r
-Author Notification for Papers\r
-Papers Acceptance Notification\r
-Acceptance decision (expected)\r
-Regular - Authors Notification\r
-Fall - Notification to authors\r
-Paper Acceptance Notificatione\r
-Conference paper notification\r
-Paper acceptance notification\r
-Final notification to authors\r
-Final Acceptance Notification\r
-Early rejection if applicable\r
-Issue 3 - Author notification\r
-Position Authors Notification\r
-Author Notification (Round 1)\r
-Final acceptance notification\r
-Workshop Authors Notification\r
-Issue 1 - Author notification\r
-Issue 2 - Author notification\r
-Notification of Accept/Reject\r
-Submitted Papers Notification\r
-Author Notification (Round 2)\r
-Conference Track Notification\r
-Issue 4 - Author notification\r
-Final reviews sent to authors\r
-Paper Acceptance Notification\r
-Paper decision notifications\r
-Acceptance Notification Date\r
-Winter - Author notification\r
-Information about acceptance\r
-Notification for Full Papers\r
-Summer - Author notification\r
-Early Rejection Notification\r
-Special Session notification\r
-Latest Tutorial Notification\r
-Latest Workshop Notification\r
-Main Track Notification Date\r
-Regular Authors Notification\r
-Author notification Deadline\r
-Final notification Round 3.\r
-Artifact final notification\r
-Reviews Released to Authors\r
-Paper decision notification\r
-Initial Author Notification\r
-Reviews released to authors\r
-Regular Papers Notification\r
-Final Decision Notification\r
-Paper Decision notification\r
-Summary reject notification\r
-Artifact notification TACAS\r
-Final notification Round 1.\r
-First Call Authors Notified\r
-Final Call Authors Notified\r
-[SHORT] Author notification\r
-Early Decision Notification\r
-Journal Track: Notification\r
-Author information deadline\r
-PhD Colloquium Notification\r
-Notification of Acceptance\r
-Fall - Author notification\r
-Notification of acceptance\r
-Acceptance Communicated by\r
-Review Result Notification\r
-[FULL] Author Notification\r
-notification of acceptance\r
-Notice of Paper Acceptance\r
-Expected notification date\r
-Nofitication of Acceptance\r
-Final notification Round 2\r
-Final notifications given\r
-Notification of decisions\r
-Early Reject Notification\r
-First review notification\r
-Conference paper decision\r
-Review release to authors\r
-Early reject notification\r
-Final Author Notification\r
-Paper author notification\r
-Early Author Notification\r
-Final acceptance decision\r
-Notification of Decision\r
-Full Papers Notification\r
-First round notification\r
-Notifications (extended)\r
-Full papers notification\r
-Notification of decision\r
-Acceptance Notifications\r
-Acceptance notifications\r
-2nd Round: Notification\r
-Announcement of Results\r
-Acceptance notification\r
-ACCEPTANCE NOTIFICATION\r
-acceptance notification\r
-notification of authors\r
-Notification to Authors\r
-Presenter notifications\r
-Acceptance Notification\r
-Full paper notification\r
-Reviews sent to authors\r
-Notification to authors\r
-Paper Notification Date\r
-Notification of authors\r
-Notification (Round 1)\r
-Notifications sent out\r
-R2 Author Notification\r
-Notification (cycle 1)\r
-R1 Author Notification\r
-Decision notifications\r
-Notification deadline\r
-R2 Author notifcation\r
-spring - notification\r
-Paper Review Feedback\r
-Decision notification\r
-Authors' Notification\r
-Authors' notification\r
-Decision Notification\r
-R1 Author notifcation\r
-Authors Notifications\r
-Camera-ready deadline\r
-Artifact notification\r
-Artifact Notification\r
-summer - notification\r
-Notification Deadline\r
-Preliminary Feedback\r
-Authors Notification\r
-Journal notification\r
-Author Notifications\r
-author notifications\r
-Decisions to authors\r
-Authors notification\r
-Papers Notifications\r
-Notice of Acceptance\r
-Results notification\r
-Author notifications\r
-Notice of acceptance\r
-Final notifications\r
-Submission deadline\r
-Submission Deadline\r
-1st round decisions\r
-author notification\r
-Author Notification\r
-fall - notification\r
-Paper notifications\r
-Final Notifications\r
-Paper Notifications\r
-Decisions announced\r
-Author notification\r
-First notification\r
-Final Notification\r
-Author Notiﬁcation\r
-Early Notification\r
-Paper notification\r
-Notifications Date\r
-Paper Notification\r
-Final notification\r
-1st - Notification\r
-3rd - Notification\r
-Notifications Sent\r
-2nd - Notification\r
-Acceptance notice\r
-Notification date\r
-Notification Date\r
-All notifications\r
-Notifications on\r
-Notification Due\r
-Paper Acceptance\r
-Notification Day\r
-Paper acceptance\r
-Reviews Released\r
-Final acceptance\r
-Final decisions\r
-Final Decisions\r
-Notification of\r
-Notifications\r
-Registration\r
-notification\r
-Notification\r
-Acceptance\r
-Decisions\r
-Decision`,az=()=>{const{state:e,dispatch:t}=Ht(),{user:n}=Ar(),{token:r}=Po(),[a,o]=y.useState(!1),{getDataListInStorage:s}=mw(),i=(M,z)=>{const h=M.split(`
+`]))),dx0=function(t,n){var r=t.isFocused,a=t.size,o=t.theme,s=o.colors,i=o.spacing.baseUnit;return f1({label:"loadingIndicator",display:"flex",transition:"color 150ms",alignSelf:"center",fontSize:a,lineHeight:1,marginRight:a,textAlign:"center",verticalAlign:"middle"},n?{}:{color:r?s.neutral60:s.neutral20,padding:i*2})},gv=function(t){var n=t.delay,r=t.offset;return F1("span",{css:Nw({animation:"".concat(ux0," 1s ease-in-out ").concat(n,"ms infinite;"),backgroundColor:"currentColor",borderRadius:"1em",display:"inline-block",marginLeft:r?"1em":void 0,height:"1em",verticalAlign:"top",width:"1em"},"","")})},fx0=function(t){var n=t.innerProps,r=t.isRtl,a=t.size,o=a===void 0?4:a,s=gn(t,rx0);return F1("div",A1({},jt(f1(f1({},s),{},{innerProps:n,isRtl:r,size:o}),"loadingIndicator",{indicator:!0,"loading-indicator":!0}),n),F1(gv,{delay:0,offset:r}),F1(gv,{delay:160,offset:!0}),F1(gv,{delay:320,offset:!r}))},bx0=function(t,n){var r=t.isDisabled,a=t.isFocused,o=t.theme,s=o.colors,i=o.borderRadius,c=o.spacing;return f1({label:"control",alignItems:"center",cursor:"default",display:"flex",flexWrap:"wrap",justifyContent:"space-between",minHeight:c.controlHeight,outline:"0 !important",position:"relative",transition:"all 100ms"},n?{}:{backgroundColor:r?s.neutral5:s.neutral0,borderColor:r?s.neutral10:a?s.primary:s.neutral20,borderRadius:i,borderStyle:"solid",borderWidth:1,boxShadow:a?"0 0 0 1px ".concat(s.primary):void 0,"&:hover":{borderColor:a?s.primary:s.neutral30}})},Mx0=function(t){var n=t.children,r=t.isDisabled,a=t.isFocused,o=t.innerRef,s=t.innerProps,i=t.menuIsOpen;return F1("div",A1({ref:o},jt(t,"control",{control:!0,"control--is-disabled":r,"control--is-focused":a,"control--menu-is-open":i}),s,{"aria-disabled":r||void 0}),n)},zx0=Mx0,hx0=["data"],Ox0=function(t,n){var r=t.theme.spacing;return n?{}:{paddingBottom:r.baseUnit*2,paddingTop:r.baseUnit*2}},mx0=function(t){var n=t.children,r=t.cx,a=t.getStyles,o=t.getClassNames,s=t.Heading,i=t.headingProps,c=t.innerProps,l=t.label,p=t.theme,u=t.selectProps;return F1("div",A1({},jt(t,"group",{group:!0}),c),F1(s,A1({},i,{selectProps:u,theme:p,getStyles:a,getClassNames:o,cx:r}),l),F1("div",null,n))},Ax0=function(t,n){var r=t.theme,a=r.colors,o=r.spacing;return f1({label:"group",cursor:"default",display:"block"},n?{}:{color:a.neutral40,fontSize:"75%",fontWeight:500,marginBottom:"0.25em",paddingLeft:o.baseUnit*3,paddingRight:o.baseUnit*3,textTransform:"uppercase"})},gx0=function(t){var n=S$(t);n.data;var r=gn(n,hx0);return F1("div",A1({},jt(t,"groupHeading",{"group-heading":!0}),r))},vx0=mx0,yx0=["innerRef","isDisabled","isHidden","inputClassName"],qx0=function(t,n){var r=t.isDisabled,a=t.value,o=t.theme,s=o.spacing,i=o.colors;return f1(f1({visibility:r?"hidden":"visible",transform:a?"translateZ(0)":""},xx0),n?{}:{margin:s.baseUnit/2,paddingBottom:s.baseUnit/2,paddingTop:s.baseUnit/2,color:i.neutral80})},B$={gridArea:"1 / 2",font:"inherit",minWidth:"2px",border:0,margin:0,outline:0,padding:0},xx0={flex:"1 1 auto",display:"inline-grid",gridArea:"1 / 1 / 2 / 3",gridTemplateColumns:"0 min-content","&:after":f1({content:'attr(data-value) " "',visibility:"hidden",whiteSpace:"pre"},B$)},Wx0=function(t){return f1({label:"input",color:"inherit",background:0,opacity:t?0:1,width:"100%"},B$)},wx0=function(t){var n=t.cx,r=t.value,a=S$(t),o=a.innerRef,s=a.isDisabled,i=a.isHidden,c=a.inputClassName,l=gn(a,yx0);return F1("div",A1({},jt(t,"input",{"input-container":!0}),{"data-value":r||""}),F1("input",A1({className:n({input:!0},c),ref:o,style:Wx0(i),disabled:s},l)))},Rx0=wx0,_x0=function(t,n){var r=t.theme,a=r.spacing,o=r.borderRadius,s=r.colors;return f1({label:"multiValue",display:"flex",minWidth:0},n?{}:{backgroundColor:s.neutral10,borderRadius:o/2,margin:a.baseUnit/2})},Sx0=function(t,n){var r=t.theme,a=r.borderRadius,o=r.colors,s=t.cropWithEllipsis;return f1({overflow:"hidden",textOverflow:s||s===void 0?"ellipsis":void 0,whiteSpace:"nowrap"},n?{}:{borderRadius:a/2,color:o.neutral80,fontSize:"85%",padding:3,paddingLeft:6})},Nx0=function(t,n){var r=t.theme,a=r.spacing,o=r.borderRadius,s=r.colors,i=t.isFocused;return f1({alignItems:"center",display:"flex"},n?{}:{borderRadius:o/2,backgroundColor:i?s.dangerLight:void 0,paddingLeft:a.baseUnit,paddingRight:a.baseUnit,":hover":{backgroundColor:s.dangerLight,color:s.danger}})},F$=function(t){var n=t.children,r=t.innerProps;return F1("div",r,n)},Lx0=F$,kx0=F$;function Cx0(e){var t=e.children,n=e.innerProps;return F1("div",A1({role:"button"},n),t||F1(Pw,{size:14}))}var Ex0=function(t){var n=t.children,r=t.components,a=t.data,o=t.innerProps,s=t.isDisabled,i=t.removeProps,c=t.selectProps,l=r.Container,p=r.Label,u=r.Remove;return F1(l,{data:a,innerProps:f1(f1({},jt(t,"multiValue",{"multi-value":!0,"multi-value--is-disabled":s})),o),selectProps:c},F1(p,{data:a,innerProps:f1({},jt(t,"multiValueLabel",{"multi-value__label":!0})),selectProps:c},n),F1(u,{data:a,innerProps:f1(f1({},jt(t,"multiValueRemove",{"multi-value__remove":!0})),{},{"aria-label":"Remove ".concat(n||"option")},i),selectProps:c}))},Tx0=Ex0,Dx0=function(t,n){var r=t.isDisabled,a=t.isFocused,o=t.isSelected,s=t.theme,i=s.spacing,c=s.colors;return f1({label:"option",cursor:"default",display:"block",fontSize:"inherit",width:"100%",userSelect:"none",WebkitTapHighlightColor:"rgba(0, 0, 0, 0)"},n?{}:{backgroundColor:o?c.primary:a?c.primary25:"transparent",color:r?c.neutral20:o?c.neutral0:"inherit",padding:"".concat(i.baseUnit*2,"px ").concat(i.baseUnit*3,"px"),":active":{backgroundColor:r?void 0:o?c.primary:c.primary50}})},Px0=function(t){var n=t.children,r=t.isDisabled,a=t.isFocused,o=t.isSelected,s=t.innerRef,i=t.innerProps;return F1("div",A1({},jt(t,"option",{option:!0,"option--is-disabled":r,"option--is-focused":a,"option--is-selected":o}),{ref:s,"aria-disabled":r},i),n)},Bx0=Px0,Fx0=function(t,n){var r=t.theme,a=r.spacing,o=r.colors;return f1({label:"placeholder",gridArea:"1 / 1 / 2 / 3"},n?{}:{color:o.neutral50,marginLeft:a.baseUnit/2,marginRight:a.baseUnit/2})},Ix0=function(t){var n=t.children,r=t.innerProps;return F1("div",A1({},jt(t,"placeholder",{placeholder:!0}),r),n)},jx0=Ix0,Xx0=function(t,n){var r=t.isDisabled,a=t.theme,o=a.spacing,s=a.colors;return f1({label:"singleValue",gridArea:"1 / 1 / 2 / 3",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"},n?{}:{color:r?s.neutral40:s.neutral80,marginLeft:o.baseUnit/2,marginRight:o.baseUnit/2})},$x0=function(t){var n=t.children,r=t.isDisabled,a=t.innerProps;return F1("div",A1({},jt(t,"singleValue",{"single-value":!0,"single-value--is-disabled":r}),a),n)},Hx0=$x0,Ux0={ClearIndicator:cx0,Control:zx0,DropdownIndicator:sx0,DownChevron:D$,CrossIcon:Pw,Group:vx0,GroupHeading:gx0,IndicatorsContainer:tx0,IndicatorSeparator:px0,Input:Rx0,LoadingIndicator:fx0,Menu:Iq0,MenuList:Xq0,MenuPortal:Gq0,LoadingMessage:Yq0,NoOptionsMessage:Uq0,MultiValue:Tx0,MultiValueContainer:Lx0,MultiValueLabel:kx0,MultiValueRemove:Cx0,Option:Bx0,Placeholder:jx0,SelectContainer:Jq0,SingleValue:Hx0,ValueContainer:Zq0},Yx0=function(t){return f1(f1({},Ux0),t.components)},Zk=Number.isNaN||function(t){return typeof t=="number"&&t!==t};function Vx0(e,t){return!!(e===t||Zk(e)&&Zk(t))}function Gx0(e,t){if(e.length!==t.length)return!1;for(var n=0;n<e.length;n++)if(!Vx0(e[n],t[n]))return!1;return!0}function Bw(e,t){t===void 0&&(t=Gx0);var n=null;function r(){for(var a=[],o=0;o<arguments.length;o++)a[o]=arguments[o];if(n&&n.lastThis===this&&t(a,n.lastArgs))return n.lastResult;var s=e.apply(this,a);return n={lastResult:s,lastArgs:a,lastThis:this},s}return r.clear=function(){n=null},r}var Kx0={name:"7pg0cj-a11yText",styles:"label:a11yText;z-index:9999;border:0;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0;white-space:nowrap"},Jx0=function(t){return F1("span",A1({css:Kx0},t))},e8=Jx0,Qx0={guidance:function(t){var n=t.isSearchable,r=t.isMulti,a=t.tabSelectsValue,o=t.context,s=t.isInitialFocus;switch(o){case"menu":return"Use Up and Down to choose options, press Enter to select the currently focused option, press Escape to exit the menu".concat(a?", press Tab to select the option and exit the menu":"",".");case"input":return s?"".concat(t["aria-label"]||"Select"," is focused ").concat(n?",type to refine list":"",", press Down to open the menu, ").concat(r?" press left to focus selected values":""):"";case"value":return"Use left and right to toggle between focused values, press Backspace to remove the currently focused value";default:return""}},onChange:function(t){var n=t.action,r=t.label,a=r===void 0?"":r,o=t.labels,s=t.isDisabled;switch(n){case"deselect-option":case"pop-value":case"remove-value":return"option ".concat(a,", deselected.");case"clear":return"All selected options have been cleared.";case"initial-input-focus":return"option".concat(o.length>1?"s":""," ").concat(o.join(","),", selected.");case"select-option":return s?"option ".concat(a," is disabled. Select another option."):"option ".concat(a,", selected.");default:return""}},onFocus:function(t){var n=t.context,r=t.focused,a=t.options,o=t.label,s=o===void 0?"":o,i=t.selectValue,c=t.isDisabled,l=t.isSelected,p=t.isAppleDevice,u=function(z,h){return z&&z.length?"".concat(z.indexOf(h)+1," of ").concat(z.length):""};if(n==="value"&&i)return"value ".concat(s," focused, ").concat(u(i,r),".");if(n==="menu"&&p){var f=c?" disabled":"",b="".concat(l?" selected":"").concat(f);return"".concat(s).concat(b,", ").concat(u(a,r),".")}return""},onFilter:function(t){var n=t.inputValue,r=t.resultsMessage;return"".concat(r).concat(n?" for search term "+n:"",".")}},Zx0=function(t){var n=t.ariaSelection,r=t.focusedOption,a=t.focusedValue,o=t.focusableOptions,s=t.isFocused,i=t.selectValue,c=t.selectProps,l=t.id,p=t.isAppleDevice,u=c.ariaLiveMessages,f=c.getOptionLabel,b=c.inputValue,M=c.isMulti,z=c.isOptionDisabled,h=c.isSearchable,m=c.menuIsOpen,O=c.options,A=c.screenReaderStatus,v=c.tabSelectsValue,x=c.isLoading,W=c["aria-label"],q=c["aria-live"],_=y.useMemo(function(){return f1(f1({},Qx0),u||{})},[u]),N=y.useMemo(function(){var K="";if(n&&_.onChange){var i0=n.option,G=n.options,U=n.removedValue,F=n.removedValues,n0=n.value,a0=function(O0){return Array.isArray(O0)?null:O0},T=U||i0||a0(n0),j=T?f(T):"",P=G||F||void 0,E=P?P.map(f):[],J=f1({isDisabled:T&&z(T,i),label:j,labels:E},n);K=_.onChange(J)}return K},[n,_,z,i,f]),L=y.useMemo(function(){var K="",i0=r||a,G=!!(r&&i&&i.includes(r));if(i0&&_.onFocus){var U={focused:i0,label:f(i0),isDisabled:z(i0,i),isSelected:G,options:o,context:i0===r?"menu":"value",selectValue:i,isAppleDevice:p};K=_.onFocus(U)}return K},[r,a,f,z,_,o,i,p]),k=y.useMemo(function(){var K="";if(m&&O.length&&!x&&_.onFilter){var i0=A({count:o.length});K=_.onFilter({inputValue:b,resultsMessage:i0})}return K},[o,b,m,_,O,A,x]),S=(n==null?void 0:n.action)==="initial-input-focus",B=y.useMemo(function(){var K="";if(_.guidance){var i0=a?"value":m?"menu":"input";K=_.guidance({"aria-label":W,context:i0,isDisabled:r&&z(r,i),isMulti:M,isSearchable:h,tabSelectsValue:v,isInitialFocus:S})}return K},[W,r,a,M,z,h,m,_,i,v,S]),V=F1(y.Fragment,null,F1("span",{id:"aria-selection"},N),F1("span",{id:"aria-focused"},L),F1("span",{id:"aria-results"},k),F1("span",{id:"aria-guidance"},B));return F1(y.Fragment,null,F1(e8,{id:l},S&&V),F1(e8,{"aria-live":q,"aria-atomic":"false","aria-relevant":"additions text",role:"log"},s&&!S&&V))},e60=Zx0,Aq=[{base:"A",letters:"AⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ"},{base:"AA",letters:"Ꜳ"},{base:"AE",letters:"ÆǼǢ"},{base:"AO",letters:"Ꜵ"},{base:"AU",letters:"Ꜷ"},{base:"AV",letters:"ꜸꜺ"},{base:"AY",letters:"Ꜽ"},{base:"B",letters:"BⒷＢḂḄḆɃƂƁ"},{base:"C",letters:"CⒸＣĆĈĊČÇḈƇȻꜾ"},{base:"D",letters:"DⒹＤḊĎḌḐḒḎĐƋƊƉꝹ"},{base:"DZ",letters:"ǱǄ"},{base:"Dz",letters:"ǲǅ"},{base:"E",letters:"EⒺＥÈÉÊỀẾỄỂẼĒḔḖĔĖËẺĚȄȆẸỆȨḜĘḘḚƐƎ"},{base:"F",letters:"FⒻＦḞƑꝻ"},{base:"G",letters:"GⒼＧǴĜḠĞĠǦĢǤƓꞠꝽꝾ"},{base:"H",letters:"HⒽＨĤḢḦȞḤḨḪĦⱧⱵꞍ"},{base:"I",letters:"IⒾＩÌÍÎĨĪĬİÏḮỈǏȈȊỊĮḬƗ"},{base:"J",letters:"JⒿＪĴɈ"},{base:"K",letters:"KⓀＫḰǨḲĶḴƘⱩꝀꝂꝄꞢ"},{base:"L",letters:"LⓁＬĿĹĽḶḸĻḼḺŁȽⱢⱠꝈꝆꞀ"},{base:"LJ",letters:"Ǉ"},{base:"Lj",letters:"ǈ"},{base:"M",letters:"MⓂＭḾṀṂⱮƜ"},{base:"N",letters:"NⓃＮǸŃÑṄŇṆŅṊṈȠƝꞐꞤ"},{base:"NJ",letters:"Ǌ"},{base:"Nj",letters:"ǋ"},{base:"O",letters:"OⓄＯÒÓÔỒỐỖỔÕṌȬṎŌṐṒŎȮȰÖȪỎŐǑȌȎƠỜỚỠỞỢỌỘǪǬØǾƆƟꝊꝌ"},{base:"OI",letters:"Ƣ"},{base:"OO",letters:"Ꝏ"},{base:"OU",letters:"Ȣ"},{base:"P",letters:"PⓅＰṔṖƤⱣꝐꝒꝔ"},{base:"Q",letters:"QⓆＱꝖꝘɊ"},{base:"R",letters:"RⓇＲŔṘŘȐȒṚṜŖṞɌⱤꝚꞦꞂ"},{base:"S",letters:"SⓈＳẞŚṤŜṠŠṦṢṨȘŞⱾꞨꞄ"},{base:"T",letters:"TⓉＴṪŤṬȚŢṰṮŦƬƮȾꞆ"},{base:"TZ",letters:"Ꜩ"},{base:"U",letters:"UⓊＵÙÚÛŨṸŪṺŬÜǛǗǕǙỦŮŰǓȔȖƯỪỨỮỬỰỤṲŲṶṴɄ"},{base:"V",letters:"VⓋＶṼṾƲꝞɅ"},{base:"VY",letters:"Ꝡ"},{base:"W",letters:"WⓌＷẀẂŴẆẄẈⱲ"},{base:"X",letters:"XⓍＸẊẌ"},{base:"Y",letters:"YⓎＹỲÝŶỸȲẎŸỶỴƳɎỾ"},{base:"Z",letters:"ZⓏＺŹẐŻŽẒẔƵȤⱿⱫꝢ"},{base:"a",letters:"aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐ"},{base:"aa",letters:"ꜳ"},{base:"ae",letters:"æǽǣ"},{base:"ao",letters:"ꜵ"},{base:"au",letters:"ꜷ"},{base:"av",letters:"ꜹꜻ"},{base:"ay",letters:"ꜽ"},{base:"b",letters:"bⓑｂḃḅḇƀƃɓ"},{base:"c",letters:"cⓒｃćĉċčçḉƈȼꜿↄ"},{base:"d",letters:"dⓓｄḋďḍḑḓḏđƌɖɗꝺ"},{base:"dz",letters:"ǳǆ"},{base:"e",letters:"eⓔｅèéêềếễểẽēḕḗĕėëẻěȅȇẹệȩḝęḙḛɇɛǝ"},{base:"f",letters:"fⓕｆḟƒꝼ"},{base:"g",letters:"gⓖｇǵĝḡğġǧģǥɠꞡᵹꝿ"},{base:"h",letters:"hⓗｈĥḣḧȟḥḩḫẖħⱨⱶɥ"},{base:"hv",letters:"ƕ"},{base:"i",letters:"iⓘｉìíîĩīĭïḯỉǐȉȋịįḭɨı"},{base:"j",letters:"jⓙｊĵǰɉ"},{base:"k",letters:"kⓚｋḱǩḳķḵƙⱪꝁꝃꝅꞣ"},{base:"l",letters:"lⓛｌŀĺľḷḹļḽḻſłƚɫⱡꝉꞁꝇ"},{base:"lj",letters:"ǉ"},{base:"m",letters:"mⓜｍḿṁṃɱɯ"},{base:"n",letters:"nⓝｎǹńñṅňṇņṋṉƞɲŉꞑꞥ"},{base:"nj",letters:"ǌ"},{base:"o",letters:"oⓞｏòóôồốỗổõṍȭṏōṑṓŏȯȱöȫỏőǒȍȏơờớỡởợọộǫǭøǿɔꝋꝍɵ"},{base:"oi",letters:"ƣ"},{base:"ou",letters:"ȣ"},{base:"oo",letters:"ꝏ"},{base:"p",letters:"pⓟｐṕṗƥᵽꝑꝓꝕ"},{base:"q",letters:"qⓠｑɋꝗꝙ"},{base:"r",letters:"rⓡｒŕṙřȑȓṛṝŗṟɍɽꝛꞧꞃ"},{base:"s",letters:"sⓢｓßśṥŝṡšṧṣṩșşȿꞩꞅẛ"},{base:"t",letters:"tⓣｔṫẗťṭțţṱṯŧƭʈⱦꞇ"},{base:"tz",letters:"ꜩ"},{base:"u",letters:"uⓤｕùúûũṹūṻŭüǜǘǖǚủůűǔȕȗưừứữửựụṳųṷṵʉ"},{base:"v",letters:"vⓥｖṽṿʋꝟʌ"},{base:"vy",letters:"ꝡ"},{base:"w",letters:"wⓦｗẁẃŵẇẅẘẉⱳ"},{base:"x",letters:"xⓧｘẋẍ"},{base:"y",letters:"yⓨｙỳýŷỹȳẏÿỷẙỵƴɏỿ"},{base:"z",letters:"zⓩｚźẑżžẓẕƶȥɀⱬꝣ"}],t60=new RegExp("["+Aq.map(function(e){return e.letters}).join("")+"]","g"),I$={};for(var vv=0;vv<Aq.length;vv++)for(var yv=Aq[vv],qv=0;qv<yv.letters.length;qv++)I$[yv.letters[qv]]=yv.base;var j$=function(t){return t.replace(t60,function(n){return I$[n]})},n60=Bw(j$),t8=function(t){return t.replace(/^\s+|\s+$/g,"")},r60=function(t){return"".concat(t.label," ").concat(t.value)},a60=function(t){return function(n,r){if(n.data.__isNew__)return!0;var a=f1({ignoreCase:!0,ignoreAccents:!0,stringify:r60,trim:!0,matchFrom:"any"},t),o=a.ignoreCase,s=a.ignoreAccents,i=a.stringify,c=a.trim,l=a.matchFrom,p=c?t8(r):r,u=c?t8(i(n)):i(n);return o&&(p=p.toLowerCase(),u=u.toLowerCase()),s&&(p=n60(p),u=j$(u)),l==="start"?u.substr(0,p.length)===p:u.indexOf(p)>-1}},o60=["innerRef"];function s60(e){var t=e.innerRef,n=gn(e,o60),r=kq0(n,"onExited","in","enter","exit","appear");return F1("input",A1({ref:t},r,{css:Nw({label:"dummyInput",background:0,border:0,caretColor:"transparent",fontSize:"inherit",gridArea:"1 / 1 / 2 / 3",outline:0,padding:0,width:1,color:"transparent",left:-100,opacity:0,position:"relative",transform:"scale(.01)"},"","")}))}var i60=function(t){t.cancelable&&t.preventDefault(),t.stopPropagation()};function c60(e){var t=e.isEnabled,n=e.onBottomArrive,r=e.onBottomLeave,a=e.onTopArrive,o=e.onTopLeave,s=y.useRef(!1),i=y.useRef(!1),c=y.useRef(0),l=y.useRef(null),p=y.useCallback(function(h,m){if(l.current!==null){var O=l.current,A=O.scrollTop,v=O.scrollHeight,x=O.clientHeight,W=l.current,q=m>0,_=v-x-A,N=!1;_>m&&s.current&&(r&&r(h),s.current=!1),q&&i.current&&(o&&o(h),i.current=!1),q&&m>_?(n&&!s.current&&n(h),W.scrollTop=v,N=!0,s.current=!0):!q&&-m>A&&(a&&!i.current&&a(h),W.scrollTop=0,N=!0,i.current=!0),N&&i60(h)}},[n,r,a,o]),u=y.useCallback(function(h){p(h,h.deltaY)},[p]),f=y.useCallback(function(h){c.current=h.changedTouches[0].clientY},[]),b=y.useCallback(function(h){var m=c.current-h.changedTouches[0].clientY;p(h,m)},[p]),M=y.useCallback(function(h){if(h){var m=Sq0?{passive:!1}:!1;h.addEventListener("wheel",u,m),h.addEventListener("touchstart",f,m),h.addEventListener("touchmove",b,m)}},[b,f,u]),z=y.useCallback(function(h){h&&(h.removeEventListener("wheel",u,!1),h.removeEventListener("touchstart",f,!1),h.removeEventListener("touchmove",b,!1))},[b,f,u]);return y.useEffect(function(){if(t){var h=l.current;return M(h),function(){z(h)}}},[t,M,z]),function(h){l.current=h}}var n8=["boxSizing","height","overflow","paddingRight","position"],r8={boxSizing:"border-box",overflow:"hidden",position:"relative",height:"100%"};function a8(e){e.preventDefault()}function o8(e){e.stopPropagation()}function s8(){var e=this.scrollTop,t=this.scrollHeight,n=e+this.offsetHeight;e===0?this.scrollTop=1:n===t&&(this.scrollTop=e-1)}function i8(){return"ontouchstart"in window||navigator.maxTouchPoints}var c8=!!(typeof window<"u"&&window.document&&window.document.createElement),Id=0,du={capture:!1,passive:!1};function l60(e){var t=e.isEnabled,n=e.accountForScrollbars,r=n===void 0?!0:n,a=y.useRef({}),o=y.useRef(null),s=y.useCallback(function(c){if(c8){var l=document.body,p=l&&l.style;if(r&&n8.forEach(function(M){var z=p&&p[M];a.current[M]=z}),r&&Id<1){var u=parseInt(a.current.paddingRight,10)||0,f=document.body?document.body.clientWidth:0,b=window.innerWidth-f+u||0;Object.keys(r8).forEach(function(M){var z=r8[M];p&&(p[M]=z)}),p&&(p.paddingRight="".concat(b,"px"))}l&&i8()&&(l.addEventListener("touchmove",a8,du),c&&(c.addEventListener("touchstart",s8,du),c.addEventListener("touchmove",o8,du))),Id+=1}},[r]),i=y.useCallback(function(c){if(c8){var l=document.body,p=l&&l.style;Id=Math.max(Id-1,0),r&&Id<1&&n8.forEach(function(u){var f=a.current[u];p&&(p[u]=f)}),l&&i8()&&(l.removeEventListener("touchmove",a8,du),c&&(c.removeEventListener("touchstart",s8,du),c.removeEventListener("touchmove",o8,du)))}},[r]);return y.useEffect(function(){if(t){var c=o.current;return s(c),function(){i(c)}}},[t,s,i]),function(c){o.current=c}}var p60=function(t){var n=t.target;return n.ownerDocument.activeElement&&n.ownerDocument.activeElement.blur()},u60={name:"1kfdb0e",styles:"position:fixed;left:0;bottom:0;right:0;top:0"};function d60(e){var t=e.children,n=e.lockEnabled,r=e.captureEnabled,a=r===void 0?!0:r,o=e.onBottomArrive,s=e.onBottomLeave,i=e.onTopArrive,c=e.onTopLeave,l=c60({isEnabled:a,onBottomArrive:o,onBottomLeave:s,onTopArrive:i,onTopLeave:c}),p=l60({isEnabled:n}),u=function(b){l(b),p(b)};return F1(y.Fragment,null,n&&F1("div",{onClick:p60,css:u60}),t(u))}var f60={name:"1a0ro4n-requiredInput",styles:"label:requiredInput;opacity:0;pointer-events:none;position:absolute;bottom:0;left:0;right:0;width:100%"},b60=function(t){var n=t.name,r=t.onFocus;return F1("input",{required:!0,name:n,tabIndex:-1,"aria-hidden":"true",onFocus:r,css:f60,value:"",onChange:function(){}})},M60=b60;function Fw(e){var t;return typeof window<"u"&&window.navigator!=null?e.test(((t=window.navigator.userAgentData)===null||t===void 0?void 0:t.platform)||window.navigator.platform):!1}function z60(){return Fw(/^iPhone/i)}function X$(){return Fw(/^Mac/i)}function h60(){return Fw(/^iPad/i)||X$()&&navigator.maxTouchPoints>1}function O60(){return z60()||h60()}function m60(){return X$()||O60()}var A60=function(t){return t.label},g60=function(t){return t.label},v60=function(t){return t.value},y60=function(t){return!!t.isDisabled},q60={clearIndicator:ix0,container:Kq0,control:bx0,dropdownIndicator:ox0,group:Ox0,groupHeading:Ax0,indicatorsContainer:ex0,indicatorSeparator:lx0,input:qx0,loadingIndicator:dx0,loadingMessage:Hq0,menu:Pq0,menuList:jq0,menuPortal:Vq0,multiValue:_x0,multiValueLabel:Sx0,multiValueRemove:Nx0,noOptionsMessage:$q0,option:Dx0,placeholder:Fx0,singleValue:Xx0,valueContainer:Qq0},x60={primary:"#2684FF",primary75:"#4C9AFF",primary50:"#B2D4FF",primary25:"#DEEBFF",danger:"#DE350B",dangerLight:"#FFBDAD",neutral0:"hsl(0, 0%, 100%)",neutral5:"hsl(0, 0%, 95%)",neutral10:"hsl(0, 0%, 90%)",neutral20:"hsl(0, 0%, 80%)",neutral30:"hsl(0, 0%, 70%)",neutral40:"hsl(0, 0%, 60%)",neutral50:"hsl(0, 0%, 50%)",neutral60:"hsl(0, 0%, 40%)",neutral70:"hsl(0, 0%, 30%)",neutral80:"hsl(0, 0%, 20%)",neutral90:"hsl(0, 0%, 10%)"},W60=4,$$=4,w60=38,R60=$$*2,_60={baseUnit:$$,controlHeight:w60,menuGutter:R60},xv={borderRadius:W60,colors:x60,spacing:_60},S60={"aria-live":"polite",backspaceRemovesValue:!0,blurInputOnSelect:Jk(),captureMenuScroll:!Jk(),classNames:{},closeMenuOnSelect:!0,closeMenuOnScroll:!1,components:{},controlShouldRenderValue:!0,escapeClearsValue:!1,filterOption:a60(),formatGroupLabel:A60,getOptionLabel:g60,getOptionValue:v60,isDisabled:!1,isLoading:!1,isMulti:!1,isRtl:!1,isSearchable:!0,isOptionDisabled:y60,loadingMessage:function(){return"Loading..."},maxMenuHeight:300,minMenuHeight:140,menuIsOpen:!1,menuPlacement:"bottom",menuPosition:"absolute",menuShouldBlockScroll:!1,menuShouldScrollIntoView:!Rq0(),noOptionsMessage:function(){return"No options"},openMenuOnFocus:!1,openMenuOnClick:!0,options:[],pageSize:5,placeholder:"Select...",screenReaderStatus:function(t){var n=t.count;return"".concat(n," result").concat(n!==1?"s":""," available")},styles:{},tabIndex:0,tabSelectsValue:!0,unstyled:!1};function l8(e,t,n,r){var a=Y$(e,t,n),o=V$(e,t,n),s=U$(e,t),i=Mm(e,t);return{type:"option",data:t,isDisabled:a,isSelected:o,label:s,value:i,index:r}}function TO(e,t){return e.options.map(function(n,r){if("options"in n){var a=n.options.map(function(s,i){return l8(e,s,t,i)}).filter(function(s){return u8(e,s)});return a.length>0?{type:"group",data:n,options:a,index:r}:void 0}var o=l8(e,n,t,r);return u8(e,o)?o:void 0}).filter(Nq0)}function H$(e){return e.reduce(function(t,n){return n.type==="group"?t.push.apply(t,Ql(n.options.map(function(r){return r.data}))):t.push(n.data),t},[])}function p8(e,t){return e.reduce(function(n,r){return r.type==="group"?n.push.apply(n,Ql(r.options.map(function(a){return{data:a.data,id:"".concat(t,"-").concat(r.index,"-").concat(a.index)}}))):n.push({data:r.data,id:"".concat(t,"-").concat(r.index)}),n},[])}function N60(e,t){return H$(TO(e,t))}function u8(e,t){var n=e.inputValue,r=n===void 0?"":n,a=t.data,o=t.isSelected,s=t.label,i=t.value;return(!K$(e)||!o)&&G$(e,{label:s,value:i,data:a},r)}function L60(e,t){var n=e.focusedValue,r=e.selectValue,a=r.indexOf(n);if(a>-1){var o=t.indexOf(n);if(o>-1)return n;if(a<t.length)return t[a]}return null}function k60(e,t){var n=e.focusedOption;return n&&t.indexOf(n)>-1?n:t[0]}var Wv=function(t,n){var r,a=(r=t.find(function(o){return o.data===n}))===null||r===void 0?void 0:r.id;return a||null},U$=function(t,n){return t.getOptionLabel(n)},Mm=function(t,n){return t.getOptionValue(n)};function Y$(e,t,n){return typeof e.isOptionDisabled=="function"?e.isOptionDisabled(t,n):!1}function V$(e,t,n){if(n.indexOf(t)>-1)return!0;if(typeof e.isOptionSelected=="function")return e.isOptionSelected(t,n);var r=Mm(e,t);return n.some(function(a){return Mm(e,a)===r})}function G$(e,t,n){return e.filterOption?e.filterOption(t,n):!0}var K$=function(t){var n=t.hideSelectedOptions,r=t.isMulti;return n===void 0?r:n},C60=1,J$=function(e){vr(n,e);var t=E50(n);function n(r){var a;if(vn(this,n),a=t.call(this,r),a.state={ariaSelection:null,focusedOption:null,focusedOptionId:null,focusableOptionsWithIds:[],focusedValue:null,inputIsHidden:!1,isFocused:!1,selectValue:[],clearFocusValueOnUpdate:!1,prevWasFocused:!1,inputIsHiddenAfterUpdate:void 0,prevProps:void 0,instancePrefix:""},a.blockOptionHover=!1,a.isComposing=!1,a.commonProps=void 0,a.initialTouchX=0,a.initialTouchY=0,a.openAfterFocus=!1,a.scrollToFocusedOptionOnUpdate=!1,a.userIsDragging=void 0,a.isAppleDevice=m60(),a.controlRef=null,a.getControlRef=function(c){a.controlRef=c},a.focusedOptionRef=null,a.getFocusedOptionRef=function(c){a.focusedOptionRef=c},a.menuListRef=null,a.getMenuListRef=function(c){a.menuListRef=c},a.inputRef=null,a.getInputRef=function(c){a.inputRef=c},a.focus=a.focusInput,a.blur=a.blurInput,a.onChange=function(c,l){var p=a.props,u=p.onChange,f=p.name;l.name=f,a.ariaOnChange(c,l),u(c,l)},a.setValue=function(c,l,p){var u=a.props,f=u.closeMenuOnSelect,b=u.isMulti,M=u.inputValue;a.onInputChange("",{action:"set-value",prevInputValue:M}),f&&(a.setState({inputIsHiddenAfterUpdate:!b}),a.onMenuClose()),a.setState({clearFocusValueOnUpdate:!0}),a.onChange(c,{action:l,option:p})},a.selectOption=function(c){var l=a.props,p=l.blurInputOnSelect,u=l.isMulti,f=l.name,b=a.state.selectValue,M=u&&a.isOptionSelected(c,b),z=a.isOptionDisabled(c,b);if(M){var h=a.getOptionValue(c);a.setValue(b.filter(function(m){return a.getOptionValue(m)!==h}),"deselect-option",c)}else if(!z)u?a.setValue([].concat(Ql(b),[c]),"select-option",c):a.setValue(c,"select-option");else{a.ariaOnChange(c,{action:"select-option",option:c,name:f});return}p&&a.blurInput()},a.removeValue=function(c){var l=a.props.isMulti,p=a.state.selectValue,u=a.getOptionValue(c),f=p.filter(function(M){return a.getOptionValue(M)!==u}),b=Xh(l,f,f[0]||null);a.onChange(b,{action:"remove-value",removedValue:c}),a.focusInput()},a.clearValue=function(){var c=a.state.selectValue;a.onChange(Xh(a.props.isMulti,[],null),{action:"clear",removedValues:c})},a.popValue=function(){var c=a.props.isMulti,l=a.state.selectValue,p=l[l.length-1],u=l.slice(0,l.length-1),f=Xh(c,u,u[0]||null);a.onChange(f,{action:"pop-value",removedValue:p})},a.getFocusedOptionId=function(c){return Wv(a.state.focusableOptionsWithIds,c)},a.getFocusableOptionsWithIds=function(){return p8(TO(a.props,a.state.selectValue),a.getElementId("option"))},a.getValue=function(){return a.state.selectValue},a.cx=function(){for(var c=arguments.length,l=new Array(c),p=0;p<c;p++)l[p]=arguments[p];return yq0.apply(void 0,[a.props.classNamePrefix].concat(l))},a.getOptionLabel=function(c){return U$(a.props,c)},a.getOptionValue=function(c){return Mm(a.props,c)},a.getStyles=function(c,l){var p=a.props.unstyled,u=q60[c](l,p);u.boxSizing="border-box";var f=a.props.styles[c];return f?f(u,l):u},a.getClassNames=function(c,l){var p,u;return(p=(u=a.props.classNames)[c])===null||p===void 0?void 0:p.call(u,l)},a.getElementId=function(c){return"".concat(a.state.instancePrefix,"-").concat(c)},a.getComponents=function(){return Yx0(a.props)},a.buildCategorizedOptions=function(){return TO(a.props,a.state.selectValue)},a.getCategorizedOptions=function(){return a.props.menuIsOpen?a.buildCategorizedOptions():[]},a.buildFocusableOptions=function(){return H$(a.buildCategorizedOptions())},a.getFocusableOptions=function(){return a.props.menuIsOpen?a.buildFocusableOptions():[]},a.ariaOnChange=function(c,l){a.setState({ariaSelection:f1({value:c},l)})},a.onMenuMouseDown=function(c){c.button===0&&(c.stopPropagation(),c.preventDefault(),a.focusInput())},a.onMenuMouseMove=function(c){a.blockOptionHover=!1},a.onControlMouseDown=function(c){if(!c.defaultPrevented){var l=a.props.openMenuOnClick;a.state.isFocused?a.props.menuIsOpen?c.target.tagName!=="INPUT"&&c.target.tagName!=="TEXTAREA"&&a.onMenuClose():l&&a.openMenu("first"):(l&&(a.openAfterFocus=!0),a.focusInput()),c.target.tagName!=="INPUT"&&c.target.tagName!=="TEXTAREA"&&c.preventDefault()}},a.onDropdownIndicatorMouseDown=function(c){if(!(c&&c.type==="mousedown"&&c.button!==0)&&!a.props.isDisabled){var l=a.props,p=l.isMulti,u=l.menuIsOpen;a.focusInput(),u?(a.setState({inputIsHiddenAfterUpdate:!p}),a.onMenuClose()):a.openMenu("first"),c.preventDefault()}},a.onClearIndicatorMouseDown=function(c){c&&c.type==="mousedown"&&c.button!==0||(a.clearValue(),c.preventDefault(),a.openAfterFocus=!1,c.type==="touchend"?a.focusInput():setTimeout(function(){return a.focusInput()}))},a.onScroll=function(c){typeof a.props.closeMenuOnScroll=="boolean"?c.target instanceof HTMLElement&&pg(c.target)&&a.props.onMenuClose():typeof a.props.closeMenuOnScroll=="function"&&a.props.closeMenuOnScroll(c)&&a.props.onMenuClose()},a.onCompositionStart=function(){a.isComposing=!0},a.onCompositionEnd=function(){a.isComposing=!1},a.onTouchStart=function(c){var l=c.touches,p=l&&l.item(0);p&&(a.initialTouchX=p.clientX,a.initialTouchY=p.clientY,a.userIsDragging=!1)},a.onTouchMove=function(c){var l=c.touches,p=l&&l.item(0);if(p){var u=Math.abs(p.clientX-a.initialTouchX),f=Math.abs(p.clientY-a.initialTouchY),b=5;a.userIsDragging=u>b||f>b}},a.onTouchEnd=function(c){a.userIsDragging||(a.controlRef&&!a.controlRef.contains(c.target)&&a.menuListRef&&!a.menuListRef.contains(c.target)&&a.blurInput(),a.initialTouchX=0,a.initialTouchY=0)},a.onControlTouchEnd=function(c){a.userIsDragging||a.onControlMouseDown(c)},a.onClearIndicatorTouchEnd=function(c){a.userIsDragging||a.onClearIndicatorMouseDown(c)},a.onDropdownIndicatorTouchEnd=function(c){a.userIsDragging||a.onDropdownIndicatorMouseDown(c)},a.handleInputChange=function(c){var l=a.props.inputValue,p=c.currentTarget.value;a.setState({inputIsHiddenAfterUpdate:!1}),a.onInputChange(p,{action:"input-change",prevInputValue:l}),a.props.menuIsOpen||a.onMenuOpen()},a.onInputFocus=function(c){a.props.onFocus&&a.props.onFocus(c),a.setState({inputIsHiddenAfterUpdate:!1,isFocused:!0}),(a.openAfterFocus||a.props.openMenuOnFocus)&&a.openMenu("first"),a.openAfterFocus=!1},a.onInputBlur=function(c){var l=a.props.inputValue;if(a.menuListRef&&a.menuListRef.contains(document.activeElement)){a.inputRef.focus();return}a.props.onBlur&&a.props.onBlur(c),a.onInputChange("",{action:"input-blur",prevInputValue:l}),a.onMenuClose(),a.setState({focusedValue:null,isFocused:!1})},a.onOptionHover=function(c){if(!(a.blockOptionHover||a.state.focusedOption===c)){var l=a.getFocusableOptions(),p=l.indexOf(c);a.setState({focusedOption:c,focusedOptionId:p>-1?a.getFocusedOptionId(c):null})}},a.shouldHideSelectedOptions=function(){return K$(a.props)},a.onValueInputFocus=function(c){c.preventDefault(),c.stopPropagation(),a.focus()},a.onKeyDown=function(c){var l=a.props,p=l.isMulti,u=l.backspaceRemovesValue,f=l.escapeClearsValue,b=l.inputValue,M=l.isClearable,z=l.isDisabled,h=l.menuIsOpen,m=l.onKeyDown,O=l.tabSelectsValue,A=l.openMenuOnFocus,v=a.state,x=v.focusedOption,W=v.focusedValue,q=v.selectValue;if(!z&&!(typeof m=="function"&&(m(c),c.defaultPrevented))){switch(a.blockOptionHover=!0,c.key){case"ArrowLeft":if(!p||b)return;a.focusValue("previous");break;case"ArrowRight":if(!p||b)return;a.focusValue("next");break;case"Delete":case"Backspace":if(b)return;if(W)a.removeValue(W);else{if(!u)return;p?a.popValue():M&&a.clearValue()}break;case"Tab":if(a.isComposing||c.shiftKey||!h||!O||!x||A&&a.isOptionSelected(x,q))return;a.selectOption(x);break;case"Enter":if(c.keyCode===229)break;if(h){if(!x||a.isComposing)return;a.selectOption(x);break}return;case"Escape":h?(a.setState({inputIsHiddenAfterUpdate:!1}),a.onInputChange("",{action:"menu-close",prevInputValue:b}),a.onMenuClose()):M&&f&&a.clearValue();break;case" ":if(b)return;if(!h){a.openMenu("first");break}if(!x)return;a.selectOption(x);break;case"ArrowUp":h?a.focusOption("up"):a.openMenu("last");break;case"ArrowDown":h?a.focusOption("down"):a.openMenu("first");break;case"PageUp":if(!h)return;a.focusOption("pageup");break;case"PageDown":if(!h)return;a.focusOption("pagedown");break;case"Home":if(!h)return;a.focusOption("first");break;case"End":if(!h)return;a.focusOption("last");break;default:return}c.preventDefault()}},a.state.instancePrefix="react-select-"+(a.props.instanceId||++C60),a.state.selectValue=Gk(r.value),r.menuIsOpen&&a.state.selectValue.length){var o=a.getFocusableOptionsWithIds(),s=a.buildFocusableOptions(),i=s.indexOf(a.state.selectValue[0]);a.state.focusableOptionsWithIds=o,a.state.focusedOption=s[i],a.state.focusedOptionId=Wv(o,s[i])}return a}return yn(n,[{key:"componentDidMount",value:function(){this.startListeningComposition(),this.startListeningToTouch(),this.props.closeMenuOnScroll&&document&&document.addEventListener&&document.addEventListener("scroll",this.onScroll,!0),this.props.autoFocus&&this.focusInput(),this.props.menuIsOpen&&this.state.focusedOption&&this.menuListRef&&this.focusedOptionRef&&Kk(this.menuListRef,this.focusedOptionRef)}},{key:"componentDidUpdate",value:function(a){var o=this.props,s=o.isDisabled,i=o.menuIsOpen,c=this.state.isFocused;(c&&!s&&a.isDisabled||c&&i&&!a.menuIsOpen)&&this.focusInput(),c&&s&&!a.isDisabled?this.setState({isFocused:!1},this.onMenuClose):!c&&!s&&a.isDisabled&&this.inputRef===document.activeElement&&this.setState({isFocused:!0}),this.menuListRef&&this.focusedOptionRef&&this.scrollToFocusedOptionOnUpdate&&(Kk(this.menuListRef,this.focusedOptionRef),this.scrollToFocusedOptionOnUpdate=!1)}},{key:"componentWillUnmount",value:function(){this.stopListeningComposition(),this.stopListeningToTouch(),document.removeEventListener("scroll",this.onScroll,!0)}},{key:"onMenuOpen",value:function(){this.props.onMenuOpen()}},{key:"onMenuClose",value:function(){this.onInputChange("",{action:"menu-close",prevInputValue:this.props.inputValue}),this.props.onMenuClose()}},{key:"onInputChange",value:function(a,o){this.props.onInputChange(a,o)}},{key:"focusInput",value:function(){this.inputRef&&this.inputRef.focus()}},{key:"blurInput",value:function(){this.inputRef&&this.inputRef.blur()}},{key:"openMenu",value:function(a){var o=this,s=this.state,i=s.selectValue,c=s.isFocused,l=this.buildFocusableOptions(),p=a==="first"?0:l.length-1;if(!this.props.isMulti){var u=l.indexOf(i[0]);u>-1&&(p=u)}this.scrollToFocusedOptionOnUpdate=!(c&&this.menuListRef),this.setState({inputIsHiddenAfterUpdate:!1,focusedValue:null,focusedOption:l[p],focusedOptionId:this.getFocusedOptionId(l[p])},function(){return o.onMenuOpen()})}},{key:"focusValue",value:function(a){var o=this.state,s=o.selectValue,i=o.focusedValue;if(this.props.isMulti){this.setState({focusedOption:null});var c=s.indexOf(i);i||(c=-1);var l=s.length-1,p=-1;if(s.length){switch(a){case"previous":c===0?p=0:c===-1?p=l:p=c-1;break;case"next":c>-1&&c<l&&(p=c+1);break}this.setState({inputIsHidden:p!==-1,focusedValue:s[p]})}}}},{key:"focusOption",value:function(){var a=arguments.length>0&&arguments[0]!==void 0?arguments[0]:"first",o=this.props.pageSize,s=this.state.focusedOption,i=this.getFocusableOptions();if(i.length){var c=0,l=i.indexOf(s);s||(l=-1),a==="up"?c=l>0?l-1:i.length-1:a==="down"?c=(l+1)%i.length:a==="pageup"?(c=l-o,c<0&&(c=0)):a==="pagedown"?(c=l+o,c>i.length-1&&(c=i.length-1)):a==="last"&&(c=i.length-1),this.scrollToFocusedOptionOnUpdate=!0,this.setState({focusedOption:i[c],focusedValue:null,focusedOptionId:this.getFocusedOptionId(i[c])})}}},{key:"getTheme",value:function(){return this.props.theme?typeof this.props.theme=="function"?this.props.theme(xv):f1(f1({},xv),this.props.theme):xv}},{key:"getCommonProps",value:function(){var a=this.clearValue,o=this.cx,s=this.getStyles,i=this.getClassNames,c=this.getValue,l=this.selectOption,p=this.setValue,u=this.props,f=u.isMulti,b=u.isRtl,M=u.options,z=this.hasValue();return{clearValue:a,cx:o,getStyles:s,getClassNames:i,getValue:c,hasValue:z,isMulti:f,isRtl:b,options:M,selectOption:l,selectProps:u,setValue:p,theme:this.getTheme()}}},{key:"hasValue",value:function(){var a=this.state.selectValue;return a.length>0}},{key:"hasOptions",value:function(){return!!this.getFocusableOptions().length}},{key:"isClearable",value:function(){var a=this.props,o=a.isClearable,s=a.isMulti;return o===void 0?s:o}},{key:"isOptionDisabled",value:function(a,o){return Y$(this.props,a,o)}},{key:"isOptionSelected",value:function(a,o){return V$(this.props,a,o)}},{key:"filterOption",value:function(a,o){return G$(this.props,a,o)}},{key:"formatOptionLabel",value:function(a,o){if(typeof this.props.formatOptionLabel=="function"){var s=this.props.inputValue,i=this.state.selectValue;return this.props.formatOptionLabel(a,{context:o,inputValue:s,selectValue:i})}else return this.getOptionLabel(a)}},{key:"formatGroupLabel",value:function(a){return this.props.formatGroupLabel(a)}},{key:"startListeningComposition",value:function(){document&&document.addEventListener&&(document.addEventListener("compositionstart",this.onCompositionStart,!1),document.addEventListener("compositionend",this.onCompositionEnd,!1))}},{key:"stopListeningComposition",value:function(){document&&document.removeEventListener&&(document.removeEventListener("compositionstart",this.onCompositionStart),document.removeEventListener("compositionend",this.onCompositionEnd))}},{key:"startListeningToTouch",value:function(){document&&document.addEventListener&&(document.addEventListener("touchstart",this.onTouchStart,!1),document.addEventListener("touchmove",this.onTouchMove,!1),document.addEventListener("touchend",this.onTouchEnd,!1))}},{key:"stopListeningToTouch",value:function(){document&&document.removeEventListener&&(document.removeEventListener("touchstart",this.onTouchStart),document.removeEventListener("touchmove",this.onTouchMove),document.removeEventListener("touchend",this.onTouchEnd))}},{key:"renderInput",value:function(){var a=this.props,o=a.isDisabled,s=a.isSearchable,i=a.inputId,c=a.inputValue,l=a.tabIndex,p=a.form,u=a.menuIsOpen,f=a.required,b=this.getComponents(),M=b.Input,z=this.state,h=z.inputIsHidden,m=z.ariaSelection,O=this.commonProps,A=i||this.getElementId("input"),v=f1(f1(f1({"aria-autocomplete":"list","aria-expanded":u,"aria-haspopup":!0,"aria-errormessage":this.props["aria-errormessage"],"aria-invalid":this.props["aria-invalid"],"aria-label":this.props["aria-label"],"aria-labelledby":this.props["aria-labelledby"],"aria-required":f,role:"combobox","aria-activedescendant":this.isAppleDevice?void 0:this.state.focusedOptionId||""},u&&{"aria-controls":this.getElementId("listbox")}),!s&&{"aria-readonly":!0}),this.hasValue()?(m==null?void 0:m.action)==="initial-input-focus"&&{"aria-describedby":this.getElementId("live-region")}:{"aria-describedby":this.getElementId("placeholder")});return s?y.createElement(M,A1({},O,{autoCapitalize:"none",autoComplete:"off",autoCorrect:"off",id:A,innerRef:this.getInputRef,isDisabled:o,isHidden:h,onBlur:this.onInputBlur,onChange:this.handleInputChange,onFocus:this.onInputFocus,spellCheck:"false",tabIndex:l,form:p,type:"text",value:c},v)):y.createElement(s60,A1({id:A,innerRef:this.getInputRef,onBlur:this.onInputBlur,onChange:fm,onFocus:this.onInputFocus,disabled:o,tabIndex:l,inputMode:"none",form:p,value:""},v))}},{key:"renderPlaceholderOrValue",value:function(){var a=this,o=this.getComponents(),s=o.MultiValue,i=o.MultiValueContainer,c=o.MultiValueLabel,l=o.MultiValueRemove,p=o.SingleValue,u=o.Placeholder,f=this.commonProps,b=this.props,M=b.controlShouldRenderValue,z=b.isDisabled,h=b.isMulti,m=b.inputValue,O=b.placeholder,A=this.state,v=A.selectValue,x=A.focusedValue,W=A.isFocused;if(!this.hasValue()||!M)return m?null:y.createElement(u,A1({},f,{key:"placeholder",isDisabled:z,isFocused:W,innerProps:{id:this.getElementId("placeholder")}}),O);if(h)return v.map(function(_,N){var L=_===x,k="".concat(a.getOptionLabel(_),"-").concat(a.getOptionValue(_));return y.createElement(s,A1({},f,{components:{Container:i,Label:c,Remove:l},isFocused:L,isDisabled:z,key:k,index:N,removeProps:{onClick:function(){return a.removeValue(_)},onTouchEnd:function(){return a.removeValue(_)},onMouseDown:function(B){B.preventDefault()}},data:_}),a.formatOptionLabel(_,"value"))});if(m)return null;var q=v[0];return y.createElement(p,A1({},f,{data:q,isDisabled:z}),this.formatOptionLabel(q,"value"))}},{key:"renderClearIndicator",value:function(){var a=this.getComponents(),o=a.ClearIndicator,s=this.commonProps,i=this.props,c=i.isDisabled,l=i.isLoading,p=this.state.isFocused;if(!this.isClearable()||!o||c||!this.hasValue()||l)return null;var u={onMouseDown:this.onClearIndicatorMouseDown,onTouchEnd:this.onClearIndicatorTouchEnd,"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:u,isFocused:p}))}},{key:"renderLoadingIndicator",value:function(){var a=this.getComponents(),o=a.LoadingIndicator,s=this.commonProps,i=this.props,c=i.isDisabled,l=i.isLoading,p=this.state.isFocused;if(!o||!l)return null;var u={"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:u,isDisabled:c,isFocused:p}))}},{key:"renderIndicatorSeparator",value:function(){var a=this.getComponents(),o=a.DropdownIndicator,s=a.IndicatorSeparator;if(!o||!s)return null;var i=this.commonProps,c=this.props.isDisabled,l=this.state.isFocused;return y.createElement(s,A1({},i,{isDisabled:c,isFocused:l}))}},{key:"renderDropdownIndicator",value:function(){var a=this.getComponents(),o=a.DropdownIndicator;if(!o)return null;var s=this.commonProps,i=this.props.isDisabled,c=this.state.isFocused,l={onMouseDown:this.onDropdownIndicatorMouseDown,onTouchEnd:this.onDropdownIndicatorTouchEnd,"aria-hidden":"true"};return y.createElement(o,A1({},s,{innerProps:l,isDisabled:i,isFocused:c}))}},{key:"renderMenu",value:function(){var a=this,o=this.getComponents(),s=o.Group,i=o.GroupHeading,c=o.Menu,l=o.MenuList,p=o.MenuPortal,u=o.LoadingMessage,f=o.NoOptionsMessage,b=o.Option,M=this.commonProps,z=this.state.focusedOption,h=this.props,m=h.captureMenuScroll,O=h.inputValue,A=h.isLoading,v=h.loadingMessage,x=h.minMenuHeight,W=h.maxMenuHeight,q=h.menuIsOpen,_=h.menuPlacement,N=h.menuPosition,L=h.menuPortalTarget,k=h.menuShouldBlockScroll,S=h.menuShouldScrollIntoView,B=h.noOptionsMessage,V=h.onMenuScrollToTop,K=h.onMenuScrollToBottom;if(!q)return null;var i0=function(j,P){var E=j.type,J=j.data,M0=j.isDisabled,O0=j.isSelected,W0=j.label,x0=j.value,X0=z===J,e0=M0?void 0:function(){return a.onOptionHover(J)},l0=M0?void 0:function(){return a.selectOption(J)},g0="".concat(a.getElementId("option"),"-").concat(P),d0={id:g0,onClick:l0,onMouseMove:e0,onMouseOver:e0,tabIndex:-1,role:"option","aria-selected":a.isAppleDevice?void 0:O0};return y.createElement(b,A1({},M,{innerProps:d0,data:J,isDisabled:M0,isSelected:O0,key:g0,label:W0,type:E,value:x0,isFocused:X0,innerRef:X0?a.getFocusedOptionRef:void 0}),a.formatOptionLabel(j.data,"menu"))},G;if(this.hasOptions())G=this.getCategorizedOptions().map(function(T){if(T.type==="group"){var j=T.data,P=T.options,E=T.index,J="".concat(a.getElementId("group"),"-").concat(E),M0="".concat(J,"-heading");return y.createElement(s,A1({},M,{key:J,data:j,options:P,Heading:i,headingProps:{id:M0,data:T.data},label:a.formatGroupLabel(T.data)}),T.options.map(function(O0){return i0(O0,"".concat(E,"-").concat(O0.index))}))}else if(T.type==="option")return i0(T,"".concat(T.index))});else if(A){var U=v({inputValue:O});if(U===null)return null;G=y.createElement(u,M,U)}else{var F=B({inputValue:O});if(F===null)return null;G=y.createElement(f,M,F)}var n0={minMenuHeight:x,maxMenuHeight:W,menuPlacement:_,menuPosition:N,menuShouldScrollIntoView:S},a0=y.createElement(Bq0,A1({},M,n0),function(T){var j=T.ref,P=T.placerProps,E=P.placement,J=P.maxHeight;return y.createElement(c,A1({},M,n0,{innerRef:j,innerProps:{onMouseDown:a.onMenuMouseDown,onMouseMove:a.onMenuMouseMove},isLoading:A,placement:E}),y.createElement(d60,{captureEnabled:m,onTopArrive:V,onBottomArrive:K,lockEnabled:k},function(M0){return y.createElement(l,A1({},M,{innerRef:function(W0){a.getMenuListRef(W0),M0(W0)},innerProps:{role:"listbox","aria-multiselectable":M.isMulti,id:a.getElementId("listbox")},isLoading:A,maxHeight:J,focusedOption:z}),G)}))});return L||N==="fixed"?y.createElement(p,A1({},M,{appendTo:L,controlElement:this.controlRef,menuPlacement:_,menuPosition:N}),a0):a0}},{key:"renderFormField",value:function(){var a=this,o=this.props,s=o.delimiter,i=o.isDisabled,c=o.isMulti,l=o.name,p=o.required,u=this.state.selectValue;if(p&&!this.hasValue()&&!i)return y.createElement(M60,{name:l,onFocus:this.onValueInputFocus});if(!(!l||i))if(c)if(s){var f=u.map(function(z){return a.getOptionValue(z)}).join(s);return y.createElement("input",{name:l,type:"hidden",value:f})}else{var b=u.length>0?u.map(function(z,h){return y.createElement("input",{key:"i-".concat(h),name:l,type:"hidden",value:a.getOptionValue(z)})}):y.createElement("input",{name:l,type:"hidden",value:""});return y.createElement("div",null,b)}else{var M=u[0]?this.getOptionValue(u[0]):"";return y.createElement("input",{name:l,type:"hidden",value:M})}}},{key:"renderLiveRegion",value:function(){var a=this.commonProps,o=this.state,s=o.ariaSelection,i=o.focusedOption,c=o.focusedValue,l=o.isFocused,p=o.selectValue,u=this.getFocusableOptions();return y.createElement(e60,A1({},a,{id:this.getElementId("live-region"),ariaSelection:s,focusedOption:i,focusedValue:c,isFocused:l,selectValue:p,focusableOptions:u,isAppleDevice:this.isAppleDevice}))}},{key:"render",value:function(){var a=this.getComponents(),o=a.Control,s=a.IndicatorsContainer,i=a.SelectContainer,c=a.ValueContainer,l=this.props,p=l.className,u=l.id,f=l.isDisabled,b=l.menuIsOpen,M=this.state.isFocused,z=this.commonProps=this.getCommonProps();return y.createElement(i,A1({},z,{className:p,innerProps:{id:u,onKeyDown:this.onKeyDown},isDisabled:f,isFocused:M}),this.renderLiveRegion(),y.createElement(o,A1({},z,{innerRef:this.getControlRef,innerProps:{onMouseDown:this.onControlMouseDown,onTouchEnd:this.onControlTouchEnd},isDisabled:f,isFocused:M,menuIsOpen:b}),y.createElement(c,A1({},z,{isDisabled:f}),this.renderPlaceholderOrValue(),this.renderInput()),y.createElement(s,A1({},z,{isDisabled:f}),this.renderClearIndicator(),this.renderLoadingIndicator(),this.renderIndicatorSeparator(),this.renderDropdownIndicator())),this.renderMenu(),this.renderFormField())}}],[{key:"getDerivedStateFromProps",value:function(a,o){var s=o.prevProps,i=o.clearFocusValueOnUpdate,c=o.inputIsHiddenAfterUpdate,l=o.ariaSelection,p=o.isFocused,u=o.prevWasFocused,f=o.instancePrefix,b=a.options,M=a.value,z=a.menuIsOpen,h=a.inputValue,m=a.isMulti,O=Gk(M),A={};if(s&&(M!==s.value||b!==s.options||z!==s.menuIsOpen||h!==s.inputValue)){var v=z?N60(a,O):[],x=z?p8(TO(a,O),"".concat(f,"-option")):[],W=i?L60(o,O):null,q=k60(o,v),_=Wv(x,q);A={selectValue:O,focusedOption:q,focusedOptionId:_,focusableOptionsWithIds:x,focusedValue:W,clearFocusValueOnUpdate:!1}}var N=c!=null&&a!==s?{inputIsHidden:c,inputIsHiddenAfterUpdate:void 0}:{},L=l,k=p&&u;return p&&!k&&(L={value:Xh(m,O,O[0]||null),options:O,action:"initial-input-focus"},k=!u),(l==null?void 0:l.action)==="initial-input-focus"&&(L=null),f1(f1(f1({},A),N),{},{prevProps:a,ariaSelection:L,prevWasFocused:k})}}]),n}(y.Component);J$.defaultProps=S60;var E60=y.forwardRef(function(e,t){var n=C50(e);return y.createElement(J$,A1({ref:t},n))}),rz=E60;const T60=({conference:e,show:t,onClose:n,onUpdatePost:r,onModalClick:a})=>{const{t:o}=p1(),{windowWidth:s}=Ee(),{loading:i,updatePost:c}=sl(),[l,p]=y.useState(""),[u,f]=y.useState(!1),[b,M]=y.useState(""),{filterOptions:z,getOptionsFilter:h}=Ln(),[m,O]=y.useState(),[A,v]=y.useState(!1),[x,W]=y.useState("1"),[q,_]=y.useState(!1),[N,L]=y.useState(3),[k,S]=y.useState({callForPaper:e.callForPaper||"",link:e.information.link||"",rank:e.information.rank||"N/I",fieldsOfResearch:Array.from(new Set(e.information.fieldOfResearch))||[],organizations:e.organizations.length>0?e.organizations.filter(P=>P.status==="new").map(P=>({name:P.name??"",type:P.type??"",location:P.location??"",start_date:P.start_date??"",end_date:P.end_date??""})):[{name:"",type:"",location:"",start_date:"",end_date:""}],importantDates:e.importantDates.length>0?e.importantDates.filter(P=>P.status==="new").map(P=>({date_type:P.date_type??"",date_value:P.date_value??""})):[{date_type:"",date_value:""}]}),[B,V]=y.useState(Array.from(new Set(e.information.fieldOfResearch)).map(P=>({value:P,label:Nr(P)})));y.useEffect(()=>{(!z.rank||!z.for)&&h("for")},[z]);const K=(P,E)=>{S({...k,[P]:E})},i0=(P,E,J)=>{const M0={...k},O0={...M0.organizations[P]};if(O0[E]=J,M0.organizations[P]=O0,E==="end_date"||E==="start_date"){const W0=k.organizations[P].start_date,x0=k.organizations[P].end_date;W0&&x0&&new Date(x0)<new Date(W0)?_(!0):_(!1)}M0.organizations[P]=O0,S(M0)},G=(P,E,J)=>{const M0=[...k.importantDates];M0[P][E]=J,S({...k,importantDates:M0})},U=()=>{const P=[...k.importantDates,{date_type:"",date_value:""}];S({...k,importantDates:P})},F=P=>{const E=[...k.importantDates];E.splice(P,1),S({...k,importantDates:E})},n0=[...Array.from(new Set(e.information.fieldOfResearch)).map(P=>({value:P,label:P})),...z.for.map(P=>({value:P,label:P}))],a0=P=>{V(P),S({...k,fieldsOfResearch:P.map(E=>E.value)})},T=async P=>{a(P),O(!0);const E=k.organizations.some((O0,W0)=>k.organizations.findIndex((x0,X0)=>x0.name===O0.name&&X0!==W0)!==-1),J={},M0=k.importantDates.some(O0=>J[O0.date_type]?!0:(J[O0.date_type]=!0,!1));if(v(E),E)M("Organization name must be unique!"),W(2);else if(M0)M("Date type must be unique!"),W(3);else{const O0=[...k.organizations],W0=[...k.importantDates],x0=k.organizations.filter(g0=>g0.name!==""||g0.type!==""||g0.location!==""||g0.start_date!==""||g0.end_date!==""),X0=k.importantDates.filter(g0=>g0.date_type!==""||g0.date_value!==""),e0={...k,organizations:x0,importantDates:X0},l0=await c(e0,e.id);if(p(l0.message),f(l0.status),r(),l0.status){r();const g0=setInterval(()=>{L(d0=>d0===0?(clearInterval(g0),n(P),0):d0-1)},1e3)}else S({...k,organizations:O0,importantDates:W0})}},j=P=>{W(P)};return d.jsxs(J1,{show:t,onHide:n,size:"lg",centered:!0,scrollable:!0,fullscreen:"sm-down",children:[d.jsx(J1.Body,{onClick:P=>P.stopPropagation(),style:{maxHeight:"80vh",overflowY:"auto"},className:"pt-3",children:d.jsxs("div",{style:{minHeight:"500px"},children:[d.jsxs("div",{className:"d-flex justify-content-between align-items-center py-2 mb-3",children:[d.jsx(J1.Title,{className:"text-center w-100 text-skyblue-dark ps-5",children:`${o("update")} ${o("conference").toLowerCase()}`}),d.jsx(B0,{variant:"secondary",onClick:n,className:"bg-transparent border-0",children:d.jsx(j0,{icon:gW,className:"text-secondary fs-3"})})]}),d.jsx("div",{className:"w-100 py-2"}),d.jsx(_0,{children:d.jsxs(iW,{activeKey:x,transition:vi,fill:!0,onSelect:j,className:"fs-5 text-nowrap",children:[d.jsxs(Pl,{eventKey:"1",title:o("information"),className:"mx-4 pt-5",tabClassName:"custom-tab-update",children:[d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("name"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:e.information.name,disabled:!0})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("acronym"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:e.information.acronym,disabled:!0})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsx(_0.Label,{column:!0,sm:"3",children:"Link: "}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:k.link,onChange:P=>K("link",P.target.value)})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[" ",o("field_of_research"),": "]}),d.jsx(v0,{children:d.jsx(rz,{options:n0,value:B,isMulti:!0,onChange:a0,menuPosition:"fixed"})})]})]}),d.jsxs(Pl,{eventKey:"2",title:o("organization"),className:"mx-4",tabClassName:"custom-tab-update",children:[k.organizations.map((P,E)=>d.jsxs("div",{className:"mt-5",children:[d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("type"),": "]}),d.jsx(v0,{children:d.jsxs(_0.Select,{value:P.type,onChange:J=>i0(E,"type",J.target.value),children:[d.jsxs("option",{value:"",children:[`${o("select")} ${o("type").toLowerCase()}`,"..."]}),d.jsx("option",{value:"online",children:"Online"}),d.jsx("option",{value:"offline",children:"Offline"}),d.jsx("option",{value:"hybrid",children:"Hybrid"})]})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("location"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",value:P.location,onChange:J=>i0(E,"location",J.target.value),placeholder:`${o("enter_location_organization")}`})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("start_date"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"date",value:P.start_date,onChange:J=>i0(E,"start_date",J.target.value),className:q?"border-danger":""})})]}),d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsxs(_0.Label,{column:!0,sm:"3",children:[o("end_date"),": "]}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"date",value:P.end_date,onChange:J=>i0(E,"end_date",J.target.value),className:q?"border-danger":""})})]})]},E)),m&&b!==""&&d.jsx("p",{className:"text-center text-warning",children:b})]}),d.jsxs(Pl,{eventKey:"3",title:o("important_dates"),className:"mx-4",tabClassName:"custom-tab-update",children:[d.jsx("div",{className:"w-100 d-flex justify-content-end",children:d.jsx(B0,{variant:"secondary",className:"mt-3 text-end bg-skyblue-dark border-0",onClick:U,children:`${o("add_more_date")}`})}),k.importantDates.map((P,E)=>d.jsxs(_0.Group,{as:G0,className:"my-3 d-flex w-100",children:[d.jsxs(v0,{sm:"6",children:[d.jsxs("div",{className:"d-flex justify-content-between align-items-center",children:[d.jsxs(_0.Label,{children:[o("date_type"),":"]}),s<=768&&d.jsx(B0,{variant:"danger",onClick:()=>F(E),className:"bg-transparent border-0",title:"Delete this date",children:d.jsx(j0,{icon:Tb,className:"text-danger"})})]}),d.jsx(_0.Control,{type:"text",value:P.date_type,onChange:J=>G(E,"date_type",J.target.value),placeholder:o("enter_date_description")})]}),d.jsxs(v0,{children:[d.jsxs(_0.Label,{children:[o("date"),":"]}),d.jsx(_0.Control,{type:"date",value:P.date_value,onChange:J=>G(E,"date_value",J.target.value)})]}),s>768&&d.jsx(v0,{sm:"1",className:"d-flex align-items-end",children:d.jsx(B0,{variant:"danger",onClick:()=>F(E),className:"bg-transparent border-0",title:"Delete this date",children:d.jsx(j0,{icon:Tb,className:"text-danger"})})})]},E)),m&&b!==""&&d.jsx("p",{className:"text-center text-warning",children:b})]}),d.jsx(Pl,{eventKey:"4",title:"Call For Paper",className:"mx-4",tabClassName:"custom-tab-update",children:d.jsxs(_0.Group,{as:G0,className:"my-3",children:[d.jsx(_0.Label,{column:!0,sm:"3",children:"Call for paper: "}),d.jsx(v0,{children:d.jsx(_0.Control,{type:"text",as:"textarea",rows:s>768?14:22,value:k.callForPaper,onChange:P=>K("callForPaper",P.target.value)})})]})})]})})]})}),m&&!u&&l!==""&&d.jsx("p",{className:"text-danger text-center",children:l}),d.jsx(J1.Footer,{className:"d-flex justify-content-center w-100 text-center",children:u&&l!==""?d.jsx("div",{className:u?"text-success":"text-danger",children:u&&d.jsxs("div",{children:[d.jsx("span",{className:"text-success",children:o("success")}),". ",o("closing_countdown",{countdown:N})]})}):d.jsxs(eo,{children:[d.jsx(B0,{onClick:n,className:"bg-secondary border-light px-5 mx-3 rounded text-light",children:o("cancel")}),d.jsx(B0,{onClick:T,className:"bg-blue-normal border-light px-4 mx-3 rounded d-flex",children:i?d.jsx(An,{onReload:T,size:"sm"}):d.jsxs("div",{children:[d.jsx(j0,{icon:TA,className:"me-2"}),o("update")]})})]})})]})},D60=({conference:e})=>{const{t}=p1(),[n,r]=y.useState(!1),[a,o]=y.useState(!1),[s,i]=y.useState(""),[c,l]=y.useState(!1),{loading:p,deletePost:u,getPostedConferences:f}=sl(),[b,M]=y.useState(3),[z,h]=y.useState(!1),m=W=>{W.stopPropagation(),o(!1),l(null),i(""),M(3)},O=async W=>{W.stopPropagation(),h(!0);const q=await u(e==null?void 0:e.id);if(l(q.status),i(q.message),q.status){f();const _=setInterval(()=>{M(N=>N===0?(clearInterval(_),m(W),0):N-1)},1e3)}},A=W=>{W.stopPropagation(),r(!0)},v=W=>{W.stopPropagation(),r(!1)},x=W=>{W.stopPropagation(),o(!0)};return d.jsxs(d.Fragment,{children:[d.jsx(ZM,{show:a,onClose:m,onConfirm:O,modalTitle:"conference",message:s,status:c,loading:p,countdown:b,isConfirm:z}),n&&d.jsx(T60,{conference:e,show:n,onClose:v,onUpdatePost:f,onModalClick:A}),d.jsxs(eo,{className:"text-end p-0",children:[d.jsx(B0,{onClick:A,className:"bg-teal-normal border-0 rounded mx-2 px-3",children:t("update")}),d.jsx(B0,{onClick:x,className:"bg-danger border-0 rounded mx-2 px-3 ",children:t("delete")})]})]})},P60="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAtCAYAAAAk09IpAAAAAXNSR0IB2cksfwAAAgRJREFUWIXtmE9u01AQh795dSw2oBzB3CAbpMeq5gTkBvYN4kVcVcj5J1ggASLcoLlBbtCwQdnBEcINsmtFUg+Lkipp8kxa4paFv+2M3/v0Zjb+CWu8eJM2jo74rKINQeqUjKJzURmzWAym74czWRVs9yQCPStbYBcC8+WSVwJgT5NAfe/7Q7xGATMDoDWv+cgiAIEBMMjxI4sA4AGooY5uFoyfB9+yTz/Luthm7RAj5xt3lnXZfahkXFQyLioZF5WMi0rGRSXjopJxUcm4qGRcVDIuKhkXlYyL/0rG+9cDbNYORcxrRENVfqyylgeVsVk7RKSHEOrqR11o4Ndi20nPUB1N332clCYTJkn94qkXIxIBDWejECMS2146IWc0ffthrxBqL5kwSeqXz/zWBXlypxxHCRFC2017KAMWi0nRCK+Tq156jhKuF4yfB/mlPEckUtGDhEnrGR6eF9yORJwvo7/MGHM9CkFcbX+adYLwFUwEGrjaBKkjxPi1GGVrn9wyRTuxLqEM1ha1bztpjNEIlbDwW2Gr7hxTgeRc0C9PzHI46Q/nrj7bPw3Il32QaJ9z7ygjM8hHf5PYJaVXy6aIaRWNcD+Z7VHcG9tJYxVtCbJzBXbKKMwNjDTX8SEktqSydoghvj3CDZl99+FgUjd7ZY5vRmi77f7L7KRZ9uWFYp00/g2bV8uj63QeuwAAAABJRU5ErkJggg==",B60="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAYAAAB0HkOaAAAAAXNSR0IB2cksfwAAAURJREFUWIXt2E9OwkAYhvHnm9Y9R+AGcgNxL9KujQFuoCcAbwAnqIquW//EuLM3UG/AEbpVYMaFGknkMwWDTcw8y8lk8su7HGGhvXTclED64lwDpMbmm4iQv8ynJ/dxbyKfp/s3l32sG/wBYCnq1U53BSBKk4Y1W48VQQBwQm4ALGG3SgiAOJoGQALZrhoDYKoGLOYxWh6j5TFaHqPlMVoeo+UxWh6j5TFaHqPlMVoeo+UxWv8N4wqsGznLMTD5zUvh2gRHjuMqYHaaxb3i43gYpUnDEh5haK/6+yUA7euLB+doliAUWM4sZLfxYf7TzShNanOCyASmU+7tkpivFaaLK5QuSpO6JRxgZAeor4FxBZbRDJPdxQdPqwK0Wul5V1vrG+Z9BTcKmOXrrFC2ZWsJQCsbp+J4NsyGmwRotdJxZALTeQMTkYByMCND8QAAAABJRU5ErkJggg==",F60=e=>({type:y9,payload:e}),I60=`Camera ready
+Final Manuscript Due
+Camera Ready Papers/Registration
+All tracks (full paper, LB, WiP, Special Session) Camera ready
+R1 Camera Ready Due
+R2 Camera Ready Due
+First deadline - Camera-ready deadline
+Second deadline - Camera-ready deadline
+Camera-ready deadline
+Camera-ready
+June cycle - Camera Ready
+November cycle - Camera Ready
+Camera-ready (Full, Applied, Short, Demo and Resource papers)
+[FULL and SHORT] Camera-ready version deadline
+Camera ready (directly accepted papers)
+Camera ready (accepted major revision papers)
+Camera Ready
+Camera-ready version (Main Track)
+Camera-ready Paper Submissions
+Regular Paper camera-ready submission
+Final version deadline
+Camera ready due
+Camera-ready paper submission
+Final papers due
+Final Submissions Due (for accepted work)
+Camera-ready copies of accepted papers/SRC
+Camera ready papers
+Final STOC Papers Version Due
+Camera-ready versions due
+Camera-Ready Papers, Posters and Demos
+Camera-ready Deadline
+Camera-Ready Deadline
+Camera Ready version due
+FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Camera Ready Due
+SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Camera Ready Due
+Research Track - Camera-ready version
+Camera-ready papers and registration
+Camera-ready papers due
+Camera-ready version due
+Final versions of full papers and short presentations
+Camera-ready, poster, and video submission
+Final Version Due
+Accepted submissions due in final form
+Final camera-ready submission deadline
+Regular Papers - Camera Ready and Registration
+Position Papers - Camera Ready and Registration
+Final Camera-Ready Submission and Early Registration (1st CFP)
+spring - camera-ready
+summer - camera-ready
+fall - camera-ready
+Camera Ready Submission/Registration
+Camera-ready submission deadline
+Deadline for Final Version
+1st Round Deadline - Camera Ready Due
+2nd Round Deadline - Camera Ready Due
+Final Manuscript Deadline
+Camera Ready Deadline
+Camera-ready papers
+Camera-ready due
+Camera-ready Copy
+Submission of camera-ready papers
+Research Paper - Camera-Ready Deadline
+Camera-Ready Due
+Camera-ready full papers due
+Camera-Ready Submission
+Camera ready deadline
+Final versions due
+FINAL VERSION SUBMISSION
+Final version due
+Submission of final version
+Revised final paper
+Deadline for submitting camera-ready papers
+Final “camera-ready” papers for proceedings
+Camera-ready papers due (long & short papers)
+Camera-Ready Version Due
+Final Version Submission
+Camera ready papers due
+Final paper submission, registration
+Final paper files due
+Papers camera ready
+Final accepted manuscript due
+Camera-Ready Papers due
+Final versions for proceedings
+Camera ready copies due
+Camera-ready copy due
+Camera-Ready Version/Author Registration
+Camera Ready Submission
+Camera-ready manuscript
+Final camera ready paper
+Camera-ready copies due
+camera-ready papers
+Camera-Ready Completion Deadline
+Submission of camera ready papers
+Final Version
+Camera-ready papers & abstracts deadline
+Camera-ready Submission
+Camera-ready version, author registration
+Revised manuscripts due
+Camera-ready papers due (long & short)
+Camera Ready & Author Registration
+Camera-ready (for all tracks)
+Proceedings camera ready
+Camera-ready paper due
+Camera-ready submission
+Camera Ready Papers
+Deadline for conference version of paper
+Camera-ready paper
+Camera-ready versions
+Camera Ready Copy Deadline
+Camera Ready Version of Paper for Book
+Paper final version
+1st phase - Camera-ready due
+2nd phase - Camera-ready due
+Camera-ready version
+Spring - Camera-ready deadline
+Fall - Camera-ready submission
+Camera-ready copies
+Final pre-proceedings papers
+Camera ready version submission
+Camera-Ready Version
+Deadline for camera-ready papers
+Final camera-ready paper submission
+First submission - Camera-ready Due
+Second submission - Camera-ready Due
+Regular papers - Camera Ready and Registration
+Position papers - Camera Ready and Registration
+camera ready papers submission
+Paper camera ready version due
+Camera Ready due
+final camera-ready copies of accepted papers will be due
+Final Paper Due
+Final Manuscripts Due
+Final Camera-ready Submission of Regular, Special Session, Industrial, BMI Workshop, and Workshop and Tutorial Papers
+Final Paper Submission
+Third deadline - Camera-ready deadline
+Camera ready submission
+Camera-Ready
+Final Paper Submission Deadline
+Final Camera-Ready Manuscript and IEEE Copyright Form submission
+Camera Ready (for all)
+Camera-ready of accepted papers
+Camera ready manuscripts
+Final Camera-Ready Deadline
+Paper Camera-ready
+Camera-ready Submissions
+Final Manuscript (Camera Ready)
+Camera-ready Due
+Final Paper (Camera Ready) Submission
+Final Manuscript
+Final Paper Submission Deadline (including workshops)
+Final Paper Deadline
+Accepted Camera-ready papers due
+Submission of final papers
+Camera-ready Version
+Paper Camera Ready
+Submission of Camera-Ready Papers and Registration
+Camera-ready papers (post-proceedings)
+Paper Submission for Accepted Manuscript
+Camera-ready paper and author registration
+Camera Ready "Final Manuscript" Due
+Camera-ready version, registration, payment
+Deadline for Paper camera-ready
+Camera Ready Papers Due
+Camera-ready submissions
+Camera Ready and Registration
+Camera-Ready Manuscript due
+Camera Ready Submission Deadline
+Final Camera Ready
+Conference track - Camera-ready papers due
+Final Manuscripts Submission
+Camera Ready Version
+Final submission
+Camera ready Paper
+Camera ready and copyright due
+Final paper submission deadline
+Camera-ready copy
+Camera-Ready Papers
+Round 1 - Camera ready deadline
+Round 2 - Camera ready deadline
+Camera Ready Due
+Camera ready and Author Registration (all but workshops)
+Camera-Ready Paper Submission
+Camera Ready Materials
+Deadline for volunteers registration submissions.
+Final paper submission
+Full paper submission
+Camera-ready version deadline
+Camera Ready Paper submission
+Proceedings Version Deadline
+Final camera-ready papers due 
+already published papers submission
+Authors provide camera-ready manuscript
+Camera-Ready Submission (Full papers)
+Final Paper Submission Date
+Final, revised, and camera-ready paper due
+Final versions
+Last day to upload ALL files to the virtual platform
+Publication-ready submissions due
+Technical Papers: Camera-ready Deadline
+Submission of Camera Ready Paper
+Camera ready copy – All papers
+Final version
+Camera-ready Paper Due
+Camera-Ready papers
+Camera-Ready Submission Deadline for first round submissions
+Final Print Ready Papers due by
+Camera-ready Submission Deadline
+Camera-ready Papers
+Camera-ready submission for the main track
+Abstracts - Camera Ready and Registration
+Camera-ready for Accepted Paper Due
+First submission deadline - Camera-ready
+Second submission deadline - Camera-ready
+Deadline for camera-ready
+Camera-ready paper upload
+Paper camera-ready deadline
+Final version submission deadline
+Camera Ready Upload to TAPS
+Main Track (round 1) - Camera-ready deadline
+Main Track (round 2) - Camera-ready deadline
+Camera ready paper submission
+All tracks (full paper, LB, WiP, Special Session): Camera ready
+Full paper camera-ready
+copies
+Camera-ready Paper Submission Due Date
+Final proceedings version of accepted papers due
+Submission deadline for the final version of the Proceeding Paper
+Camera-ready paper due Deadline
+Camera-Ready Papers Due
+Camera – Ready Papers
+Position Papers - Camera Ready Registration
+Abstracts - Camera Ready Registration
+final camera-ready paper submission due
+Camera-Ready Paper
+Deadline for Camera Ready Manuscript Submission
+Camera-ready copies and authors registration due
+Camera-ready Papers Deadline (extended)
+Final copy of papers due
+Deadline for final camera-ready version of accepted papers
+Camera-Ready Submission Deadline
+Winter deadline - Camera-ready deadline
+Summer deadline - Camera-ready deadline
+Final version of papers
+Publication-Ready deadline
+Final manuscript due
+Camera Ready papers due
+Final Paper
+Camera-ready Paper Upload
+Regular Paper Camera-ready Submission
+Camera Ready Copy
+Camera-ready deadline for Full Papers
+Abstracts Track - Camera Ready and Registration
+First cycle - Camera ready due
+Second cycle - Camera ready due
+Submission of camera-ready
+Position  Papers - Camera Ready and Registration
+Final paper publication files to be received by
+Deadline for camera ready
+Final copy due
+Camera Ready Papers - Main Conference
+camera ready deadline
+	Camera ready submission deadline in Research, Applied Data Science and Demo tracks
+Conference pre-final version
+conference papers ready
+Camera Ready submission
+Position Papers  - Camera Ready and Registration
+Submission of camera ready Paper and payment
+Final version of LNAI accepted papers
+Camera Ready Version and Registration
+Camera ready version
+Camera-ready submission for the first round
+Camera-ready submission for the second round
+Final paper version
+Final proceedings version
+RTNS 1st Round - Camera ready
+RTNS 2nd Round - Camera ready
+RTNS 3rd Round - Camera ready
+Camera-ready versions of the conference papers
+Camera-ready copy deadline for all paper types
+ camera-ready deadline
+Final Camera-ready Submission
+Camera ready manuscripts due
+First Cycle: Camera-ready Submission
+Second Cycle: Camera-ready Submission
+Registration/Camera Ready Paper
+Final Camera-Ready Paper Delivery
+Camera-ready version submission
+Final version for proceedings
+Camera-Ready Files Submission Deadline
+Camera Ready & Registration
+Final version submission
+Final Paper (Camera Ready) Submission & Early Bird Registration Deadline
+Camera Ready (hard deadline!)
+Deadline for camera-ready version of accepted paper
+Upload Final Publication Files
+Full paper camera-ready deadline
+Short paper camera-ready deadline
+Registration deadline and final paper submission
+Submission of Camera-Ready Papers
+Deadline for Final Camera-Ready Papers
+Camera-ready Papers Upload
+Final versions of accepted papers due
+On-line publication available
+Registration and Final manuscript due
+Final Paper Submission Deadline (for accepted papers)
+Final Versions
+All Rounds: Camera Ready
+Camera-ready papers (Round 1)
+Camera-ready papers (Round 2 and Major Revisions)
+Final paper upload due
+Final paper deadline
+final version paper 
+Submission of revised final papers for Springer
+Submission of camera-ready versions
+ToSC, Volume 2024, Issue 1 - Camera-ready deadline
+ToSC, Volume 2024, Issue 2 - Camera-ready deadline
+ToSC, Volume 2024, Issue 3 - Camera-ready deadline
+ToSC, Volume 2024, Issue 4 - Camera-ready deadline
+Journal Special Issue (Springer’s IJPP) submission deadline
+Pre-proceedings version deadline
+Camera-ready Paper Submission
+Final manuscript submission for website
+Camera-ready manuscript for SPAR book
+Camera ready submissions and copyright forms due
+Camera-Ready Copy Due
+Registration & Final Paper Due
+Camera ready version due
+Final “camera-ready” versions
+Main Conference Camera-ready Paper Submission and Author/Presenter Registration
+Camera-Ready Deadline*
+Camera-ready papers for the 1st round
+Camera-ready papers for the 2nd round
+Submission of camera-ready files (Main Technical Track)
+Camera ready on
+Pre-proceedings deadline
+Papers camera-ready
+Camera-ready deadline for accepted work
+Deadline for accepted papers to upload of final version for NAACL
+Camery ready paper submission due
+Conference version of paper
+Final paper due
+Issue 1 - Camera-ready deadline for accepted papers and minor revisions
+Issue 2 - Camera-ready deadline for accepted papers and minor revisions
+Issue 3 - Camera-ready deadline for accepted papers and minor revisions
+Issue 4 - Camera-ready deadline for accepted papers and minor revisions
+Proceedings version due
+Camera-Ready Paper Deadline
+Camera Ready Paper
+Proceedings version deadline
+Camera-ready papers/end of shepherding
+Spring deadline - Final paper files due
+Fall deadline - Final paper files due
+Camera-Ready and author registration
+First Deadline - Camera-Ready Copy Due
+Second Deadline - Camera-Ready Copy Due
+Camera ready copy
+Camera ready version for proceedings
+Summer cycle - Camera Ready deadline
+Fall cycle - Camera Ready deadline
+Summer Deadline - Final paper files due
+Fall Deadline - Final paper files due
+Winter Deadline - Final paper files due
+Authors electronically submit fully corrected (camera-ready) papers
+Final Papers Due
+Final Paper Due Date
+TCHES Volume 2024/1 - Final version due
+TCHES Volume 2024/2 - Final version due
+TCHES Volume 2024/3 - Final version due
+TCHES Volume 2024/4 - Final version due
+Final post-proceedings version due
+Reviews Due
+Proceedings Files & PPTs/Videos Due
+Submission of camera-ready or final versions of the accepted papers`,j60=`Notification
+Acceptance Notification
+Notifications
+Paper acceptance notification
+First Review Cycle - Notification of early-rejection papers
+First Review Cycle - Author notification
+Second Review Cycle - Notification of early-rejection papers
+Second Review Cycle - Author notification
+First-round decisions sent to authors
+Second-round reviews sent to authors for feedback
+Paper accept/reject notifications
+Notification of Paper Acceptance
+Journal track First Round Notification
+Work-in-Progress and Late Breaking Tracks Notification
+Journal Track Notification
+R1 Author Notification
+R1 Author Notification of Revisions
+R2 Author Notification of Revisions
+R2 Author Notification
+First deadline - Author Notification
+Second deadline - Author Notification
+Full papers notification of acceptance
+Preliminary Feedback
+Notification of Accept/Reject
+June cycle - Early reject notification
+June cycle - Notification of Acceptance
+November cycle - Early reject notification
+November cycle - Notification of Acceptance
+Paper Notification (Full, Applied, Short, Demo and Resource papers)
+February Round Notifications Sent to Authors
+February Round - Final Decisions Sent to Authors
+Early Notification
+Reviews Released to Authors
+Notification of Acceptance
+[FULL] Author Notification
+[SHORT] Author notification
+All notifications
+Author notification
+Initial notification
+Final notification for major revisions
+Author Notification
+Notification of acceptance (Main Track)
+Paper Acceptance Notification
+Regular Paper Reviews to Author
+Decisions announced
+Notification of acceptance
+Early Rejection Notification
+Final Decision Notification
+FIRST SUBMISSION CYCLE - Reviews sent to authors
+FIRST SUBMISSION CYCLE - Notification
+SECOND SUBMISSION CYCLE - Reviews sent to authors
+SECOND SUBMISSION CYCLE - Notification
+Paper notification
+First Notification of Acceptance
+Second Notification of Acceptance
+PhD Colloquium Notification
+Presenters notified of acceptance
+Round One Notification to Authors*
+Round Two Notification to Authors
+ROUND 1 - Notification of accept/reject/review again
+ROUND 1 - Final notification of accept/reject
+ROUND 2 - Notification of accept/reject/review again
+ROUND 2 - Final notification of accept/reject
+ROUND 3 - Notification of accept/reject/review again
+ROUND 3 - Final notification of accept/reject
+ROUND 4 - Notification of accept/reject/review again
+ROUND 4 -  Final notification of accept/reject
+First Wave Submissions - 1st Round Reviews and Notifications
+First Wave Submissions - 2nd Round Decisions
+Second Wave Submissions - 1st Round Reviews and Notifications
+Second Wave Submissions - 2nd Round Decisions
+Notification to Authors
+Notification of acceptance/rejection of track proposals
+Notification of paper acceptance/rejection
+Notification of SRC acceptance/rejection
+Full Papers - acceptance notice
+Short Papers & Application Notes - acceptance notice
+First review notification
+Final notification
+Submitted Papers Notification
+Initial reviews sent to authors
+Decisions sent to authors (conditional accept or reject)
+Final reviews sent to authors
+Final acceptance decision
+Author Notification for Papers
+Final Author Notification for Papers, Posters and Demos
+Conditional Acceptance Notification
+Final Acceptance Notification
+Paper notifications
+Decision Notification
+Review Notification
+Early rejection if applicable
+FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Author Notification
+FIRST RESEARCH TRACK CYCLE (FALL/WINTER) - Notifications of Decisions of Shepherded Papers
+SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Author Notification
+SECOND RESEARCH TRACK CYCLE (SPRING/SUMMER) - Notifications of Decisions of Shepherded Papers
+Research Track - Author notification
+Notification to authors
+Long and Short paper notification
+First round notification
+Full papers notification
+Short presentations notification
+Main Conference Author Notification
+Notification Date
+Notification Due
+Author notification of acceptance
+Special Session notification
+Regular Papers - Authors Notification
+Position Papers - Authors Notification
+Notification to Authors (1st CFP – new date)
+spring - notification
+summer - notification
+fall - notification
+Notification of Acceptance/Rejection
+Notification deadline
+Announcement of Accepted Manuscript IDs
+1st Round Deadline - Early Rejection
+1st Round Deadline - Author Notification​
+2nd Round Deadline - Early Rejection
+2nd Round Deadline - Author Notification​
+Acceptance notifications
+Reviews are released to authors
+Paper decision notification
+Reviews released to authors
+Acceptance notification
+author notifications
+1st Round - Notification of Acceptance
+2nd Round - Notification of Acceptance
+Notification of paper acceptance
+Research Paper - Author Notification
+Paper Notification Date
+Long papers - Notification of acceptance
+Paper Notification
+Final Decisions
+Initial Author Notification
+Abstract Acceptance Notification
+Late Breaking Abstract Notification
+Author Notifications
+Doctoral Consortium Acceptance Notification
+Notifications given
+Final notifications given
+Notification of acceptance for standard papers
+Notification of acceptance for extended abstracts
+ACCEPTANCE NOTIFICATION
+Artifact notification
+Notification of pre-acceptance, peer reviewers’ comments
+Notification of acceptance (long & short papers)
+Notification of Decision
+Notification date
+Full papers acceptance notification
+author notification for all contributions
+Reviews sent to authors
+Notification Round 1 (Full and Short Paper)
+Notification Round 2 (Short + Journal First Papers only)
+First call - Notification of acceptance
+Second call - Notification of acceptance
+Notification of decision
+author notification
+notification of acceptance
+Announcement of review results and workshop acceptance
+Full Paper Notification
+Review release for full, short, and industry papers
+Acceptance notifications for full, short, and industry papers
+Reviews due (accept/accept with changes/reject)
+Final reviews due (accept with changes)
+1st notification for papers submitted in the rebuttal procedure
+Final notification for all papers (with or without Rebuttal)
+(Conditional) Acceptance notification for proceedings*
+Final acceptance notification for proceedings*
+Paper acceptance cut-off date for inclusion in ECSCW 2024 Program
+Decisions communicated to authors
+Full paper notification
+Author Notification (Round 1)
+Author Notification (Round 2)
+Author Notification (Round 1 and 2 - final)
+R1 Author notifcation
+R2 Author notification
+Acceptance Notifications
+Review by International Programme Committee and Notification of Acceptance
+Decisions
+1st phase - Notification to authors
+2nd phase - Notification to authors
+Spring - Notification to authors
+Spring - Reviews available
+Fall - Notification to authors
+Fall - Reviews available
+Research paper first submission round - Notification of accept/revise/reject
+Research paper first submission round - Notification of accept/reject for revised submission
+Research paper second submission round - Notification of accept/revise/reject
+Research paper second submission round - Notification of accept/reject for revised submissions
+Research paper third submission round - Notification of accept/revise/reject
+Research paper third submission round - Notification of accept/reject for revised submissions
+First round reviews and notifications
+Second round reviews and notifications
+Final acceptance
+Notification of paper revision requirements and final acceptance notification
+Artifact notification ESOP, FASE, FoSSaCS
+Notification of acceptance/rejection
+first review cycle notification
+second review cycle notification
+Cycle 1 - Notification (accept/reject/revision)
+Cycle 2 - Notification (accept/reject)
+First submission - Author Notification
+Second submission - Author Notification
+Regular papers - Authors Notification
+Position papers - Authors Notification
+Notification to Authors (2nd CFP)
+acceptance notification
+Tutorial acceptance notfication
+Notification of acceptance deadline
+Spring cycle - author notification
+Fall cycle - author notification
+Winter cycle - author notification
+Notification of acceptance date
+Notification of acceptance will be sent by
+Reviews Released
+Acceptance Notification of Regular, Special Session, Industrial and BMI Workshop Papers
+Final notifications
+Initial notifications
+First deadline - Acceptance notification
+First deadline - Early-reject notification
+Second deadline - Acceptance notification
+Second deadline - Early-reject notification
+Third deadline - Acceptance notification
+Third deadline - Early-reject notification
+Authors’ Notification on the review process results
+Round 1 - Notifications to authors
+Round 2 - Notifications to authors
+Authors Notification
+Acceptance/Rejection Notification
+Paper Acceptance Notification (excluding workshops)
+Immediately Reject on Regular & Special Session Paper Notification
+Full paper acceptance notification
+Regular Paper Acceptance Notification
+Preliminary Notification to Authors
+Final Author Notification
+Early Decision Notification
+Final Notification
+Second round notification
+Notifications of Acceptance to Authors
+1st round decisions
+Final decisions
+Notification of Paper acceptance
+Conference track - Notifications (1st round)
+Conference track - Final notifications (2nd round)
+Notification of Acceptance of Paper
+Paper acceptance
+Paper Acceptance
+Reviews completed and Authors notified
+Notification with reviews
+Notification of results of first review cycle
+Round 1 - Reviews and Decisions released to authors
+Round 1 - Final Decisions released to authors
+Round 2 - Reviews and Final Decisions released to authors
+Acceptance notification (all but workshops)
+Final decision
+Early Reject Notification
+Notification of selection results
+Paper Acceptance Notification (Main Conference)
+Reviews to authors
+Results notification
+ Author Notification
+Authors will be notified of the decision and get final reviews
+Authors will receive initial reviews of their papers
+Conference Track Notification
+Notification of acceptance or rejection
+Authors notified of decision regarding submission
+Artifact Notification
+Tech track acceptance notification
+Review notification / start of rebuttal
+Author notifications
+Technical Papers: Acceptance Decisions Sent
+Workshop, Fast Abstract, SRS papers notification
+“Conditional Accept” revisions approval notification
+Notice of Paper Acceptance
+Notifications Sent
+Notification of review outcomes for first round submissions
+Acceptance Communicated by
+Main Track Notification Date
+Paper notification for the main track
+Abstracts - Authors Notification
+Author Notiﬁcation
+First submission deadline - Notification
+Second submission deadline - Notification
+Summary reject notification
+Paper decision notifications
+Reviews released
+Notification of Acceptance or Rebuttal
+Final notification of Acceptance or Rejection after Rebuttal
+Paper author notification
+Main Track (round 1) - Notification deadline
+Main Track (round 2) - Notification deadline
+Journal track: First Round Notification
+Journal Track: Notification
+Notification of authors
+Full paper acceptance
+notification
+Papers (Full/Short) Notification
+Research Papers 1st Round - Author Notification
+Research Papers 1st Round Revision - Author Notification
+Research Papers 2nd Round - Author Notification
+Research Papers 2nd Round Revision - Author Notification
+Research paper second submission round - Notification of accept/reject for revised submission
+Research paper third submission round - Notification of accept/reject for revised submission
+Preliminary author notification
+Notifications (extended)
+Winter deadline - Notification of acceptance
+Winter deadline - Notification of reviews
+Summer deadline - Notification of acceptance
+Summer deadline - Notification of reviews
+Authors Notifications
+Decisions submitted to authors
+Notification Deadline
+Acceptance / Rejection Notification
+Acceptance
+Reviews to Authors
+Final Notifications
+Revise and Resubmit Notifications
+Notifications to Authors 1st round
+Notifications to Authors 2nd round
+Notification of Regular Papers Acceptance
+Notification of acceptance for Full Papers
+First cycle - Notification to authors
+Second cycle - Notification to authors
+Announcement of Results
+Conference paper notification
+Notification of Reviewing Result
+Authors' notification
+Full Paper notification of acceptance
+Decisions 
+Reviews 
+Final decisions sent to authors
+Review release to authors
+Paper Decision notification
+Main Conference Papers - Notification of Acceptance
+Notification Day
+First stage decision notifications (Accept/Reject/Revision) in Research and Data Science tracks
+Final decision notifications (Accept/Reject) in Research, Applied Data Science and Demo Tracks
+notification of authors
+Position Papers  - Authors Notification
+LNAI Acceptance notification EXTENDED
+Regular and Special Session Paper Notification
+Paper notification (Full, Short, BNI, DS)
+Acceptance notification for the first round
+Reviews sent to authors for the first round (Acceptance/Rejection/Revision)
+Acceptance notification for the second round
+Acceptance notice
+Full Papers Notification
+RTNS 1st Round - Notification
+RTNS 2nd Round - Notification
+RTNS 3rd Round - Notification
+Conference papers acceptance notification
+First round notification for journal-track papers, and notification of acceptance for all other types of submissions
+Notice of acceptance
+Notification for acceptance (Papers)
+Final notification to authors
+Review comments to authors of early submission paper
+First Cycle: Acceptance Notification
+First Cycle: Final Decisions
+Second Cycle: Acceptance Notification
+Second Cycle: Final Decisions
+Notification of papers accepted
+Regular Papers Notification
+Notifications for Late Breaking Short Papers
+notification to Authors and opening of registrations
+Final notification (artifact submissions)
+Notification of decisions
+Notification for Full Papers
+Notification for Acceptance
+Submission Notifications
+Acceptance decision (expected)
+Decisions to authors
+Review comments to authors
+Notification of acceptance for special sessions, workshops and tutorials
+Notification of acceptance for paper and extended abstracts
+Full paper notification to authors
+Short paper notification to authors
+Notification of Special Session Acceptance
+Provisional Acceptance of Papers & Comments from Reviewers
+Paper Notification (First Round)
+Paper Notification (Second Round)
+Notifications to acceptance/rejection
+Authors will be notified of acceptance status by
+Review Result Notification
+Authors' Notification
+Decision notification
+Decision
+1st Round: Notification (Accept/Revision/Reject)
+2nd Round: Notification
+Notification (Round 1)
+Notification (Round 2 and Major Revisions)
+First notification of acceptance/rejection
+Final notification after rebuttal phase
+Paper acceptance/rejection notification date
+Paper, invited session and mini-course decision notification
+Expected notification date
+Notification of provisional acceptance
+Authors notification
+Workshop Authors Notification
+ToSC, Volume 2024, Issue 1 - Decisions
+ToSC, Volume 2024, Issue 2 - Decisions
+ToSC, Volume 2024, Issue 3 - Decisions
+ToSC, Volume 2024, Issue 4 - Decisions
+Acceptance/rejection notifications
+Review deadline
+Early reject notification
+Authors notifications and courses selection
+Summer submission website - Author notification
+Fall submission website - Author notification
+Winter submission website - Author notification
+Notification of Paper Decisions
+Early Acceptance Notification; Reviews Released to Authors
+Submission*
+Notification of acceptance for the 1st round
+Notification of acceptance for the 2nd round
+Notification of Phase 1 rejections
+Notification of final acceptance or rejection (Main Technical Track)
+Notifications on
+Papers Acceptance Notification
+Notification of acceptance for NAACL
+Notification of desk rejection for submissions to ARR
+Reviews and meta-reviews released for ARR
+First notification
+Final acceptance notification
+Acceptance for shepherding
+Notification of acceptance sent for all submissions
+Issue 1 - Author notification
+Issue 2 - Author notification
+Issue 3 - Author notification
+Issue 4 - Author notification
+Author Notification of Acceptance Decision
+Notification (cycle 1)
+Notification (cycle 2)
+Notification of acceptance/shepherding
+Spring deadline - Notification to authors
+Fall deadline - Notification to authors
+First Deadline - Acceptance Notification
+Second Deadline - Acceptance Notification
+Paper Notifications
+Notification of conditional acceptance
+Summer cycle - Author notification
+Summer cycle - Author notification for Major Revision
+Fall cycle - Author notification
+Fall cycle - Author notification for Major Revision
+Summer Deadline - Early reject notification
+Fall Deadline - Early reject notification
+Winter Deadline - Early reject notification
+Summer Deadline - Notification to authors
+Fall Deadline - Notification to authors
+Winter Deadline - Notification to authors
+Paper Review Feedback
+Early Author Notification
+TCHES Volume 2024/1 - Notification
+TCHES Volume 2024/2 - Notification
+TCHES Volume 2024/3 - Notification
+TCHES Volume 2024/4 - Notification
+Notification of final acceptance
+Acceptance notification 
+First Call Authors Notified
+Final Call Authors Notified
+Notifications of acceptance`,az=()=>{const{state:e,dispatch:t}=Ht(),{user:n}=Ar(),{token:r}=Po(),[a,o]=y.useState(!1),{getDataListInStorage:s}=mw(),i=(M,z)=>{const h=M.split(`
 `).map(O=>O.trim().toLowerCase()),m=z.trim().toLowerCase();return!!h.includes(m)},c=M=>i(gw,M)?"submission-event":i(I60,M)?"camera-event":i(j60,M)?"notification-event":"note-event",l=(M,z)=>{const h=[];for(const m of z){const O={id:m.tid,conf_id:null,name:null,note:m.note||null,acronym:null,start_date:null,end_date:null,date_type:null,location:null,subStyle:null,allDay:!0};if(m.ImportantDateDateId){for(const v of M)for(const x of v.importantDates)if(x.date_id===m.ImportantDateDateId){O.acronym=v.information.acronym,O.name=v.information.name,O.conf_id=v.id,O.date_type=Nr(x.date_type),O.start_date=new Date(x.date_value),O.end_date=new Date(x.date_value),O.subStyle=c(x.date_type);const W=v.organizations.find(q=>q.status==="new");O.location=W?W.location:null}}else if(m.OrganizationOrgId)for(const v of M){const x=v.organizations.find(W=>W.org_id===m.OrganizationOrgId&&W.status==="new");x&&(O.acronym=v.information.acronym,O.name=v.information.name,O.conf_id=v.id,O.date_type="Conference date",O.start_date=new Date(x.start_date),O.end_date=new Date(x.end_date),O.subStyle="conference-event",O.location=x.location)}else O.date_type="Personal note",O.start_date=new Date(m.date_value),O.end_date=new Date(m.date_value),O.subStyle="note-event";h.some(v=>v.id===O.id)||h.push(O)}return h},p=async()=>{o(!0);const M=s("listFollow");if(n||localStorage.getItem("user")){let z=JSON.parse(localStorage.getItem("token"));const h=r||z,m=await fetch(`${H1}/note`,{method:"GET",headers:{Authorization:`Bearer ${h}`}});if(!m.ok)throw new Error(m.message);const O=await m.json(),A=l(M,O.data);t(F60(A)),o(!1)}},u=async(M,z)=>{o(!0);const h={note:z};if(n||localStorage.getItem("user")){const m=await fetch(`${H1}/note/${M}`,{method:"PUT",headers:{Authorization:`Bearer ${r}`,"Content-Type":"application/json"},body:JSON.stringify(h)}),O=await m.json();if(o(!1),m.ok)return{status:!0,message:O.message||O.data};throw new Error(m.message)}},f=async(M,z)=>{const h={note:M,date_value:z};if(o(!0),n||localStorage.getItem("user")){let m=JSON.parse(localStorage.getItem("token"));const O=r||m,A=await fetch(`${H1}/note`,{method:"Post",headers:{Authorization:`Bearer ${O}`,"Content-Type":"application/json"},body:JSON.stringify(h)});if(o(!1),A.ok){const v=await A.json();return{status:!0,message:v.message||v.data}}else throw new Error(A.message)}},b=async M=>{if(o(!0),n||localStorage.getItem("user")){const z=await fetch(`${H1}/note/${M}`,{method:"DELETE",headers:{Authorization:`Bearer ${r}`}}),h=await z.json();if(z.ok)return{status:!0,message:h.message||h.data};throw new Error(z.message)}};return{notes:e.notes,loading:a,getAllNotes:p,updateNote:u,addNote:f,deleteNote:b,checkDateTypeWithKeywords:i}},Q$=()=>{const{state:e,dispatch:t}=Ht(),{t:n}=p1(),r=Re(),a=p=>/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(p),o=p=>p.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"").toLowerCase(),s=p=>{if(!p||p===void 0||p==="")return"";const u=a(p)?p.toLowerCase():o(p);for(const f in Xr){const b=Xr[f];if([b.country_name,b.country_name_full].some(h=>u.includes(a(h)?h.toLowerCase():o(h))))return b.country_name}return""},i=p=>{t({type:"SET_USER_LOCATION",payload:p})},c=()=>{alert(n("pls_login_to_use_area_filter")),r("/user/account")},l=()=>{alert(n("pls_login_to_use_this_feature")),r("/login")};return{userLocation:e.userLocation,setUserLocation:i,checkForCountryInText:s,handleNavigateAccount:c,handleNavigateLogin:l}},Cs=()=>{const{state:e,dispatch:t}=Ht(),{optionsSelected:n}=Ln(),{checkDateTypeWithKeywords:r}=az(),[a,o]=y.useState(!1),{userLocation:s}=Q$(),[i,c]=y.useState({}),[l,p]=y.useState({});y.useEffect(()=>{let L={...e.priorityKeywords};Object.entries(n).forEach(([k,S])=>{(S.length>0||!L[k])&&(L[k]=S[S.length-1])}),Object.entries(L).forEach(([k,S])=>{!n[k]&&!n[k].includes(S)&&(L[k]=n[k][n[k].length-1])}),Object.keys(L).forEach(k=>{n[k].length<1&&delete L[k]}),c(L),t({type:"SET_PRIORITY_KEYWORD",payload:L})},[n]),y.useEffect(()=>{let L={};Object.entries(n).forEach(([k,S])=>{if(S.length>0)if(k==="conferenceDate"||k==="submissionDate"){const B=S[0].indexOf("from"),V=S[0].substring(B);L[k]=[V]}else L[k]=S}),p(L)},[n]);const u=(L,k)=>{c({...i,[L]:k}),t({type:"SET_PRIORITY_KEYWORD",payload:{...e.priorityKeywords,[L]:k}})},f=(L,k,S)=>{if(S==="conferenceDate"||S==="submissionDate"){for(const[B,V]of Object.entries(L))if(B.includes(k))return V}else return L[k.toLowerCase()]},b=(L,k)=>(k=k.toLowerCase(),typeof L=="string"?L.toLowerCase().includes(k):Array.isArray(L)?L.some(S=>b(S,k)):typeof L=="object"&&L!==null?Object.values(L).some(S=>b(S,k)):!1),M=()=>{const L=localStorage.getItem("totalConf");return L?parseInt(L,10):0},z=()=>{const L=localStorage.getItem("totalConf");return L?parseInt(L,10):0},h=L=>{const k=/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/,S=L.match(k);return S&&S.length===3?{startDate:S[1],endDate:S[2]}:{startDate:"",endDate:""}},m=L=>{const k=/(\d+)\*/,S=L.match(k);return S&&S.length===2?S[1]:""},O=L=>/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(L),A=L=>L.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g,"").toLowerCase(),v=(L,k)=>{const S=L?L.toLowerCase().trim():"",B=k?k.toLowerCase().trim():"";if(!L||L==="")return!1;const V=S.split(",").map(n0=>n0.trim()),i0=(V.length>1?V[V.length-1]:V[0]).replace(/[.()]/g,"").trim();if(i0===B)return!0;const G=O(L)?i0:A(i0),U=O(k)?k:A(k);return Object.values(Xr).some(n0=>{const a0=n0.country_code2.toLowerCase(),T=n0.country_code3.toLowerCase(),j=A(n0.country_name),P=A(n0.country_name_full),E=i0.endsWith(a0)&&i0.length<=a0.length+2||i0.endsWith(T)&&i0.length<=T.length+2,J=G.includes(j)||G.includes(P)||j.includes(G)||P.includes(G),M0=U.includes(j)||U.includes(P)||j.includes(U)||P.includes(U);return(E||J)&&M0})},x=(L,k)=>{const S=L?L.toLowerCase().trim():"",B=k.toLowerCase().trim();if(!L||L==="")return!1;const V=S.split(",").map(a0=>a0.trim()),i0=(V.length>1?V[V.length-1]:V[0]).replace(/[.()]/g,"").trim(),G=O(L)?i0:A(i0);O(k)||A(k);const U=Object.values(Xr).find(a0=>{const T=a0.country_code2.toLowerCase(),j=a0.country_code3.toLowerCase(),P=a0.country_name.toLowerCase(),E=a0.country_name_full.toLowerCase();return G===T||G===j||(G===P||G===E)});if(!U)return!1;const F=U.continent_name.toLowerCase();return F.includes(B)||B.includes(F)},W=(L,k)=>{o(!0);let S=[];return L.map(V=>({...V})).forEach(V=>{let K={},i0=!0;for(const[G,U]of Object.entries(k))if(U.length>0){const F=U.map(a0=>a0.toLowerCase());let n0=!1;if(F.forEach(a0=>{var j,P,E,J,M0,O0,W0,x0,X0,e0,l0,g0,d0,A0,m0,H0;let T=!1;switch(G){case"location":{T=V.organizations.some(s1=>{if(s1.status==="new")return v(s1.location,a0)});break}case"rank":{T=((P=(j=V.information)==null?void 0:j.rank)==null?void 0:P.toLowerCase())===a0.toLowerCase();break}case"for":{T=(J=(E=V.information)==null?void 0:E.fieldOfResearch)==null?void 0:J.some(s1=>s1==null?void 0:s1.toLowerCase().includes(a0));break}case"source":{T=(O0=(M0=V.information)==null?void 0:M0.source)==null?void 0:O0.toLowerCase().includes(a0);break}case"acronym":{T=(x0=(W0=V.information)==null?void 0:W0.acronym)==null?void 0:x0.toLowerCase().includes(a0);break}case"type":{T=(X0=V.organizations)==null?void 0:X0.some(s1=>{var J0;return(J0=s1.type)==null?void 0:J0.toLowerCase().includes(a0)});break}case"owner":{T=(l0=(e0=V.information)==null?void 0:e0.owner)==null?void 0:l0.toLowerCase().includes(a0);break}case"region":{let s1=["asia","south america","europe","oceania","north america","africa"];const J0=s==null?void 0:s.toLowerCase();a0==="local"?T=V.organizations.some(r1=>{if(r1.status==="new")return v(r1.location,J0)}):s1.includes(a0)?T=V.organizations.some(r1=>{if(r1.status==="new")return x(r1.location,a0)}):T=!V.organizations.some(r1=>{if(r1.status==="new")return v(r1.location,J0)});break}case"conferenceDate":{const s1=a0.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/);if(s1){const J0=new Date(s1[1]),r1=new Date(s1[2]);T=(g0=V.organizations)==null?void 0:g0.some(W1=>{const Y1=new Date(W1.start_date),I0=new Date(W1.start_date);return Y1>=J0&&I0<=r1&&W1.status==="new"})}break}case"submissionDate":{const s1=a0.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/);if(s1){const J0=new Date(s1[1]),r1=new Date(s1[2]);T=(d0=V.importantDates)==null?void 0:d0.some(W1=>{const Y1=new Date(W1.date_value);return r(gw,W1.date_type)&&Y1>=J0&&Y1<=r1&&W1.status==="new"?(K[G]=[`${W1.date_type} (${q0(W1.date_value).format("YYYY/MM/DD")})`],!0):!1})}break}case"search":{T=b(V,a0);break}case"impactfactor":{T=(m0=(A0=V.information)==null?void 0:A0.impactfactor)==null?void 0:m0.toLowerCase().includes(a0);break}case"rating":{if(a0.match(/\d+/)){const J0=parseFloat(m(a0));T=((H0=V.information)==null?void 0:H0.rating)>=J0}break}case"category":{T=!0;break}}if(T){if(K[G]||(K[G]=[]),G!=="submissionDate")if(G==="conferenceDate"){const s1=U[0].match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/),J0=s1?s1[0]:"";K[G].push(J0)}else K[G].push(a0);n0=!0}}),!n0){i0=!1;break}}i0&&(V.matchingKeywords=K,S.push(V))}),o(!1),t({type:"SET_SEARCH_RESULT",payload:S}),S},q=(L,k)=>L.sort((S,B)=>{const V=Object.keys(k),K=V.every(G=>S.matchingKeywords[G]&&S.matchingKeywords[G].includes(k[G].toLowerCase())),i0=V.every(G=>B.matchingKeywords[G]&&B.matchingKeywords[G].includes(k[G].toLowerCase()));if(K&&!i0)return-1;if(!K&&i0)return 1;if(K&&i0)return 0;for(const G of V){const U=S.matchingKeywords[G]&&S.matchingKeywords[G].includes(k[G].toLowerCase()),F=B.matchingKeywords[G]&&B.matchingKeywords[G].includes(k[G].toLowerCase());if(U&&!F)return-1;if(!U&&F)return 1}return 0}),_=L=>{const k=L.match(/from\s+(\d{4}\/\d{2}\/\d{2})\s+to\s+(\d{4}\/\d{2}\/\d{2})/);return k?k[0]:null},N=(L,k)=>{let S={};return Object.values(k).forEach(B=>{B.forEach(V=>{S[V.toLowerCase()]=0})}),L.forEach(B=>{for(const[V,K]of Object.entries(k))if(K.length>0&&V in B.matchingKeywords){const i0=K.map(U=>U.toLowerCase()),G=B.matchingKeywords[V].map(U=>U.toLowerCase());i0.forEach(U=>{if(V==="conferenceDate"){const F=_(U);F&&G[0].includes(F)&&S[U]++}else V==="submissionDate"?G.length>0&&S[U]++:G.includes(U)&&S[U]++})}}),S};return{loading:a,selectOptionFilter:e.optionFilter,inputFilter:e.inputFilter,resultInputFilter:e.resultKeywordFilter,selectedKeywords:l,priorityKeywords:e.priorityKeywords,resultFilter:e.resultFilter,getTotalConfFilter:M,getTotalPages:z,filterConferences:W,sortConferencesByPriorityKeyword:q,handleKeywordSelection:u,countMatchingConferences:N,setSelectedKeywords:p,getCountForSelectedKeyword:f,extractStars:m,extractDates:h,searchInObject:b}},X60=()=>{const{t:e}=p1(),{optionsSelected:t}=Ln(),{resultFilter:n,priorityKeywords:r,selectedKeywords:a,handleKeywordSelection:o,countMatchingConferences:s,getCountForSelectedKeyword:i,extractDates:c,extractStars:l}=Cs(),[p,u]=y.useState([]),[f,b]=y.useState([]),M=window.innerWidth;y.useEffect(()=>{const h=Object.values(r);u(h)},[r]),y.useEffect(()=>{const h=s(n,t);b(h)},[t,n]);const z=(h,m)=>{const O=i(f,m,h);if(h==="conferenceDate"||h==="submissionDate"){const{startDate:A,endDate:v}=c(m);return d.jsx(d.Fragment,{children:`${e("date_filter",{startDate:A,endDate:v})} (${O})`})}else if(h==="rating"){const A=l(m);return d.jsx(d.Fragment,{children:`${e("rating_filter",{stars:A})} (${O})`})}return d.jsx(d.Fragment,{children:`${Nr(m)} (${O})`})};return d.jsx(G0,{className:"d-flex align-items-start w-100 justify-content-center",children:d.jsx(v0,{className:"d-flex flex-column w-100 p-0",children:Object.entries(a).map(([h,m])=>d.jsxs(G0,{className:"w-100 my-2 align-items-start",children:[d.jsx(v0,{xs:3,sm:2,className:`p-0 fw-bold text-nowrap ${M>=768?"text-end":"text-start ps-3"}`,children:h==="conferenceDate"?`${e("conference_date")}:`:h==="submissionDate"?`${e("submission_date")}:`:`${e(h)}: `}),d.jsx(v0,{children:m.map((O,A)=>d.jsx("span",{style:{marginRight:"5px"},children:d.jsx(B0,{onClick:()=>o(h,O),className:`px-2 py-1 border text-teal-normal mx-2 rounded-2 text-nowrap
                             ${p.includes(O)?"bg-primary-light border-primary-normal":"bg-white border-color-medium"}
                             ${m.length>=3?"my-1":""}        
