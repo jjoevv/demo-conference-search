@@ -330,7 +330,7 @@ const appReducer = (state, action) => {
                 ...state,
                 inBufferProgressLoading: action.payload
             };
-        case actionTypes.CLEAR_BUFFER_LIST_BUFFER_LIST:
+        case actionTypes.CLEAR_BUFFER_LIST:
             return {
                 ...state,
                 inBufferProgressLoading: []

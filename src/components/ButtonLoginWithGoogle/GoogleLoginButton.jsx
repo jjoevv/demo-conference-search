@@ -8,7 +8,7 @@ import useAuth from '../../hooks/useAuth';
 
 const GoogleLoginButton = () => {
     const { t } = useTranslation()
-    const { loginWithGoogle } = useAuth()
+    const { loginWithGoogle, handleMessageLoginGoogleBanned } = useAuth()
     const location = useLocation()
 
   useEffect(() => {
@@ -18,6 +18,8 @@ const GoogleLoginButton = () => {
     if (refreshToken) {
       loginWithGoogle(refreshToken)
     } else {
+      const message = urlParams.get('message');
+      handleMessageLoginGoogleBanned(message)
       console.error('Refresh token not found.');
     }
   }, [location.search]);

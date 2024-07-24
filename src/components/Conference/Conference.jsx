@@ -187,6 +187,20 @@ const splitAcronym = (acronym) => {
 
     const getLengthString = (string) => string.length
 
+    const renderSizeAcronym = (acronym) => {
+        const length = getLengthString(acronym)
+        if(length <= 6) {
+            return 1.5
+        } else if (length > 10) {
+            return 0.9
+        
+        }  else if (length > 6) {
+            return 1.2
+        } 
+         else {
+            return 1.25
+        }
+    }
     const renderLocation = (organizations) => {
         const newOrg = organizations.find(org => org.status === "new");
         return newOrg ? newOrg.location : ''
@@ -243,7 +257,7 @@ const splitAcronym = (acronym) => {
                                                     windowWidth > 768 ?
                                                         <Col lg={2} sm={2} md={2}>
                                                             <div className="acronym-container text-center d-flex align-items-center justify-content-center bg-white border border-teal-light rounded-4 text-nowrap">
-                                                                <span className={`fw-bold text-nowrap ${getLengthString(conf?.information.acronym) > 6 ? 'fs-5' : 'fs-4'}`}>
+                                                                <span className={`fw-bold text-nowrap`} style={{fontSize: `${renderSizeAcronym(conf.information.acronym)}rem`}}>
                                                                     {splitAcronym(conf.information.acronym).top}
                                                                     {splitAcronym(conf.information.acronym).bottom && <span className="d-block fs-6">{splitAcronym(conf.information.acronym).bottom}</span>}
                                                                 </span>

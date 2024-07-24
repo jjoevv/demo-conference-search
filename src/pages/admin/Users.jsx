@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Container, ButtonGroup, Button,  Row, Col } from 'react-bootstrap'
 
-import useConference from '../../hooks/useConferences'
-import { sortConferences } from '../../utils/sortConferences'
 import Loading from '../../components/Loading'
 import TableRender from '../../components/admin/TableRender'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
-import useSearch from '../../hooks/useSearch'
-import { checkExistValue } from '../../utils/checkFetchedResults'
 import useFilter from '../../hooks/useFilter'
 import { useNavigate } from 'react-router-dom'
 import useAdmin from '../../hooks/useAdmin'
@@ -65,6 +61,22 @@ const Users = () => {
         ),
         id: 'index',
         width: 50,
+        disableResizing: true
+      },
+      {
+        Header: t('status'),
+        accessor: "status",
+        Cell: ({row})=>(
+          <div className='fixed-column p-0 d-flex align-items-center justify-content-center'>
+            {
+              row.original.role === 'banned' ?
+              `${t('banned')}`
+              :
+              `${t('no_banned')}`
+            }
+        </div>
+        ),
+        id: 'status',
         disableResizing: true
       },
       {

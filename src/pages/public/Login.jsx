@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Form, Button, Row, Col,  InputGroup } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ import GoogleLoginButton from '../../components/ButtonLoginWithGoogle/GoogleLogi
 const Login = () => {
     const {t} = useTranslation()
     const {windowWidth} = useScreenSize()
-    const { loading, handleLogin } = useAuth();
+    const { loading, handleLogin, message: messageGoogle } = useAuth();
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(false)
     const [error, setError] = useState(null);
@@ -24,6 +24,15 @@ const Login = () => {
     const [showpassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
     
+    useEffect(() => {
+        if (message !== null && message !== undefined) {
+          const timer = setTimeout(() => {
+            setMessage('');
+          }, 5000); 
+    
+          return () => clearTimeout(timer); // Cleanup timer if value changes or component unmounts
+        }
+      }, [message]);
 
     const handleInputChange = (event) => {
         const value = { ...account, [event.target.name]: event.target.value }
@@ -51,7 +60,7 @@ const Login = () => {
         } else {
             setError(null);
             const result = await handleLogin(account.email, account.password)
-
+            
             setStatus(result.status)
             setMessage(result.message)
 
@@ -123,7 +132,11 @@ const Login = () => {
                             isSubmit && error && <p className="text-warning">{error}</p>
                         }
                         {
-                            !status && isSubmit && message !== '' && <p className="text-danger">{message}</p>
+                            !status && message !== '' && <p className="text-danger">{message}</p>
+                        }
+
+{
+                            messageGoogle !== '' && <p className="text-danger">{messageGoogle}</p>
                         }
                         <div className='d-flex flex-column justify-content-center align-items-center'>
                             

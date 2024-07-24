@@ -6,8 +6,7 @@ const usePageNavigation = () => {
   const location = useLocation()
   const previousPath = useRef(null);
   useEffect(() => {
-    previousPath.current = localStorage.getItem('lastVisitedPage');
-
+    
     // Lưu đường dẫn của trang hiện tại vào localStorage
     const handleBeforeUnload = () => {
       localStorage.setItem('lastVisitedPage', location.pathname);

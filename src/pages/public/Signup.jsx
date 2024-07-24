@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Form, Button, Row, Col, InputGroup } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 
@@ -25,7 +25,15 @@ const Signup = () => {
     const [error, setError] = useState(null);
     const [isSignup, setIsSignup] = useState(false)
     const navigate = useNavigate()
-
+    useEffect(() => {
+        if (message !== null && message !== undefined) {
+          const timer = setTimeout(() => {
+            setMessage('');
+          }, 5000); 
+    
+          return () => clearTimeout(timer); // Cleanup timer if value changes or component unmounts
+        }
+      }, [message]);
     const handleInputChange = (event) => {
         const value = { ...account, [event.target.name]: event.target.value }
         setAccount(value)
@@ -152,10 +160,7 @@ const Signup = () => {
                             </InputGroup>
                         </Form.Group>
                         {
-                            !status && isSignup && message !== '' && <p className="text-danger">{message}</p>
-                        }
-                        {
-                            isSignup && error && <p className="text-warning">{error}</p>
+                            !status && message !== '' && <p className="text-danger">{message}</p>
                         }
                         <Button
                             onClick={handleSignup}

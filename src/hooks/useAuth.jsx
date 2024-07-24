@@ -16,6 +16,7 @@ const useAuth = () => {
   const [error, setError] = useState('')
   const [userId, setUserId] = useState('')
   const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const {previousPath} = usePageNavigation()
 
@@ -36,21 +37,21 @@ const useAuth = () => {
 
         setLoading(false)
         const responseData = await response.json()
-        if (response.ok) {
+        if (response.ok && !responseData.message.includes('not activated')) {
           const userData = responseData.data
           
           saveUserToLocalStorage(userData)
           savetokenToLocalStorage(userData.accessToken)
           await getCurrentUser()
-          if(previousPath && userData.role !== 'admin' && !previousPath.includes('login') && !previousPath.includes('signup')){
-            navigate(`${previousPath}`)
+          const storedPath = localStorage.getItem('previousPath')
+          if(storedPath && userData.role === 'admin' && !storedPath.includes('detailed-information')){
+            navigate('/admin/dashboard')
           }
-          else {
-            if(userData.role === 'admin'){
-              navigate('/admin/dashboard')
-            }
-            else navigate('/')
-          }
+          else if(storedPath){
+           navigate(storedPath)
+            
+          } else navigate ('/')
+          
           
 
           return { status: true, message: responseData.message }
@@ -117,9 +118,17 @@ const useAuth = () => {
     dispatch({type: "SET_IS_LOGIN", payload: true})
     sessionStorage.removeItem('user-id')
     deleteUserFromLocalStorage()
-    if(!previousPath.includes('/login') || !previousPath.includes('/signup')){
-      navigate(`${previousPath}`)
-    } else navigate(`/`)
+    if (previousPath && typeof previousPath === 'string') {
+      
+      if (!previousPath.includes('/login') && !previousPath.includes('/signup')) {
+        navigate(`${previousPath}`);
+      } else {
+        navigate(`/`);
+      }
+    } else {
+      navigate(`/`);
+    }
+    
   };
 
 
@@ -245,6 +254,14 @@ const useAuth = () => {
   const handleIsExpired = (isLoginAvailabel) => {
     dispatch({type: "SET_IS_LOGIN", payload: isLoginAvailabel})
   }
+
+  const handleMessageLoginGoogleBanned = (mess) => {
+    setMessage(mess)
+    const timer = setTimeout(() => {
+      setMessage('')
+    }, 5000); // Thời gian mặc định là 3000ms (3 giây)
+    return () => clearTimeout(timer);
+  }
   return {
     user: state.user,
     error: error,
@@ -258,7 +275,9 @@ const useAuth = () => {
     changePassword,
     getCurrentUser,
     loginWithGoogle,
-    handleIsExpired
+    handleIsExpired,
+    message, 
+    handleMessageLoginGoogleBanned
   };
 };
 

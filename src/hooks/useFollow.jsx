@@ -9,6 +9,7 @@ import { useState } from 'react'
 import useSessionStorage from './useSessionStorage'
 import useAuth from './useAuth'
 import moment from 'moment'
+import usePageNavigation from './usePageNavigation'
 const useFollow = () => {
   const { state, dispatch } = useAppContext()
   const { token } = useToken()
@@ -16,7 +17,7 @@ const useFollow = () => {
   const { user } = useLocalStorage()
   const {handleIsExpired} = useAuth()
   const [loading, setLoading] = useState(false);
-
+  const {previousPath} = usePageNavigation()
   const navigate = useNavigate()
 
   const updateNewList = (newConferences) => {
@@ -120,6 +121,8 @@ const useFollow = () => {
     }
     else {
       alert('Log in before continuing, please!')
+      localStorage.setItem('previousPath', previousPath)
+      localStorage.setItem('lastVisitedPage', previousPath)
       navigate('/login')
     }
   }

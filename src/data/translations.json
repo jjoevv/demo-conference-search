@@ -98,9 +98,9 @@
       "no_posted_conferences": "You haven't posted any conferences yet.",
       "setting": "Settings",
       "upcoming_event": "Upcoming Events",
-      "all_notifications_here": "All notifications Here",
+      "all_notifications_here": "All notifications here",
       "how_would_you_like_to_receive_notifications": "How would you like to receive notifications?",
-      "review_followed_conferences": "Review the list of events you previously saved. Pay attention to the time so you don't miss it.",
+      "review_followed_conferences": "Review the list of conferences you previously saved. Pay attention to the time so you don't miss it.",
       "no_notifications": "no_notifications",
       "view_all_notifications": "View all notifications",
       "updated_in": "Updated in",
@@ -269,7 +269,9 @@
       "select_cycle": "Select cycle",
       "period_description": "Define how far in advance you want to collect events from today",
       "select_period": "Select period",
-      "period_label": "Collection period (7-30 days)"
+      "period_label": "Collection period (7-30 days)",
+      "no_banned": "Active",
+      "banned": "Banned"
     }
   },
 
@@ -543,8 +545,9 @@
       "select_cycle": "Chọn chu kì",
       "period_description": "Xác định trước khoảng thời gian bạn muốn thu thập các sự kiện từ hôm nay",
       "select_period": "Chọn khoảng",
-      "period_label": "Khoảng thời gian thu thập (7-30 ngàys)"
-      
+      "period_label": "Khoảng thời gian thu thập (7-30 ngàys)",
+      "no_banned": "Hoạt động",
+      "banned": "Đã cấm"
     }
   }
 }

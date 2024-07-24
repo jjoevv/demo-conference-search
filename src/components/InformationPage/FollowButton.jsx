@@ -47,7 +47,6 @@ const FollowButton = () => {
     const handleUnfollow = async () => {
         setIsClick(true)
         const result = await unfollowConference(id.id)
-
         setStatus(result)
     }
 
