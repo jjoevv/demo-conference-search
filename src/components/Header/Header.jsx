@@ -66,6 +66,16 @@ const Header = () => {
     }
   }
 
+  const handleNavigateLink = (path) => {
+    if(user) {
+      navigate(path)
+    } else {
+      
+      localStorage.setItem('previousPath', location.pathname);
+      navigate('/login')
+    }
+  }
+
   const handleOffcanvasClose = () => setShowOffcanvas(false);
   const handleOffcanvasShow = () => setShowOffcanvas(true);
   const navLinks = (
@@ -90,8 +100,8 @@ const Header = () => {
           {t('conference')}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item className="fs-6" onClick={() => navigate('/user/followed')}>{t('followed_conference')}</Dropdown.Item>
-          <Dropdown.Item className="fs-6" onClick={() => navigate('/user/yourconferences')}>{t('your_conferences')}</Dropdown.Item>
+          <Dropdown.Item className="fs-6" onClick={() => handleNavigateLink('/user/followed')}>{t('followed_conference')}</Dropdown.Item>
+          <Dropdown.Item className="fs-6" onClick={() => handleNavigateLink('/user/yourconferences')}>{t('your_conferences')}</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <Nav.Link

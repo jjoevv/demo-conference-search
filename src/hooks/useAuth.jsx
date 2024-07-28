@@ -8,6 +8,7 @@ import useLocalStorage from './useLocalStorage';
 import useToken from './useToken';
 import { useState } from 'react';
 import usePageNavigation from './usePageNavigation';
+import { getFollowedConferenceAction } from '../actions/followAction';
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
@@ -116,6 +117,7 @@ const useAuth = () => {
     dispatch(logoutUser());
     dispatch({type: "LOGIN_SUCCESS", payload: null})
     dispatch({type: "SET_IS_LOGIN", payload: true})
+    dispatch(getFollowedConferenceAction([]))
     sessionStorage.removeItem('user-id')
     deleteUserFromLocalStorage()
     if (previousPath && typeof previousPath === 'string') {

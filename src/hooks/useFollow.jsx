@@ -4,7 +4,7 @@ import { getFollowedConferenceAction } from '../actions/followAction'
 import { baseURL } from './api/baseApi'
 import useToken from './useToken'
 import useLocalStorage from './useLocalStorage'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import useSessionStorage from './useSessionStorage'
 import useAuth from './useAuth'
@@ -19,7 +19,7 @@ const useFollow = () => {
   const [loading, setLoading] = useState(false);
   const {previousPath} = usePageNavigation()
   const navigate = useNavigate()
-
+  const location = useLocation()
   const updateNewList = (newConferences) => {
     // Tạo một bản sao của state.postedConferences để thực hiện các thay đổi mà không ảnh hưởng đến state gốc
     const updatedConferences = [...state.postedConferences];
@@ -121,8 +121,7 @@ const useFollow = () => {
     }
     else {
       alert('Log in before continuing, please!')
-      localStorage.setItem('previousPath', previousPath)
-      localStorage.setItem('lastVisitedPage', previousPath)
+      localStorage.setItem('previousPath', location.pathname);
       navigate('/login')
     }
   }
